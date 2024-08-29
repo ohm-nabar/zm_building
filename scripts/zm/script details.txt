@@ -1,0 +1,106 @@
+Stock Scripts
+	zm_building:
+		-increased starting points (should be reversed for release build)
+		-turned off quick revive at start
+		-damage callback for shadow Double Tap
+		-damage callback for some Poseidon's Punch blessings
+		-damage callback for Trident
+		-increased fall damage
+		-sets perk limit and start weapon (start weapon needs to be created)
+	_zm_perk_electric_cherry:
+		Modified stock cherry script to work (credits to Modme wiki)
+	_zm_perk_additionalprimaryweapon:
+		Changed MK price to 3000
+	Other perk scripts:
+		Have to include to make sure On The House and perk bottles don't give them
+
+Custom Scripts
+	zm_ai_shadowpeople:
+		-PURPOSE: Controls shadow rounds
+		-TODO: Escargot eye fx
+		-TODO: Fix shadow rounds
+	zm_ai_shadow_perks:
+		-PURPOSE: Handles shadow perk effects
+		-NOTE: Uses a damage callback in zm_building
+		-TODO: UI elements
+	zm_bloodgenerator (Credits to NateSmithZombies for Zombie Blood vision code):
+		-PURPOSE: provides blood pump functionalities
+		-TODO: update ui elements
+	zm_perk_upgrades:
+		-PURPOSE: provides utility functions regarding the upgraded perks
+		-PURPOSE: provides upgrade methods/quests
+	zm_perk_upgrades_effects:
+		-PURPOSE: handles effects of upgraded perks
+		-TODO: add shaders for all
+		-TODO: add a better looking icon for 3rd gun indicator
+	_zm_perk_doubletaporignal: (credits to Matarra):
+		-PURPOSE: Implement Double Tap 1.0
+	_zm_perk_poseidonspunch: (credits to Matarra):
+		-PURPOSE: Implement Poseidon's Punch 
+		-PURPOSE: Implement Poseidon's Punch upgrade
+		-NOTE: Uses a damage callback in zm_building
+		-TODO: Shaders for the blessings and curses
+	_zm_perk_phdlite: (credits to Matarra and credits to Harry Bo21 for the perk bottle, model):
+		-PURPOSE: Implement PhD Lite 
+		-PURPOSE: Implement PhD Lite upgrade
+	zm_custom_perk_shader (credits to Matarra):
+		-PURPOSE: Add shaders for shadow perks and perk upgrades
+	custom_gg_machine: 
+		-PURPOSE: machine to dispense GGs
+		-TODO: sounds
+	zm_bgb_custom_util (credits to JBird):
+		-PURPOSE: Handles the giving of GGs
+	zm_challenges:
+		-PURPOSE: handles individual and team challenges
+		-TODO: update guns to reflect final weapon selection
+	zm_starting_pistol_choose:
+		-PURPOSE: handles starting pistol choices and their effects on last stand pistols
+		-TODO: update guns to reflect final starting pistols
+	zm_pause:
+		-PURPOSE: co-op pause
+	zm_high_round_health:
+		-PURPOSE: Round 30+ health system
+	zm_healing_grenade:
+		-PURPOSE: Implement the Healing Grenade weapon
+		-TODO: Add the actual healing grenade weapon, FX, and sounds
+	zm_diedrich:
+		-PURPOSE: Implement the Diedrich special weapon
+		-TODO: Add sounds
+	zm_abbey_inventory:
+		-PURPOSE: Create an in-game menu to track upgrade quests
+	zm_abbey_dialogue (INACTIVE):
+		-PURPOSE: Manage dialogue systems
+	zm_tides (INACTIVE):
+		-PURPOSE: Manage a potential tides system
+	zm_juggernog_potions:
+		-PURPOSE: Implementation of "Juggernog potions", our alternative to Juggernog
+		-NOTE: For balance purposes, the base zombie melee damage has been changed to 40 from 45
+	zm_trident (Credits to Harry Bo21 for charge shot logic):
+		-PURPOSE: Implementation of the Trident wonder weapon
+		-NOTE: Uses a damage callback in zm_building
+	zm_panzerwurfmine:
+		-PURPOSE: Handle the implementation of the Panzerwurfmine grenade
+		-TODO: Make necessary adjustments based on what direction this is taken in
+	zm_abbey_quest:
+		-PURPOSE: Implementation of the main quest
+		-TODO: Continue balancing boss fight
+		-TODO: Add necessary constraints to make the quest compatible with other features (pause, shadow rounds, inventory, etc.)
+		-TODO: Change certain steps based on what direction we decide to take the fight in
+		-TODO: Set damage amounts in the boss fight for wonder weapons
+	zm_room_manager:
+		-PURPOSE: Manage the rooms
+		-TODO: update rooms to reflect final map layout
+	rs_o_jump_pad (Credits to Redspace):
+		-PURPOSE: Jump pads
+	
+
+Launch Options (if launching mod from launcher is broken)
+	+set fs_game zm_building +devmap zm_building
+	+set splitscreen 1 +set splitscreen_playerCount 2 (for splitscreen launching)
+
+Custom Sounds
+	Added custom round change sounds (credits to Graffiti)
+Custom Shaders
+	Added BO1 shaders (credits to Fusorf)
+Black Ops 3 FX Library
+	Credits to Harry Bo21

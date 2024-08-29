@@ -1,0 +1,92 @@
+{
+ "Name" : "zm_building",
+ "GameMode" : "mpl",
+ "IsCommon" : false,
+ "Parent" : "",
+ "Overlay" : "",
+ "IsStandalone" : true,
+ "IsProduction" : false,
+ "IsShipped" : false,
+ "DontDeploy" : false,
+ "NoStreamBank" : false,
+ "MapFile" : "",
+ "Standalone" : true,
+ "Builds" : [ "T7" ],
+ "MusicFiles" : [ "zm_abbey" ],
+ "Sources" : [
+ {
+ "Type" : "ALIAS",
+ "Name" : "user_aliases",
+ "Filename" : "user_aliases.csv",
+ "Specs" : [ ] 
+},
+{
+ "Type" : "AMBIENT",
+ "Name" : "ambient_mod",
+ "Filename" : "ambient_mod.csv",
+ "Specs" : [
+  "mpl_mod"
+  ]
+},
+{
+ "Type" : "ALIAS",
+ "Name" : "Graffitis Changing Round Sound Tutorial",
+ "Filename" : "Graffitis Round Sound Tutorial.csv",
+ "Specs" : [ ] 
+},
+{
+ "Type" : "ALIAS",
+ "Name" : "perk_sounds",
+ "Filename" : "perk_sounds.csv",
+ "Specs" : [ ] 
+},
+{
+ "Type" : "ALIAS",
+ "Name" : "abbey_music",
+ "Filename" : "abbey_music.csv",
+ "Specs" : [ ] 
+},
+{
+ "Type" : "ALIAS",
+ "Name" : "abbey_sfx",
+ "Filename" : "abbey_sfx.csv",
+ "Specs" : [ ] 
+},
+{
+    "Type" : "ALIAS",
+    "Name" : "trap_sounds",
+    "Filename" : "trap_sounds.csv",
+    "Specs" : [ ] 
+},
+{
+	"Type" : "ALIAS",
+	"Name" : "zm_castle_vox",
+	"Filename" : "zm_castle_vox.csv",
+	"Specs" : [ ] 
+},
+{
+	"Type" : "ALIAS",
+	"Name" : "zm_ai_quad",
+	"Filename" : "zm_ai_quad.csv",
+	"Specs" : [ ] 
+},
+{
+	"Type" : "ALIAS",
+	"Name" : "s4_weapons",
+	"Filename" : "s4_weapons.csv",
+	"Specs" : [ ] 
+},
+{
+ "Type" : "ALIAS",
+ "Name" : "flashlight",
+ "Filename" : "flashlight.csv",
+ "Specs" : [ ] 
+},
+{
+ 	"Type" : "ALIAS",
+ 	"Name" : "origins_portal_sounds",
+ 	"Filename" : "origins_portal_sounds.csv",
+ 	"Specs" : [ ] 
+},
+]
+}
