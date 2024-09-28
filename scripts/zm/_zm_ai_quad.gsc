@@ -88,17 +88,23 @@ function __init__()
 	level thread activate_quad_spawners_power_check();
 	// THREAD LOGIC
 	level.overrideGlobalSpawnFunc = &global_spawn_func;
-	// QUAD LIMIT
-	level.abbey_quad_count = 0;
-	//thread testeroo();
+
+	level.allow_quad_spawn = true;
+	level thread quad_spawn_delay();
 }
 
-function testeroo()
+function quad_spawn_delay()
 {
 	while(true)
 	{
-		IPrintLn(level.abbey_quad_count);
-		wait(1);
+		for(i = 0; i < level.players.size + 1; i++)
+		{
+			level waittill(#"quad_spawned");
+		}
+
+		level.allow_quad_spawn = false;
+		wait(RandomIntRange(QUAD_ZOMBIE_MIN_DELAY, QUAD_ZOMBIE_MAX_DELAY + 1));
+		level.allow_quad_spawn = true;
 	}
 }
 
@@ -569,7 +575,7 @@ function activate_quad_spawners()
 
 function quad_spawn_check()
 {
-	return isDefined( level.zm_loc_types[ "quad_location" ] ) && level.zm_loc_types[ "quad_location" ].size > 0 && level.abbey_quad_count < QUAD_ZOMBIE_MAX_COUNT;
+	return isDefined( level.zm_loc_types[ "quad_location" ] ) && level.zm_loc_types[ "quad_location" ].size > 0 && level.allow_quad_spawn;
 }
 
 function get_quad_spawners()
@@ -624,7 +630,8 @@ function quad_prespawn()
 	
 	if ( isDefined( level.quad_prespawn ) )
 		self thread [ [ level.quad_prespawn ] ]();
-	level.abbey_quad_count += 1;
+
+	level notify(#"quad_spawned");
 }
 
 function quad_phase_setup()
@@ -656,7 +663,6 @@ function quad_thundergun_knockdown( e_player, b_gib )
 
 function quad_killed_override( e_inflictor, e_attacker, n_damage, str_means_of_death, w_weapon, v_dir, str_hit_loc, f_offset_time )
 {
-	level.abbey_quad_count -= 1;
 	if ( str_means_of_death == "MOD_PISTOL_BULLET" || str_means_of_death == "MOD_RIFLE_BULLET" )
 		self.can_explode = 1;
 	else
