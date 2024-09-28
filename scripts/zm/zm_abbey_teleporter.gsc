@@ -301,7 +301,7 @@ function teleport_pad_countdown( index, time )
 		level.current_links = 0;
 		for(i = 0; i < 4; i++)
 		{
-			level.teleporter_pad_trig[i] SetHintString(&"ZM_ABBEY_TELEPORTER_SYNCHRONIZING", level.current_links);
+			level.teleporter_pad_trig[i] SetHintString( &"ZM_ABBEY_TELEPORTER_SYNCHRONIZE", level.current_links);
 		}
 		level util::clientNotify( "TRs" );	// Stop flashing the receiver map light
 	}
@@ -340,7 +340,7 @@ function sndCountdown()
 function clock_timer()
 {
 	//self playloopsound ("evt_clock_tick_1sec");
-	timer_max = level.link_time * 20;
+	timer_max = 600;
 	timer = timer_max;
 	while(level.current_links > 0 && level.current_links < 4)
 	{
@@ -566,6 +566,15 @@ function teleport_players(dest_index)
 				if ( isdefined( image_room[i] ) )
 				{
 					visionset_mgr::deactivate( "overlay", "zm_trap_electric", players[i] );
+					if(level.shadow_vision_active)
+					{
+						visionset_mgr::deactivate("visionset", "abbey_shadow", players[i]);
+					}
+					if(players[i].isInBloodMode)
+					{
+						visionset_mgr::deactivate( "overlay", "zm_bgb_in_plain_sight", players[i] );
+						visionset_mgr::deactivate( "visionset", "zm_bgb_in_plain_sight", players[i] );
+					}
 					visionset_mgr::activate( "overlay", "zm_factory_teleport", players[i] ); // turn on the mid-teleport stargate effects
 					players[i] disableOffhandWeapons();
 					players[i] disableweapons();
@@ -664,6 +673,12 @@ function teleport_players(dest_index)
 		player.teleport_origin = undefined;
 
 		visionset_mgr::deactivate( "overlay", "zm_factory_teleport", player ); // turn off the mid-teleport stargate effects
+		if(players[i].isInBloodMode)
+		{
+			visionset_mgr::activate("visionset", "zm_bgb_in_plain_sight", player, 0.5, 9999, 0.5);
+			visionset_mgr::activate("overlay", "zm_bgb_in_plain_sight", player);
+		}
+		player thread reactivate_shadow_vision();
 		player enableweapons();
 		player enableoffhandweapons();
 		player setorigin( core_pos[slot].origin );
@@ -689,6 +704,24 @@ function teleport_players(dest_index)
 	// play beam fx at the core
 	exploder::exploder_duration( "mainframe_arrival", 1.7 );
 	exploder::exploder_duration( "mainframe_steam", 14.6 );
+}
+
+function reactivate_shadow_vision()
+{
+	self endon("disconnect");
+
+	if(! level flag::get("dog_round"))
+	{
+		return;
+	}
+	while(! level.shadow_vision_active && level flag::get("dog_round"))
+	{
+		wait(0.05);
+	}
+	if(level.shadow_vision_active)
+	{
+		visionset_mgr::activate("visionset", "abbey_shadow", self);
+	}
 }
 
 //-------------------------------------------------------------------------------

@@ -112,6 +112,7 @@ function __init__()
 	level.cloak_spawner thread add_spawn_function(&cloak_spawn_init);
 
 	level.shadow_ai_limit = 40;
+	level.shadow_vision_active = false;
 
 	//level.shadow_moon = GetEnt("targetname", "shadow_moon");
 	//level.shadow_moon SetInvisibleToAll();
@@ -423,7 +424,7 @@ function dog_round_spawning()
 	{
 		visionset_mgr::activate("visionset", "abbey_shadow", player);
 	}
-	level.shadow_moon SetVisibleToAll();
+	level.shadow_vision_active = true;
 	wait(1);
 
 	level.cloak_health = calculate_cloak_health();
@@ -521,7 +522,7 @@ function dog_round_spawning()
 	}
 
 	level notify ( "last_ai_down" );
-
+	level.shadow_vision_active = false;
 	level zm_audio::sndMusicSystem_StopAndFlush();
 	lui::screen_flash( 0.3, 0.8, 0.3, 1.0, "white" );
 	level util::set_lighting_state( 0 );
