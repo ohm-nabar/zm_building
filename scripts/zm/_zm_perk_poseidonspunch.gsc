@@ -61,7 +61,7 @@ REGISTER_SYSTEM( "poseidonspunch", &__init__, undefined )
 //-----------------------------------------------------------------------------------
 function __init__()
 {
-	level.poseidon_recharge_time = 15;
+	level.poseidon_recharge_time = 10;
 	enable_custom_perk_for_level();
 	callback::on_connect( &on_player_connect );
 	zm::register_zombie_damage_override_callback( &zombie_damage_override );
@@ -182,13 +182,41 @@ function poseidon_knockdown()
 		if(IS_TRUE(zombie.completed_emerging_into_playable_area) && zombie.targetname != "zombie_cloak" && zombie.targetname != "zombie_escargot" && DistanceSquared(self.origin, zombie.origin) <= POSEIDON_RADIUS && ! IS_TRUE(zombie.poseidon_knockdown))
 		{
 			zombie PlaySound("pp_knockback");
-			zombie zm_weap_thundergun::thundergun_knockdown_zombie(self, level.thundergun_knockdown_gib[0]);
+			if(IS_TRUE(zombie.is_quad_zombie))
+			{
+				zombie thread quad_stun();
+			}
+			else
+			{
+				zombie zm_weap_thundergun::thundergun_knockdown_zombie(self, level.thundergun_knockdown_gib[0]);
+			}
 			zombie thread mark_zombie();
 			if(self zm_perk_upgrades::IsPerkUpgradeActive(PERK_POSEIDON_PUNCH))
 			{
 				self.health += 15;
 			}
 		}
+	}
+}
+
+function quad_stun()
+{
+	self endon("death");
+
+	loop_time = POSEIDON_QUAD_KNOCKDOWN_TIME * 20;
+	for(i = 0; i < loop_time; i++)
+	{
+		self ASMSetAnimationRate(0);
+		wait(0.05);
+	}
+	
+	if(! IS_TRUE(self.trident_slowdown))
+	{
+		self ASMSetAnimationRate(1);
+	}
+	else
+	{
+		self ASMSetAnimationRate(0.1);
 	}
 }
 
@@ -211,6 +239,24 @@ function poseidon_recharge_time()
 	self.poseidon_ready = true;
 	self LUINotifyEvent(&"poseidon_charge", 1, 1);
 	self PlaySoundToPlayer("pp_active", self);
+}
+
+function poseidon_melee_iframes()
+{
+	self endon("disconnect");
+
+	while(true)
+	{
+		if(self IsMeleeing() && self HasPerk(PERK_POSEIDON_PUNCH) && self.poseidon_ready)
+		{
+			while (self IsMeleeing())
+			{
+				self EnableInvulnerability();
+				wait(0.05);
+			}
+			self DisableInvulnerability();
+		}
+	}
 }
 
 function testeroo()

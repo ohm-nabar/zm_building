@@ -226,6 +226,8 @@ function phd_slide_think()
 			{
 				wait(0.05);
 			}
+			self thread phd_slide_iframes();
+
 			end_pos = self GetOrigin();
 			slide_dist = DistanceSquared(start_pos, end_pos);
 
@@ -264,6 +266,20 @@ function phd_slide_think()
 		}
 		wait(0.05);
 	}
+}
+
+function phd_slide_iframes()
+{
+	self endon("disconnect");
+
+	time = PHD_LITE_IFRAME_TIME * 20;
+	for(i = 0; i < time; i++)
+	{
+		self EnableInvulnerability();
+		wait(0.05);
+	}
+	
+	self DisableInvulnerability();
 }
 
 function testeroo()
