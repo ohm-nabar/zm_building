@@ -155,7 +155,7 @@ function on_player_spawned()
 	self.poseidon_challenge_goal = 8;
 	self.poseidon_challenge_progress = 0;
 
-	self.quick_challenge_goal = 8;
+	self.quick_challenge_goal = 4;
 	self.quick_challenge_progress = 0;
 
 	self.PHD_challenge_goal = 8;
@@ -178,13 +178,13 @@ function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags
 {
 	if ( isPlayer( attacker ) && willBeKilled )
 	{
-		if(IS_TRUE(self.poseidon_knockdown))
+		if(IS_TRUE(self.poseidon_knockdown) && isdefined(attacker.blessedkills))
 		{
-			attacker notify(#"poseidon_challenge_kill");
+			attacker.blessedkills++;
 		}
-		if(IS_TRUE(self.phd_damaged))
+		if(IS_TRUE(self.phd_damaged) && isdefined(attacker.slidekills))
 		{
-			attacker notify(#"phd_slide_kill");
+			attacker.slidekills++;
 		}
 	}
 	else
@@ -509,7 +509,6 @@ function phd_lite_upgrade()
 			self.PHDChallengeActive = true;
 			currentRound = level.round_number;
 			self.slidekills = 0;
-			self thread checkForSlideKills();
 			while(level.round_number < currentRound + 1)
 			{
 				self.PHD_challenge_progress = self.slidekills;
@@ -588,7 +587,6 @@ function poseidon_punch_upgrade()
 			self.poseidonChallengeActive = true;
 			currentRound = level.round_number;
 			self.blessedkills = 0;
-			self thread checkForBlessedKills();
 			while(level.round_number < currentRound + 1)
 			{
 				self.poseidon_challenge_progress = self.blessedkills;
@@ -1114,35 +1112,6 @@ function checkForThirdGunKills()
 	}
 }
 
-function checkForSlideKills() 
-{
-	self endon("disconnect");
-	self endon("PHDUpgradeFailed");
-	self endon("PHDUpgradeSucceeded");
-	self endon("bled_out");
-
-	while(self.isUpgradingPHD && self.slidekills < self.PHD_challenge_goal)
-	{
-		self waittill(#"phd_slide_kill");
-		self.slidekills++; 
-		wait(0.05);
-	}
-}
-
-function checkForBlessedKills() 
-{
-	self endon("disconnect");
-	self endon(#"poseidonUpgradeFailed");
-	self endon(#"poseidonUpgradeSucceeded");
-	self endon("bled_out");
-
-	while(self.isUpgradingPoseidon && self.blessedkills < self.poseidon_challenge_goal)
-	{
-		self waittill(#"poseidon_challenge_kill");
-		self.blessedkills++;
-	}
-}
-
 function checkForLowHealthKills() 
 {
 	self endon("disconnect");
@@ -1153,7 +1122,7 @@ function checkForLowHealthKills()
 	while(self.isUpgradingQuick && self.lowHealthKills < self.quick_challenge_goal)
 	{
 		self waittill("zom_kill");
-		if(self.health < 100)
+		if(self.health < 100 || (self.jug_resistance_level > 100 && self.health < 125))
 		{
 			self.lowHealthKills++;
 		}

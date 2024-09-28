@@ -396,7 +396,7 @@ function CoD.ChallengeControl.new(HudRef, InstanceRef)
     DeadshotProgressText:setAlpha(0.9)
     DeadshotProgressText:setRGB(1, 1, 1)
 
-    local GoalTable = {10, 5, 3, 10, 8, 8, 8, 10}
+    local GoalTable = {10, 5, 3, 10, 8, 4, 8, 10}
     local StatusTextTable = {CherryStatusText, StaminStatusText, DoubleStatusText, MuleStatusText, PoseidonStatusText, QuickStatusText, PHDStatusText, DeadshotStatusText}
     local ProgressCircleTable = {CherryProgressCircle, StaminProgressCircle, DoubleProgressCircle, MuleProgressCircle, PoseidonProgressCircle, QuickProgressCircle, PHDProgressCircle, DeadshotProgressCircle}
     local ProgressTextTable = {CherryProgressText, StaminProgressText, DoubleProgressText, MuleProgressText, PoseidonProgressText, QuickProgressText, PHDProgressText, DeadshotProgressText}
