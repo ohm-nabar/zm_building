@@ -1,0 +1,341 @@
+VERSION				"1"
+CONFIG					"C:\projects\cod\t7\bin\StringEd.cfg"
+FILENOTES				""
+
+REFERENCE           	EMPTY
+LANG_SIMPLIFIED_CHINESE       	""
+
+REFERENCE           	PERK_DOUBLETAP_ORIGINAL
+LANG_SIMPLIFIED_CHINESE       	"Hold ^3[{+activate}]^7 for Double Tap Root Beer [Cost: &&1]"
+
+REFERENCE           	PERK_ELECTRIC_CHERRY_RED
+LANG_SIMPLIFIED_CHINESE       	"Hold ^3[{+activate}]^7 for Electric Cherry [Cost: &&1]"
+
+REFERENCE           	PERK_PHD_LITE
+LANG_SIMPLIFIED_CHINESE       	"Hold ^3[{+activate}]^7 for PhD Slider [Cost: &&1]"
+
+REFERENCE           	PERK_POSEIDON_PUNCH
+LANG_SIMPLIFIED_CHINESE       	"Hold ^3[{+activate}]^7 for Poseidon's Punch [Cost: &&1]"
+
+REFERENCE           	PERK_DEADSHOT_DOUBLE
+LANG_SIMPLIFIED_CHINESE       	"Hold ^3[{+activate}]^7 for Deadshot Daiquiri Double [Cost: &&1]"
+
+REFERENCE           	BGB_SELECT
+LANG_SIMPLIFIED_CHINESE       	"Press ^3[{+activate}]^7 to switch GargoyleGums\n&&1Quantity: &&2"
+
+REFERENCE           	BGB_ACCEPT
+LANG_SIMPLIFIED_CHINESE       	"Press ^3[{+activate}]^7 for &&1"
+
+REFERENCE           	BGB_NO_STOCK
+LANG_SIMPLIFIED_CHINESE       	"Out of stock! Obtain more GargoyleGums through Divinium Trials!"
+
+REFERENCE           	BGB_ACTIVATE
+LANG_SIMPLIFIED_CHINESE       "Hold ^3[{+activate}]^7 to dispense GargoyleGum [Cost: &&1]"
+
+REFERENCE           	BGB_NEXT_ROUND
+LANG_SIMPLIFIED_CHINESE       "Come back next round!"
+
+REFERENCE           	BGB_STOCK_OPTION
+LANG_SIMPLIFIED_CHINESE       	"Stock Option"
+
+REFERENCE           	BGB_SWORD_FLAY
+LANG_SIMPLIFIED_CHINESE       "Sword Flay"
+
+REFERENCE           	BGB_TEMPORAL_GIFT
+LANG_SIMPLIFIED_CHINESE       "Temporal Gift"
+
+REFERENCE           	BGB_IN_PLAIN_SIGHT
+LANG_SIMPLIFIED_CHINESE       	"In Plain Sight"
+
+REFERENCE           	BGB_IM_FEELIN_LUCKY
+LANG_SIMPLIFIED_CHINESE       	"I'm Feelin' Lucky"
+
+REFERENCE           	BGB_IMMOLATION_LIQUIDATION
+LANG_SIMPLIFIED_CHINESE       	"Immolation Liquidation"
+
+REFERENCE           	BGB_PHOENIX_UP
+LANG_SIMPLIFIED_CHINESE       	"Phoenix Up"
+
+REFERENCE           	BGB_POP_SHOCKS
+LANG_SIMPLIFIED_CHINESE       	"Pop Shocks"
+
+REFERENCE           	BGB_CACHE_BACK
+LANG_SIMPLIFIED_CHINESE       	"Cache Back"
+
+REFERENCE           	BGB_ON_THE_HOUSE
+LANG_SIMPLIFIED_CHINESE       	"On the House"
+
+REFERENCE           	BGB_PROFIT_SHARING
+LANG_SIMPLIFIED_CHINESE       	"Profit Sharing"
+
+REFERENCE           	BGB_WALL_POWER
+LANG_SIMPLIFIED_CHINESE       	"Wall Power"
+
+REFERENCE           	BGB_CRATE_POWER
+LANG_SIMPLIFIED_CHINESE       	"Crate Power"
+
+REFERENCE           	BGB_UNQUENCHABLE
+LANG_SIMPLIFIED_CHINESE       	"Unquenchable"
+
+REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS
+LANG_SIMPLIFIED_CHINESE       	"Alchemical Antithesis"
+
+REFERENCE           	BGB_PERKAHOLIC
+LANG_SIMPLIFIED_CHINESE       	"Perkaholic"
+
+REFERENCE           	BGB_STOCK_OPTION_DESC
+LANG_SIMPLIFIED_CHINESE       	"Stock Option\nAmmo is taken from the player's stockpile instead of their weapon's magazine\n"
+
+REFERENCE           	BGB_SWORD_FLAY_DESC
+LANG_SIMPLIFIED_CHINESE       "Sword Flay\n Melee attacks will inflict 5x more damage on zombies\n"
+
+REFERENCE           	BGB_TEMPORAL_GIFT_DESC
+LANG_SIMPLIFIED_CHINESE       "Temporal Gift\n Powerups last longer\n"
+
+REFERENCE           	BGB_IN_PLAIN_SIGHT_DESC
+LANG_SIMPLIFIED_CHINESE       	"In Plain Sight\n All zombies ignore the player\n"
+
+REFERENCE           	BGB_IM_FEELIN_LUCKY_DESC
+LANG_SIMPLIFIED_CHINESE       	"I'm Feeling Lucky\n Spawns a random powerup\n"
+
+REFERENCE           	BGB_IMMOLATION_LIQUIDATION_DESC
+LANG_SIMPLIFIED_CHINESE       	"Immolation Liquidation\n Spawns a Fire Sale powerup\n"
+
+REFERENCE           	BGB_PHOENIX_UP_DESC
+LANG_SIMPLIFIED_CHINESE       	"Phoenix Up\n Revives all teammates. Teammates keep all of their perks\n"
+
+REFERENCE           	BGB_POP_SHOCKS_DESC
+LANG_SIMPLIFIED_CHINESE       	"Pop Shocks\n Melee attacks trigger an electrostatic discharge, electrocuting nearby zombies\n"
+
+REFERENCE           	BGB_CACHE_BACK_DESC
+LANG_SIMPLIFIED_CHINESE       	"Cache Back\n Spawns a Max Ammo powerup\n"
+
+REFERENCE           	BGB_ON_THE_HOUSE_DESC
+LANG_SIMPLIFIED_CHINESE       	"On the House\nSpawns a Perk Bottle powerup\n"
+
+REFERENCE           	BGB_PROFIT_SHARING_DESC
+LANG_SIMPLIFIED_CHINESE       	"Profit Sharing\nPoints you earn are also received by nearby players and vice versa\n"
+
+REFERENCE           	BGB_WALL_POWER_DESC
+LANG_SIMPLIFIED_CHINESE       	"Wall Power\nThe next wall weapon purchased becomes Pack-a-Punched\n"
+
+REFERENCE           	BGB_CRATE_POWER_DESC
+LANG_SIMPLIFIED_CHINESE       	"Crate Power\nThe next gun taken from the magic box becomes Pack-a-Punched\n"
+
+REFERENCE           	BGB_UNQUENCHABLE_DESC
+LANG_SIMPLIFIED_CHINESE       	"Unquenchable\nCan buy an extra Perk-a-Cola\n"
+
+REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS_DESC
+LANG_SIMPLIFIED_CHINESE       	"Alchemical Antithesis\nEvery 10 points earned is instead awarded 1 ammo in the stock of the current weapon\n"
+
+REFERENCE           	BGB_PERKAHOLIC_DESC
+LANG_SIMPLIFIED_CHINESE       	"Perkaholic\nGives the player all Perk-a-Colas in the map\n"
+
+REFERENCE           	PAD_COOLDOWN
+LANG_SIMPLIFIED_CHINESE       	"Cooling down..."
+
+REFERENCE           	TELEPORTER_OFFLINE
+LANG_SIMPLIFIED_CHINESE       	"Mainframe offline"
+
+REFERENCE           	TELEPORTER_SYNCHRONIZE
+LANG_SIMPLIFIED_CHINESE       	"Hold ^3[{+activate}]^7 to synchronize teleportation network [&&1/4]"
+
+REFERENCE           	TELEPORTER_SYNCHRONIZING
+LANG_SIMPLIFIED_CHINESE       	"Synchronizing... [&&1/4]"
+
+REFERENCE           	TELEPORTER_ACTIVATE
+LANG_SIMPLIFIED_CHINESE       	"Press ^3[{+activate}]^7 to teleport"
+
+REFERENCE           	SHADOW_DISABLED
+LANG_SIMPLIFIED_CHINESE       	"Cannot perform this action during a Shadow Breach"
+
+REFERENCE           	GENERATOR_DEPOSIT
+LANG_SIMPLIFIED_CHINESE       	"Press and hold ^3[{+activate}]^7 to deposit a Blood Vial into the generator"
+
+REFERENCE           	GENERATOR_NO_BLOOD
+LANG_SIMPLIFIED_CHINESE       	"Security Protocol 38: Blood Vial required"
+
+REFERENCE           	BLOODGUN_IN_USE
+LANG_SIMPLIFIED_CHINESE       	"L'Arme Ensanglante in use"
+
+REFERENCE           	BLOODGUN_HAS_VIAL
+LANG_SIMPLIFIED_CHINESE       	"Already have Blood Vial"
+
+REFERENCE           	BLOODGUN_COOLDOWN
+LANG_SIMPLIFIED_CHINESE       	"Cooling down... Please wait a round"
+
+REFERENCE           	BLOODGUN_ACTIVATE
+LANG_SIMPLIFIED_CHINESE       	"Press and hold ^3[{+activate}]^7 to acuire L'Arme Ensanglante
+
+REFERENCE           	TRIAL_ACTIVATE
+LANG_SIMPLIFIED_CHINESE       	"Press ^3[{+activate}]^7 to accept a Divinium Trial [Cost: &&1]"
+
+REFERENCE           	TRIAL_IN_PROGRESS
+LANG_SIMPLIFIED_CHINESE       	"Divinium Trial in progress"
+
+REFERENCE           	TRIAL_REWARD
+LANG_SIMPLIFIED_CHINESE       	"Press ^3[{+activate}]^7 for &&1"
+
+REFERENCE           	FOUNTAIN_OFFLINE
+LANG_SIMPLIFIED_CHINESE       	"Juggernog Station Offline - At least 2 Blood Generators must be powered on"
+
+REFERENCE           	FOUNTAIN_DEPOSIT
+LANG_SIMPLIFIED_CHINESE       "Press and hold ^3[{+activate}]^7 to insert a Blood Vial into the Juggernog Station"
+
+REFERENCE           	FOUNTAIN_ACTIVATE
+LANG_SIMPLIFIED_CHINESE       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [&&1 use(s) left]"
+
+REFERENCE           	TAKE_WEAPON
+LANG_SIMPLIFIED_CHINESE       "Press ^3[{+activate}]^7 to take &&1"
+
+REFERENCE           	TRIDENT_SEEK
+LANG_SIMPLIFIED_CHINESE       "I seem to have misplaced my weapon. Can you help me find it?"
+
+REFERENCE           	TRIDENT_REJECT
+LANG_SIMPLIFIED_CHINESE       "You do not posess the weapon I seek"
+
+REFERENCE           	TRIDENT_CHARGE
+LANG_SIMPLIFIED_CHINESE       "Charging weapon..."
+
+REFERENCE           	JOURNAL_HEADER_CHALLENGE
+LANG_SIMPLIFIED_CHINESE       "Perk Challenges"
+
+REFERENCE           	JOURNAL_HEADER_BGB
+LANG_SIMPLIFIED_CHINESE       "Divinium Trials"
+
+REFERENCE           	JOURNAL_HEADER_PERKBP
+LANG_SIMPLIFIED_CHINESE       "Perk Blueprints"
+
+REFERENCE           	JOURNAL_HEADER_WEAPONBP
+LANG_SIMPLIFIED_CHINESE       "Weapon Blueprints"
+
+REFERENCE           	CHALLENGE_CHERRY
+LANG_SIMPLIFIED_CHINESE       "Obtain kills with Electric Cherry reloads"
+
+REFERENCE           	CHALLENGE_CHERRY_REWARD
+LANG_SIMPLIFIED_CHINESE       "Reward: 50% faster reload speed"
+
+REFERENCE           	CHALLENGE_STAMIN
+LANG_SIMPLIFIED_CHINESE       "Obtain kills after 2+ second sprints"
+
+REFERENCE           	CHALLENGE_STAMIN_REWARD
+LANG_SIMPLIFIED_CHINESE       "Reward: Unlimited sprint duration"
+
+REFERENCE           	CHALLENGE_DOUBLE
+LANG_SIMPLIFIED_CHINESE       "Obtain pentakills"
+
+REFERENCE           	CHALLENGE_DOUBLE_REWARD
+LANG_SIMPLIFIED_CHINESE       "Reward: Bullets double upon being fired"
+
+REFERENCE           	CHALLENGE_MULE
+LANG_SIMPLIFIED_CHINESE       "Obtain kills with third weapon"
+
+REFERENCE           	CHALLENGE_MULE_REWARD
+LANG_SIMPLIFIED_CHINESE       "Reward: Lost third weapons are saved"
+
+REFERENCE           	CHALLENGE_POSEIDON
+LANG_SIMPLIFIED_CHINESE       "Obtain kills on fallen zombies"
+
+REFERENCE           	CHALLENGE_POSEIDON_REWARD
+LANG_SIMPLIFIED_CHINESE       "Reward: +15 health per fallen zombie"
+
+REFERENCE           	CHALLENGE_QUICK
+LANG_SIMPLIFIED_CHINESE       "Obtain kills while on low health"
+
+REFERENCE           	CHALLENGE_QUICK_REWARD
+LANG_SIMPLIFIED_CHINESE       "Reward: 33% longer bleedout time"
+
+REFERENCE           	CHALLENGE_QUICK_REWARD_SOLO
+LANG_SIMPLIFIED_CHINESE       "Reward: Brief invincibility post self-revive"
+
+REFERENCE           	CHALLENGE_PHD
+LANG_SIMPLIFIED_CHINESE       "Obtain kills using PhD slides"
+
+REFERENCE           	CHALLENGE_PHD_REWARD
+LANG_SIMPLIFIED_CHINESE       "Reward: Immunity to splash damage"
+
+REFERENCE           	CHALLENGE_DEADSHOT
+LANG_SIMPLIFIED_CHINESE       "Blow zombie minds"
+
+REFERENCE           	CHALLENGE_DEADSHOT_REWARD
+LANG_SIMPLIFIED_CHINESE       "Reward: Blow up to 16 minds at a time"
+
+REFERENCE           	CHALLENGE_INACTIVE
+LANG_SIMPLIFIED_CHINESE       "Inactive"
+
+REFERENCE           	CHALLENGE_COMPLETE
+LANG_SIMPLIFIED_CHINESE       "Complete"
+
+REFERENCE           	CHALLENGE_INACTIVE_SHADOW
+LANG_SIMPLIFIED_CHINESE       "Inactive during Shadow Breach"
+
+REFERENCE           	CHALLENGE_ACTIVE
+LANG_SIMPLIFIED_CHINESE       "Active: Progress resets next round"
+
+REFERENCE           	TRIAL_INACTIVE
+LANG_SIMPLIFIED_CHINESE       	"No Divinium Trial active"
+
+REFERENCE           	TRIAL_DESC_REWARD
+LANG_SIMPLIFIED_CHINESE       	"Reward: +2 to all GargoyleGums, 1 free GargoyleGum"
+
+REFERENCE           	TRIAL_DESC_NO_REWARD
+LANG_SIMPLIFIED_CHINESE       "No reward available"
+
+REFERENCE           	TRIAL_DESC_INFO
+LANG_SIMPLIFIED_CHINESE       "Visit the Courtroom to claim your rewards and customize your GargoyleGum Pack!"
+
+REFERENCE           	TRIAL_DESC_YES_REWARD
+LANG_SIMPLIFIED_CHINESE       "Reward available"
+
+REFERENCE           	TRIAL_DESC_TIMER
+LANG_SIMPLIFIED_CHINESE       "Current Trial expires in "
+
+REFERENCE           	TRIAL_DESC_WALLBUY
+LANG_SIMPLIFIED_CHINESE       "Obtain kills with the "
+
+REFERENCE           	TRIAL_DESC_BOX
+LANG_SIMPLIFIED_CHINESE       "Obtain kills with a newly aqcuired weapon from the Mystery Box"
+
+REFERENCE           	TRIAL_DESC_CLASS
+LANG_SIMPLIFIED_CHINESE       "Obtain kills with"
+
+REFERENCE           	TRIAL_DESC_ELEVATION
+LANG_SIMPLIFIED_CHINESE       "Obtain kills from a higher elevation"
+
+REFERENCE           	TRIAL_DESC_HEADSHOT
+LANG_SIMPLIFIED_CHINESE       "Obtain kills with headshots"
+
+REFERENCE           	TRIAL_DESC_AASSAULT
+LANG_SIMPLIFIED_CHINESE       "Obtain kills in the "
+
+REFERENCE           	TRIAL_DESC_ADEFENSE
+LANG_SIMPLIFIED_CHINESE       "Remain in the "
+
+REFERENCE           	TRIAL_DESC_PACK_CURRENT
+LANG_SIMPLIFIED_CHINESE       "Current GargoyleGum Pack"
+
+REFERENCE           	TRIAL_DESC_PACK_NEXT
+LANG_SIMPLIFIED_CHINESE       "Next GargoyleGum Pack"
+
+REFERENCE           	TRIAL_UPGRADE
+LANG_SIMPLIFIED_CHINESE       "Press ^3[{+activate}]^7 twice rapidly to upgrade Trial weapon [Cost: 4000]"
+
+REFERENCE           	ROOM_SPAWN_ROOM
+LANG_SIMPLIFIED_CHINESE       	"Spawn Room"
+
+REFERENCE           	ROOM_STAMINARCH
+LANG_SIMPLIFIED_CHINESE       	"Staminarch"
+
+REFERENCE           	ROOM_WATER_TOWER
+LANG_SIMPLIFIED_CHINESE       	"Water Tower"
+
+REFERENCE           	ROOM_CLEAN_ROOM
+LANG_SIMPLIFIED_CHINESE       	"Clean Room"
+
+REFERENCE           	ROOM_LION_ROOM
+LANG_SIMPLIFIED_CHINESE       	"Lion Room"
+
+REFERENCE           	ROOM_DOWNSTAIRS_ROOM
+LANG_SIMPLIFIED_CHINESE       	"Downstairs Room"
+
+ENDMARKER

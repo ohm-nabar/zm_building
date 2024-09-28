@@ -338,4 +338,19 @@ LANG_ENGLISH       	"Lion Room"
 REFERENCE           	ROOM_DOWNSTAIRS_ROOM
 LANG_ENGLISH       	"Downstairs Room"
 
+REFERENCE           	SB_POINTS
+LANG_ENGLISH       	"Points"
+
+REFERENCE           	SB_KILLS
+LANG_ENGLISH       	"Kills"
+
+REFERENCE           	SB_DOWNS
+LANG_ENGLISH       	"Downs"
+
+REFERENCE           	SB_REVIVES
+LANG_ENGLISH       	"Revives"
+
+REFERENCE           	SB_HEADSHOTS
+LANG_ENGLISH       	"Headshots"
+
 ENDMARKER

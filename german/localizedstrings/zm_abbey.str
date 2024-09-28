@@ -1,0 +1,356 @@
+VERSION				"1"
+CONFIG					"C:\projects\cod\t7\bin\StringEd.cfg"
+FILENOTES				""
+
+REFERENCE           	EMPTY
+LANG_GERMAN       	""
+
+REFERENCE           	PERK_DOUBLETAP_ORIGINAL
+LANG_GERMAN       	"Hold ^3[{+activate}]^7 for Double Tap Root Beer [Cost: &&1]"
+
+REFERENCE           	PERK_ELECTRIC_CHERRY_RED
+LANG_GERMAN       	"Hold ^3[{+activate}]^7 for Electric Cherry [Cost: &&1]"
+
+REFERENCE           	PERK_PHD_LITE
+LANG_GERMAN       	"Hold ^3[{+activate}]^7 for PhD Slider [Cost: &&1]"
+
+REFERENCE           	PERK_POSEIDON_PUNCH
+LANG_GERMAN       	"Hold ^3[{+activate}]^7 for Poseidon's Punch [Cost: &&1]"
+
+REFERENCE           	PERK_DEADSHOT_DOUBLE
+LANG_GERMAN       	"Hold ^3[{+activate}]^7 for Deadshot Daiquiri Double [Cost: &&1]"
+
+REFERENCE           	BGB_SELECT
+LANG_GERMAN       	"Press ^3[{+activate}]^7 to switch GargoyleGums\n&&1Quantity: &&2"
+
+REFERENCE           	BGB_ACCEPT
+LANG_GERMAN       	"Press ^3[{+activate}]^7 for &&1"
+
+REFERENCE           	BGB_NO_STOCK
+LANG_GERMAN       	"Out of stock! Obtain more GargoyleGums through Divinium Trials!"
+
+REFERENCE           	BGB_ACTIVATE
+LANG_GERMAN       "Hold ^3[{+activate}]^7 to dispense GargoyleGum [Cost: &&1]"
+
+REFERENCE           	BGB_NEXT_ROUND
+LANG_GERMAN       "Come back next round!"
+
+REFERENCE           	BGB_STOCK_OPTION
+LANG_GERMAN       	"Stock Option"
+
+REFERENCE           	BGB_SWORD_FLAY
+LANG_GERMAN       "Sword Flay"
+
+REFERENCE           	BGB_TEMPORAL_GIFT
+LANG_GERMAN       "Temporal Gift"
+
+REFERENCE           	BGB_IN_PLAIN_SIGHT
+LANG_GERMAN       	"In Plain Sight"
+
+REFERENCE           	BGB_IM_FEELIN_LUCKY
+LANG_GERMAN       	"I'm Feelin' Lucky"
+
+REFERENCE           	BGB_IMMOLATION_LIQUIDATION
+LANG_GERMAN       	"Immolation Liquidation"
+
+REFERENCE           	BGB_PHOENIX_UP
+LANG_GERMAN       	"Phoenix Up"
+
+REFERENCE           	BGB_POP_SHOCKS
+LANG_GERMAN       	"Pop Shocks"
+
+REFERENCE           	BGB_CACHE_BACK
+LANG_GERMAN       	"Cache Back"
+
+REFERENCE           	BGB_ON_THE_HOUSE
+LANG_GERMAN       	"On the House"
+
+REFERENCE           	BGB_PROFIT_SHARING
+LANG_GERMAN       	"Profit Sharing"
+
+REFERENCE           	BGB_WALL_POWER
+LANG_GERMAN       	"Wall Power"
+
+REFERENCE           	BGB_CRATE_POWER
+LANG_GERMAN       	"Crate Power"
+
+REFERENCE           	BGB_UNQUENCHABLE
+LANG_GERMAN       	"Unquenchable"
+
+REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS
+LANG_GERMAN       	"Alchemical Antithesis"
+
+REFERENCE           	BGB_PERKAHOLIC
+LANG_GERMAN       	"Perkaholic"
+
+REFERENCE           	BGB_STOCK_OPTION_DESC
+LANG_GERMAN       	"Stock Option\nAmmo is taken from the player's stockpile instead of their weapon's magazine\n"
+
+REFERENCE           	BGB_SWORD_FLAY_DESC
+LANG_GERMAN       "Sword Flay\n Melee attacks will inflict 5x more damage on zombies\n"
+
+REFERENCE           	BGB_TEMPORAL_GIFT_DESC
+LANG_GERMAN       "Temporal Gift\n Powerups last longer\n"
+
+REFERENCE           	BGB_IN_PLAIN_SIGHT_DESC
+LANG_GERMAN       	"In Plain Sight\n All zombies ignore the player\n"
+
+REFERENCE           	BGB_IM_FEELIN_LUCKY_DESC
+LANG_GERMAN       	"I'm Feeling Lucky\n Spawns a random powerup\n"
+
+REFERENCE           	BGB_IMMOLATION_LIQUIDATION_DESC
+LANG_GERMAN       	"Immolation Liquidation\n Spawns a Fire Sale powerup\n"
+
+REFERENCE           	BGB_PHOENIX_UP_DESC
+LANG_GERMAN       	"Phoenix Up\n Revives all teammates. Teammates keep all of their perks\n"
+
+REFERENCE           	BGB_POP_SHOCKS_DESC
+LANG_GERMAN       	"Pop Shocks\n Melee attacks trigger an electrostatic discharge, electrocuting nearby zombies\n"
+
+REFERENCE           	BGB_CACHE_BACK_DESC
+LANG_GERMAN       	"Cache Back\n Spawns a Max Ammo powerup\n"
+
+REFERENCE           	BGB_ON_THE_HOUSE_DESC
+LANG_GERMAN       	"On the House\nSpawns a Perk Bottle powerup\n"
+
+REFERENCE           	BGB_PROFIT_SHARING_DESC
+LANG_GERMAN       	"Profit Sharing\nPoints you earn are also received by nearby players and vice versa\n"
+
+REFERENCE           	BGB_WALL_POWER_DESC
+LANG_GERMAN       	"Wall Power\nThe next wall weapon purchased becomes Pack-a-Punched\n"
+
+REFERENCE           	BGB_CRATE_POWER_DESC
+LANG_GERMAN       	"Crate Power\nThe next gun taken from the magic box becomes Pack-a-Punched\n"
+
+REFERENCE           	BGB_UNQUENCHABLE_DESC
+LANG_GERMAN       	"Unquenchable\nCan buy an extra Perk-a-Cola\n"
+
+REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS_DESC
+LANG_GERMAN       	"Alchemical Antithesis\nEvery 10 points earned is instead awarded 1 ammo in the stock of the current weapon\n"
+
+REFERENCE           	BGB_PERKAHOLIC_DESC
+LANG_GERMAN       	"Perkaholic\nGives the player all Perk-a-Colas in the map\n"
+
+REFERENCE           	PAD_COOLDOWN
+LANG_GERMAN       	"Cooling down..."
+
+REFERENCE           	TELEPORTER_OFFLINE
+LANG_GERMAN       	"Mainframe offline"
+
+REFERENCE           	TELEPORTER_SYNCHRONIZE
+LANG_GERMAN       	"Hold ^3[{+activate}]^7 to synchronize teleportation network [&&1/4]"
+
+REFERENCE           	TELEPORTER_SYNCHRONIZING
+LANG_GERMAN       	"Synchronizing... [&&1/4]"
+
+REFERENCE           	TELEPORTER_ACTIVATE
+LANG_GERMAN       	"Press ^3[{+activate}]^7 to teleport"
+
+REFERENCE           	SHADOW_DISABLED
+LANG_GERMAN       	"Cannot perform this action during a Shadow Breach"
+
+REFERENCE           	GENERATOR_DEPOSIT
+LANG_GERMAN       	"Press and hold ^3[{+activate}]^7 to deposit a Blood Vial into the generator"
+
+REFERENCE           	GENERATOR_NO_BLOOD
+LANG_GERMAN       	"Security Protocol 38: Blood Vial required"
+
+REFERENCE           	BLOODGUN_IN_USE
+LANG_GERMAN       	"L'Arme Ensanglante in use"
+
+REFERENCE           	BLOODGUN_HAS_VIAL
+LANG_GERMAN       	"Already have Blood Vial"
+
+REFERENCE           	BLOODGUN_COOLDOWN
+LANG_GERMAN       	"Cooling down... Please wait a round"
+
+REFERENCE           	BLOODGUN_ACTIVATE
+LANG_GERMAN       	"Press and hold ^3[{+activate}]^7 to acuire L'Arme Ensanglante
+
+REFERENCE           	TRIAL_ACTIVATE
+LANG_GERMAN       	"Press ^3[{+activate}]^7 to accept a Divinium Trial [Cost: &&1]"
+
+REFERENCE           	TRIAL_IN_PROGRESS
+LANG_GERMAN       	"Divinium Trial in progress"
+
+REFERENCE           	TRIAL_REWARD
+LANG_GERMAN       	"Press ^3[{+activate}]^7 for &&1"
+
+REFERENCE           	FOUNTAIN_OFFLINE
+LANG_GERMAN       	"Juggernog Station Offline - At least 2 Blood Generators must be powered on"
+
+REFERENCE           	FOUNTAIN_DEPOSIT
+LANG_GERMAN       "Press and hold ^3[{+activate}]^7 to insert a Blood Vial into the Juggernog Station"
+
+REFERENCE           	FOUNTAIN_ACTIVATE
+LANG_GERMAN       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [&&1 use(s) left]"
+
+REFERENCE           	TAKE_WEAPON
+LANG_GERMAN       "Press ^3[{+activate}]^7 to take &&1"
+
+REFERENCE           	TRIDENT_SEEK
+LANG_GERMAN       "I seem to have misplaced my weapon. Can you help me find it?"
+
+REFERENCE           	TRIDENT_REJECT
+LANG_GERMAN       "You do not posess the weapon I seek"
+
+REFERENCE           	TRIDENT_CHARGE
+LANG_GERMAN       "Charging weapon..."
+
+REFERENCE           	JOURNAL_HEADER_CHALLENGE
+LANG_GERMAN       "Perk Challenges"
+
+REFERENCE           	JOURNAL_HEADER_BGB
+LANG_GERMAN       "Divinium Trials"
+
+REFERENCE           	JOURNAL_HEADER_PERKBP
+LANG_GERMAN       "Perk Blueprints"
+
+REFERENCE           	JOURNAL_HEADER_WEAPONBP
+LANG_GERMAN       "Weapon Blueprints"
+
+REFERENCE           	CHALLENGE_CHERRY
+LANG_GERMAN       "Obtain kills with Electric Cherry reloads"
+
+REFERENCE           	CHALLENGE_CHERRY_REWARD
+LANG_GERMAN       "Reward: 50% faster reload speed"
+
+REFERENCE           	CHALLENGE_STAMIN
+LANG_GERMAN       "Obtain kills after 2+ second sprints"
+
+REFERENCE           	CHALLENGE_STAMIN_REWARD
+LANG_GERMAN       "Reward: Unlimited sprint duration"
+
+REFERENCE           	CHALLENGE_DOUBLE
+LANG_GERMAN       "Obtain pentakills"
+
+REFERENCE           	CHALLENGE_DOUBLE_REWARD
+LANG_GERMAN       "Reward: Bullets double upon being fired"
+
+REFERENCE           	CHALLENGE_MULE
+LANG_GERMAN       "Obtain kills with third weapon"
+
+REFERENCE           	CHALLENGE_MULE_REWARD
+LANG_GERMAN       "Reward: Lost third weapons are saved"
+
+REFERENCE           	CHALLENGE_POSEIDON
+LANG_GERMAN       "Obtain kills on fallen zombies"
+
+REFERENCE           	CHALLENGE_POSEIDON_REWARD
+LANG_GERMAN       "Reward: +15 health per fallen zombie"
+
+REFERENCE           	CHALLENGE_QUICK
+LANG_GERMAN       "Obtain kills while on low health"
+
+REFERENCE           	CHALLENGE_QUICK_REWARD
+LANG_GERMAN       "Reward: 33% longer bleedout time"
+
+REFERENCE           	CHALLENGE_QUICK_REWARD_SOLO
+LANG_GERMAN       "Reward: Brief invincibility post self-revive"
+
+REFERENCE           	CHALLENGE_PHD
+LANG_GERMAN       "Obtain kills using PhD slides"
+
+REFERENCE           	CHALLENGE_PHD_REWARD
+LANG_GERMAN       "Reward: Immunity to splash damage"
+
+REFERENCE           	CHALLENGE_DEADSHOT
+LANG_GERMAN       "Blow zombie minds"
+
+REFERENCE           	CHALLENGE_DEADSHOT_REWARD
+LANG_GERMAN       "Reward: Blow up to 16 minds at a time"
+
+REFERENCE           	CHALLENGE_INACTIVE
+LANG_GERMAN       "Inactive"
+
+REFERENCE           	CHALLENGE_COMPLETE
+LANG_GERMAN       "Complete"
+
+REFERENCE           	CHALLENGE_INACTIVE_SHADOW
+LANG_GERMAN       "Inactive during Shadow Breach"
+
+REFERENCE           	CHALLENGE_ACTIVE
+LANG_GERMAN       "Active: Progress resets next round"
+
+REFERENCE           	TRIAL_INACTIVE
+LANG_GERMAN       	"No Divinium Trial active"
+
+REFERENCE           	TRIAL_DESC_REWARD
+LANG_GERMAN       	"Reward: +2 to all GargoyleGums, 1 free GargoyleGum"
+
+REFERENCE           	TRIAL_DESC_NO_REWARD
+LANG_GERMAN       "No reward available"
+
+REFERENCE           	TRIAL_DESC_INFO
+LANG_GERMAN       "Visit the Courtroom to claim your rewards and customize your GargoyleGum Pack!"
+
+REFERENCE           	TRIAL_DESC_YES_REWARD
+LANG_GERMAN       "Reward available"
+
+REFERENCE           	TRIAL_DESC_TIMER
+LANG_GERMAN       "Current Trial expires in "
+
+REFERENCE           	TRIAL_DESC_WALLBUY
+LANG_GERMAN       "Obtain kills with the "
+
+REFERENCE           	TRIAL_DESC_BOX
+LANG_GERMAN       "Obtain kills with a newly aqcuired weapon from the Mystery Box"
+
+REFERENCE           	TRIAL_DESC_CLASS
+LANG_GERMAN       "Obtain kills with"
+
+REFERENCE           	TRIAL_DESC_ELEVATION
+LANG_GERMAN       "Obtain kills from a higher elevation"
+
+REFERENCE           	TRIAL_DESC_HEADSHOT
+LANG_GERMAN       "Obtain kills with headshots"
+
+REFERENCE           	TRIAL_DESC_AASSAULT
+LANG_GERMAN       "Obtain kills in the "
+
+REFERENCE           	TRIAL_DESC_ADEFENSE
+LANG_GERMAN       "Remain in the "
+
+REFERENCE           	TRIAL_DESC_PACK_CURRENT
+LANG_GERMAN       "Current GargoyleGum Pack"
+
+REFERENCE           	TRIAL_DESC_PACK_NEXT
+LANG_GERMAN       "Next GargoyleGum Pack"
+
+REFERENCE           	TRIAL_UPGRADE
+LANG_GERMAN       "Press ^3[{+activate}]^7 twice rapidly to upgrade Trial weapon [Cost: 4000]"
+
+REFERENCE           	ROOM_SPAWN_ROOM
+LANG_GERMAN       	"Spawn Room"
+
+REFERENCE           	ROOM_STAMINARCH
+LANG_GERMAN       	"Staminarch"
+
+REFERENCE           	ROOM_WATER_TOWER
+LANG_GERMAN       	"Water Tower"
+
+REFERENCE           	ROOM_CLEAN_ROOM
+LANG_GERMAN       	"Clean Room"
+
+REFERENCE           	ROOM_LION_ROOM
+LANG_GERMAN       	"Lion Room"
+
+REFERENCE           	ROOM_DOWNSTAIRS_ROOM
+LANG_GERMAN       	"Downstairs Room"
+
+REFERENCE           	SB_POINTS
+LANG_GERMAN       	"Points"
+
+REFERENCE           	SB_KILLS
+LANG_GERMAN       	"Kills"
+
+REFERENCE           	SB_DOWNS
+LANG_GERMAN       	"Downs"
+
+REFERENCE           	SB_REVIVES
+LANG_GERMAN       	"Revives"
+
+REFERENCE           	SB_HEADSHOTS
+LANG_GERMAN       	"Headshots"
+
+ENDMARKER

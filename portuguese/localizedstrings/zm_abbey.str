@@ -1,0 +1,356 @@
+VERSION				"1"
+CONFIG					"C:\projects\cod\t7\bin\StringEd.cfg"
+FILENOTES				""
+
+REFERENCE           	EMPTY
+LANG_PORTUGESE       	""
+
+REFERENCE           	PERK_DOUBLETAP_ORIGINAL
+LANG_PORTUGESE       	"Hold ^3[{+activate}]^7 for Double Tap Root Beer [Cost: &&1]"
+
+REFERENCE           	PERK_ELECTRIC_CHERRY_RED
+LANG_PORTUGESE       	"Hold ^3[{+activate}]^7 for Electric Cherry [Cost: &&1]"
+
+REFERENCE           	PERK_PHD_LITE
+LANG_PORTUGESE       	"Hold ^3[{+activate}]^7 for PhD Slider [Cost: &&1]"
+
+REFERENCE           	PERK_POSEIDON_PUNCH
+LANG_PORTUGESE       	"Hold ^3[{+activate}]^7 for Poseidon's Punch [Cost: &&1]"
+
+REFERENCE           	PERK_DEADSHOT_DOUBLE
+LANG_PORTUGESE       	"Hold ^3[{+activate}]^7 for Deadshot Daiquiri Double [Cost: &&1]"
+
+REFERENCE           	BGB_SELECT
+LANG_PORTUGESE       	"Press ^3[{+activate}]^7 to switch GargoyleGums\n&&1Quantity: &&2"
+
+REFERENCE           	BGB_ACCEPT
+LANG_PORTUGESE       	"Press ^3[{+activate}]^7 for &&1"
+
+REFERENCE           	BGB_NO_STOCK
+LANG_PORTUGESE       	"Out of stock! Obtain more GargoyleGums through Divinium Trials!"
+
+REFERENCE           	BGB_ACTIVATE
+LANG_PORTUGESE       "Hold ^3[{+activate}]^7 to dispense GargoyleGum [Cost: &&1]"
+
+REFERENCE           	BGB_NEXT_ROUND
+LANG_PORTUGESE       "Come back next round!"
+
+REFERENCE           	BGB_STOCK_OPTION
+LANG_PORTUGESE       	"Stock Option"
+
+REFERENCE           	BGB_SWORD_FLAY
+LANG_PORTUGESE       "Sword Flay"
+
+REFERENCE           	BGB_TEMPORAL_GIFT
+LANG_PORTUGESE       "Temporal Gift"
+
+REFERENCE           	BGB_IN_PLAIN_SIGHT
+LANG_PORTUGESE       	"In Plain Sight"
+
+REFERENCE           	BGB_IM_FEELIN_LUCKY
+LANG_PORTUGESE       	"I'm Feelin' Lucky"
+
+REFERENCE           	BGB_IMMOLATION_LIQUIDATION
+LANG_PORTUGESE       	"Immolation Liquidation"
+
+REFERENCE           	BGB_PHOENIX_UP
+LANG_PORTUGESE       	"Phoenix Up"
+
+REFERENCE           	BGB_POP_SHOCKS
+LANG_PORTUGESE       	"Pop Shocks"
+
+REFERENCE           	BGB_CACHE_BACK
+LANG_PORTUGESE       	"Cache Back"
+
+REFERENCE           	BGB_ON_THE_HOUSE
+LANG_PORTUGESE       	"On the House"
+
+REFERENCE           	BGB_PROFIT_SHARING
+LANG_PORTUGESE       	"Profit Sharing"
+
+REFERENCE           	BGB_WALL_POWER
+LANG_PORTUGESE       	"Wall Power"
+
+REFERENCE           	BGB_CRATE_POWER
+LANG_PORTUGESE       	"Crate Power"
+
+REFERENCE           	BGB_UNQUENCHABLE
+LANG_PORTUGESE       	"Unquenchable"
+
+REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS
+LANG_PORTUGESE       	"Alchemical Antithesis"
+
+REFERENCE           	BGB_PERKAHOLIC
+LANG_PORTUGESE       	"Perkaholic"
+
+REFERENCE           	BGB_STOCK_OPTION_DESC
+LANG_PORTUGESE       	"Stock Option\nAmmo is taken from the player's stockpile instead of their weapon's magazine\n"
+
+REFERENCE           	BGB_SWORD_FLAY_DESC
+LANG_PORTUGESE       "Sword Flay\n Melee attacks will inflict 5x more damage on zombies\n"
+
+REFERENCE           	BGB_TEMPORAL_GIFT_DESC
+LANG_PORTUGESE       "Temporal Gift\n Powerups last longer\n"
+
+REFERENCE           	BGB_IN_PLAIN_SIGHT_DESC
+LANG_PORTUGESE       	"In Plain Sight\n All zombies ignore the player\n"
+
+REFERENCE           	BGB_IM_FEELIN_LUCKY_DESC
+LANG_PORTUGESE       	"I'm Feeling Lucky\n Spawns a random powerup\n"
+
+REFERENCE           	BGB_IMMOLATION_LIQUIDATION_DESC
+LANG_PORTUGESE       	"Immolation Liquidation\n Spawns a Fire Sale powerup\n"
+
+REFERENCE           	BGB_PHOENIX_UP_DESC
+LANG_PORTUGESE       	"Phoenix Up\n Revives all teammates. Teammates keep all of their perks\n"
+
+REFERENCE           	BGB_POP_SHOCKS_DESC
+LANG_PORTUGESE       	"Pop Shocks\n Melee attacks trigger an electrostatic discharge, electrocuting nearby zombies\n"
+
+REFERENCE           	BGB_CACHE_BACK_DESC
+LANG_PORTUGESE       	"Cache Back\n Spawns a Max Ammo powerup\n"
+
+REFERENCE           	BGB_ON_THE_HOUSE_DESC
+LANG_PORTUGESE       	"On the House\nSpawns a Perk Bottle powerup\n"
+
+REFERENCE           	BGB_PROFIT_SHARING_DESC
+LANG_PORTUGESE       	"Profit Sharing\nPoints you earn are also received by nearby players and vice versa\n"
+
+REFERENCE           	BGB_WALL_POWER_DESC
+LANG_PORTUGESE       	"Wall Power\nThe next wall weapon purchased becomes Pack-a-Punched\n"
+
+REFERENCE           	BGB_CRATE_POWER_DESC
+LANG_PORTUGESE       	"Crate Power\nThe next gun taken from the magic box becomes Pack-a-Punched\n"
+
+REFERENCE           	BGB_UNQUENCHABLE_DESC
+LANG_PORTUGESE       	"Unquenchable\nCan buy an extra Perk-a-Cola\n"
+
+REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS_DESC
+LANG_PORTUGESE       	"Alchemical Antithesis\nEvery 10 points earned is instead awarded 1 ammo in the stock of the current weapon\n"
+
+REFERENCE           	BGB_PERKAHOLIC_DESC
+LANG_PORTUGESE       	"Perkaholic\nGives the player all Perk-a-Colas in the map\n"
+
+REFERENCE           	PAD_COOLDOWN
+LANG_PORTUGESE       	"Cooling down..."
+
+REFERENCE           	TELEPORTER_OFFLINE
+LANG_PORTUGESE       	"Mainframe offline"
+
+REFERENCE           	TELEPORTER_SYNCHRONIZE
+LANG_PORTUGESE       	"Hold ^3[{+activate}]^7 to synchronize teleportation network [&&1/4]"
+
+REFERENCE           	TELEPORTER_SYNCHRONIZING
+LANG_PORTUGESE       	"Synchronizing... [&&1/4]"
+
+REFERENCE           	TELEPORTER_ACTIVATE
+LANG_PORTUGESE       	"Press ^3[{+activate}]^7 to teleport"
+
+REFERENCE           	SHADOW_DISABLED
+LANG_PORTUGESE       	"Cannot perform this action during a Shadow Breach"
+
+REFERENCE           	GENERATOR_DEPOSIT
+LANG_PORTUGESE       	"Press and hold ^3[{+activate}]^7 to deposit a Blood Vial into the generator"
+
+REFERENCE           	GENERATOR_NO_BLOOD
+LANG_PORTUGESE       	"Security Protocol 38: Blood Vial required"
+
+REFERENCE           	BLOODGUN_IN_USE
+LANG_PORTUGESE       	"L'Arme Ensanglante in use"
+
+REFERENCE           	BLOODGUN_HAS_VIAL
+LANG_PORTUGESE       	"Already have Blood Vial"
+
+REFERENCE           	BLOODGUN_COOLDOWN
+LANG_PORTUGESE       	"Cooling down... Please wait a round"
+
+REFERENCE           	BLOODGUN_ACTIVATE
+LANG_PORTUGESE       	"Press and hold ^3[{+activate}]^7 to acuire L'Arme Ensanglante
+
+REFERENCE           	TRIAL_ACTIVATE
+LANG_PORTUGESE       	"Press ^3[{+activate}]^7 to accept a Divinium Trial [Cost: &&1]"
+
+REFERENCE           	TRIAL_IN_PROGRESS
+LANG_PORTUGESE       	"Divinium Trial in progress"
+
+REFERENCE           	TRIAL_REWARD
+LANG_PORTUGESE       	"Press ^3[{+activate}]^7 for &&1"
+
+REFERENCE           	FOUNTAIN_OFFLINE
+LANG_PORTUGESE       	"Juggernog Station Offline - At least 2 Blood Generators must be powered on"
+
+REFERENCE           	FOUNTAIN_DEPOSIT
+LANG_PORTUGESE       "Press and hold ^3[{+activate}]^7 to insert a Blood Vial into the Juggernog Station"
+
+REFERENCE           	FOUNTAIN_ACTIVATE
+LANG_PORTUGESE       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [&&1 use(s) left]"
+
+REFERENCE           	TAKE_WEAPON
+LANG_PORTUGESE       "Press ^3[{+activate}]^7 to take &&1"
+
+REFERENCE           	TRIDENT_SEEK
+LANG_PORTUGESE       "I seem to have misplaced my weapon. Can you help me find it?"
+
+REFERENCE           	TRIDENT_REJECT
+LANG_PORTUGESE       "You do not posess the weapon I seek"
+
+REFERENCE           	TRIDENT_CHARGE
+LANG_PORTUGESE       "Charging weapon..."
+
+REFERENCE           	JOURNAL_HEADER_CHALLENGE
+LANG_PORTUGESE       "Perk Challenges"
+
+REFERENCE           	JOURNAL_HEADER_BGB
+LANG_PORTUGESE       "Divinium Trials"
+
+REFERENCE           	JOURNAL_HEADER_PERKBP
+LANG_PORTUGESE       "Perk Blueprints"
+
+REFERENCE           	JOURNAL_HEADER_WEAPONBP
+LANG_PORTUGESE       "Weapon Blueprints"
+
+REFERENCE           	CHALLENGE_CHERRY
+LANG_PORTUGESE       "Obtain kills with Electric Cherry reloads"
+
+REFERENCE           	CHALLENGE_CHERRY_REWARD
+LANG_PORTUGESE       "Reward: 50% faster reload speed"
+
+REFERENCE           	CHALLENGE_STAMIN
+LANG_PORTUGESE       "Obtain kills after 2+ second sprints"
+
+REFERENCE           	CHALLENGE_STAMIN_REWARD
+LANG_PORTUGESE       "Reward: Unlimited sprint duration"
+
+REFERENCE           	CHALLENGE_DOUBLE
+LANG_PORTUGESE       "Obtain pentakills"
+
+REFERENCE           	CHALLENGE_DOUBLE_REWARD
+LANG_PORTUGESE       "Reward: Bullets double upon being fired"
+
+REFERENCE           	CHALLENGE_MULE
+LANG_PORTUGESE       "Obtain kills with third weapon"
+
+REFERENCE           	CHALLENGE_MULE_REWARD
+LANG_PORTUGESE       "Reward: Lost third weapons are saved"
+
+REFERENCE           	CHALLENGE_POSEIDON
+LANG_PORTUGESE       "Obtain kills on fallen zombies"
+
+REFERENCE           	CHALLENGE_POSEIDON_REWARD
+LANG_PORTUGESE       "Reward: +15 health per fallen zombie"
+
+REFERENCE           	CHALLENGE_QUICK
+LANG_PORTUGESE       "Obtain kills while on low health"
+
+REFERENCE           	CHALLENGE_QUICK_REWARD
+LANG_PORTUGESE       "Reward: 33% longer bleedout time"
+
+REFERENCE           	CHALLENGE_QUICK_REWARD_SOLO
+LANG_PORTUGESE       "Reward: Brief invincibility post self-revive"
+
+REFERENCE           	CHALLENGE_PHD
+LANG_PORTUGESE       "Obtain kills using PhD slides"
+
+REFERENCE           	CHALLENGE_PHD_REWARD
+LANG_PORTUGESE       "Reward: Immunity to splash damage"
+
+REFERENCE           	CHALLENGE_DEADSHOT
+LANG_PORTUGESE       "Blow zombie minds"
+
+REFERENCE           	CHALLENGE_DEADSHOT_REWARD
+LANG_PORTUGESE       "Reward: Blow up to 16 minds at a time"
+
+REFERENCE           	CHALLENGE_INACTIVE
+LANG_PORTUGESE       "Inactive"
+
+REFERENCE           	CHALLENGE_COMPLETE
+LANG_PORTUGESE       "Complete"
+
+REFERENCE           	CHALLENGE_INACTIVE_SHADOW
+LANG_PORTUGESE       "Inactive during Shadow Breach"
+
+REFERENCE           	CHALLENGE_ACTIVE
+LANG_PORTUGESE       "Active: Progress resets next round"
+
+REFERENCE           	TRIAL_INACTIVE
+LANG_PORTUGESE       	"No Divinium Trial active"
+
+REFERENCE           	TRIAL_DESC_REWARD
+LANG_PORTUGESE       	"Reward: +2 to all GargoyleGums, 1 free GargoyleGum"
+
+REFERENCE           	TRIAL_DESC_NO_REWARD
+LANG_PORTUGESE       "No reward available"
+
+REFERENCE           	TRIAL_DESC_INFO
+LANG_PORTUGESE       "Visit the Courtroom to claim your rewards and customize your GargoyleGum Pack!"
+
+REFERENCE           	TRIAL_DESC_YES_REWARD
+LANG_PORTUGESE       "Reward available"
+
+REFERENCE           	TRIAL_DESC_TIMER
+LANG_PORTUGESE       "Current Trial expires in "
+
+REFERENCE           	TRIAL_DESC_WALLBUY
+LANG_PORTUGESE       "Obtain kills with the "
+
+REFERENCE           	TRIAL_DESC_BOX
+LANG_PORTUGESE       "Obtain kills with a newly aqcuired weapon from the Mystery Box"
+
+REFERENCE           	TRIAL_DESC_CLASS
+LANG_PORTUGESE       "Obtain kills with"
+
+REFERENCE           	TRIAL_DESC_ELEVATION
+LANG_PORTUGESE       "Obtain kills from a higher elevation"
+
+REFERENCE           	TRIAL_DESC_HEADSHOT
+LANG_PORTUGESE       "Obtain kills with headshots"
+
+REFERENCE           	TRIAL_DESC_AASSAULT
+LANG_PORTUGESE       "Obtain kills in the "
+
+REFERENCE           	TRIAL_DESC_ADEFENSE
+LANG_PORTUGESE       "Remain in the "
+
+REFERENCE           	TRIAL_DESC_PACK_CURRENT
+LANG_PORTUGESE       "Current GargoyleGum Pack"
+
+REFERENCE           	TRIAL_DESC_PACK_NEXT
+LANG_PORTUGESE       "Next GargoyleGum Pack"
+
+REFERENCE           	TRIAL_UPGRADE
+LANG_PORTUGESE       "Press ^3[{+activate}]^7 twice rapidly to upgrade Trial weapon [Cost: 4000]"
+
+REFERENCE           	ROOM_SPAWN_ROOM
+LANG_PORTUGESE       	"Spawn Room"
+
+REFERENCE           	ROOM_STAMINARCH
+LANG_PORTUGESE       	"Staminarch"
+
+REFERENCE           	ROOM_WATER_TOWER
+LANG_PORTUGESE       	"Water Tower"
+
+REFERENCE           	ROOM_CLEAN_ROOM
+LANG_PORTUGESE       	"Clean Room"
+
+REFERENCE           	ROOM_LION_ROOM
+LANG_PORTUGESE       	"Lion Room"
+
+REFERENCE           	ROOM_DOWNSTAIRS_ROOM
+LANG_PORTUGESE       	"Downstairs Room"
+
+REFERENCE           	SB_POINTS
+LANG_PORTUGESE       	"Points"
+
+REFERENCE           	SB_KILLS
+LANG_PORTUGESE       	"Kills"
+
+REFERENCE           	SB_DOWNS
+LANG_PORTUGESE       	"Downs"
+
+REFERENCE           	SB_REVIVES
+LANG_PORTUGESE       	"Revives"
+
+REFERENCE           	SB_HEADSHOTS
+LANG_PORTUGESE       	"Headshots"
+
+ENDMARKER

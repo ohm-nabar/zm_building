@@ -1,0 +1,356 @@
+VERSION				"1"
+CONFIG					"C:\projects\cod\t7\bin\StringEd.cfg"
+FILENOTES				""
+
+REFERENCE           	EMPTY
+LANG_FRENCH       	""
+
+REFERENCE           	PERK_DOUBLETAP_ORIGINAL
+LANG_FRENCH       	"Hold ^3[{+activate}]^7 for Double Tap Root Beer [Cost: &&1]"
+
+REFERENCE           	PERK_ELECTRIC_CHERRY_RED
+LANG_FRENCH       	"Hold ^3[{+activate}]^7 for Electric Cherry [Cost: &&1]"
+
+REFERENCE           	PERK_PHD_LITE
+LANG_FRENCH       	"Hold ^3[{+activate}]^7 for PhD Slider [Cost: &&1]"
+
+REFERENCE           	PERK_POSEIDON_PUNCH
+LANG_FRENCH       	"Hold ^3[{+activate}]^7 for Poseidon's Punch [Cost: &&1]"
+
+REFERENCE           	PERK_DEADSHOT_DOUBLE
+LANG_FRENCH       	"Hold ^3[{+activate}]^7 for Deadshot Daiquiri Double [Cost: &&1]"
+
+REFERENCE           	BGB_SELECT
+LANG_FRENCH       	"Press ^3[{+activate}]^7 to switch GargoyleGums\n&&1Quantity: &&2"
+
+REFERENCE           	BGB_ACCEPT
+LANG_FRENCH       	"Press ^3[{+activate}]^7 for &&1"
+
+REFERENCE           	BGB_NO_STOCK
+LANG_FRENCH       	"Out of stock! Obtain more GargoyleGums through Divinium Trials!"
+
+REFERENCE           	BGB_ACTIVATE
+LANG_FRENCH       "Hold ^3[{+activate}]^7 to dispense GargoyleGum [Cost: &&1]"
+
+REFERENCE           	BGB_NEXT_ROUND
+LANG_FRENCH       "Come back next round!"
+
+REFERENCE           	BGB_STOCK_OPTION
+LANG_FRENCH       	"Stock Option"
+
+REFERENCE           	BGB_SWORD_FLAY
+LANG_FRENCH       "Sword Flay"
+
+REFERENCE           	BGB_TEMPORAL_GIFT
+LANG_FRENCH       "Temporal Gift"
+
+REFERENCE           	BGB_IN_PLAIN_SIGHT
+LANG_FRENCH       	"In Plain Sight"
+
+REFERENCE           	BGB_IM_FEELIN_LUCKY
+LANG_FRENCH       	"I'm Feelin' Lucky"
+
+REFERENCE           	BGB_IMMOLATION_LIQUIDATION
+LANG_FRENCH       	"Immolation Liquidation"
+
+REFERENCE           	BGB_PHOENIX_UP
+LANG_FRENCH       	"Phoenix Up"
+
+REFERENCE           	BGB_POP_SHOCKS
+LANG_FRENCH       	"Pop Shocks"
+
+REFERENCE           	BGB_CACHE_BACK
+LANG_FRENCH       	"Cache Back"
+
+REFERENCE           	BGB_ON_THE_HOUSE
+LANG_FRENCH       	"On the House"
+
+REFERENCE           	BGB_PROFIT_SHARING
+LANG_FRENCH       	"Profit Sharing"
+
+REFERENCE           	BGB_WALL_POWER
+LANG_FRENCH       	"Wall Power"
+
+REFERENCE           	BGB_CRATE_POWER
+LANG_FRENCH       	"Crate Power"
+
+REFERENCE           	BGB_UNQUENCHABLE
+LANG_FRENCH       	"Unquenchable"
+
+REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS
+LANG_FRENCH       	"Alchemical Antithesis"
+
+REFERENCE           	BGB_PERKAHOLIC
+LANG_FRENCH       	"Perkaholic"
+
+REFERENCE           	BGB_STOCK_OPTION_DESC
+LANG_FRENCH       	"Stock Option\nAmmo is taken from the player's stockpile instead of their weapon's magazine\n"
+
+REFERENCE           	BGB_SWORD_FLAY_DESC
+LANG_FRENCH       "Sword Flay\n Melee attacks will inflict 5x more damage on zombies\n"
+
+REFERENCE           	BGB_TEMPORAL_GIFT_DESC
+LANG_FRENCH       "Temporal Gift\n Powerups last longer\n"
+
+REFERENCE           	BGB_IN_PLAIN_SIGHT_DESC
+LANG_FRENCH       	"In Plain Sight\n All zombies ignore the player\n"
+
+REFERENCE           	BGB_IM_FEELIN_LUCKY_DESC
+LANG_FRENCH       	"I'm Feeling Lucky\n Spawns a random powerup\n"
+
+REFERENCE           	BGB_IMMOLATION_LIQUIDATION_DESC
+LANG_FRENCH       	"Immolation Liquidation\n Spawns a Fire Sale powerup\n"
+
+REFERENCE           	BGB_PHOENIX_UP_DESC
+LANG_FRENCH       	"Phoenix Up\n Revives all teammates. Teammates keep all of their perks\n"
+
+REFERENCE           	BGB_POP_SHOCKS_DESC
+LANG_FRENCH       	"Pop Shocks\n Melee attacks trigger an electrostatic discharge, electrocuting nearby zombies\n"
+
+REFERENCE           	BGB_CACHE_BACK_DESC
+LANG_FRENCH       	"Cache Back\n Spawns a Max Ammo powerup\n"
+
+REFERENCE           	BGB_ON_THE_HOUSE_DESC
+LANG_FRENCH       	"On the House\nSpawns a Perk Bottle powerup\n"
+
+REFERENCE           	BGB_PROFIT_SHARING_DESC
+LANG_FRENCH       	"Profit Sharing\nPoints you earn are also received by nearby players and vice versa\n"
+
+REFERENCE           	BGB_WALL_POWER_DESC
+LANG_FRENCH       	"Wall Power\nThe next wall weapon purchased becomes Pack-a-Punched\n"
+
+REFERENCE           	BGB_CRATE_POWER_DESC
+LANG_FRENCH       	"Crate Power\nThe next gun taken from the magic box becomes Pack-a-Punched\n"
+
+REFERENCE           	BGB_UNQUENCHABLE_DESC
+LANG_FRENCH       	"Unquenchable\nCan buy an extra Perk-a-Cola\n"
+
+REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS_DESC
+LANG_FRENCH       	"Alchemical Antithesis\nEvery 10 points earned is instead awarded 1 ammo in the stock of the current weapon\n"
+
+REFERENCE           	BGB_PERKAHOLIC_DESC
+LANG_FRENCH       	"Perkaholic\nGives the player all Perk-a-Colas in the map\n"
+
+REFERENCE           	PAD_COOLDOWN
+LANG_FRENCH       	"Cooling down..."
+
+REFERENCE           	TELEPORTER_OFFLINE
+LANG_FRENCH       	"Mainframe offline"
+
+REFERENCE           	TELEPORTER_SYNCHRONIZE
+LANG_FRENCH       	"Hold ^3[{+activate}]^7 to synchronize teleportation network [&&1/4]"
+
+REFERENCE           	TELEPORTER_SYNCHRONIZING
+LANG_FRENCH       	"Synchronizing... [&&1/4]"
+
+REFERENCE           	TELEPORTER_ACTIVATE
+LANG_FRENCH       	"Press ^3[{+activate}]^7 to teleport"
+
+REFERENCE           	SHADOW_DISABLED
+LANG_FRENCH       	"Cannot perform this action during a Shadow Breach"
+
+REFERENCE           	GENERATOR_DEPOSIT
+LANG_FRENCH       	"Press and hold ^3[{+activate}]^7 to deposit a Blood Vial into the generator"
+
+REFERENCE           	GENERATOR_NO_BLOOD
+LANG_FRENCH       	"Security Protocol 38: Blood Vial required"
+
+REFERENCE           	BLOODGUN_IN_USE
+LANG_FRENCH       	"L'Arme Ensanglante in use"
+
+REFERENCE           	BLOODGUN_HAS_VIAL
+LANG_FRENCH       	"Already have Blood Vial"
+
+REFERENCE           	BLOODGUN_COOLDOWN
+LANG_FRENCH       	"Cooling down... Please wait a round"
+
+REFERENCE           	BLOODGUN_ACTIVATE
+LANG_FRENCH       	"Press and hold ^3[{+activate}]^7 to acuire L'Arme Ensanglante
+
+REFERENCE           	TRIAL_ACTIVATE
+LANG_FRENCH       	"Press ^3[{+activate}]^7 to accept a Divinium Trial [Cost: &&1]"
+
+REFERENCE           	TRIAL_IN_PROGRESS
+LANG_FRENCH       	"Divinium Trial in progress"
+
+REFERENCE           	TRIAL_REWARD
+LANG_FRENCH       	"Press ^3[{+activate}]^7 for &&1"
+
+REFERENCE           	FOUNTAIN_OFFLINE
+LANG_FRENCH       	"Juggernog Station Offline - At least 2 Blood Generators must be powered on"
+
+REFERENCE           	FOUNTAIN_DEPOSIT
+LANG_FRENCH       "Press and hold ^3[{+activate}]^7 to insert a Blood Vial into the Juggernog Station"
+
+REFERENCE           	FOUNTAIN_ACTIVATE
+LANG_FRENCH       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [&&1 use(s) left]"
+
+REFERENCE           	TAKE_WEAPON
+LANG_FRENCH       "Press ^3[{+activate}]^7 to take &&1"
+
+REFERENCE           	TRIDENT_SEEK
+LANG_FRENCH       "I seem to have misplaced my weapon. Can you help me find it?"
+
+REFERENCE           	TRIDENT_REJECT
+LANG_FRENCH       "You do not posess the weapon I seek"
+
+REFERENCE           	TRIDENT_CHARGE
+LANG_FRENCH       "Charging weapon..."
+
+REFERENCE           	JOURNAL_HEADER_CHALLENGE
+LANG_FRENCH       "Perk Challenges"
+
+REFERENCE           	JOURNAL_HEADER_BGB
+LANG_FRENCH       "Divinium Trials"
+
+REFERENCE           	JOURNAL_HEADER_PERKBP
+LANG_FRENCH       "Perk Blueprints"
+
+REFERENCE           	JOURNAL_HEADER_WEAPONBP
+LANG_FRENCH       "Weapon Blueprints"
+
+REFERENCE           	CHALLENGE_CHERRY
+LANG_FRENCH       "Obtain kills with Electric Cherry reloads"
+
+REFERENCE           	CHALLENGE_CHERRY_REWARD
+LANG_FRENCH       "Reward: 50% faster reload speed"
+
+REFERENCE           	CHALLENGE_STAMIN
+LANG_FRENCH       "Obtain kills after 2+ second sprints"
+
+REFERENCE           	CHALLENGE_STAMIN_REWARD
+LANG_FRENCH       "Reward: Unlimited sprint duration"
+
+REFERENCE           	CHALLENGE_DOUBLE
+LANG_FRENCH       "Obtain pentakills"
+
+REFERENCE           	CHALLENGE_DOUBLE_REWARD
+LANG_FRENCH       "Reward: Bullets double upon being fired"
+
+REFERENCE           	CHALLENGE_MULE
+LANG_FRENCH       "Obtain kills with third weapon"
+
+REFERENCE           	CHALLENGE_MULE_REWARD
+LANG_FRENCH       "Reward: Lost third weapons are saved"
+
+REFERENCE           	CHALLENGE_POSEIDON
+LANG_FRENCH       "Obtain kills on fallen zombies"
+
+REFERENCE           	CHALLENGE_POSEIDON_REWARD
+LANG_FRENCH       "Reward: +15 health per fallen zombie"
+
+REFERENCE           	CHALLENGE_QUICK
+LANG_FRENCH       "Obtain kills while on low health"
+
+REFERENCE           	CHALLENGE_QUICK_REWARD
+LANG_FRENCH       "Reward: 33% longer bleedout time"
+
+REFERENCE           	CHALLENGE_QUICK_REWARD_SOLO
+LANG_FRENCH       "Reward: Brief invincibility post self-revive"
+
+REFERENCE           	CHALLENGE_PHD
+LANG_FRENCH       "Obtain kills using PhD slides"
+
+REFERENCE           	CHALLENGE_PHD_REWARD
+LANG_FRENCH       "Reward: Immunity to splash damage"
+
+REFERENCE           	CHALLENGE_DEADSHOT
+LANG_FRENCH       "Blow zombie minds"
+
+REFERENCE           	CHALLENGE_DEADSHOT_REWARD
+LANG_FRENCH       "Reward: Blow up to 16 minds at a time"
+
+REFERENCE           	CHALLENGE_INACTIVE
+LANG_FRENCH       "Inactive"
+
+REFERENCE           	CHALLENGE_COMPLETE
+LANG_FRENCH       "Complete"
+
+REFERENCE           	CHALLENGE_INACTIVE_SHADOW
+LANG_FRENCH       "Inactive during Shadow Breach"
+
+REFERENCE           	CHALLENGE_ACTIVE
+LANG_FRENCH       "Active: Progress resets next round"
+
+REFERENCE           	TRIAL_INACTIVE
+LANG_FRENCH       	"No Divinium Trial active"
+
+REFERENCE           	TRIAL_DESC_REWARD
+LANG_FRENCH       	"Reward: +2 to all GargoyleGums, 1 free GargoyleGum"
+
+REFERENCE           	TRIAL_DESC_NO_REWARD
+LANG_FRENCH       "No reward available"
+
+REFERENCE           	TRIAL_DESC_INFO
+LANG_FRENCH       "Visit the Courtroom to claim your rewards and customize your GargoyleGum Pack!"
+
+REFERENCE           	TRIAL_DESC_YES_REWARD
+LANG_FRENCH       "Reward available"
+
+REFERENCE           	TRIAL_DESC_TIMER
+LANG_FRENCH       "Current Trial expires in "
+
+REFERENCE           	TRIAL_DESC_WALLBUY
+LANG_FRENCH       "Obtain kills with the "
+
+REFERENCE           	TRIAL_DESC_BOX
+LANG_FRENCH       "Obtain kills with a newly aqcuired weapon from the Mystery Box"
+
+REFERENCE           	TRIAL_DESC_CLASS
+LANG_FRENCH       "Obtain kills with"
+
+REFERENCE           	TRIAL_DESC_ELEVATION
+LANG_FRENCH       "Obtain kills from a higher elevation"
+
+REFERENCE           	TRIAL_DESC_HEADSHOT
+LANG_FRENCH       "Obtain kills with headshots"
+
+REFERENCE           	TRIAL_DESC_AASSAULT
+LANG_FRENCH       "Obtain kills in the "
+
+REFERENCE           	TRIAL_DESC_ADEFENSE
+LANG_FRENCH       "Remain in the "
+
+REFERENCE           	TRIAL_DESC_PACK_CURRENT
+LANG_FRENCH       "Current GargoyleGum Pack"
+
+REFERENCE           	TRIAL_DESC_PACK_NEXT
+LANG_FRENCH       "Next GargoyleGum Pack"
+
+REFERENCE           	TRIAL_UPGRADE
+LANG_FRENCH       "Press ^3[{+activate}]^7 twice rapidly to upgrade Trial weapon [Cost: 4000]"
+
+REFERENCE           	ROOM_SPAWN_ROOM
+LANG_FRENCH       	"Spawn Room"
+
+REFERENCE           	ROOM_STAMINARCH
+LANG_FRENCH       	"Staminarch"
+
+REFERENCE           	ROOM_WATER_TOWER
+LANG_FRENCH       	"Water Tower"
+
+REFERENCE           	ROOM_CLEAN_ROOM
+LANG_FRENCH       	"Clean Room"
+
+REFERENCE           	ROOM_LION_ROOM
+LANG_FRENCH       	"Lion Room"
+
+REFERENCE           	ROOM_DOWNSTAIRS_ROOM
+LANG_FRENCH       	"Downstairs Room"
+
+REFERENCE           	SB_POINTS
+LANG_FRENCH       	"Points"
+
+REFERENCE           	SB_KILLS
+LANG_FRENCH       	"Kills"
+
+REFERENCE           	SB_DOWNS
+LANG_FRENCH       	"Downs"
+
+REFERENCE           	SB_REVIVES
+LANG_FRENCH       	"Revives"
+
+REFERENCE           	SB_HEADSHOTS
+LANG_FRENCH       	"Headshots"
+
+ENDMARKER

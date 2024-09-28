@@ -1,0 +1,356 @@
+VERSION				"1"
+CONFIG					"C:\projects\cod\t7\bin\StringEd.cfg"
+FILENOTES				""
+
+REFERENCE           	EMPTY
+LANG_RUSSIAN       	""
+
+REFERENCE           	PERK_DOUBLETAP_ORIGINAL
+LANG_RUSSIAN       	"Hold ^3[{+activate}]^7 for Double Tap Root Beer [Cost: &&1]"
+
+REFERENCE           	PERK_ELECTRIC_CHERRY_RED
+LANG_RUSSIAN       	"Hold ^3[{+activate}]^7 for Electric Cherry [Cost: &&1]"
+
+REFERENCE           	PERK_PHD_LITE
+LANG_RUSSIAN       	"Hold ^3[{+activate}]^7 for PhD Slider [Cost: &&1]"
+
+REFERENCE           	PERK_POSEIDON_PUNCH
+LANG_RUSSIAN       	"Hold ^3[{+activate}]^7 for Poseidon's Punch [Cost: &&1]"
+
+REFERENCE           	PERK_DEADSHOT_DOUBLE
+LANG_RUSSIAN       	"Hold ^3[{+activate}]^7 for Deadshot Daiquiri Double [Cost: &&1]"
+
+REFERENCE           	BGB_SELECT
+LANG_RUSSIAN       	"Press ^3[{+activate}]^7 to switch GargoyleGums\n&&1Quantity: &&2"
+
+REFERENCE           	BGB_ACCEPT
+LANG_RUSSIAN       	"Press ^3[{+activate}]^7 for &&1"
+
+REFERENCE           	BGB_NO_STOCK
+LANG_RUSSIAN       	"Out of stock! Obtain more GargoyleGums through Divinium Trials!"
+
+REFERENCE           	BGB_ACTIVATE
+LANG_RUSSIAN       "Hold ^3[{+activate}]^7 to dispense GargoyleGum [Cost: &&1]"
+
+REFERENCE           	BGB_NEXT_ROUND
+LANG_RUSSIAN       "Come back next round!"
+
+REFERENCE           	BGB_STOCK_OPTION
+LANG_RUSSIAN       	"Stock Option"
+
+REFERENCE           	BGB_SWORD_FLAY
+LANG_RUSSIAN       "Sword Flay"
+
+REFERENCE           	BGB_TEMPORAL_GIFT
+LANG_RUSSIAN       "Temporal Gift"
+
+REFERENCE           	BGB_IN_PLAIN_SIGHT
+LANG_RUSSIAN       	"In Plain Sight"
+
+REFERENCE           	BGB_IM_FEELIN_LUCKY
+LANG_RUSSIAN       	"I'm Feelin' Lucky"
+
+REFERENCE           	BGB_IMMOLATION_LIQUIDATION
+LANG_RUSSIAN       	"Immolation Liquidation"
+
+REFERENCE           	BGB_PHOENIX_UP
+LANG_RUSSIAN       	"Phoenix Up"
+
+REFERENCE           	BGB_POP_SHOCKS
+LANG_RUSSIAN       	"Pop Shocks"
+
+REFERENCE           	BGB_CACHE_BACK
+LANG_RUSSIAN       	"Cache Back"
+
+REFERENCE           	BGB_ON_THE_HOUSE
+LANG_RUSSIAN       	"On the House"
+
+REFERENCE           	BGB_PROFIT_SHARING
+LANG_RUSSIAN       	"Profit Sharing"
+
+REFERENCE           	BGB_WALL_POWER
+LANG_RUSSIAN       	"Wall Power"
+
+REFERENCE           	BGB_CRATE_POWER
+LANG_RUSSIAN       	"Crate Power"
+
+REFERENCE           	BGB_UNQUENCHABLE
+LANG_RUSSIAN       	"Unquenchable"
+
+REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS
+LANG_RUSSIAN       	"Alchemical Antithesis"
+
+REFERENCE           	BGB_PERKAHOLIC
+LANG_RUSSIAN       	"Perkaholic"
+
+REFERENCE           	BGB_STOCK_OPTION_DESC
+LANG_RUSSIAN       	"Stock Option\nAmmo is taken from the player's stockpile instead of their weapon's magazine\n"
+
+REFERENCE           	BGB_SWORD_FLAY_DESC
+LANG_RUSSIAN       "Sword Flay\n Melee attacks will inflict 5x more damage on zombies\n"
+
+REFERENCE           	BGB_TEMPORAL_GIFT_DESC
+LANG_RUSSIAN       "Temporal Gift\n Powerups last longer\n"
+
+REFERENCE           	BGB_IN_PLAIN_SIGHT_DESC
+LANG_RUSSIAN       	"In Plain Sight\n All zombies ignore the player\n"
+
+REFERENCE           	BGB_IM_FEELIN_LUCKY_DESC
+LANG_RUSSIAN       	"I'm Feeling Lucky\n Spawns a random powerup\n"
+
+REFERENCE           	BGB_IMMOLATION_LIQUIDATION_DESC
+LANG_RUSSIAN       	"Immolation Liquidation\n Spawns a Fire Sale powerup\n"
+
+REFERENCE           	BGB_PHOENIX_UP_DESC
+LANG_RUSSIAN       	"Phoenix Up\n Revives all teammates. Teammates keep all of their perks\n"
+
+REFERENCE           	BGB_POP_SHOCKS_DESC
+LANG_RUSSIAN       	"Pop Shocks\n Melee attacks trigger an electrostatic discharge, electrocuting nearby zombies\n"
+
+REFERENCE           	BGB_CACHE_BACK_DESC
+LANG_RUSSIAN       	"Cache Back\n Spawns a Max Ammo powerup\n"
+
+REFERENCE           	BGB_ON_THE_HOUSE_DESC
+LANG_RUSSIAN       	"On the House\nSpawns a Perk Bottle powerup\n"
+
+REFERENCE           	BGB_PROFIT_SHARING_DESC
+LANG_RUSSIAN       	"Profit Sharing\nPoints you earn are also received by nearby players and vice versa\n"
+
+REFERENCE           	BGB_WALL_POWER_DESC
+LANG_RUSSIAN       	"Wall Power\nThe next wall weapon purchased becomes Pack-a-Punched\n"
+
+REFERENCE           	BGB_CRATE_POWER_DESC
+LANG_RUSSIAN       	"Crate Power\nThe next gun taken from the magic box becomes Pack-a-Punched\n"
+
+REFERENCE           	BGB_UNQUENCHABLE_DESC
+LANG_RUSSIAN       	"Unquenchable\nCan buy an extra Perk-a-Cola\n"
+
+REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS_DESC
+LANG_RUSSIAN       	"Alchemical Antithesis\nEvery 10 points earned is instead awarded 1 ammo in the stock of the current weapon\n"
+
+REFERENCE           	BGB_PERKAHOLIC_DESC
+LANG_RUSSIAN       	"Perkaholic\nGives the player all Perk-a-Colas in the map\n"
+
+REFERENCE           	PAD_COOLDOWN
+LANG_RUSSIAN       	"Cooling down..."
+
+REFERENCE           	TELEPORTER_OFFLINE
+LANG_RUSSIAN       	"Mainframe offline"
+
+REFERENCE           	TELEPORTER_SYNCHRONIZE
+LANG_RUSSIAN       	"Hold ^3[{+activate}]^7 to synchronize teleportation network [&&1/4]"
+
+REFERENCE           	TELEPORTER_SYNCHRONIZING
+LANG_RUSSIAN       	"Synchronizing... [&&1/4]"
+
+REFERENCE           	TELEPORTER_ACTIVATE
+LANG_RUSSIAN       	"Press ^3[{+activate}]^7 to teleport"
+
+REFERENCE           	SHADOW_DISABLED
+LANG_RUSSIAN       	"Cannot perform this action during a Shadow Breach"
+
+REFERENCE           	GENERATOR_DEPOSIT
+LANG_RUSSIAN       	"Press and hold ^3[{+activate}]^7 to deposit a Blood Vial into the generator"
+
+REFERENCE           	GENERATOR_NO_BLOOD
+LANG_RUSSIAN       	"Security Protocol 38: Blood Vial required"
+
+REFERENCE           	BLOODGUN_IN_USE
+LANG_RUSSIAN       	"L'Arme Ensanglante in use"
+
+REFERENCE           	BLOODGUN_HAS_VIAL
+LANG_RUSSIAN       	"Already have Blood Vial"
+
+REFERENCE           	BLOODGUN_COOLDOWN
+LANG_RUSSIAN       	"Cooling down... Please wait a round"
+
+REFERENCE           	BLOODGUN_ACTIVATE
+LANG_RUSSIAN       	"Press and hold ^3[{+activate}]^7 to acuire L'Arme Ensanglante
+
+REFERENCE           	TRIAL_ACTIVATE
+LANG_RUSSIAN       	"Press ^3[{+activate}]^7 to accept a Divinium Trial [Cost: &&1]"
+
+REFERENCE           	TRIAL_IN_PROGRESS
+LANG_RUSSIAN       	"Divinium Trial in progress"
+
+REFERENCE           	TRIAL_REWARD
+LANG_RUSSIAN       	"Press ^3[{+activate}]^7 for &&1"
+
+REFERENCE           	FOUNTAIN_OFFLINE
+LANG_RUSSIAN       	"Juggernog Station Offline - At least 2 Blood Generators must be powered on"
+
+REFERENCE           	FOUNTAIN_DEPOSIT
+LANG_RUSSIAN       "Press and hold ^3[{+activate}]^7 to insert a Blood Vial into the Juggernog Station"
+
+REFERENCE           	FOUNTAIN_ACTIVATE
+LANG_RUSSIAN       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [&&1 use(s) left]"
+
+REFERENCE           	TAKE_WEAPON
+LANG_RUSSIAN       "Press ^3[{+activate}]^7 to take &&1"
+
+REFERENCE           	TRIDENT_SEEK
+LANG_RUSSIAN       "I seem to have misplaced my weapon. Can you help me find it?"
+
+REFERENCE           	TRIDENT_REJECT
+LANG_RUSSIAN       "You do not posess the weapon I seek"
+
+REFERENCE           	TRIDENT_CHARGE
+LANG_RUSSIAN       "Charging weapon..."
+
+REFERENCE           	JOURNAL_HEADER_CHALLENGE
+LANG_RUSSIAN       "Perk Challenges"
+
+REFERENCE           	JOURNAL_HEADER_BGB
+LANG_RUSSIAN       "Divinium Trials"
+
+REFERENCE           	JOURNAL_HEADER_PERKBP
+LANG_RUSSIAN       "Perk Blueprints"
+
+REFERENCE           	JOURNAL_HEADER_WEAPONBP
+LANG_RUSSIAN       "Weapon Blueprints"
+
+REFERENCE           	CHALLENGE_CHERRY
+LANG_RUSSIAN       "Obtain kills with Electric Cherry reloads"
+
+REFERENCE           	CHALLENGE_CHERRY_REWARD
+LANG_RUSSIAN       "Reward: 50% faster reload speed"
+
+REFERENCE           	CHALLENGE_STAMIN
+LANG_RUSSIAN       "Obtain kills after 2+ second sprints"
+
+REFERENCE           	CHALLENGE_STAMIN_REWARD
+LANG_RUSSIAN       "Reward: Unlimited sprint duration"
+
+REFERENCE           	CHALLENGE_DOUBLE
+LANG_RUSSIAN       "Obtain pentakills"
+
+REFERENCE           	CHALLENGE_DOUBLE_REWARD
+LANG_RUSSIAN       "Reward: Bullets double upon being fired"
+
+REFERENCE           	CHALLENGE_MULE
+LANG_RUSSIAN       "Obtain kills with third weapon"
+
+REFERENCE           	CHALLENGE_MULE_REWARD
+LANG_RUSSIAN       "Reward: Lost third weapons are saved"
+
+REFERENCE           	CHALLENGE_POSEIDON
+LANG_RUSSIAN       "Obtain kills on fallen zombies"
+
+REFERENCE           	CHALLENGE_POSEIDON_REWARD
+LANG_RUSSIAN       "Reward: +15 health per fallen zombie"
+
+REFERENCE           	CHALLENGE_QUICK
+LANG_RUSSIAN       "Obtain kills while on low health"
+
+REFERENCE           	CHALLENGE_QUICK_REWARD
+LANG_RUSSIAN       "Reward: 33% longer bleedout time"
+
+REFERENCE           	CHALLENGE_QUICK_REWARD_SOLO
+LANG_RUSSIAN       "Reward: Brief invincibility post self-revive"
+
+REFERENCE           	CHALLENGE_PHD
+LANG_RUSSIAN       "Obtain kills using PhD slides"
+
+REFERENCE           	CHALLENGE_PHD_REWARD
+LANG_RUSSIAN       "Reward: Immunity to splash damage"
+
+REFERENCE           	CHALLENGE_DEADSHOT
+LANG_RUSSIAN       "Blow zombie minds"
+
+REFERENCE           	CHALLENGE_DEADSHOT_REWARD
+LANG_RUSSIAN       "Reward: Blow up to 16 minds at a time"
+
+REFERENCE           	CHALLENGE_INACTIVE
+LANG_RUSSIAN       "Inactive"
+
+REFERENCE           	CHALLENGE_COMPLETE
+LANG_RUSSIAN       "Complete"
+
+REFERENCE           	CHALLENGE_INACTIVE_SHADOW
+LANG_RUSSIAN       "Inactive during Shadow Breach"
+
+REFERENCE           	CHALLENGE_ACTIVE
+LANG_RUSSIAN       "Active: Progress resets next round"
+
+REFERENCE           	TRIAL_INACTIVE
+LANG_RUSSIAN       	"No Divinium Trial active"
+
+REFERENCE           	TRIAL_DESC_REWARD
+LANG_RUSSIAN       	"Reward: +2 to all GargoyleGums, 1 free GargoyleGum"
+
+REFERENCE           	TRIAL_DESC_NO_REWARD
+LANG_RUSSIAN       "No reward available"
+
+REFERENCE           	TRIAL_DESC_INFO
+LANG_RUSSIAN       "Visit the Courtroom to claim your rewards and customize your GargoyleGum Pack!"
+
+REFERENCE           	TRIAL_DESC_YES_REWARD
+LANG_RUSSIAN       "Reward available"
+
+REFERENCE           	TRIAL_DESC_TIMER
+LANG_RUSSIAN       "Current Trial expires in "
+
+REFERENCE           	TRIAL_DESC_WALLBUY
+LANG_RUSSIAN       "Obtain kills with the "
+
+REFERENCE           	TRIAL_DESC_BOX
+LANG_RUSSIAN       "Obtain kills with a newly aqcuired weapon from the Mystery Box"
+
+REFERENCE           	TRIAL_DESC_CLASS
+LANG_RUSSIAN       "Obtain kills with"
+
+REFERENCE           	TRIAL_DESC_ELEVATION
+LANG_RUSSIAN       "Obtain kills from a higher elevation"
+
+REFERENCE           	TRIAL_DESC_HEADSHOT
+LANG_RUSSIAN       "Obtain kills with headshots"
+
+REFERENCE           	TRIAL_DESC_AASSAULT
+LANG_RUSSIAN       "Obtain kills in the "
+
+REFERENCE           	TRIAL_DESC_ADEFENSE
+LANG_RUSSIAN       "Remain in the "
+
+REFERENCE           	TRIAL_DESC_PACK_CURRENT
+LANG_RUSSIAN       "Current GargoyleGum Pack"
+
+REFERENCE           	TRIAL_DESC_PACK_NEXT
+LANG_RUSSIAN       "Next GargoyleGum Pack"
+
+REFERENCE           	TRIAL_UPGRADE
+LANG_RUSSIAN       "Press ^3[{+activate}]^7 twice rapidly to upgrade Trial weapon [Cost: 4000]"
+
+REFERENCE           	ROOM_SPAWN_ROOM
+LANG_RUSSIAN       	"Spawn Room"
+
+REFERENCE           	ROOM_STAMINARCH
+LANG_RUSSIAN       	"Staminarch"
+
+REFERENCE           	ROOM_WATER_TOWER
+LANG_RUSSIAN       	"Water Tower"
+
+REFERENCE           	ROOM_CLEAN_ROOM
+LANG_RUSSIAN       	"Clean Room"
+
+REFERENCE           	ROOM_LION_ROOM
+LANG_RUSSIAN       	"Lion Room"
+
+REFERENCE           	ROOM_DOWNSTAIRS_ROOM
+LANG_RUSSIAN       	"Downstairs Room"
+
+REFERENCE           	SB_POINTS
+LANG_RUSSIAN       	"Points"
+
+REFERENCE           	SB_KILLS
+LANG_RUSSIAN       	"Kills"
+
+REFERENCE           	SB_DOWNS
+LANG_RUSSIAN       	"Downs"
+
+REFERENCE           	SB_REVIVES
+LANG_RUSSIAN       	"Revives"
+
+REFERENCE           	SB_HEADSHOTS
+LANG_RUSSIAN       	"Headshots"
+
+ENDMARKER
