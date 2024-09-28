@@ -644,16 +644,20 @@ image,generator_4s
 rawfile,ui/uieditor/widgets/hud/blood_generator.lua
 
 // BO2 Zombie Attack Anims
-xanim,t6_ai_zombie_base_ad_attack_v1
-xanim,t6_ai_zombie_base_ad_attack_v3
-xanim,t6_ai_zombie_base_ad_attack_v4
-xanim,t6_ai_zombie_base_fwd_ad_attack_v1
-xanim,t6_ai_zombie_base_fwd_ad_attack_v2
-xanim,t6_ai_zombie_base_au_attack_v1
-xanim,t6_ai_zombie_base_au_attack_v3
-xanim,t6_ai_zombie_base_au_attack_v4
+xanim,t6_ai_zombie_base_attack_v1
+xanim,t6_ai_zombie_base_attack_v3
+xanim,t6_ai_zombie_base_attack_v4
+xanim,t6_ai_zombie_base_fwd_attack_v1
+xanim,t6_ai_zombie_base_fwd_attack_v2
 xanim,t6_ai_zombie_base_crawl_attack_v1
 xanim,t6_ai_zombie_base_crawl_attack_v2
+xanim,t6_ai_zombie_walk_attack_v1
+xanim,t6_ai_zombie_walk_attack_v2
+xanim,t6_ai_zombie_walk_attack_v3
+xanim,t6_ai_zombie_walk_attack_v4
+xanim,t6_ai_zombie_run_attack_v1
+xanim,t6_ai_zombie_run_attack_v2
+xanim,t6_ai_zombie_run_attack_v3
 
 // Localized Strings
 localize,zm_abbey
