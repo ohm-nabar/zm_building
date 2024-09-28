@@ -192,8 +192,8 @@ function diedrich_think(isUpgraded, player)
 	min_damage = (isUpgraded ? level.diedrich_min_damage_upgraded : level.diedrich_min_damage);
 
 	player_min_damage = 10;
-	player_max_damage = 135;
-	player_splash_radius = 200;
+	player_max_damage = 200;
+	player_splash_radius = 150;
 
 	//GrenadeExplosionEffect(self.origin);
 
@@ -207,7 +207,6 @@ function diedrich_think(isUpgraded, player)
 	{
 		playerslope = (player_min_damage - player_max_damage) / (player_splash_radius - 30);
 		playerdamage = playerslope * (playerdist - 30) + player_max_damage;
-		//IPrintLn(playerdamage);
 		player DoDamage( playerdamage, player.origin + (0,0,20), player, player, "none", "MOD_EXPLOSIVE" ) ;
 	}
 

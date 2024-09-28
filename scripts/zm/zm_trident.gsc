@@ -265,14 +265,18 @@ function water_pulse(origin, attacker, should_kill)
 
 function monitor_stun()
 {
+	self endon("death");
+
 	self clientfield::set("trident_linger", 1);
 	self util::waittill_any("stun_fx_end", "death");
 	self.trident_shocked = false;
-	if (! IS_TRUE(self.trident_slowdown))
+	
+	while (IS_TRUE(self.trident_shocked) || IS_TRUE(self.trident_slowdown))
 	{
-		self.trident_melee_weak = false;
-		self clientfield::set("trident_linger", 0);
+		wait(0.05);
 	}
+	
+	self clientfield::set( "trident_linger", 0 );
 }
 
 function monitor_trident_melee_streaks()
@@ -603,6 +607,7 @@ function trident_position_source( player, str_weapon)
 function slowdown()
 {
 	self endon("death");
+
 	if(IS_TRUE(self.trident_slowdown))
 	{
 		return;
@@ -616,11 +621,14 @@ function slowdown()
 	wait(10);
 	self ASMSetAnimationRate(1);
 	self.trident_slowdown = false;
-	if (! IS_TRUE(self.trident_shocked))
+	self.trident_melee_weak = false;
+
+	while (IS_TRUE(self.trident_shocked) || IS_TRUE(self.trident_slowdown))
 	{
-		self clientfield::set( "trident_linger", 0 );
-		self.trident_melee_weak = false;
+		wait(0.05);
 	}
+
+	self clientfield::set( "trident_linger", 0 );
 }
 
 function check_for_death()
