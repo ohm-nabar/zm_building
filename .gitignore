@@ -1,4 +1,16 @@
 *.lnk
 zone/
 zone_source/english/
+zone_source/englisharabic/
+zone_source/french/
+zone_source/german/
+zone_source/italian/
+zone_source/japanese/
+zone_source/loc/
+zone_source/polish/
+zone_source/portuguese/
+zone_source/russian/
+zone_source/simplifiedchinese/
+zone_source/spanish/
+zone_source/traditionalchinese/
 zone_source/all/
