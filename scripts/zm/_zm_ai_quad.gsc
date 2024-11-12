@@ -95,6 +95,11 @@ function __init__()
 
 function quad_spawn_delay()
 {
+	while(! isdefined(level.players))
+	{
+		wait(0.05);
+	}
+
 	while(true)
 	{
 		for(i = 0; i < level.players.size + 1; i++)

@@ -234,7 +234,6 @@ function on_player_connect()
 
 	self.gg_cycle_index = 0;
 	self.gg_cost_index = 0;
-	self.prev_gg_cost_indices = [];
 
 	self.just_reset_gg_cycle = false;
 
@@ -672,17 +671,18 @@ function gg_set_hintstring()
 {
 	level waittill("initial_blackscreen_passed");
 	
+	prev_gg_cost_indices = [];
 	while(true)
 	{
 		if(! self.gum_in_progress)
 		{
 			foreach(player in level.players)
 			{
-				if(! array::contains(GetArrayKeys(player.prev_gg_cost_indices), self))
+				if(! array::contains(GetArrayKeys(prev_gg_cost_indices), player) && isdefined(player.characterIndex))
 				{
-					player.prev_gg_cost_indices[self] = -1;
+					prev_gg_cost_indices[player.characterIndex] = -1;
 				}
-				if(player.prev_gg_cost_indices[self] != player.gg_cost_index)
+				if(prev_gg_cost_indices[player.characterIndex] != player.gg_cost_index)
 				{
 					if(player.gg_cost_index >= level.gg_costs.size)
 					{
@@ -692,7 +692,7 @@ function gg_set_hintstring()
 					{
 						self SetHintStringForPlayer(player, &"ZM_ABBEY_BGB_ACTIVATE", level.gg_costs[player.gg_cost_index]);
 					}
-					player.prev_gg_cost_indices[self] = player.gg_cost_index;
+					prev_gg_cost_indices[player.characterIndex] = player.gg_cost_index;
 				}
 			}
 		}
