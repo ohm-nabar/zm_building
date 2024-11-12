@@ -107,7 +107,7 @@
 #using scripts\zm\zm_abbey_boss;
 
 #using scripts\zm\zm_klauser;
-//#using scripts\zm\zm_flashlight;
+#using scripts\zm\zm_flashlight;
 #using scripts\zm\zm_no_hud;
 
 // Sphynx's Console Commands
@@ -168,8 +168,8 @@ function main()
 	level thread zm_variable_pricing::main();
 	level thread zm_abbey_boss::main();
 	level thread zm_revive_icon::main();
-	//level thread zm_solo_revive::main();
-	//level thread zm_antiverse::main();
+	level thread zm_solo_revive::main();
+	level thread zm_antiverse::main();
 	level thread zm_no_hud::main();
 	
 	level thread zm_castle_vox();
@@ -181,6 +181,7 @@ function main()
 
 	init_zones = [];
 	init_zones[0] = "start_zone";
+	init_zones[1] = "antiverse";
 	level thread zm_zonemgr::manage_zones( init_zones );
 
 	level.pathdist_type = PATHDIST_ORIGINAL;

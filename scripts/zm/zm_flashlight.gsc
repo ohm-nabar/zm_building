@@ -22,12 +22,10 @@ REGISTER_SYSTEM_EX("zm_flashlight", &__init__, &__main__, undefined)
 
 function __init__()
 {
-	clientfield::register("toplayer", "flashlight_fx_view", VERSION_SHIP, 2, "int");
-	clientfield::register("allplayers", "flashlight_fx_world", VERSION_SHIP, 2, "int");
-	
 	callback::on_connect(&on_player_connect);
 	thread mid_game_flashlight_wait();
 	thread mid_game_uv_light_wait();
+	thread clientfield_init();
 }
 
 function __main__()
@@ -41,6 +39,12 @@ function __main__()
 function on_player_connect()
 {
 	self thread player_flashlight_init();
+}
+
+function clientfield_init()
+{
+	clientfield::register("toplayer", "flashlight_fx_view", VERSION_SHIP, 2, "int");
+	clientfield::register("allplayers", "flashlight_fx_world", VERSION_SHIP, 2, "int");
 }
 
 function mid_game_flashlight_wait()
@@ -106,8 +110,8 @@ function player_flashlight_init()
 		self thread flashlight_watch_trigs(trigs);
 	}
 
-	level flag::init("flashlight_hinted");
-	self thread flashlight_hint();
+	//level flag::init("flashlight_hinted");
+	//self thread flashlight_hint();
 	self thread flashlight_cleanup();
 }
 

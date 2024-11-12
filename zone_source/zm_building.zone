@@ -123,8 +123,6 @@ scriptparsetree,scripts/zm/_zm_perk_additionalprimaryweapon.gsc
 scriptparsetree,scripts/zm/_zm_perk_deadshot.gsc
 scriptparsetree,scripts/zm/_zm_perk_deadshot.gsh
 
-scriptparsetree,scripts/zm/zm_solo_revive.gsc
-
 weapon,bloodgun
 weapon,bloodgun_dm
 weapon,zm_diedrich
@@ -296,7 +294,9 @@ xmodel,tag_origin
 
 // Antiverse
 include,flashlight
+include,spx_util_script
 scriptparsetree,scripts/zm/zm_antiverse.gsc
+scriptparsetree,scripts/zm/zm_solo_revive.gsc
 
 
 rawfile,ui/uieditor/menus/hud/t7hud_zm_custom.lua

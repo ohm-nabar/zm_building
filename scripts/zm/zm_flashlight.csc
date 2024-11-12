@@ -26,9 +26,8 @@ REGISTER_SYSTEM("zm_flashlight", &__init__, undefined)
 
 function __init__()
 {
-	clientfield::register("toplayer", "flashlight_fx_view", VERSION_SHIP, 2, "int", &flashlight_fx_view, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT);
-	clientfield::register("allplayers", "flashlight_fx_world", VERSION_SHIP, 2, "int", &flashlight_fx_world, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT);
 	thread fx_init();
+	thread clientfield_init();
 }
 
 function fx_init()
@@ -40,6 +39,11 @@ function fx_init()
 	level._effect["flashlight_fx_uv_loop_world"] = "custom/flashlight/flashlight_uv_loop_world";
 }
 
+function clientfield_init()
+{
+	clientfield::register("toplayer", "flashlight_fx_view", VERSION_SHIP, 2, "int", &flashlight_fx_view, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT);
+	clientfield::register("allplayers", "flashlight_fx_world", VERSION_SHIP, 2, "int", &flashlight_fx_world, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT);
+}
 
 function flashlight_fx_view(localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fieldName, bWasTimeJump) // self == player
 {

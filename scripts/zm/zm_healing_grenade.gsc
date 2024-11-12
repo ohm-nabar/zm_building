@@ -104,6 +104,7 @@ function player_give_healing_grenade()
 
 function on_player_connect()
 {
+	self flag::init(#"solo_healing_grenade");
 	self.healing_vox_enabled = true;
 	self thread check_thrown();
 	self thread pullback_sound();
@@ -168,8 +169,12 @@ function players_check(grenade, reviver)
 {
 	self endon("disconnect");
 
-	if((DistanceSquared(grenade.origin, self.origin) <= 90000) && GetPlayers().size > 1)
-	{ 
+	if((self laststand::player_is_in_laststand() && DistanceSquared(grenade.origin, self.origin) <= 90000))
+	{
+		if(level flag::get("solo_game"))
+		{
+			self flag::set(#"solo_healing_grenade");
+		}
 		self thread zm_laststand::remote_revive( reviver );
 		for(i = 0; i < self.perksToGiveBack.size; i++)
         {
@@ -180,8 +185,7 @@ function players_check(grenade, reviver)
 			reviver zm_audio::create_and_play_dialog( "general", "healing_grenade" );
 			reviver.healing_vox_enabled = false;
 		}
-	}
-		
+	}	
 }
 
 function zombie_check(grenade, player)
