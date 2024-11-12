@@ -191,6 +191,7 @@ function antiverse_reset()
 
 	level.antiverse_end Delete();
 	level.antiverse_end = undefined;
+	zm_sphynx_util::start_zombie_spawning();
 }
 
 function random_unassigned_neighbor(node)

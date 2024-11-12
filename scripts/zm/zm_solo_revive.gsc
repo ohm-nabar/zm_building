@@ -25,6 +25,8 @@
 #insert scripts\zm\_zm_laststand.gsh;
 #insert scripts\zm\_zm_utility.gsh;
 
+#precache( "eventstring", "solo_lives_update" );
+
 function main()
 {
 	level.override_use_solo_revive = &override_use_solo_revive;
@@ -50,6 +52,28 @@ function set_lives()
 	}
 
 	self.lives = 3;
+	self thread manage_solo_lives();
+}
+
+function manage_solo_lives()
+{
+	prev_solo_flag = false;
+	while(true)
+	{
+		if(prev_solo_flag != level flag::get("solo_game"))
+		{
+			if(level flag::get("solo_game"))
+			{
+				self LUINotifyEvent(&"solo_lives_update", 1, self.lives);
+			}
+			else
+			{
+				self LUINotifyEvent(&"solo_lives_update", 1, 0);
+			}
+			prev_solo_flag = level flag::get("solo_game");
+		}
+		wait(0.05);
+	}
 }
 
 function override_use_solo_revive()
@@ -487,6 +511,7 @@ function wait_and_revive()
 
 	self.waiting_to_revive = true;
 	self.lives--;
+	self LUINotifyEvent(&"solo_lives_update", 1, self.lives);
 
 	if ( isdefined( level.exit_level_func ) )
 	{

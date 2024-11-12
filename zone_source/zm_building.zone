@@ -297,6 +297,10 @@ include,flashlight
 include,spx_util_script
 scriptparsetree,scripts/zm/zm_antiverse.gsc
 scriptparsetree,scripts/zm/zm_solo_revive.gsc
+rawfile,ui/uieditor/widgets/hud/solo_lives.lua
+image,tombstone_1
+image,tombstone_2
+image,tombstone_3
 
 
 rawfile,ui/uieditor/menus/hud/t7hud_zm_custom.lua

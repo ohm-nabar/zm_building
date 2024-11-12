@@ -1,6 +1,7 @@
 require("ui.uieditor.widgets.HUD.CP_DamageWidget.DamageWidgetMP_PanelContainer")
 require("ui.uieditor.widgets.onOffImage")
 require("ui.uieditor.widgets.HUD.jug_hearts")
+require("ui.uieditor.widgets.HUD.solo_lives")
 
 CoD.ZMScr_ListingLg = InheritFrom(LUI.UIElement)
 
@@ -52,6 +53,12 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
     healthWidget:setTopBottom(true, false, 20, 120)
 	Elem:addElement(healthWidget)
 	Elem.HealthWidget = healthWidget
+
+	local livesWidget = CoD.SoloLives.new(HudRef, InstanceRef)
+	livesWidget:setLeftRight(true, false, 102, 145)
+    livesWidget:setTopBottom(true, false, 45, 88)
+	Elem:addElement(livesWidget)
+	Elem.LivesWidget = livesWidget
 
 	local function ScoreSetColor(ModelRef)
 		local ModelValue = Engine.GetModelValue(ModelRef)
@@ -191,6 +198,8 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 		Elem.clipFinished(name, {})
 		Elem.HealthWidget:setAlpha(0)
 		Elem.clipFinished(healthWidget, {})
+		Elem.LivesWidget:setAlpha(0)
+		Elem.clipFinished(livesWidget, {})
 	end
 
 	local function DSVisible()
@@ -296,6 +305,23 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 		Elem.HealthWidget:setAlpha(0.000000)
 		
 		HealthWidget_DSVisible_1(healthWidget, {})
+
+		local function LivesWidget_DSVisible_1(Element, Event)
+			if not Event.interrupted then
+				Element:beginAnimation("keyframe", 300.000000, false, false, CoD.TweenType.Bounce)
+			end
+			Element:setAlpha(1.000000)
+			if Event.interrupted then
+				Elem.clipFinished(Element, Event)
+			else
+				Element:registerEventHandler("transition_complete_keyframe", Elem.clipFinished)
+			end
+		end
+		
+		livesWidget:completeAnimation()
+		Elem.LivesWidget:setAlpha(0.000000)
+		
+		LivesWidget_DSVisible_1(livesWidget, {})
 	end
 
 	local function DSVisibleTomb()
@@ -375,6 +401,8 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 		Elem.clipFinished(name, {})
 		Elem.HealthWidget:setAlpha(1)
 		Elem.clipFinished(healthWidget, {})
+		Elem.LivesWidget:setAlpha(1)
+		Elem.clipFinished(livesWidget, {})
 	end
 
 	local function VTDefaultState()
@@ -446,8 +474,8 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 		Elem.clipFinished(blood, {})
 		Elem.Name:setAlpha(1)
 		Elem.clipFinished(name, {})
-		Elem.HealthWidget:setAlpha(1)
-		Elem.clipFinished(healthWidget, {})
+		Elem.LivesWidget:setAlpha(1)
+		Elem.clipFinished(livesWidget, {})
 	end
 
 	local function VDefaultState()
@@ -553,6 +581,23 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 		Elem.HealthWidget:setAlpha(1.000000)
 
 		HealthWidget_VDefaultState_1(healthWidget, {})
+
+		local function LivesWidget_VDefaultState_1(Element, Event)
+			if not Event.interrupted then
+				Element:beginAnimation("keyframe", 200.000000, false, false, CoD.TweenType.Linear)
+			end
+			Element:setAlpha(0.000000)
+			if Event.interrupted then
+				Elem.clipFinished(Element, Event)
+			else
+				Element:registerEventHandler("transition_complete_keyframe", Elem.clipFinished)
+			end
+		end
+
+		livesWidget:completeAnimation()
+		Elem.LivesWidget:setAlpha(1.000000)
+
+		LivesWidget_VDefaultState_1(livesWidget, {})
 	end
 
 	Elem.clipsPerState = 
@@ -605,6 +650,7 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 		SenderObj.Name:close()
 		SenderObj.Blood:close()
 		SenderObj.HealthWidget:close()
+		SenderObj.LivesWidget:close()
 	end
 
 	LUI.OverrideFunction_CallOriginalSecond(Elem, "close", CloseEvent)

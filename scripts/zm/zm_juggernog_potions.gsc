@@ -136,8 +136,6 @@ function on_laststand()
 {
 	self endon("disconnect");
 
-	result = self util::waittill_any_return("player_revived", "bled_out");
-
 	if(self.jug_resistance_level <= 150)
 	{
 		self.jug_resistance_level = 100;
@@ -149,6 +147,8 @@ function on_laststand()
 		self LUINotifyEvent(&"jug_hearts_update", 1, (self.jug_resistance_level == 200 ? 2 : 1));
 	}
 
+	result = self util::waittill_any_return("player_revived", "bled_out");
+	
 	self.maxhealth = self.jug_resistance_level;
 	self SetMaxHealth( self.jug_resistance_level );
 	self.health = self.maxhealth;
