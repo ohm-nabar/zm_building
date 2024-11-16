@@ -113,6 +113,7 @@ function __init__()
 
 	level.shadow_ai_limit = 40;
 	level.shadow_vision_active = false;
+	level.shadow_round_paused = false;
 
 	//level.shadow_moon = GetEnt("targetname", "shadow_moon");
 	//level.shadow_moon SetInvisibleToAll();
@@ -153,6 +154,47 @@ function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags
 			}
 		}
 	} 
+}
+
+function pause(antiverse=false)
+{
+	level.shadow_round_paused = true;
+
+	if(antiverse)
+	{
+		zombies = GetAITeamArray( level.zombie_team );
+		foreach(zombie in zombies)
+		{
+			if(zombie.targetname == "zombie_choker")
+			{
+				zombie dodamage( zombie.health + 666, zombie.origin );
+			}
+			else
+			{
+				zombie.kill_indicator.alpha = 0;
+				zombie ASMSetAnimationRate(0);
+			}
+			
+		}		
+	}
+}
+
+function unpause(antiverse=false)
+{
+	level.shadow_round_paused = false;
+
+	if(antiverse)
+	{
+		zombies = GetAITeamArray( level.zombie_team );
+		foreach(zombie in zombies)
+		{
+			if(zombie.targetname != "zombie_choker")
+			{
+				zombie.kill_indicator.alpha = 1;
+				zombie ASMSetAnimationRate(1);
+			}
+		}
+	}
 }
 
 function escargot_spawn(player, trident_spawn)
@@ -303,6 +345,7 @@ function ai_waypoint_manage(offset)
 	kill_indicator SetTargetEnt(waypoint_pos);
 	kill_indicator SetShader("shadow_kill_indicator");
 	kill_indicator SetWayPoint(true, "shadow_kill_indicator", false, false);
+	self.kill_indicator = kill_indicator;
 
 	self waittill("death");
 	waypoint_pos Delete();
@@ -457,7 +500,7 @@ function dog_round_spawning()
 		{
 			break;
 		}
-		if(zombie_utility::get_current_zombie_count() >= level.shadow_ai_limit)
+		if(zombie_utility::get_current_zombie_count() >= level.shadow_ai_limit || level.shadow_round_paused)
 		{
 			wait(0.05);
 			continue;
@@ -468,6 +511,11 @@ function dog_round_spawning()
 		//IPrintLn("num_cloaks: " + level.num_cloaks);
 	}
 
+	while(level.shadow_round_paused)
+	{
+		wait(0.05);
+	}
+
 	lui::screen_flash( 0.3, 0.8, 0.3, 1.0, "white" );
 	foreach(player in level.players)
 	{
@@ -476,22 +524,21 @@ function dog_round_spawning()
 	wait(1);
 	//IPrintLn("Escargot phase");
 
-	zombies = GetAiTeamArray( level.zombie_team );
+	zombies = GetAITeamArray( level.zombie_team );
 	for(i = 0; i < zombies.size; i++)
 	{
 		zombies[i] dodamage( zombies[i].health + 666, zombies[i].origin );
 	}
 
-
 	for(i = 0; i < level.num_escargots; i++)
 	{
 		index = i % players.size;
-		if(i == 0 && !level.trident_shell_activated && zm_room_manager::is_room_active(level.trident_init_room))
+		if(i == 0 && ! level.trident_shell_activated && zm_room_manager::is_room_active(level.trident_init_room) && ! level.shadow_round_paused)
 		{
 			//IPrintLn("escargot special spawn");
 			thread escargot_spawn(players[index], true);
 		}
-		else
+		else if(! level.shadow_round_paused)
 		{
 			//IPrintLn("escargot normal spawn");
 			thread escargot_spawn(players[index]);
@@ -505,7 +552,7 @@ function dog_round_spawning()
 		{
 			break;
 		}
-		if(zombie_utility::get_current_zombie_count() >= level.shadow_ai_limit)
+		if(zombie_utility::get_current_zombie_count() >= level.shadow_ai_limit || level.shadow_round_paused)
 		{
 			wait(0.05);
 			continue;
@@ -515,7 +562,7 @@ function dog_round_spawning()
 		wait(choker_wait_time);
 	}
 
-	zombies = GetAiTeamArray( level.zombie_team );
+	zombies = GetAITeamArray( level.zombie_team );
 	for(i = 0; i < zombies.size; i++)
 	{
 		zombies[i] dodamage( zombies[i].health + 666, zombies[i].origin );
@@ -592,6 +639,10 @@ function cloak_spawn_sequence()
 			continue;
 		}
 
+		while(level.shadow_round_paused)
+		{
+			wait(0.05);
+		}
 		//IPrintLn("spawning a cloak");
 		cloak = cloak_spawn(trigger);
 		level.cloak = cloak;

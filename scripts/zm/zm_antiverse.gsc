@@ -20,6 +20,7 @@
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_audio;
 
+#using scripts\zm\zm_ai_shadowpeople;
 #using scripts\Sphynx\_zm_sphynx_util;
 
 
@@ -95,10 +96,6 @@ function create_edge(index1, index2)
 
 function send_to_antiverse()
 {
-	zm_sphynx_util::stop_zombie_spawning();
-	level zm_audio::sndMusicSystem_StopAndFlush();
-	music::setmusicstate("none");
-	
 	self thread player_maze_setup(level.antiverse_spawn_points[0].origin, level.antiverse_spawn_points[0].angles);
 
 	queue = [];
@@ -139,11 +136,10 @@ function send_to_antiverse()
 
 function player_maze_setup(origin, angles)
 {
+	self DisableWeaponCycling();
 	self.antiverse_loadout = self zm_sphynx_util::get_player_loadout();
-	level lui::screen_fade_out( 0.75, "black" );
-	self util::show_hud(false);
 	self visionset_mgr::activate("visionset", "abbey_shadow", self);
-	wait(0.75);
+	
 	self PlaySoundToPlayer("1_flashlight_click", self);
 	if(self.startingpistol != level.start_weapon)
 	{
@@ -156,7 +152,10 @@ function player_maze_setup(origin, angles)
 	antiverse_loadout = level.antiverse_loadout;
 	antiverse_loadout.a_location_info = []; antiverse_loadout.a_location_info["origin"] = origin; antiverse_loadout.a_location_info["angles"] = angles; 
 	self zm_sphynx_util::give_player_loadout(level.antiverse_loadout, 1, 1, 1, 1);
-	level lui::screen_fade_in( 0.75, "black" );
+
+	wait(1.2);
+	self thread lui::screen_fade_in( 1.5, "black" );
+	level zm_audio::sndMusicSystem_PlayState("antiverse_amb_" + RandomIntRange(0, 6));
 }
 
 function player_finish_monitor()
@@ -167,13 +166,24 @@ function player_finish_monitor()
 	}
 
 	level thread antiverse_reset();
-	level lui::screen_fade_out( 0.75, "black" );
-	self visionset_mgr::deactivate("visionset", "abbey_shadow", self);
+	level zm_audio::sndMusicSystem_StopAndFlush();
+	music::setmusicstate("none");
+	self lui::screen_fade_out( 0.75, "black" );
+	if(! level.shadow_vision_active)
+	{
+		self visionset_mgr::deactivate("visionset", "abbey_shadow", self);
+	}
 	wait(0.75);
 	self zm_sphynx_util::give_player_loadout(self.antiverse_loadout, 1, 0, 0, 1);
-	level lui::screen_fade_in( 0.75, "black" );
+	self lui::screen_fade_in( 0.75, "black" );
 	wait(0.75);
-	self util::show_hud(true);
+	self.abbey_no_waypoints = self.prev_abbey_no_waypoints;
+	if(! self.abbey_no_hud)
+	{
+		self util::show_hud(true);
+	}
+	self EnableWeaponCycling();
+	level.sndVoxOverride = false;
 }
 
 function antiverse_reset()
@@ -183,15 +193,26 @@ function antiverse_reset()
 		level.maze_node_assigned[i] = false;
 	}
 
+	level.antiverse_end Delete();
+	level.antiverse_end = undefined;
+	
+	wait(1.5);
+
 	foreach(wall in level.broken_walls)
 	{
 		wall MoveZ(1000, 1);
 	}
 	level.broken_walls = [];
 
-	level.antiverse_end Delete();
-	level.antiverse_end = undefined;
-	zm_sphynx_util::start_zombie_spawning();
+	if(level flag::get("dog_round"))
+	{
+		level thread zm_ai_shadowpeople::unpause(true);
+		level thread zm_audio::sndMusicSystem_PlayState("shadow_breach");
+	}
+	else
+	{
+		level zm_sphynx_util::start_zombie_spawning();
+	}
 }
 
 function random_unassigned_neighbor(node)

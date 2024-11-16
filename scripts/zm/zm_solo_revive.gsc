@@ -7,6 +7,8 @@
 #using scripts\shared\laststand_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
+#using scripts\shared\lui_shared;
+#using scripts\shared\music_shared;
 
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_audio;
@@ -15,6 +17,8 @@
 #using scripts\zm\_zm_score;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\zm_antiverse;
+#using scripts\zm\zm_ai_shadowpeople;
+#using scripts\Sphynx\_zm_sphynx_util;
 
 #insert scripts\shared\shared.gsh;
 #insert scripts\shared\version.gsh;
@@ -533,25 +537,42 @@ function wait_and_revive()
 	solo_revive_time = 10.0;
 
 	name = level.player_name_directive[self GetEntityNumber()];
-	self.revive_hud setText( &"ZOMBIE_REVIVING_SOLO", name );
-	self laststand::revive_hud_show_n_fade( solo_revive_time );
 
-	self flag::wait_till_timeout( solo_revive_time, #"solo_healing_grenade" );
+	self flag::wait_till_timeout( 5, #"solo_healing_grenade" );
 
 	if ( self flag::get( #"solo_healing_grenade" ) )
 	{
-		self laststand::revive_hud_show_n_fade( 1.0 );
 		self flag::clear( #"solo_healing_grenade" );
+		self.lives++;
+		self LUINotifyEvent(&"solo_lives_update", 1, self.lives);
+		self.waiting_to_revive = false;
+		level flag::clear( "wait_and_revive" );
+		level.wait_and_revive = false;
 	}
 	else
 	{
+		// If we haven't been healing grenade revived in the first 5 seconds, it's antiverse time!
+		if(level flag::get("dog_round"))
+		{
+			level thread zm_ai_shadowpeople::pause(true);
+		}
+		else
+		{
+			level thread zm_sphynx_util::stop_zombie_spawning();
+		}
+		level zm_audio::sndMusicSystem_StopAndFlush();
+		music::setmusicstate("none");
+		level.sndVoxOverride = true;
+		self util::show_hud(false);
+		self.prev_abbey_no_waypoints = self.abbey_no_waypoints;
+		self.abbey_no_waypoints = true;
+		self lui::screen_fade_out( 5, "black" );
 		self zm_laststand::auto_revive( self );
+		self.waiting_to_revive = false;
+		level flag::clear( "wait_and_revive" );
+		level.wait_and_revive = false;
 		self thread zm_antiverse::send_to_antiverse();
 	}
-	
-	self.waiting_to_revive = false;
-	level flag::clear( "wait_and_revive" );
-	level.wait_and_revive = false;
 }
 
 function testeroo()

@@ -207,7 +207,7 @@ function diedrich_think(isUpgraded, player)
 	{
 		playerslope = (player_min_damage - player_max_damage) / (player_splash_radius - 30);
 		playerdamage = playerslope * (playerdist - 30) + player_max_damage;
-		player DoDamage( playerdamage, player.origin + (0,0,20), player, player, "none", "MOD_EXPLOSIVE" ) ;
+		player DoDamage( playerdamage, player.origin + (0,0,20), player, player, "none", "MOD_EXPLOSIVE", 0, weapon ) ;
 	}
 
 	a_zombies = zombie_utility::get_round_enemy_array();
