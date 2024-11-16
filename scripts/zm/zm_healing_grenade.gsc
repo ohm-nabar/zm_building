@@ -56,6 +56,8 @@
 #using scripts\zm\_zm_weap_cymbal_monkey;
 #using scripts\shared\ai\zombie_utility;
 
+#using scripts\zm\zm_juggernog_potions;
+
 #precache ( "fx", "electric/fx_elec_sparks_burst_sm_physx_wind" );
 #precache ( "fx", "custom/healing_grenade" );
 
@@ -176,6 +178,7 @@ function players_check(grenade, reviver)
 			self flag::set(#"solo_healing_grenade");
 		}
 		self thread zm_laststand::remote_revive( reviver );
+		self zm_juggernog_potions::change_jug_resistance_level(true, 1);
 		for(i = 0; i < self.perksToGiveBack.size; i++)
         {
         	self zm_perks::give_perk(self.perksToGiveBack[i], false);

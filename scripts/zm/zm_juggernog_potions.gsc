@@ -134,21 +134,25 @@ function on_player_connect()
 
 function on_laststand()
 {
-	self endon("disconnect");
+	self change_jug_resistance_level(false, 1);
+}
 
-	if(self.jug_resistance_level <= 150)
+function change_jug_resistance_level(increment, amount)
+{
+	if(increment)
 	{
-		self.jug_resistance_level = 100;
-		self LUINotifyEvent(&"jug_hearts_update", 1, 0);
+		new_level = self.jug_resistance_level + (50 * amount);
+		self.jug_resistance_level = Int(Min(new_level, 250));
 	}
 	else
 	{
-		self.jug_resistance_level -= 50;
-		self LUINotifyEvent(&"jug_hearts_update", 1, (self.jug_resistance_level == 200 ? 2 : 1));
+		new_level = self.jug_resistance_level - (50 * amount);
+		self.jug_resistance_level = Int(Max(new_level, 100));
 	}
 
-	result = self util::waittill_any_return("player_revived", "bled_out");
-	
+	notify_val = Int((self.jug_resistance_level / 50) - 2);
+	self LUINotifyEvent(&"jug_hearts_update", 1, notify_val);
+
 	self.maxhealth = self.jug_resistance_level;
 	self SetMaxHealth( self.jug_resistance_level );
 	self.health = self.maxhealth;
@@ -211,11 +215,7 @@ function activator_think()
 			if ( player.sessionstate != "spectator" && ! player laststand::player_is_in_laststand() && IsAlive(player) && IsPlayer(player) && isdefined(player) )
 			{
 				player thread zm_perks::give_perk_presentation(PERK_JUGGERNOG);
-				player.jug_resistance_level = 250;
-				player.maxhealth = player.jug_resistance_level;
-				player SetMaxHealth( player.jug_resistance_level );
-				player.health = player.maxhealth;
-				player LUINotifyEvent(&"jug_hearts_update", 1, 3);
+				player change_jug_resistance_level(true, 3);
 			}
 			player perk_give_bottle_end( gun, bottle_weapon);
 		}
@@ -283,44 +283,6 @@ function fix_health_reset()
 			self.maxhealth = self.jug_resistance_level;
 			self SetMaxHealth( self.jug_resistance_level );
 			self.health = self.maxhealth;
-		}
-		wait(0.05);
-	}
-}
-
-function resistance_level_display()
-{
-	self endon( "disconnect" );
-
-	resistance = NewClientHudElem(self);
-	resistance.alignX = "left";
-	resistance.alignY = "bottom";
-	resistance.horzAlign = "fullscreen";
-	resistance.vertAlign = "fullscreen";
-	resistance.x = 6;
-	resistance.y = 441;
-	//resistance.fontscale = 1.3;
-	resistance.alpha = 1;
-	//resistance.color = (1,1,1);
-	resistance.hidewheninmenu = true;
-
-	while(true)
-	{
-		if(self.jug_resistance_level == 250)
-		{
-			resistance SetShader("jug_hearts_full", 50, 65);
-		}
-		else if(self.jug_resistance_level == 200)
-		{
-			resistance SetShader("jug_hearts_mid", 50, 65);
-		}
-		else if(self.jug_resistance_level == 150)
-		{
-			resistance SetShader("jug_hearts_low", 50, 65);
-		}
-		else
-		{
-			resistance SetShader("jug_hearts_no", 50, 65);
 		}
 		wait(0.05);
 	}
