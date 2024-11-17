@@ -118,6 +118,8 @@
 // Abbey Teleporter
 #using scripts\zm\zm_abbey_teleporter;
 
+#insert scripts\zm\_zm_perks.gsh;
+
 function main()
 {
 	//SetGametypeSetting("startRound", 12);
@@ -244,15 +246,15 @@ function check_for_change()//self = trigger
 
 function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType  )
 {
-	if (isPlayer( attacker ) && IS_TRUE(attacker.poseidon_damage_increase))
-	{
-		return damage * 2;
-	} 
-
     if (isPlayer( attacker ) && attacker.shadowDouble)
 	{
 		return Int(damage * 0.75);
-	} 
+	}
+
+	if(isPlayer(attacker) && attacker HasPerk(PERK_DEAD_SHOT) && zm_utility::is_headshot( weapon, sHitLoc, meansofdeath ))
+	{
+		return Int(damage * 1.5);
+	}
 
 	return -1;
 }

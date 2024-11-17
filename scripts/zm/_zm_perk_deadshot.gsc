@@ -63,6 +63,8 @@ function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags
 	{
 		attacker notify(#"deadshot_headshot_kill");
 	}
+
+	return false;
 }
 
 function enable_deadshot_perk_for_level()
