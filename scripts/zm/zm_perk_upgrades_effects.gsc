@@ -72,7 +72,6 @@ function on_player_connect()
 	self thread double_upgrade_effects();
 	self thread stamin_upgrade_effects();
 	self thread cherry_upgrade_effects();
-	self thread revive_upgrade_effects();
 	self thread mule_upgrade_effects();
 	//self.player_damage_override = &player_damage_override;
 }
@@ -197,35 +196,6 @@ function mule_upgrade_effects()
 	}
 }
 
-function revive_upgrade_effects()
-{
-	self endon("disconnect");
-	self.n_bleedout_time_multiplier = 1;
-
-	//testCounter = 0;
-	while(true)
-	{
-		if(self zm_perk_upgrades::IsPerkUpgradeActive(PERK_QUICK_REVIVE) && self.n_bleedout_time_multiplier != 1.33) 
-		{
-			self.n_bleedout_time_multiplier = 1.33;
-		}
-		if(! self zm_perk_upgrades::IsPerkUpgradeActive(PERK_QUICK_REVIVE) && self.n_bleedout_time_multiplier == 1.33)
-		{
-			self.n_bleedout_time_multiplier = 1;
-		}
-
-		/*
-		if(testCounter % 100 == 0)
-		{
-			IPrintLn("Bleedout timer: ");
-			IPrintLn(self.n_bleedout_time_multiplier);
-		}
-		testCounter++;
-		//*/
-		wait(0.05);
-	}
-}
-
 function mule_third_gun_hud()
 {
 	self endon("disconnect");
@@ -276,17 +246,4 @@ function on_laststand()
 	{
 		self.hasGivenGunBack = false;
 	}
-
- 	if(self zm_perk_upgrades::IsPerkUpgradeActive(PERK_QUICK_REVIVE) && GetPlayers().size == 1)
- 	{
- 		self waittill("player_revived");
- 		self EnableInvulnerability();
-		for(i = 0; i < 100; i++)
-		{
-			self.ignoreme = true;
-			wait(0.05);
-		}
-		self.ignoreme = false;
-		self DisableInvulnerability();
- 	}
 }
