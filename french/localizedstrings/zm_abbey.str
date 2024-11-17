@@ -243,10 +243,7 @@ REFERENCE           	CHALLENGE_QUICK
 LANG_FRENCH       "Obtain kills while on low health"
 
 REFERENCE           	CHALLENGE_QUICK_REWARD
-LANG_FRENCH       "Reward: 33% longer bleedout time"
-
-REFERENCE           	CHALLENGE_QUICK_REWARD_SOLO
-LANG_FRENCH       "Reward: Brief invincibility post self-revive"
+LANG_FRENCH       "Reward: Health regen cannot be interrupted"
 
 REFERENCE           	CHALLENGE_PHD
 LANG_FRENCH       "Obtain kills using PhD slides"

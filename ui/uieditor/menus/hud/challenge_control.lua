@@ -290,18 +290,6 @@ function CoD.ChallengeControl.new(HudRef, InstanceRef)
     QuickProgressText:setAlpha(0.9)
     QuickProgressText:setRGB(1, 0, 0)
 
-    local function QuickRewardUpdate(ModelRef)
-        local NotifyData = Engine.GetModelValue(ModelRef)
-        if NotifyData then
-            if NotifyData == 1 then
-                QuickRewardText:setText(Engine.Localize("ZM_ABBEY_CHALLENGE_QUICK_REWARD_SOLO"))
-            else
-                QuickRewardText:setText(Engine.Localize("ZM_ABBEY_CHALLENGE_QUICK_REWARD"))
-            end
-        end
-    end
-    QuickRewardText:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "quickReward"), QuickRewardUpdate)
-
     local PHDIcon = LUI.UIImage.new()
     PHDIcon:setLeftRight(true, false, 506, 566)
     PHDIcon:setTopBottom(true, false, 218, 278)

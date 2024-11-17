@@ -243,10 +243,7 @@ REFERENCE           	CHALLENGE_QUICK
 LANG_ENGLISH_ARABIC       "Obtain kills while on low health"
 
 REFERENCE           	CHALLENGE_QUICK_REWARD
-LANG_ENGLISH_ARABIC       "Reward: 33% longer bleedout time"
-
-REFERENCE           	CHALLENGE_QUICK_REWARD_SOLO
-LANG_ENGLISH_ARABIC       "Reward: Brief invincibility post self-revive"
+LANG_ENGLISH_ARABIC       "Reward: Health regen cannot be interrupted"
 
 REFERENCE           	CHALLENGE_PHD
 LANG_ENGLISH_ARABIC       "Obtain kills using PhD slides"

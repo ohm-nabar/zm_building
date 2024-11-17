@@ -88,7 +88,6 @@ function __init__()
 	clientfield::register( "clientuimodel", "quickUpdate", VERSION_SHIP, 4, "int" );
 	clientfield::register( "clientuimodel", "PHDUpdate", VERSION_SHIP, 4, "int" );
 	clientfield::register( "clientuimodel", "deadshotUpdate", VERSION_SHIP, 4, "int" );
-	clientfield::register( "clientuimodel", "quickReward", VERSION_SHIP, 1, "int" );
 	
 	level.challenge_fontscale = 1;
 	level.notify_fontscale = 2.2;
@@ -176,7 +175,7 @@ function on_player_spawned()
 	self thread PHD_challenge_hud();
 	self thread poseidon_challenge_hud();
 	self thread deadshot_challenge_hud();
-	self thread quick_reward_text();
+	//self thread quick_reward_text();
 	/*
 	self thread quest_challenge_hud();
 	self thread solo_challenge_hud();

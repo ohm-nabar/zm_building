@@ -243,10 +243,7 @@ REFERENCE           	CHALLENGE_QUICK
 LANG_GERMAN       "Obtain kills while on low health"
 
 REFERENCE           	CHALLENGE_QUICK_REWARD
-LANG_GERMAN       "Reward: 33% longer bleedout time"
-
-REFERENCE           	CHALLENGE_QUICK_REWARD_SOLO
-LANG_GERMAN       "Reward: Brief invincibility post self-revive"
+LANG_GERMAN      "Reward: Health regen cannot be interrupted"
 
 REFERENCE           	CHALLENGE_PHD
 LANG_GERMAN       "Obtain kills using PhD slides"

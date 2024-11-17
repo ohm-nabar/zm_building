@@ -96,6 +96,7 @@
 #using scripts\zm\zm_blueprints;
 #using scripts\zm\zm_solo_revive;
 #using scripts\zm\zm_antiverse;
+#using scripts\zm\zm_abbey_quick_revive;
 
 // NOVA
 #using scripts\shared\spawner_shared;
@@ -169,8 +170,9 @@ function main()
 	level thread zm_abbey_boss::main();
 	level thread zm_revive_icon::main();
 	level thread zm_solo_revive::main();
-	level thread zm_antiverse::main();
 	level thread zm_no_hud::main();
+	level thread zm_antiverse::main();
+	level thread zm_abbey_quick_revive::main();
 	
 	level thread zm_castle_vox();
 	level._zombie_custom_add_weapons =&custom_add_weapons;
