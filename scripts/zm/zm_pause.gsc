@@ -57,6 +57,7 @@
 #using scripts\zm\_zm_laststand;
 #using scripts\zm\_zm_bgb;
 #using scripts\zm\zm_abbey_inventory;
+#using scripts\zm\zm_ai_shadowpeople;
 
 #insert scripts\zm\_zm_perks.gsh;
 #insert scripts\shared\archetype_shared\archetype_shared.gsh;
@@ -247,11 +248,15 @@ function should_pause()
 	{
 		wants_pause_change = (IsWorldPaused() ? ! level.wants_pause : level.wants_pause);
 		
-		if( wants_pause_change && ( ( ! level.in_shadow_spawn_sequence && ! level.bloodgun_active && ! level.in_unpausable_ee_sequence) || IsWorldPaused() ) ) 
+		if( wants_pause_change && ( ! level.in_unpausable_ee_sequence || IsWorldPaused() ) ) 
 		{
 			if( IsWorldPaused() ) 
 			{
 				//IPrintLn("unpausing");
+				if(level flag::get("dog_round"))
+				{
+					zm_ai_shadowpeople::unpause();
+				}
 				level.is_coop_paused = false;
 				foreach(player in level.players) {
 					player SetMoveSpeedScale( player.prevMoveSpeedScale );
@@ -282,7 +287,11 @@ function should_pause()
 			else
 			{
 				//IPrintLn("pausing");
-				
+				if(level flag::get("dog_round"))
+				{
+					zm_ai_shadowpeople::pause();
+				}
+
 				level.is_coop_paused = true;
 				foreach(player in level.players)
 				{
@@ -330,7 +339,7 @@ function can_pause()
 	self LUINotifyEvent(&"abbey_pause_available", 1, 0);
 	while(true) 
 	{
-		pause_condition = ( ! level.in_shadow_spawn_sequence && zm_utility::is_player_valid(self) && ! level.bloodgun_active && ! level.in_unpausable_ee_sequence ) || IsWorldPaused();
+		pause_condition = ( zm_utility::is_player_valid(self) && ! self.isInBloodMode && ! level.in_unpausable_ee_sequence ) || IsWorldPaused();
 		if( pause_condition && !can_pause ) 
 		{
 			//IPrintLn("can pause!");
