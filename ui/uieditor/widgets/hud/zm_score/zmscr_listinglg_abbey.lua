@@ -56,7 +56,7 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 
 	local livesWidget = CoD.SoloLives.new(HudRef, InstanceRef)
 	livesWidget:setLeftRight(true, false, 102, 145)
-    livesWidget:setTopBottom(true, false, 45, 88)
+    livesWidget:setTopBottom(true, false, 44, 87)
 	Elem:addElement(livesWidget)
 	Elem.LivesWidget = livesWidget
 
