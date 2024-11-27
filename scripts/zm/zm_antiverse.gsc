@@ -42,8 +42,8 @@ function main()
 	level.antiverse_loadout.a_perks = [];
 	level.antiverse_loadout.a_disabled_perks = [];
 	level.antiverse_loadout.a_additional_primary_weapons_lost = false;
-	level.antiverse_spawn_points = GetEntArray("shadow_maze_spawn", "targetname");
-	level.antiverse_end_points = array::sort_by_script_int(GetEntArray("shadow_maze_end", "targetname"), true);
+	level.antiverse_spawn_points = struct::get_array("shadow_maze_spawn", "targetname");
+	level.antiverse_end_points = array::sort_by_script_int(struct::get_array("shadow_maze_end", "targetname"), true);
 	create_walls();
 	create_nodes();
 	create_edges();
