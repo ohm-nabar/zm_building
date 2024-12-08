@@ -15,6 +15,8 @@
 #insert scripts\zm\zm_flashlight.gsh;
 
 #precache("client_fx", "custom/flashlight/flashlight_loop");
+#precache("client_fx", "custom/flashlight/flashlight_loop_75");
+#precache("client_fx", "custom/flashlight/flashlight_loop_50");
 #precache("client_fx", "custom/flashlight/flashlight_loop_world");
 #precache("client_fx", "custom/flashlight/flashlight_uv_loop");
 #precache("client_fx", "custom/flashlight/flashlight_uv_loop_world");
@@ -33,6 +35,8 @@ function __init__()
 function fx_init()
 {
 	level._effect["flashlight_fx_loop_view"] = "custom/flashlight/flashlight_loop";
+	level._effect["flashlight_fx_loop_view_75"] = "custom/flashlight/flashlight_loop_75";
+	level._effect["flashlight_fx_loop_view_50"] = "custom/flashlight/flashlight_loop_50";
 	level._effect["flashlight_fx_loop_view_moths"] = "custom/flashlight/flashlight_loop_view_moths";
 	level._effect["flashlight_fx_loop_world"] = "custom/flashlight/flashlight_loop_world";
 	level._effect["flashlight_fx_uv_loop_view"] = "custom/flashlight/flashlight_uv_loop";
@@ -95,7 +99,27 @@ function flashlight_fx_view(localClientNum, oldVal, newVal, bNewEnt, bInitialSna
 			KillFx(localClientNum, self.fx_flashlight_moth);
 		}
 
-		flash_fx_view = level._effect["flashlight_fx_uv_loop_view"];
+		flash_fx_view = level._effect["flashlight_fx_loop_view_75"];
+		self.fx_flashlight_view = PlayViewmodelFx(localclientnum, flash_fx_view, FLASHLIGHT_VIEW_FX_TAG);
+
+		flash_fx_moth = level._effect["flashlight_fx_loop_view_moths"];
+		self.fx_flashlight_moth = PlayFxOnTag(localClientNum, flash_fx_moth, self, "j_spine4");
+
+		PlaySound(localClientNum, "1_flashlight_click", self.origin);
+	}
+	else if(newVal == 3)
+	{
+		if(IsDefined(self.fx_flashlight_view))
+		{
+			KillFx(localClientNum, self.fx_flashlight_view);
+		}
+
+		if(IsDefined(self.fx_flashlight_moth))
+		{
+			KillFx(localClientNum, self.fx_flashlight_moth);
+		}
+
+		flash_fx_view = level._effect["flashlight_fx_loop_view_50"];
 		self.fx_flashlight_view = PlayViewmodelFx(localclientnum, flash_fx_view, FLASHLIGHT_VIEW_FX_TAG);
 
 		flash_fx_moth = level._effect["flashlight_fx_loop_view_moths"];

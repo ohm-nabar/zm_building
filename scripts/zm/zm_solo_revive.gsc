@@ -43,6 +43,7 @@ function on_player_connect()
 {
 	if (self IsHost())
 	{
+		self.antiverse_skip = false;
 		self thread set_lives();
 		//self thread testeroo();
 	}
@@ -94,7 +95,7 @@ function player_laststand( eInflictor, attacker, iDamage, sMeansOfDeath, weapon,
 	players = GetPlayers();
 	if ( players.size == 1 && level flag::get( "solo_game" ) )
 	{
-		if ( self.lives > 0 )
+		if ( self.lives > 0 && ! self.antiverse_skip )
 		{
 			self thread wait_and_revive();
 		}
@@ -421,7 +422,7 @@ function player_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeans
 	
 	if( count < players.size || (isDefined(level._game_module_game_end_check) && ![[level._game_module_game_end_check]]()) )
 	{
-		if ( IsDefined( self.lives ) && self.lives > 0 && IS_TRUE( level.force_solo_quick_revive ) )
+		if ( IsDefined( self.lives ) && self.lives > 0 && IS_TRUE( level.force_solo_quick_revive ) && ! IS_TRUE( self.antiverse_skip ) )
 		{
 			self thread wait_and_revive();
 		}
@@ -439,7 +440,7 @@ function player_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeans
 		{
 			return finalDamage;
 		}
-		else if ( self.lives == 0 )
+		else if ( self.lives == 0 || self.antiverse_skip )
 		{
 			self.intermission = true;
 		}
@@ -449,7 +450,7 @@ function player_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeans
 	// when it wasn't. This led to SREs about undefined and int being compared on death (self.lives was never defined on the host). While
 	// adding the check for the solo game flag we found that we would have to create a complex OR inside of the if check below. By breaking
 	// the conditions out in to their own variables we keep the complexity without making it look like a mess.
-	solo_death = ( players.size == 1 && level flag::get( "solo_game" ) && self.lives == 0 ); // there is only one player AND the flag is set AND self.lives equals 0
+	solo_death = ( players.size == 1 && level flag::get( "solo_game" ) && ( self.lives == 0 || self.antiverse_skip ) ); // there is only one player AND the flag is set AND self.lives equals 0
 	non_solo_death = ( ( count > 1 || ( players.size == 1 && !level flag::get( "solo_game" ) ) ) /*&& !level.is_zombie_level*/ ); // the player size is greater than one OR ( players.size equals 1 AND solo flag isn't set ) AND not a zombify game level
 	if ( (solo_death || non_solo_death) && !IS_TRUE(level.no_end_game_check ) ) // if only one player on their last life or any game that started with more than one player
 	{	
@@ -473,7 +474,7 @@ function player_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeans
 	{
 		if ( players.size == 1 && level flag::get( "solo_game" ))
 		{
-			if ( self.lives == 0 ) // && !self laststand::player_is_in_laststand()
+			if ( self.lives == 0 || self.antiverse_skip ) // && !self laststand::player_is_in_laststand()
 			{
 				level notify("pre_end_game");
 				util::wait_network_frame();

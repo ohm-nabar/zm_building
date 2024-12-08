@@ -22,7 +22,7 @@
 
 #using scripts\zm\zm_ai_shadowpeople;
 #using scripts\Sphynx\_zm_sphynx_util;
-
+#using scripts\zm\zm_flashlight;
 
 #insert scripts\shared\version.gsh;
 #insert scripts\shared\shared.gsh;
@@ -141,6 +141,7 @@ function player_maze_setup(origin, angles)
 	self visionset_mgr::activate("visionset", "abbey_shadow", self);
 	
 	self PlaySoundToPlayer("1_flashlight_click", self);
+	self zm_flashlight::flashlight_state(1);
 	if(self.startingpistol != level.start_weapon)
 	{
 		level.antiverse_loadout.a_all_weapons[0] = zm_weapons::get_default_weapondata(self.startingpistol);
@@ -160,9 +161,37 @@ function player_maze_setup(origin, angles)
 
 function player_finish_monitor()
 {
-	while (DistanceSquared(self.origin, level.antiverse_end.origin) > 40000)
+	timer = 0;
+	flashlight_75 = false;
+	flashlight_50 = false;
+	while (DistanceSquared(self.origin, level.antiverse_end.origin) > 40000 && timer <= 1200)
 	{
-		wait(1.5);
+		if(timer > 1000 && ! flashlight_50)
+		{
+			flashlight_50 = true;
+			self zm_flashlight::flashlight_state(3);
+		}
+		else if(timer > 600 && ! flashlight_75)
+		{
+			flashlight_75 = true;
+			self zm_flashlight::flashlight_state(2);
+		}
+
+		timer += 1;
+		wait(0.05);
+	}
+	
+	if(timer > 1200)
+	{
+		self.antiverse_skip = true;
+		self FreezeControls(true);
+		self zm_flashlight::flashlight_state(0);
+		wait(0.75);
+		self lui::screen_fade_out( 0.75, "black" );
+		self Kill();
+		wait(8);
+		self lui::screen_fade_in( 0.1, "black" );
+		return;
 	}
 
 	level thread antiverse_reset();
