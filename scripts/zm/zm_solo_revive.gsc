@@ -568,11 +568,14 @@ function wait_and_revive()
 		self.prev_abbey_no_waypoints = self.abbey_no_waypoints;
 		self.abbey_no_waypoints = true;
 		self lui::screen_fade_out( 5, "black" );
+		self EnableInvulnerability();
 		self zm_laststand::auto_revive( self );
 		self.waiting_to_revive = false;
 		level flag::clear( "wait_and_revive" );
 		level.wait_and_revive = false;
 		self thread zm_antiverse::send_to_antiverse();
+		wait(2);
+		self DisableInvulnerability();
 	}
 }
 
