@@ -13,6 +13,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local TrialTextWidth = 450
     local PBWidth = 125
     local GumWidth = 50
+    local QuantityWidth = 20
     local TextWidth = 150
     local DividerWidth = 962
 
@@ -21,6 +22,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local TrialTextStartX = 256
     local PBStartX = IconStartX + IconWidth - 5
     local GumStartX = PBStartX + PBWidth - 4
+    local QuantityStartX = GumStartX + GumWidth - 7 -- (0.42 * getTextWidth) - 13.68
     local TextStartX = GumStartX + (GumWidth / 2) - (TextWidth / 2)
     local XOffset = PBWidth + GumWidth - 6
     local DividerStartX = 0
@@ -30,6 +32,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local TrialTextHeight = NameTextHeight
     local PBHeight = 5
     local GumHeight = GumWidth
+    local QuantityHeight = 18
     local TextHeight = 17
     local DividerHeight = 1
 
@@ -38,6 +41,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local TrialTextStartY = NameTextStartY
     local PBStartY = IconStartY + (IconHeight / 3)
     local GumStartY = PBStartY + (PBHeight / 2) - (GumHeight / 2)
+    local QuantityStartY = GumStartY - 5
     local TextStartY = GumStartY + GumHeight + 1
     local DividerStartY = TextStartY + TextHeight + 1
     local YOffset = 95
@@ -47,6 +51,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local TrialTextTable = {}
     local PBTable = {}
     local GumTable = {}
+    local QuantityTable = {}
     local TextTable = {}
     local DividerTable = {}
 
@@ -77,6 +82,9 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
 
         local GumTop = GumStartY + (YOffset * (i - 1))
         local GumBottom = GumTop + GumHeight
+
+        local QuantityTop = QuantityStartY + (YOffset * (i - 1))
+        local QuantityBottom = QuantityTop + QuantityHeight
 
         local TextTop = TextStartY + (YOffset * (i - 1))
         local TextBottom = TextTop + TextHeight
@@ -112,6 +120,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
         TrialTextTable[i] = TrialText
         PBTable[i] = {}
         GumTable[i] = {}
+        QuantityTable[i] = {}
         TextTable[i] = {}
         DividerTable[i] = Divider
 
@@ -154,6 +163,22 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             TrialControl:addElement(PBTable[i][j])
             TrialControl:addElement(GumTable[i][j])
             TrialControl:addElement(TextTable[i][j])
+
+            if j < 5 then
+                local QuantityLeft = QuantityStartX + (XOffset * (j - 1))
+                local QuantityRight = QuantityLeft + QuantityWidth
+
+                local Quantity = LUI.UIText.new()
+                Quantity:setAlignment(Enum.LUIAlignment.LUI_ALIGNMENT_CENTER)
+                Quantity:setLeftRight(true, false, QuantityLeft, QuantityRight)
+                Quantity:setTopBottom(true, false, QuantityTop, QuantityBottom)
+                Quantity:setRGB(1, 1, 1)
+                Quantity:setText("99")
+                
+                QuantityTable[i][j] = Quantity
+
+                TrialControl:addElement(QuantityTable[i][j])
+            end
         end
     end
 
@@ -171,6 +196,105 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     TrialTextTable[2]:setText("Trial: Obtain Headshot Kills")
     TrialTextTable[3]:setText("Trial: Obtain Melee Kills")
     TrialTextTable[4]:setText("Trial: Obtain Kills in the Middle Pilgrimage Stairs (New Trial in 5 Rounds)")
+
+    local Tier1GumLookup = {"t7_hud_zm_bgb_stock_option", "t7_hud_zm_bgb_sword_flay", "t7_hud_zm_bgb_temporal_gift", "t7_hud_zm_bgb_in_plain_sight", "t7_hud_zm_bgb_im_feelin_lucky"}
+    local Tier2GumLookup = {"t7_hud_zm_bgb_immolation_liquidation", "t7_hud_zm_bgb_pop_shocks", "t7_hud_zm_bgb_cache_back", "t7_hud_zm_bgb_wall_power", "t7_hud_zm_bgb_crate_power", "t7_hud_zm_bgb_alchemical_antithesis", "t7_hud_zm_bgb_extra_credit"}
+    local Tier3GumLookup = {"t7_hud_zm_bgb_on_the_house", "t7_hud_zm_bgb_unquenchable", "t7_hud_zm_bgb_head_drama", "t7_hud_zm_bgb_reign_drops"}
+    local TierGumLookup = {Tier1GumLookup, Tier2GumLookup, Tier3GumLookup}
+
+    local Tier1TextLookup = {"ZM_ABBEY_BGB_STOCK_OPTION", "ZM_ABBEY_BGB_SWORD_FLAY", "ZM_ABBEY_BGB_TEMPORAL_GIFT", "ZM_ABBEY_BGB_IN_PLAIN_SIGHT", "ZM_ABBEY_BGB_IM_FEELIN_LUCKY"}
+    local Tier2TextLookup = {"ZM_ABBEY_BGB_IMMOLATION_LIQUIDATION", "ZM_ABBEY_BGB_POP_SHOCKS", "ZM_ABBEY_BGB_CACHE_BACK", "ZM_ABBEY_BGB_WALL_POWER", "ZM_ABBEY_BGB_CRATE_POWER", "ZM_ABBEY_BGB_ALCHEMICAL_ANTITHESIS", "ZM_ABBEY_BGB_EXTRA_CREDIT"}
+    local Tier3TextLookup = {"ZM_ABBEY_BGB_ON_THE_HOUSE", "ZM_ABBEY_BGB_UNQUENCHABLE", "ZM_ABBEY_BGB_HEAD_DRAMA", "ZM_ABBEY_BGB_REIGN_DROPS"}
+    local TierTextLookup = {Tier1TextLookup, Tier2TextLookup, Tier3TextLookup}
+
+    for i=1,#TierGumLookup do
+        for j=1,#TierGumLookup[i] do
+            TierGumLookup[i][j] = RegisterImage(TierGumLookup[i][j])
+            TierTextLookup[i][j] = Engine.Localize(TierTextLookup[i][j])
+        end
+    end
+
+    local Tier1Gum = { GumTable[1][1], GumTable[1][2], GumTable[1][3], GumTable[2][1], GumTable[3][1] }
+    local Tier2Gum = { GumTable[1][4], GumTable[2][2], GumTable[2][3], GumTable[3][2], GumTable[3][3], GumTable[4][1], GumTable[4][2] }
+    local Tier3Gum = { GumTable[2][4], GumTable[3][4], GumTable[4][3], GumTable[4][4] }
+    local TierGum = {Tier1Gum, Tier2Gum, Tier3Gum}
+
+    local Tier1Text = { TextTable[1][1], TextTable[1][2], TextTable[1][3], TextTable[2][1], TextTable[3][1] }
+    local Tier2Text = { TextTable[1][4], TextTable[2][2], TextTable[2][3], TextTable[3][2], TextTable[3][3], TextTable[4][1], TextTable[4][2] }
+    local Tier3Text = { TextTable[2][4], TextTable[3][4], TextTable[4][3], TextTable[4][4] }
+    local TierText = {Tier1Text, Tier2Text, Tier3Text}
+
+    local Tier1Quantity = { QuantityTable[1][1], QuantityTable[1][2], QuantityTable[1][3], QuantityTable[2][1], QuantityTable[3][1] }
+    local Tier2Quantity = { QuantityTable[1][4], QuantityTable[2][2], QuantityTable[2][3], QuantityTable[3][2], QuantityTable[3][3], QuantityTable[4][1], QuantityTable[4][2] }
+    local Tier3Quantity = { QuantityTable[2][4], QuantityTable[3][4], QuantityTable[4][3], QuantityTable[4][4] }
+    local TierQuantity = {Tier1Quantity, Tier2Quantity, Tier3Quantity}
+    
+    local function SetQuantityLR(i, j)
+        local QuantityLeft = GumStartX + GumWidth + (0.42 * QuantityTable[i][j]:getTextWidth()) - 13.68 + (XOffset * (j - 1))
+        local QuantityRight = QuantityLeft + QuantityWidth
+        QuantityTable[i][j]:setLeftRight(true, false, QuantityLeft, QuantityRight)
+    end
+
+    local function SetGum(Factoradic, Tier)
+        local PermTable = {}
+
+        local N = #TierGum[Tier]
+        local Quotient = Factoradic
+
+        for i=1,N do
+            local TableIndex = (N - i) + 1
+            PermTable[TableIndex] = Quotient % i
+            Quotient = math.floor(Quotient / i)
+        end
+
+        for i=1,(N-1) do
+            local TableIndex = N - i
+            for j=(TableIndex+1),N do
+                if PermTable[j] >= PermTable[TableIndex] then
+                    PermTable[j] = PermTable[j] + 1
+                end
+            end
+        end
+
+        for i=1,N do
+            local TableVal = PermTable[i] + 1
+            TierGum[Tier][i]:setImage(TierGumLookup[Tier][TableVal])
+            TierText[Tier][i]:setText(TierTextLookup[Tier][TableVal])
+            TierQuantity[Tier][i]:setText("0")
+            TierQuantity[Tier][i]:setRGB(1, 0, 0)
+        end
+
+        for i=1,4 do
+            for j =1,4 do
+                SetQuantityLR(i, j)
+            end
+        end
+    end
+    
+    local function SetTier1Gum(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData and NotifyData >= 0 then
+            SetGum(NotifyData, 1)
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.tier1"), SetTier1Gum)
+    
+    local function SetTier2Gum(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        
+        if NotifyData and NotifyData >= 0 then
+            SetGum(NotifyData, 2)
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.tier2"), SetTier2Gum)
+
+    local function SetTier3Gum(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData and NotifyData >= 0 then
+            SetGum(NotifyData, 3)
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.tier3"), SetTier3Gum)
     
     return TrialControl
 end

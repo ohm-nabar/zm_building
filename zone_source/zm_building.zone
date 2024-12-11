@@ -315,7 +315,7 @@ rawfile,ui/uieditor/widgets/hud/abbey_notification.lua
 rawfile,ui/uieditor/widgets/hud/trial_upgrade_text.lua
 rawfile,ui/uieditor/widgets/hud/shadow_perks.lua
 rawfile,ui/uieditor/widgets/hud/blood_vial.lua
-rawfile,ui/SubscriptionUtils.lua
+rawfile,ui/UIModelUtils.lua
 image,scroll_bg
 
 // T7 Overcharged

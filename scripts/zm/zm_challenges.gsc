@@ -101,7 +101,9 @@ REGISTER_SYSTEM( "zm_challenges", &__init__, undefined )
 
 function __init__()
 {
-	clientfield::register( "clientuimodel", "trialProgress", VERSION_SHIP, 5, "float" );
+	clientfield::register( "toplayer", "trials.tier1", VERSION_SHIP, 7, "int" );
+	clientfield::register( "toplayer", "trials.tier2", VERSION_SHIP, 13, "int" );
+	clientfield::register( "toplayer", "trials.tier3", VERSION_SHIP, 5, "int" );
 	clientfield::register( "clientuimodel", "trialReward", VERSION_SHIP, 2, "int" );
 	clientfield::register( "clientuimodel", "trialTimer", VERSION_SHIP, 2, "int" );
 	clientfield::register( "clientuimodel", "trialName", VERSION_SHIP, 6, "int" );
@@ -110,6 +112,28 @@ function __init__()
 	clientfield::register( "clientuimodel", "teamChallengeUpdate", VERSION_SHIP, 13, "int" );
 	clientfield::register( "clientuimodel", "teamQueueUpdate", VERSION_SHIP, 2, "int" );
 	*/
+
+	level.gg_tier1 = [];
+	array::add(level.gg_tier1, "zm_bgb_stock_option");
+	array::add(level.gg_tier1, "zm_bgb_sword_flay");
+	array::add(level.gg_tier1, "zm_bgb_temporal_gift");
+	array::add(level.gg_tier1, "zm_bgb_in_plain_sight");
+	array::add(level.gg_tier1, "zm_bgb_im_feelin_lucky");
+
+	level.gg_tier2 = [];
+	array::add(level.gg_tier2, "zm_bgb_immolation_liquidation");
+	array::add(level.gg_tier2, "zm_bgb_pop_shocks");
+	array::add(level.gg_tier2, "zm_bgb_cache_back");
+	array::add(level.gg_tier2, "zm_bgb_wall_power");
+	array::add(level.gg_tier2, "zm_bgb_crate_power");
+	array::add(level.gg_tier2, "zm_bgb_alchemical_antithesis");
+	array::add(level.gg_tier2, "zm_bgb_extra_credit");
+
+	level.gg_tier3 = [];
+	array::add(level.gg_tier3, "zm_bgb_on_the_house");
+	array::add(level.gg_tier3, "zm_bgb_unquenchable");
+	array::add(level.gg_tier3, "zm_bgb_head_drama");
+	array::add(level.gg_tier3, "zm_bgb_reign_drops");
 
 	level.reward_trig1 = GetEnt("reward_trig1", "targetname");
 	level.reward_trig2 = GetEnt("reward_trig2", "targetname");
@@ -146,10 +170,10 @@ function __init__()
 
 	level.divinium_trial_funcs = [];
 	//level.divinium_trial_funcs[level.divinium_trial_funcs.size] = &headshot_challenge_hub;
-	//level.divinium_trial_funcs[level.divinium_trial_funcs.size] = &wallbuy_challenge_hub;
+	level.divinium_trial_funcs[level.divinium_trial_funcs.size] = &wallbuy_challenge_hub;
 	//level.divinium_trial_funcs[level.divinium_trial_funcs.size] = &box_challenge_hub;
-	level.divinium_trial_funcs[level.divinium_trial_funcs.size] = &room_time_challenge_hub;
-	level.divinium_trial_funcs[level.divinium_trial_funcs.size] = &room_kills_challenge_hub;
+	//level.divinium_trial_funcs[level.divinium_trial_funcs.size] = &room_time_challenge_hub;
+	//level.divinium_trial_funcs[level.divinium_trial_funcs.size] = &room_kills_challenge_hub;
 	//level.divinium_trial_funcs[level.divinium_trial_funcs.size] = &class_challenge_hub;
 	//level.divinium_trial_funcs[level.divinium_trial_funcs.size] = &elevation_challenge_hub;
 
@@ -213,6 +237,8 @@ function on_player_connect()
 	level.reward_trig3 SetHintStringForPlayer(self, &"ZM_ABBEY_EMPTY");
 	level.reward_trig4 SetHintStringForPlayer(self, &"ZM_ABBEY_EMPTY");
 
+	self setup_gum_rewards();
+
 	self.trial_progress = 0;
 	self LUINotifyEvent(&"trial_upgrade_text_show", 1, 0);
 	self thread monitor_divinium_trial_reward();
@@ -220,6 +246,138 @@ function on_player_connect()
 	//self thread monitor_solo_challenge();
 	//self thread testerootoo();
 	//self thread monitor_solo_challenge_gun();
+}
+
+function setup_gum_rewards()
+{
+	tier1_indices = level tier_indices_init(level.gg_tier1);
+	tier2_indices = level tier_indices_init(level.gg_tier2);
+	tier3_indices = level tier_indices_init(level.gg_tier3);
+
+	// Ensure Sword Flay is not in Aramis (hardcoded)
+	for(i = 0; i < 3; i++)
+	{
+		if(tier1_indices[i] == 1)
+		{
+			swap_index = RandomIntRange(3, 5);
+			temp = tier1_indices[i];
+			tier1_indices[i] = tier1_indices[swap_index];
+			tier1_indices[swap_index] = temp;
+			break;
+		}
+	}
+
+	self assign_gargoyle_gums(tier1_indices, tier2_indices, tier3_indices);
+
+	tier1_factoradic = level factoradic(tier1_indices);
+	tier2_factoradic = level factoradic(tier2_indices);
+	tier3_factoradic = level factoradic(tier3_indices);
+
+	self clientfield::set_to_player("trials.tier1", tier1_factoradic);
+	self clientfield::set_to_player("trials.tier2", tier2_factoradic);
+	self clientfield::set_to_player("trials.tier3", tier3_factoradic);
+}
+
+function tier_indices_init(ref)
+{
+	indices = [];
+
+	for(i = 0; i < ref.size; i++)
+	{
+		indices[i] = i;
+	}
+
+	return array::randomize(indices);
+}
+
+function assign_gargoyle_gums(tier1_indices, tier2_indices, tier3_indices)
+{
+	self.aramis_gums = [];
+	self.porthos_gums = [];
+	self.dart_gums = [];
+	self.athos_gums = [];
+
+	tier1_gums = tier_gums_init(tier1_indices, level.gg_tier1);
+	tier2_gums = tier_gums_init(tier2_indices, level.gg_tier2);
+	tier3_gums = tier_gums_init(tier3_indices, level.gg_tier3);
+
+	// this is very hardcoded, in the unlikely event of a refactor you gotta change this
+	array::add(self.aramis_gums, tier1_gums[0]);
+	array::add(self.aramis_gums, tier1_gums[1]);
+	array::add(self.aramis_gums, tier1_gums[2]);
+	array::add(self.aramis_gums, tier2_gums[0]);
+
+	array::add(self.porthos_gums, tier1_gums[3]);
+	array::add(self.porthos_gums, tier2_gums[1]);
+	array::add(self.porthos_gums, tier2_gums[2]);
+	array::add(self.porthos_gums, tier3_gums[0]);
+
+	array::add(self.dart_gums, tier1_gums[4]);
+	array::add(self.dart_gums, tier2_gums[3]);
+	array::add(self.dart_gums, tier2_gums[4]);
+	array::add(self.dart_gums, tier3_gums[1]);
+
+	array::add(self.athos_gums, tier2_gums[5]);
+	array::add(self.athos_gums, tier2_gums[6]);
+	array::add(self.athos_gums, tier3_gums[2]);
+	array::add(self.athos_gums, tier3_gums[3]);
+}
+
+function tier_gums_init(indices, ref)
+{
+	gums = [];
+
+	for(i = 0; i < indices.size; i++)
+	{
+		gums[i] = ref[indices[i]];
+	}
+
+	return gums;
+}
+
+function factoradic(arr)
+{
+	lehmer_encode(arr);
+	factoradic = 0;
+
+	for(i = 0; i < arr.size - 1; i++)
+	{
+		factoradic += (factorial(arr.size - i - 1) * arr[i]);
+	}
+
+	return factoradic;
+}
+
+function lehmer_encode(&arr)
+{
+	for(i = 0; i < arr.size; i++)
+	{
+		for(j = i + 1; j < arr.size; j++)
+		{
+			if(arr[j] > arr[i])
+			{
+				arr[j] = arr[j] - 1;
+			}
+		}
+	}
+
+	return arr;
+}
+
+function factorial(n)
+{
+	if(n == 0)
+	{
+		return 1;
+	}
+
+	fact = 1;
+	for(i = 1; i <= n; i++)
+	{
+		fact *= i;
+	}
+
+	return fact;
 }
 
 function trial_prices_set()
@@ -291,7 +449,6 @@ function monitor_divinium_trial_reward()
 		if(prev_progress != self.trial_progress)
 		{
 			prev_progress = self.trial_progress;
-			self clientfield::set_player_uimodel("trialProgress", self.trial_progress / TRIAL_GOAL);
 		}
 		
 		//IPrintLn(self.trial_progress / TRIAL_GOAL);

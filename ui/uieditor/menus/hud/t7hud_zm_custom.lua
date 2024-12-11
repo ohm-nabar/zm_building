@@ -23,6 +23,7 @@ require("ui.uieditor.widgets.HUD.shadow_perks")
 require("ui.uieditor.widgets.HUD.revive_bar")
 require("ui.uieditor.widgets.HUD.RoundStatus")
 require("ui.uieditor.menus.hud.inventory_control")
+require("ui.UIModelUtils")
 --require("ui.util.T7Overcharged")
 
 --InitializeT7Overcharged({
@@ -36,10 +37,18 @@ require("ui.uieditor.menus.hud.inventory_control")
 CoD.Zombie.CommonHudRequire()
 
 local function PreLoadCallback(HudRef, InstanceRef)
+    EnableGlobals()
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.tier1", -1)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.tier2", -1)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.tier3", -1)
+    DisableGlobals()
     CoD.Zombie.CommonPreLoadHud(HudRef, InstanceRef)
 end
 
 local function PostLoadCallback(HudRef, InstanceRef)
+    EnableGlobals()
+    UIModelUtils.SetupUIModels(HudRef, InstanceRef)
+    DisableGlobals()
     CoD.Zombie.CommonPostLoadHud(HudRef, InstanceRef)
 end
 
