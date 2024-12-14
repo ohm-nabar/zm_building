@@ -26,6 +26,7 @@
 #using scripts\zm\_zm_zonemgr;
 
 #using scripts\shared\ai\zombie_utility;
+#using scripts\shared\ai\zombie;
 
 //Perks
 #using scripts\zm\_zm_pack_a_punch;
@@ -192,6 +193,7 @@ function main()
 	spare_change();
 	spawner::add_archetype_spawn_function( "zombie", &test );
 	spawner::add_archetype_spawn_function( "zombie", &zombie_unpush );
+	spawner::add_archetype_spawn_function( "zombie", &zombie_custom_melee_speed );
 	zm_flamethrower::init();
 	//testeroo();
 }
@@ -199,6 +201,38 @@ function main()
 function test()
 {
     self hb21_zm_behavior::enable_side_step();
+}
+
+function zombie_custom_melee_speed()
+{
+    self endon( "death" );
+
+    while( isdefined( self ) )
+    {
+		if(isdefined(self.targetname) && (self.targetname == "zombie_choker" || self.targetname == "zombie_cloak" || self.targetname == "zombie_escargot"))
+		{
+			return;
+		}
+
+        if( ZombieBehavior::zombieShouldMeleeCondition( self ) )
+        {
+            if( self.zombie_move_speed != "walk" )
+            {
+                self.prev_zombie_move_speed = self.zombie_move_speed;
+                self.zombie_move_speed = "walk";
+            }
+        }
+        else
+        {
+            // he has attacked, make sure to reset him
+            if( isdefined( self.prev_zombie_move_speed ) )
+            {
+                self.zombie_move_speed = self.prev_zombie_move_speed;
+                self.prev_zombie_move_speed = undefined;
+            }
+        }
+        WAIT_SERVER_FRAME;
+    }
 }
 
 function zombie_unpush()
@@ -234,14 +268,60 @@ function check_for_change()//self = trigger
 		self waittill( "trigger", player );
 
 		if ( player GetStance() == "prone" )
-		{
-			player zm_score::add_to_player_score( RandomIntRange(0, 31) * 10 );
+		{	
+			// Standard Coins
+			num_quarters = RandomIntRange(0, 7);
+			num_dimes = RandomIntRange(0, 6);
+			num_nickels = RandomIntRange(0, 5);
+
+			// Rare Coins
+			num_dollars = RandomIntRange(1, 100);
+			num_half_dollars = RandomIntRange(1, 200);
+			num_pennies = RandomIntRange(1, 400);
+
 			zm_utility::play_sound_at_pos( "purchase", player.origin );
+			player add_change(100, num_dollars, 1);
+			player add_change(50, num_half_dollars, 2);
+			player add_change(25, num_quarters);
+			player add_change(10, num_dimes);
+			player add_change(5, num_nickels);
+			player add_change(1, num_pennies, 4);		
 			break;
 		}
 
 		wait 0.1;
 	}
+}
+
+function add_change(denomination, amount, cutoff)
+{
+	if(isdefined(cutoff) && amount > cutoff)
+	{
+		return;
+	}
+
+	for(i = 0; i < amount; i++)
+	{
+		wait(0.05);
+		self add_to_player_score(denomination);
+	}
+}
+
+// need to bypass zm_score's rounding
+function add_to_player_score( points )
+{
+	if( !isdefined( points ) || level.intermission )
+	{
+		return;
+	}
+	
+	self.score += points;
+	self.pers["score"] = self.score;
+	self IncrementPlayerStat("scoreEarned", points);
+	level notify( "earned_points", self, points );
+	
+	self.score_total += points;
+	level.score_total += points; // also add to all players' running total score
 }
 
 function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType  )

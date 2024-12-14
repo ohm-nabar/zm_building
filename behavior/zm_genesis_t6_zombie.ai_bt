@@ -2118,7 +2118,7 @@
                             ]
                         },
                         {
-                            "type": "sequence",
+                            "type": "parallel",
                             "id": "meleeattackbehavior",
                             "children": 
 							[
