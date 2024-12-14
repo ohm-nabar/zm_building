@@ -41,6 +41,19 @@ local function PreLoadCallback(HudRef, InstanceRef)
     UIModelUtils.RegisterUIModel(InstanceRef, "trials.tier1", -1)
     UIModelUtils.RegisterUIModel(InstanceRef, "trials.tier2", -1)
     UIModelUtils.RegisterUIModel(InstanceRef, "trials.tier3", -1)
+
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.aramis", -1.0)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.porthos", -1.0)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.dart", -1.0)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.athos", -1.0)
+
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.aramis.random", -1)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.porthos.random", -1)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.dart.random", -1)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.athos.random", -1)
+
+    UIModelUtils.RegisterUIModel(InstanceRef, "gum.eaten", -1)
+
     DisableGlobals()
     CoD.Zombie.CommonPreLoadHud(HudRef, InstanceRef)
 end

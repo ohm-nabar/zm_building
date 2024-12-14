@@ -92,54 +92,6 @@ LANG_ENGLISH       	"Reign Drops"
 REFERENCE           	BGB_PERKAHOLIC
 LANG_ENGLISH       	"Perkaholic"
 
-REFERENCE           	BGB_STOCK_OPTION_DESC
-LANG_ENGLISH       	"Stock Option\nAmmo is taken from the player's stockpile instead of their weapon's magazine\n"
-
-REFERENCE           	BGB_SWORD_FLAY_DESC
-LANG_ENGLISH       "Sword Flay\n Melee attacks will inflict 5x more damage on zombies\n"
-
-REFERENCE           	BGB_TEMPORAL_GIFT_DESC
-LANG_ENGLISH       "Temporal Gift\n Powerups last longer\n"
-
-REFERENCE           	BGB_IN_PLAIN_SIGHT_DESC
-LANG_ENGLISH       	"In Plain Sight\n All zombies ignore the player\n"
-
-REFERENCE           	BGB_IM_FEELIN_LUCKY_DESC
-LANG_ENGLISH       	"I'm Feeling Lucky\n Spawns a random powerup\n"
-
-REFERENCE           	BGB_IMMOLATION_LIQUIDATION_DESC
-LANG_ENGLISH       	"Immolation Liquidation\n Spawns a Fire Sale powerup\n"
-
-REFERENCE           	BGB_PHOENIX_UP_DESC
-LANG_ENGLISH       	"Phoenix Up\n Revives all teammates. Teammates keep all of their perks\n"
-
-REFERENCE           	BGB_POP_SHOCKS_DESC
-LANG_ENGLISH       	"Pop Shocks\n Melee attacks trigger an electrostatic discharge, electrocuting nearby zombies\n"
-
-REFERENCE           	BGB_CACHE_BACK_DESC
-LANG_ENGLISH       	"Cache Back\n Spawns a Max Ammo powerup\n"
-
-REFERENCE           	BGB_ON_THE_HOUSE_DESC
-LANG_ENGLISH       	"On the House\nSpawns a Perk Bottle powerup\n"
-
-REFERENCE           	BGB_PROFIT_SHARING_DESC
-LANG_ENGLISH       	"Profit Sharing\nPoints you earn are also received by nearby players and vice versa\n"
-
-REFERENCE           	BGB_WALL_POWER_DESC
-LANG_ENGLISH       	"Wall Power\nThe next wall weapon purchased becomes Pack-a-Punched\n"
-
-REFERENCE           	BGB_CRATE_POWER_DESC
-LANG_ENGLISH       	"Crate Power\nThe next gun taken from the magic box becomes Pack-a-Punched\n"
-
-REFERENCE           	BGB_UNQUENCHABLE_DESC
-LANG_ENGLISH       	"Unquenchable\nCan buy an extra Perk-a-Cola\n"
-
-REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS_DESC
-LANG_ENGLISH       	"Alchemical Antithesis\nEvery 10 points earned is instead awarded 1 ammo in the stock of the current weapon\n"
-
-REFERENCE           	BGB_PERKAHOLIC_DESC
-LANG_ENGLISH       	"Perkaholic\nGives the player all Perk-a-Colas in the map\n"
-
 REFERENCE           	PAD_COOLDOWN
 LANG_ENGLISH       	"Cooling down..."
 

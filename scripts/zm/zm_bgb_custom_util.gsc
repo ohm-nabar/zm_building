@@ -89,12 +89,24 @@ function getColourValue( activation )
 	}
 }
 
-function gg_name(gumFunc)
+function gg_name(gum)
 {
-	return level.gg_names[gumFunc];
+	return level.gg_names[gum];
 }
 
-function lookupGobblgum(name)
+function create_gg_model_for_player(gum_struct, origin, angles)
+{
+	gum_weapon = GetWeapon("zombie_bgb_grab");
+	weapon_options = self GetBuildKitWeaponOptions( gum_weapon, gum_struct.camoIndex );
+
+	gum_model = zm_utility::spawn_weapon_model(gum_weapon, "wpn_t7_zmb_bubblegum_view", origin, angles, weapon_options);
+	gum_model SetScale(1.25);
+	gum_model SetInvisibleToAll();
+	gum_model SetVisibleToPlayer(self);
+	return gum_model;
+}
+
+function lookup_gobblegum(name)
 {
     index = 1;
     row = TableLookupRow( "gamedata/stats/zm/zm_statstable.csv", index );
@@ -126,23 +138,23 @@ function lookupGobblgum(name)
     return struct;
 }
 
-function giveGobbleGum(gum)
+function give_gobblegum(gum)
 {
 	self endon("disconnect");
 
-    gumWeapon = GetWeapon("zombie_bgb_grab");
+    gum_weapon = GetWeapon("zombie_bgb_grab");
     oldWeapon = self GetCurrentWeapon();
-    gumWeapon = self GetBuildKitWeapon( gumWeapon, false );
-    weapon_options = self GetBuildKitWeaponOptions( gumWeapon, gum.camoIndex );
-    acvi = self GetBuildKitAttachmentCosmeticVariantIndexes( gumWeapon, false );
+    gum_weapon = self GetBuildKitWeapon( gum_weapon, false );
+    weapon_options = self GetBuildKitWeaponOptions( gum_weapon, gum.camoIndex );
+    acvi = self GetBuildKitAttachmentCosmeticVariantIndexes( gum_weapon, false );
     /*
     self DisableWeaponCycling();
     self AllowSprint(false);
     self AllowSlide(false);
-    self GiveWeapon( gumWeapon, weapon_options, acvi );
-    self SwitchToWeapon(gumWeapon);
+    self GiveWeapon( gum_weapon, weapon_options, acvi );
+    self SwitchToWeapon(gum_weapon);
     */
-    gun = self perk_give_bottle_begin( gumWeapon, weapon_options, acvi );
+    gun = self perk_give_bottle_begin( gum_weapon, weapon_options, acvi );
 
    	self util::waittill_any( "fake_death", "death", "player_downed", "weapon_change_complete", "perk_abort_drinking");
 
@@ -150,10 +162,10 @@ function giveGobbleGum(gum)
 	{
 		self bgb::give(gum.name);
 	}
-	self perk_give_bottle_end( gun, gumWeapon);
+	self perk_give_bottle_end( gun, gum_weapon);
 
     /*
-    self TakeWeapon(gumWeapon);
+    self TakeWeapon(gum_weapon);
     self SwitchToWeapon(oldWeapon);
     if(evt != "player_downed") {
     	self EnableWeaponCycling();
@@ -165,7 +177,7 @@ function giveGobbleGum(gum)
     
 }
 
-function perk_give_bottle_begin( gumWeapon, weapon_options, acvi )
+function perk_give_bottle_begin( gum_weapon, weapon_options, acvi )
 {
 	self endon( "disconnect" );
 	
@@ -175,13 +187,13 @@ function perk_give_bottle_begin( gumWeapon, weapon_options, acvi )
 
 	original_weapon = self GetCurrentWeapon();
 
-	self GiveWeapon( gumWeapon, weapon_options, acvi );
-	self SwitchToWeapon( gumWeapon );
+	self GiveWeapon( gum_weapon, weapon_options, acvi );
+	self SwitchToWeapon( gum_weapon );
 
 	return original_weapon;
 }
 
-function perk_give_bottle_end( original_weapon, gumWeapon )
+function perk_give_bottle_end( original_weapon, gum_weapon )
 {
 	self endon( "disconnect" );
 
@@ -193,11 +205,11 @@ function perk_give_bottle_end( original_weapon, gumWeapon )
 	// TODO: race condition?
 	if ( self laststand::player_is_in_laststand() || IS_TRUE( self.intermission ) )
 	{
-		self TakeWeapon(gumWeapon);
+		self TakeWeapon(gum_weapon);
 		return;
 	}
 
-	self TakeWeapon(gumWeapon);
+	self TakeWeapon(gum_weapon);
 
 	if( self zm_utility::is_multiple_drinking() )
 	{

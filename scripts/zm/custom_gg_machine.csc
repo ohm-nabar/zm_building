@@ -14,8 +14,11 @@ REGISTER_SYSTEM( "custom_gg_machine", &__init__, undefined )
 	
 function __init__()
 {
-	clientfield::register( "clientuimodel", "currentGGUpdate", VERSION_SHIP, 7, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
-	clientfield::register( "clientuimodel", "nextGGUpdate", VERSION_SHIP, 7, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
-	clientfield::register( "clientuimodel", "currentGGFaded", VERSION_SHIP, 3, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
-	clientfield::register( "clientuimodel", "GGEaten", VERSION_SHIP, 4, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	clientfield::register( "toplayer", "gum.eaten", VERSION_SHIP, 5, "int", &gum_eaten, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+}
+
+function gum_eaten(localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fieldName, bWasTimeJump)
+{
+	model = CreateUIModel( GetUIModelForController( localClientNum ), "gum.eaten" );
+	SetUIModelValue( model, newVal );
 }

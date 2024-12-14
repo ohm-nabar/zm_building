@@ -113,24 +113,28 @@ REGISTER_SYSTEM( "custom_gg_machine", &__init__, undefined )
 
 function __init__() 
 {
-	clientfield::register( "clientuimodel", "currentGGUpdate", VERSION_SHIP, 7, "int" );
-	clientfield::register( "clientuimodel", "nextGGUpdate", VERSION_SHIP, 7, "int" );
-	clientfield::register( "clientuimodel", "currentGGFaded", VERSION_SHIP, 3, "int" );
-	clientfield::register( "clientuimodel", "GGEaten", VERSION_SHIP, 4, "int" );
+	clientfield::register( "toplayer", "gum.eaten", VERSION_SHIP, 5, "int" );
 
-	level.gg_selectors = GetEntArray("gg_selector", "targetname");
-	for(i = 0; i < level.gg_selectors.size; i++)
-	{
-		level.gg_selectors[i] SetCursorHint("HINT_NOICON");
-		level.gg_selectors[i] SetHintString(&"ZM_ABBEY_EMPTY");
-		gumball = GetEnt(level.gg_selectors[i].target, "targetname");
-		gumball SetInvisibleToAll();
-	}
-	callback::on_connect( &on_player_connect );
-	level.gg_costs = [];
-	level.gg_costs[level.gg_costs.size] = 0;
-	level.gg_costs[level.gg_costs.size] = 250;
-	level.gg_costs[level.gg_costs.size] = 500;
+	level.gg_all = [];
+	array::add(level.gg_all, "zm_bgb_stock_option");
+	array::add(level.gg_all, "zm_bgb_sword_flay");
+	array::add(level.gg_all, "zm_bgb_temporal_gift");
+	array::add(level.gg_all, "zm_bgb_in_plain_sight");
+	array::add(level.gg_all, "zm_bgb_im_feelin_lucky");
+	array::add(level.gg_all, "zm_bgb_immolation_liquidation");
+	array::add(level.gg_all, "zm_bgb_phoenix_up");
+	array::add(level.gg_all, "zm_bgb_pop_shocks");
+	array::add(level.gg_all, "zm_bgb_cache_back");
+	array::add(level.gg_all, "zm_bgb_on_the_house");
+	array::add(level.gg_all, "zm_bgb_profit_sharing");
+	array::add(level.gg_all, "zm_bgb_wall_power");
+	array::add(level.gg_all, "zm_bgb_crate_power");
+	array::add(level.gg_all, "zm_bgb_unquenchable");
+	array::add(level.gg_all, "zm_bgb_alchemical_antithesis");
+	array::add(level.gg_all, "zm_bgb_extra_credit");
+	array::add(level.gg_all, "zm_bgb_head_drama");
+	array::add(level.gg_all, "zm_bgb_reign_drops");
+	array::add(level.gg_all, "zm_bgb_perkaholic");
 
 	level.gg_names = [];
 	level.gg_names["zm_bgb_stock_option"] = &"ZM_ABBEY_BGB_STOCK_OPTION";
@@ -148,569 +152,173 @@ function __init__()
 	level.gg_names["zm_bgb_crate_power"] = &"ZM_ABBEY_BGB_CRATE_POWER";
 	level.gg_names["zm_bgb_unquenchable"] = &"ZM_ABBEY_BGB_UNQUENCHABLE";
 	level.gg_names["zm_bgb_alchemical_antithesis"] = &"ZM_ABBEY_BGB_ALCHEMICAL_ANTITHESIS";
+	level.gg_names["zm_bgb_extra_credit"] = &"ZM_ABBEY_BGB_EXTRA_CREDIT";
+	level.gg_names["zm_bgb_head_drama"] = &"ZM_ABBEY_BGB_HEAD_DRAMA";
+	level.gg_names["zm_bgb_reign_drops"] = &"ZM_ABBEY_BGB_REIGN_DROPS";
 	level.gg_names["zm_bgb_perkaholic"] = &"ZM_ABBEY_BGB_PERKAHOLIC";
 
-	level.gg_descriptions = [];
-	level.gg_descriptions["zm_bgb_stock_option"] = &"ZM_ABBEY_BGB_STOCK_OPTION_DESC";
-	level.gg_descriptions["zm_bgb_sword_flay"] = &"ZM_ABBEY_BGB_SWORD_FLAY_DESC";
-	level.gg_descriptions["zm_bgb_temporal_gift"] = &"ZM_ABBEY_BGB_TEMPORAL_GIFT_DESC";
-	level.gg_descriptions["zm_bgb_in_plain_sight"] = &"ZM_ABBEY_BGB_IN_PLAIN_SIGHT_DESC";
-	level.gg_descriptions["zm_bgb_im_feelin_lucky"] = &"ZM_ABBEY_BGB_IM_FEELIN_LUCKY_DESC";
-	level.gg_descriptions["zm_bgb_immolation_liquidation"] = &"ZM_ABBEY_BGB_IMMOLATION_LIQUIDATION_DESC";
-	level.gg_descriptions["zm_bgb_phoenix_up"] = &"ZM_ABBEY_BGB_PHOENIX_UP_DESC";
-	level.gg_descriptions["zm_bgb_pop_shocks"] = &"ZM_ABBEY_BGB_POP_SHOCKS_DESC";
-	level.gg_descriptions["zm_bgb_cache_back"] = &"ZM_ABBEY_BGB_CACHE_BACK_DESC";
-	level.gg_descriptions["zm_bgb_on_the_house"] = &"ZM_ABBEY_BGB_ON_THE_HOUSE_DESC";
-	level.gg_descriptions["zm_bgb_profit_sharing"] = &"ZM_ABBEY_BGB_PROFIT_SHARING_DESC";
-	level.gg_descriptions["zm_bgb_wall_power"] = &"ZM_ABBEY_BGB_WALL_POWER_DESC";
-	level.gg_descriptions["zm_bgb_crate_power"] = &"ZM_ABBEY_BGB_CRATE_POWER_DESC";
-	level.gg_descriptions["zm_bgb_unquenchable"] = &"ZM_ABBEY_BGB_UNQUENCHABLE_DESC";
-	level.gg_descriptions["zm_bgb_alchemical_antithesis"] = &"ZM_ABBEY_BGB_ALCHEMICAL_ANTITHESIS_DESC";
-	level.gg_descriptions["zm_bgb_perkaholic"] = &"ZM_ABBEY_BGB_PERKAHOLIC_DESC";
-
-	level.gg_all = [];
-	level.gg_all[level.gg_all.size] = "zm_bgb_stock_option";
-	level.gg_all[level.gg_all.size] = "zm_bgb_sword_flay";
-	level.gg_all[level.gg_all.size] = "zm_bgb_temporal_gift";
-	level.gg_all[level.gg_all.size] = "zm_bgb_in_plain_sight";
-	level.gg_all[level.gg_all.size] = "zm_bgb_im_feelin_lucky";
-	level.gg_all[level.gg_all.size] = "zm_bgb_immolation_liquidation";
-	level.gg_all[level.gg_all.size] = "zm_bgb_phoenix_up";
-	level.gg_all[level.gg_all.size] = "zm_bgb_pop_shocks";
-	level.gg_all[level.gg_all.size] = "zm_bgb_cache_back";
-	level.gg_all[level.gg_all.size] = "zm_bgb_on_the_house";
-	level.gg_all[level.gg_all.size] = "zm_bgb_profit_sharing";
-	level.gg_all[level.gg_all.size] = "zm_bgb_wall_power";
-	level.gg_all[level.gg_all.size] = "zm_bgb_crate_power";
-	level.gg_all[level.gg_all.size] = "zm_bgb_unquenchable";
-	level.gg_all[level.gg_all.size] = "zm_bgb_alchemical_antithesis";
-	level.gg_all[level.gg_all.size] = "zm_bgb_perkaholic";
-
-	level.perkaholic_unlocked = false;
-
-	thread gg_prices_set();
-	gg_machines = GetEntArray("gg_machine", "targetname");
-	array::thread_all(gg_machines, &gg_think);
-	//thread testeroo();
+	level.gargoyle_judges = GetEntArray("gargoyle_judge", "targetname");
+	array::thread_all(level.gargoyle_judges, &judge_think);
+	callback::on_connect( &on_player_connect );
 }
 
 function on_player_connect()
 {
-	self.gg_array_current = [];
-	self.gg_array_next = [];
 	self.gg_quantities = [];
-	
-	self.gg_array_current[self.gg_array_current.size] = "zm_bgb_stock_option";
-	self.gg_array_current[self.gg_array_current.size] = "zm_bgb_sword_flay";
-	self.gg_array_current[self.gg_array_current.size] = "zm_bgb_temporal_gift";
-	self.gg_array_current[self.gg_array_current.size] = "zm_bgb_in_plain_sight";
-	self.gg_array_current[self.gg_array_current.size] = "zm_bgb_im_feelin_lucky";
-
-	self.gg_array_cycle = array::randomize(self.gg_array_current);
-	
-	self.gg_array_next[self.gg_array_next.size] = "zm_bgb_stock_option";
-	self.gg_array_next[self.gg_array_next.size] = "zm_bgb_sword_flay";
-	self.gg_array_next[self.gg_array_next.size] = "zm_bgb_temporal_gift";
-	self.gg_array_next[self.gg_array_next.size] = "zm_bgb_in_plain_sight";
-	self.gg_array_next[self.gg_array_next.size] = "zm_bgb_im_feelin_lucky";
-
-	self.gg_quantities = [];
-	self.gg_quantities["zm_bgb_stock_option"] = 1;
-	self.gg_quantities["zm_bgb_sword_flay"] = 1;
-	self.gg_quantities["zm_bgb_temporal_gift"] = 1;
-	self.gg_quantities["zm_bgb_in_plain_sight"] = 1;
-	self.gg_quantities["zm_bgb_im_feelin_lucky"] = 1;
-	self.gg_quantities["zm_bgb_immolation_liquidation"] = 0;
-	self.gg_quantities["zm_bgb_phoenix_up"] = 0;
-	self.gg_quantities["zm_bgb_pop_shocks"] = 0;
-	self.gg_quantities["zm_bgb_cache_back"] = 0;
-	self.gg_quantities["zm_bgb_on_the_house"] = 0;
-	self.gg_quantities["zm_bgb_profit_sharing"] = 0;
-	self.gg_quantities["zm_bgb_wall_power"] = 0;
-	self.gg_quantities["zm_bgb_crate_power"] = 0;
-	self.gg_quantities["zm_bgb_unquenchable"] = 0;
-	self.gg_quantities["zm_bgb_alchemical_antithesis"] = 0;
-	self.gg_quantities["zm_bgb_perkaholic"] = 0;
-
-	self.gg_cycle_index = 0;
-	self.gg_cost_index = 0;
-
-	self.just_reset_gg_cycle = false;
-
-	for(i = 0; i < level.gg_selectors.size; i++)
+	foreach(gum in level.gg_all)
 	{
-		self thread gg_selector_hintstring(level.gg_selectors[i]);
-		self thread gg_selector_think(level.gg_selectors[i]);
+		self.gg_quantities[gum] = 0;
 	}
 
-	self thread gg_prices_reset();
-	self thread set_gg_current_hud();
-	self thread set_gg_next_hud();
-	self thread gg_hud_reset();
+	self.judge_indices = [];
+	for(i = 0; i < 4; i++)
+	{
+		self.judge_indices[i] = 0;
+	}
+
+	self.judge_display_balls = [];
+	self thread display_balls_cleanup();
+
+	level array::thread_all(level.gargoyle_judges, &player_judge_setup, self);
+	level array::thread_all(level.gargoyle_judges, &judge_hintstring_think, self);
 }
 
-
-function set_gg_current_hud()
+function player_judge_setup(player)
 {
-	self endon("disconnect");
+	player endon("disconnect");
 
-	while(! level flag::get("initial_blackscreen_passed"))
+	while(! isdefined(player.gargoyle_gums))
 	{
 		wait(0.05);
 	}
 
-	for(i = 0; i < self.gg_array_current.size; i++)
+	self gargoyle_display_update(player);
+}
+
+function gargoyle_display_update(player)
+{
+	garg_num = self.script_int;
+	garg_name = self.script_string;
+
+	gumball = GetEnt(garg_name + "_gumball", "targetname");
+	index = player.judge_indices[garg_num];
+	gum = player.gargoyle_gums[garg_num][index];
+	gum_struct = zm_bgb_custom_util::lookup_gobblegum(gum);
+
+	if(isdefined(player.judge_display_balls[garg_name]))
 	{
-		gg_index = -1;
-		for(j = 0; j < level.gg_all.size; j++)
-		{
-			if(self.gg_array_current[i] == level.gg_all[j])
-			{
-				gg_index = j;
-				break;
-			}
-		}
-		if(gg_index != -1)
-		{
-			self clientfield::set_player_uimodel("currentGGUpdate", (16 * i) + gg_index);
-		}
-		util::wait_network_frame();
-	}
-}
-
-function set_gg_next_hud()
-{
-	self endon("disconnect");
-
-	while(! level flag::get("initial_blackscreen_passed"))
-	{
-		wait(0.05);
+		player.judge_display_balls[garg_name] Delete();
 	}
 
-	for(i = 0; i < self.gg_array_next.size; i++)
-	{
-		self set_gg_next_hud_unit(i);
-		util::wait_network_frame();
-	}
+	player.judge_display_balls[garg_name] = player zm_bgb_custom_util::create_gg_model_for_player(gum_struct, gumball.origin, gumball.angles); 
 }
 
-function set_gg_next_hud_unit(next_index)
+function judge_hintstring_think(player)
 {
-	self endon("disconnect");
+	player endon("disconnect");
 
-	gg_index = -1;
-	for(j = 0; j < level.gg_all.size; j++)
-	{
-		if(self.gg_array_next[next_index] == level.gg_all[j])
-		{
-			gg_index = j;
-			break;
-		}
-	}
-	if(gg_index != -1)
-	{	
-		self clientfield::set_player_uimodel("nextGGUpdate", (16 * next_index) + gg_index);
-	}
-}
+	garg_num = self.script_int;
+	garg_name = self.script_string;
 
-function add_to_solo_gums()
-{
-	self.gg_quantities["zm_bgb_stock_option"] += 2;
-	self.gg_quantities["zm_bgb_sword_flay"] += 2;
-	self.gg_quantities["zm_bgb_in_plain_sight"] += 2;
-	self.gg_quantities["zm_bgb_pop_shocks"] += 2;
-	self.gg_quantities["zm_bgb_wall_power"] += 2; 
-	self.gg_quantities["zm_bgb_crate_power"] += 2;
-	self.gg_quantities["zm_bgb_unquenchable"] += 2;
-	self.gg_quantities["zm_bgb_alchemical_antithesis"] += 2;
-}
-
-function add_to_team_gums()
-{
-	self.gg_quantities["zm_bgb_temporal_gift"] += 2;
-	self.gg_quantities["zm_bgb_im_feelin_lucky"] += 2;
-	self.gg_quantities["zm_bgb_immolation_liquidation"] += 2;
-	self.gg_quantities["zm_bgb_phoenix_up"] += 2;
-	self.gg_quantities["zm_bgb_cache_back"] += 2;
-	self.gg_quantities["zm_bgb_on_the_house"] += 2;
-	self.gg_quantities["zm_bgb_profit_sharing"] += 2;
-}
-
-function add_to_all_gums()
-{
-	self.gg_quantities["zm_bgb_stock_option"] += 2;
-	self.gg_quantities["zm_bgb_sword_flay"] += 2;
-	self.gg_quantities["zm_bgb_in_plain_sight"] += 2;
-	self.gg_quantities["zm_bgb_pop_shocks"] += 2;
-	self.gg_quantities["zm_bgb_wall_power"] += 2; 
-	self.gg_quantities["zm_bgb_crate_power"] += 2;
-	self.gg_quantities["zm_bgb_unquenchable"] += 2;
-	self.gg_quantities["zm_bgb_alchemical_antithesis"] += 2;
-	self.gg_quantities["zm_bgb_temporal_gift"] += 2;
-	self.gg_quantities["zm_bgb_im_feelin_lucky"] += 2;
-	self.gg_quantities["zm_bgb_immolation_liquidation"] += 2;
-	self.gg_quantities["zm_bgb_phoenix_up"] += 2;
-	self.gg_quantities["zm_bgb_cache_back"] += 2;
-	self.gg_quantities["zm_bgb_on_the_house"] += 2;
-	self.gg_quantities["zm_bgb_profit_sharing"] += 2;
-}
-
-function gg_selector_think(gg_selector)
-{
-	self endon("disconnect");
-	gg_slot = Int(gg_selector.script_noteworthy);
-
-	gumball = GetEnt(gg_selector.target, "targetname");
-
-	gum_name = self.gg_array_next[gg_slot];
-	gumWeapon = GetWeapon("zombie_bgb_grab");
-	gumStruct = zm_bgb_custom_util::lookupGobblgum(gum_name);
-
-	weapon_options = self GetBuildKitWeaponOptions( gumWeapon, gumStruct.camoIndex );
-	display_ball = zm_utility::spawn_weapon_model(gumWeapon, "wpn_t7_zmb_bubblegum_view", gumball.origin, gumball.angles, weapon_options);
-	display_ball SetScale(2.5);
-	display_ball SetInvisibleToAll();
-	display_ball SetVisibleToPlayer(self);
+	prev_index = -1;
+	prev_quantity = -1;
 
 	while(true)
 	{
-		gg_selector waittill("trigger", player);
-		if(player != self)
-		{
-			continue;
-		}
-		self PlaySound("gobble_switch");
-		index = -1;
-		for(i = 0; i < level.gg_all.size; i++)
-		{
-			if(level.gg_all[i] == gum_name)
-			{
-				index = i;
-				break;
-			}
-		}
+		index = player.judge_indices[garg_num];
+		gum = player.gargoyle_gums[garg_num][index];
+		gum_struct = zm_bgb_custom_util::lookup_gobblegum(gum);
+		quantity = player.gg_quantities[gum];
 
-		next_index_valid = false;
-		while(! next_index_valid)
+		if(index != prev_index || quantity != prev_quantity)
 		{
-			next_index = (index + 1) % level.gg_all.size;
-			next_index_valid = true;
-			for(i = 0; i < self.gg_array_next.size && next_index_valid; i++)
-			{
-				if(self.gg_array_next[i] == level.gg_all[next_index] || (level.gg_all[next_index] == "zm_bgb_perkaholic" && ! level.perkaholic_unlocked))
-				{
-					index = next_index;
-					next_index_valid = false;
-				}
-
-			}
+			prev_index = index;
+			prev_quantity = quantity;
+			hintstring = "Press ^3[{+activate}]^7 for " + MakeLocalizedString(gum_struct.displayName) + " [Quantity: " + quantity + "]" + "\nMelee for next GargoyleGum";
+			self SetHintStringForPlayer(player, hintstring);
 		}
-		
-		self.gg_array_next[gg_slot] = level.gg_all[next_index];
+		wait(0.05);
+	}
+	
+}
 
-		gum_name = self.gg_array_next[gg_slot];
-		gumStruct = zm_bgb_custom_util::lookupGobblgum(gum_name);
+function display_balls_cleanup()
+{
+	self waittill("disconnect");
+
+	foreach(display_ball in self.judge_display_balls)
+	{
 		display_ball Delete();
-		weapon_options = self GetBuildKitWeaponOptions( gumWeapon, gumStruct.camoIndex );
-		display_ball = zm_utility::spawn_weapon_model(gumWeapon, "wpn_t7_zmb_bubblegum_view", gumball.origin, gumball.angles, weapon_options);
-		display_ball SetScale(2.5);
-		display_ball SetInvisibleToAll();
-		display_ball SetVisibleToPlayer(self);
-
-		self set_gg_next_hud_unit(gg_slot);
-		wait(0.05);
 	}
-}
-
-function gg_selector_hintstring(gg_selector)
-{
-	self endon("disconnect");
-	gg_slot = Int(gg_selector.script_noteworthy);
-
-	prev_gum_name = "";
-	prev_gum_desc = "";
-	prev_gum_quantity = -1;
-	while(true)
-	{
-		gum_name = self.gg_array_next[gg_slot];
-		gum_desc = level.gg_descriptions[gum_name];
-		gum_quantity = self.gg_quantities[gum_name];
-		if(gum_name == "zm_bgb_perkaholic")
-		{
-			gum_quantity = "Infinite!";
-		}
-		
-		if(prev_gum_name != gum_name || prev_gum_desc != gum_desc || prev_gum_quantity != gum_quantity)
-		{
-			gg_selector SetHintStringForPlayer(self, &"ZM_ABBEY_BGB_SELECT", gum_desc, gum_quantity);
-			prev_gum_name = gum_name;
-			prev_gum_desc = gum_desc;
-			prev_gum_quantity = gum_quantity;
-		}
-		wait(0.05);
-	}
-}
-
-function gg_hud_reset()
-{
-	self endon("disconnect");
-	
-	while ( !level flag::exists( "initial_blackscreen_passed" ) )
-	{
-		wait(0.05);
-	}
-
-	if ( !level flag::get( "initial_blackscreen_passed" ) )
-	{
-		level flag::wait_till( "initial_blackscreen_passed" );
-	}
-
-	self LUINotifyEvent(&"GGReset", 0);
-}
-
-function gg_prices_reset()
-{
-	self endon("disconnect");
-
-	while(true)
-	{
-		level waittill( "start_of_round" );
-		self.gg_cost_index = 0;
-		wait(0.05);
-	}
-}
-
-function gg_prices_set()
-{
-	while(true)
-	{
-		level waittill( "end_of_round" );
-		level waittill( "end_of_round" );
-		level waittill( "end_of_round" );
-		level waittill( "end_of_round" );
-		level waittill( "end_of_round" );
-		level waittill( "end_of_round" );
-		level waittill( "end_of_round" );
-		level waittill( "end_of_round" );
-		level waittill( "end_of_round" );
-		level.gg_costs[1] = level.gg_costs[1] * 2;
-		level.gg_costs[2] = level.gg_costs[1] * 2;
-		level waittill( "end_of_round" );
-	}
-}
-
-function selectGum() {
-	gumToReturn = self.gg_array_cycle[self.gg_cycle_index];
-	self.gg_cycle_index = self.gg_cycle_index + 1;
-	self.gg_cost_index = self.gg_cost_index + 1;
-	if(self.gg_cycle_index >= self.gg_array_cycle.size)
-	{
-		// LUA- RESET CYCLE
-		self.gg_cycle_index = 0;
-		for(i = 0; i < self.gg_array_next.size; i++)
-		{
-			self.gg_array_current[i] = self.gg_array_next[i];
-		}
-		self.gg_array_cycle = array::randomize(self.gg_array_current);
-		self thread set_gg_current_hud();
-		self.just_reset_gg_cycle = true;
-	}
-	else if(gumToReturn != "invalid")
-	{
-		currentIndex = -1;
-		for(i = 0; i < self.gg_array_current.size; i++)
-		{
-			if(gumToReturn == self.gg_array_current[i])
-			{
-				currentIndex = i;
-				break;
-			}
-		}
-		if(currentIndex != -1)
-		{	
-			self clientfield::set_player_uimodel("currentGGFaded", currentIndex);
-			util::wait_network_frame();
-		}
-	}
-
-	//IPrintLn("selected gumball number " + self.gg_cycle_index + " in the cycle with name " + gumToReturn + " and quantity " + self.gg_quantities[gumToReturn]);
-
-	return (self.gg_quantities[gumToReturn] > 0 ? gumToReturn : "invalid");
 }
 
 // logic for gum machines
-function gg_think() {
+function judge_think() 
+{
 	self SetCursorHint( "HINT_NOICON" );
 
-	self.gum_in_progress = false;
+	garg_num = self.script_int;
+	garg_name = self.script_string;
 
-	gumball = GetEnt(self.target, "targetname");
+	gumball = GetEnt(garg_name + "_gumball", "targetname");
 	gumball SetInvisibleToAll();
+	
+	tag_origin = Spawn("script_model", gumball.origin);
+	tag_origin SetModel("tag_origin");
+	PlayFXOnTag("custom/fx_trail_blood_soul_zmb", tag_origin, "tag_origin");
 
-	self thread gg_set_hintstring();
+	model = GetEnt(garg_name + "_model", "targetname");
+	model thread judge_model_think(garg_num);
 
 	while(true) {
 		self waittill("trigger", player);
-		cost_index = player.gg_cost_index;
-		costs = level.gg_costs;
 
-		if(! (zm_utility::is_player_valid(player)) || ! zm_perks::vending_trigger_can_player_use(player) || cost_index >= costs.size)
+		index = player.judge_indices[garg_num];
+		gum = player.gargoyle_gums[garg_num][index];
+		quantity = player.gg_quantities[gum];
+		if(! (zm_utility::is_player_valid(player)) || ! zm_perks::vending_trigger_can_player_use(player) || quantity == 0)
 		{
-			wait(0.05);
-			continue;
-		}
-		if(player.score < costs[cost_index])
-		{
-			player playSound("no_cha_ching"); // no idea if this sound exists, or if this function is right
 			wait(0.05);
 			continue;
 		}
 
 		player zm_audio::create_and_play_dialog("bgb", "buy");
-		self.gum_in_progress = true;
 
-		players = GetPlayers();
-		for(i = 0; i < players.size; i++)
-		{
-			self SetHintStringForPlayer(players[i], &"ZM_ABBEY_EMPTY");
-		}
+		gum_struct = zm_bgb_custom_util::lookup_gobblegum(gum);
+		player thread zm_bgb_custom_util::give_gobblegum(gum_struct);
 
-		player zm_score::minus_to_player_score(costs[cost_index]);
-		self PlaySound("gobble_activate");
+		player.gg_quantities[gum] -= 1;
 
-		wait(2.5);
-		player PlaySound("gobble_disappear");
+		cf_val = (garg_num * 4) + index;
+		player clientfield::set_to_player("gum.eaten", cf_val);
+		util::wait_network_frame();
+		player clientfield::set_to_player("gum.eaten", 16);
+		util::wait_network_frame();
 
-		gumFunc = player selectGum();
-		
-		gumStruct = zm_bgb_custom_util::lookupGobblgum(gumFunc);
-		name = gumStruct.displayName;
-		/*
-		color = gumStruct.colourValue;
-		if(gumFunc == -1)
-		{
-			color = "white";
-		}
-		*/
-		//gumball SetModel(level.gg_models[gumFunc]);
-		//gumball SetVisibleToAll();
-
-		gumWeapon = GetWeapon("zombie_bgb_grab");
-		weapon_options = player GetBuildKitWeaponOptions( gumWeapon, gumStruct.camoIndex );
-		display_ball = zm_utility::spawn_weapon_model(gumWeapon, "wpn_t7_zmb_bubblegum_view", gumball.origin, gumball.angles, weapon_options);
-		display_ball SetScale(1.25);
-		PlayFXOnTag("custom/fx_trail_blood_soul_zmb", display_ball, "tag_origin");
-
-		if(gumFunc == "invalid")
-		{
-			self SetHintStringForPlayer(player, &"ZM_ABBEY_BGB_NO_STOCK");
-		}
-		else
-		{
-			self SetHintStringForPlayer(player, &"ZM_ABBEY_BGB_ACCEPT", name);
-			//IPrintLn("gg icon name: " + self.gg_icon_name);
-		}
-
-		if(gumFunc == "invalid")
-		{
-			wait(5);
-			player zm_score::add_to_player_score(costs[cost_index]);
-		}
-		else
-		{
-			self thread check_for_gobblegum_eaten(player, gumFunc, gumStruct, display_ball);
-			wait(5);
-			self notify ( "time_up" );
-		}
-
-		if(isdefined(display_ball))
-		{
-			display_ball Delete();
-		}
-		//gumball SetInvisibleToAll();
-		self.gum_in_progress = false;
 		wait(0.05);
 	}
 }
 
-function check_for_gobblegum_eaten(player, gumFunc, gumStruct, gumball)
+function judge_model_think(garg_num)
 {
-	self endon("time_up");
-
-	gg_index = -1;
-	for(j = 0; j < level.gg_all.size; j++)
-	{
-		if(gumFunc == level.gg_all[j])
-		{
-			gg_index = j;
-			break;
-		}
-	}
-
+	self SetCanDamage(true);
 	while(true)
 	{
-		self waittill("trigger", user);
-		if( user == player && zm_perks::vending_trigger_can_player_use(player) && gg_index != -1 )
-		{
-			name = gumStruct.displayName;
-			player thread zm_bgb_custom_util::giveGobbleGum(gumStruct);
-		
-			player.gg_quantities[gumFunc] = player.gg_quantities[gumFunc] - 1;
-			player clientfield::set_player_uimodel("GGEaten", gg_index);
-			self SetHintStringForPlayer(player, &"ZM_ABBEY_EMPTY");
-			gumball Delete();
-			//gumball SetInvisibleToAll();
-			util::wait_network_frame();
-			break;
+		self waittill("damage", n_damage, e_attacker, v_dir, v_loc, str_type, STR_MODEL, str_tag, str_part, w_weapon);
+		if(IsPlayer(e_attacker) && str_type == "MOD_MELEE")
+		{	
+			e_attacker.judge_indices[garg_num] = (e_attacker.judge_indices[garg_num] + 1) % e_attacker.gargoyle_gums[garg_num].size;
+			level array::thread_all(level.gargoyle_judges, &judge_hivemind, garg_num, e_attacker);
 		}
-		wait(0.05);
 	}
 }
 
-function gg_set_hintstring()
+function judge_hivemind(garg_num, player)
 {
-	level waittill("initial_blackscreen_passed");
-	
-	prev_gg_cost_indices = [];
-	while(true)
+	if(self.script_int != garg_num)
 	{
-		if(! self.gum_in_progress)
-		{
-			foreach(player in level.players)
-			{
-				if(! array::contains(GetArrayKeys(prev_gg_cost_indices), player) && isdefined(player.characterIndex))
-				{
-					prev_gg_cost_indices[player.characterIndex] = -1;
-				}
-				if(prev_gg_cost_indices[player.characterIndex] != player.gg_cost_index)
-				{
-					if(player.gg_cost_index >= level.gg_costs.size)
-					{
-						self SetHintStringForPlayer(player, &"ZM_ABBEY_BGB_NEXT_ROUND");
-					}
-					else
-					{
-						self SetHintStringForPlayer(player, &"ZM_ABBEY_BGB_ACTIVATE", level.gg_costs[player.gg_cost_index]);
-					}
-					prev_gg_cost_indices[player.characterIndex] = player.gg_cost_index;
-				}
-			}
-		}
-		wait(0.05);
+		return;
 	}
-}
 
-function testeroo()
-{
-	level waittill("all_players_connected");
-	players = GetPlayers();
-	player = players[0];
-	while(true)
-	{
-		level waittill("end_of_round");
-		IPrintLn("end of round");
-
-		level waittill("start_of_round");
-		IPrintLn("start of round");
-	}
+	self gargoyle_display_update(player);
 }
