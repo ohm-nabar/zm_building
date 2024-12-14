@@ -204,6 +204,7 @@ function player_finish_monitor()
 	}
 	wait(0.75);
 	self zm_sphynx_util::give_player_loadout(self.antiverse_loadout, 1, 0, 0, 1);
+	self zm_flashlight::flashlight_state(0);
 	self lui::screen_fade_in( 0.75, "black" );
 	wait(0.75);
 	self.abbey_no_waypoints = self.prev_abbey_no_waypoints;
