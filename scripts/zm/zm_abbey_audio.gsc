@@ -59,7 +59,6 @@
 #using scripts\zm\zm_abbey_inventory;
 #using scripts\zm\zm_bgb_custom_util;
 #using scripts\zm\custom_gg_machine;
-#using scripts\zm\zm_challenges;
 #using scripts\zm\zm_room_manager;
 
 #using scripts\shared\system_shared;

@@ -9,6 +9,7 @@
 #using scripts\shared\laststand_shared;
 #using scripts\shared\math_shared;
 #using scripts\shared\scene_shared;
+#using scripts\shared\spawner_shared;
 #using scripts\shared\util_shared;
 
 #insert scripts\shared\shared.gsh;
@@ -62,8 +63,6 @@
 
 #using scripts\zm\_zm_ai_dogs;
 
-#using scripts\zm\zm_challenges;
-
 #using scripts\shared\system_shared;
 #using scripts\shared\lui_shared;
 #using scripts\shared\visionset_mgr_shared;
@@ -80,6 +79,7 @@
 
 #precache( "fx", "shadow/fx_zmb_smokey_death" );
 #precache( "fx", "shadow/shadow_zombie_cloak_eyes" );
+#precache( "fx", "shadow/cloak_shadowing" );
 #precache( "material", "shadow_kill_indicator" ); 
 
 #precache( "material", "splash_shadow_attack_generator1" ); 
@@ -103,13 +103,13 @@ function __init__()
 	level.choker_spawn_points = GetEntArray("choker_spawn_point", "targetname");
 
 	level.choker_spawner = GetEnt("choker_spawner", "script_noteworthy");
-	level.choker_spawner thread add_spawn_function(&choker_spawn_init);
+	level.choker_spawner thread spawner::add_spawn_function(&choker_spawn_init);
 
 	level.escargot_spawner = GetEnt("escargot_spawner", "script_noteworthy");
-	level.escargot_spawner thread add_spawn_function(&escargot_spawn_init);
+	level.escargot_spawner thread spawner::add_spawn_function(&escargot_spawn_init);
 
 	level.cloak_spawner = GetEnt("cloak_spawner", "script_noteworthy");
-	level.cloak_spawner thread add_spawn_function(&cloak_spawn_init);
+	level.cloak_spawner thread spawner::add_spawn_function(&cloak_spawn_init);
 
 	level.shadow_ai_limit = 40;
 	level.shadow_vision_active = false;
@@ -664,6 +664,7 @@ function cloak_spawn_sequence()
 			cloak.v_zombie_custom_goal_pos = undefined;
 			cloak SetGoal(undefined);
 
+			PlayFXOnTag("shadow/cloak_shadowing", cloak, "tag_weapon_right");
 			cloak AnimScripted("cloak_conjuring", cloak.origin, cloak.angles, "cloak_conjuring");
 			//thread zm_abbey_inventory::notifyText(generator_name_translation[generators[generator_index]] + " is being attacked!");
 			foreach(player in level.players)
@@ -1386,7 +1387,7 @@ function escargot_death_notify()
 
 	level notify("escargot_killed", self.origin);
 
-	if(!level.trident_shell_activated && self zm_challenges::is_player_in_room(level.trident_init_room))
+	if(!level.trident_shell_activated && self zm_room_manager::is_player_in_room(level.trident_init_room))
 	{
 		level.trident_shell_activated = true;
 	}
@@ -1459,26 +1460,6 @@ function choker_death_notify_ee_radio()
 	PlayFX("shadow/fx_zmb_smokey_death", self.origin + (0, 0, 40));
 	//self clientfield::set( "shadow_choker_fx", 0 );
 	self Delete();
-}
-
-function add_spawn_function( spawn_func, param1, param2, param3, param4, param5 )
-{
-	assert( !isdefined( level._loadStarted ) || !IsAlive( self ), "Tried to add_spawn_function to a living guy." );
-
-	func = [];
-	func[ "function" ] =spawn_func;
-	func[ "param1" ] = param1;
-	func[ "param2" ] = param2;
-	func[ "param3" ] = param3;
-	func[ "param4" ] = param4;
-	func[ "param5" ] = param5;
-
-	if (!isdefined(self.spawn_funcs))
-	{
-		self.spawn_funcs = [];
-	}
-
-	self.spawn_funcs[ self.spawn_funcs.size ] = func;
 }
 
 function escargot_trident_spawn_logic()

@@ -10,7 +10,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
 
     local IconWidth = 69
     local NameTextWidth = 100
-    local TrialTextWidth = 450
+    local TrialTextWidth = 550
     local PBWidth = 125
     local GumWidth = 50
     local QuantityWidth = 20
@@ -19,7 +19,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
 
     local IconStartX = 16
     local NameTextStartX = 14
-    local TrialTextStartX = 256
+    local TrialTextStartX = 206
     local PBStartX = IconStartX + IconWidth - 5
     local GumStartX = PBStartX + PBWidth - 4
     local QuantityStartX = GumStartX + GumWidth - 7 -- (0.42 * getTextWidth) - 13.68
@@ -49,6 +49,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local IconTable = {}
     local NameTextTable = {}
     local TrialTextTable = {}
+    local PBBTable = {}
     local PBTable = {}
     local GumTable = {}
     local QuantityTable = {}
@@ -107,8 +108,9 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
         TrialText:setAlignment(Enum.LUIAlignment.LUI_ALIGNMENT_CENTER)
         TrialText:setLeftRight(true, false, TrialTextLeft, TrialTextRight)
         TrialText:setTopBottom(true, false, TrialTextTop, TrialTextBottom)
-        TrialText:setText(Engine.Localize("Trial: Complete Rounds"))
-        TrialText:setRGB(1, 1, 0)
+        TrialText:setText(Engine.Localize("Complete Rounds"))
+        TrialText:setRGB(1, 1, 1)
+        TrialText:setTTF("fonts/CaslonAntique-Bold.ttf")
 
         local Divider = LUI.UIImage.new()
         Divider:setLeftRight(true, false, DividerLeft, DividerRight)
@@ -118,6 +120,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
         IconTable[i] = Icon
         NameTextTable[i] = NameText
         TrialTextTable[i] = TrialText
+        PBBTable[i] = {}
         PBTable[i] = {}
         GumTable[i] = {}
         QuantityTable[i] = {}
@@ -139,10 +142,20 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             local TextLeft = TextStartX + (XOffset * (j - 1))
             local TextRight = TextLeft + TextWidth
 
+            local ProgressBarBackground = LUI.UIImage.new()
+            ProgressBarBackground:setLeftRight(true, false, PBLeft, PBRight)
+            ProgressBarBackground:setTopBottom(true, false, PBTop, PBBottom)
+            ProgressBarBackground:setRGB(0.75, 0.75, 0.75)
+
             local ProgressBar = LUI.UIImage.new()
             ProgressBar:setLeftRight(true, false, PBLeft, PBRight)
             ProgressBar:setTopBottom(true, false, PBTop, PBBottom)
-            ProgressBar:setRGB(0.75, 0.75, 0.75)
+            ProgressBar:setImage(RegisterImage("uie_t7_my_fancy_image"))
+            ProgressBar:setMaterial(RegisterMaterial("uie_wipe_normal"))
+            ProgressBar:setRGB(0.97, 0.79, 0.09)
+            ProgressBar:setShaderVector(1, 0, 0, 0, 0)
+            ProgressBar:setShaderVector(2, 1, 0, 0, 0)
+            ProgressBar:setShaderVector(3, 0, 0, 0, 0)
 
             local Gum = LUI.UIImage.new()
             Gum:setLeftRight(true, false, GumLeft, GumRight)
@@ -156,10 +169,12 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             Text:setRGB(1, 1, 1)
             Text:setText("Immolation Liquidation")
 
+            PBBTable[i][j] = ProgressBarBackground
             PBTable[i][j] = ProgressBar
             GumTable[i][j] = Gum
             TextTable[i][j] = Text
 
+            TrialControl:addElement(PBBTable[i][j])
             TrialControl:addElement(PBTable[i][j])
             TrialControl:addElement(GumTable[i][j])
             TrialControl:addElement(TextTable[i][j])
@@ -192,10 +207,10 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     NameTextTable[3]:setText("Judge D'Artagnan")
     NameTextTable[4]:setText("Judge Athos")
 
-    TrialTextTable[1]:setText("Trial: Complete Rounds")
-    TrialTextTable[2]:setText("Trial: Obtain Headshot Kills")
-    TrialTextTable[3]:setText("Trial: Obtain Melee Kills")
-    TrialTextTable[4]:setText("Trial: Obtain Kills in the Middle Pilgrimage Stairs (New Trial in 5 Rounds)")
+    TrialTextTable[1]:setText("Complete Rounds")
+    TrialTextTable[2]:setText("Obtain Headshot Kills")
+    TrialTextTable[3]:setText("Obtain Melee Kills")
+    TrialTextTable[4]:setText("Obtain kills with a newly acquired weapon from the Mystery Box (New Trial in 5 Rounds)")
 
     local Tier1GumLookup = {"t7_hud_zm_bgb_stock_option", "t7_hud_zm_bgb_sword_flay", "t7_hud_zm_bgb_temporal_gift", "t7_hud_zm_bgb_in_plain_sight", "t7_hud_zm_bgb_im_feelin_lucky"}
     local Tier2GumLookup = {"t7_hud_zm_bgb_immolation_liquidation", "t7_hud_zm_bgb_pop_shocks", "t7_hud_zm_bgb_cache_back", "t7_hud_zm_bgb_wall_power", "t7_hud_zm_bgb_crate_power", "t7_hud_zm_bgb_alchemical_antithesis", "t7_hud_zm_bgb_extra_credit"}
@@ -228,11 +243,33 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local Tier2Quantity = { QuantityTable[1][4], QuantityTable[2][2], QuantityTable[2][3], QuantityTable[3][2], QuantityTable[3][3], QuantityTable[4][1], QuantityTable[4][2] }
     local Tier3Quantity = { QuantityTable[2][4], QuantityTable[3][4], QuantityTable[4][3], QuantityTable[4][4] }
     local TierQuantity = {Tier1Quantity, Tier2Quantity, Tier3Quantity}
+
+    local CurrentIndices = {1, 1, 1, 1}
     
     local function SetQuantityLR(i, j)
         local QuantityLeft = GumStartX + GumWidth + (0.42 * QuantityTable[i][j]:getTextWidth()) - 13.68 + (XOffset * (j - 1))
         local QuantityRight = QuantityLeft + QuantityWidth
         QuantityTable[i][j]:setLeftRight(true, false, QuantityLeft, QuantityRight)
+    end
+    
+    local function ResetQuantity(i, j)
+        QuantityTable[i][j]:setText("0")
+        QuantityTable[i][j]:setRGB(1, 0, 0)
+        SetQuantityLR(i, j)
+    end
+
+    local function IncrementQuantity(i, j)
+        QuantityTable[i][j]:setText(QuantityTable[i][j]:getText() + 1)
+        QuantityTable[i][j]:setRGB(1, 1, 1)
+        SetQuantityLR(i, j)
+    end
+
+    local function DecrementQuantity(i, j)
+        QuantityTable[i][j]:setText(QuantityTable[i][j]:getText() - 1)
+        if tonumber(QuantityTable[i][j]:getText()) == 0 then
+            QuantityTable[i][j]:setRGB(1, 0, 0)
+        end
+        SetQuantityLR(i, j)
     end
 
     local function SetGum(Factoradic, Tier)
@@ -263,12 +300,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             TierQuantity[Tier][i]:setText("0")
             TierQuantity[Tier][i]:setRGB(1, 0, 0)
         end
-
-        for i=1,4 do
-            for j =1,4 do
-                SetQuantityLR(i, j)
-            end
-        end
     end
     
     local function SetTier1Gum(ModelRef)
@@ -296,5 +327,105 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     end
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.tier3"), SetTier3Gum)
     
+    local function GargoyleProgress(GargNum, NotifyData)
+        if NotifyData == -1 then
+            CurrentIndices[GargNum] = 1
+
+            for i=1,#PBTable[GargNum] do
+                PBTable[GargNum][i]:setShaderVector(0, 0, 0, 0, 0)
+            end
+
+            for i=1,#QuantityTable[GargNum] do
+                ResetQuantity(GargNum, i)
+            end
+        elseif NotifyData == 1 then
+            local CurrentIndex = CurrentIndices[GargNum]
+            if CurrentIndex >= #GumTable[GargNum] then
+                PBTable[GargNum][CurrentIndex]:setShaderVector(0, 0, 0, 0, 0)
+            else
+                PBTable[GargNum][CurrentIndex]:setShaderVector(0, 1, 0, 0, 0)
+                IncrementQuantity(GargNum, CurrentIndex)
+                CurrentIndices[GargNum] = CurrentIndices[GargNum] + 1
+            end
+        else
+            local CurrentIndex = CurrentIndices[GargNum]
+            PBTable[GargNum][CurrentIndex]:setShaderVector(0, NotifyData, 0, 0, 0)
+        end
+    end
+
+    local function AramisProgress(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            GargoyleProgress(1, NotifyData)
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.aramis"), AramisProgress)
+
+    local function PorthosProgress(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            GargoyleProgress(2, NotifyData)
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.porthos"), PorthosProgress)
+
+    local function DartProgress(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            GargoyleProgress(3, NotifyData)
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.dart"), DartProgress)
+
+    local function AthosProgress(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            GargoyleProgress(4, NotifyData)
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.athos"), AthosProgress)
+
+    local function AramisRandom(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData and NotifyData >= 0 then
+            IncrementQuantity(1, NotifyData + 1)
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.aramis.random"), AramisRandom)
+
+    local function PorthosRandom(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData and NotifyData >= 0 then
+            IncrementQuantity(2, NotifyData + 1)
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.porthos.random"), PorthosRandom)
+
+    local function DartRandom(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData and NotifyData >= 0 then
+            IncrementQuantity(3, NotifyData + 1)
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.dart.random"), DartRandom)
+
+    local function AthosRandom(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData and NotifyData >= 0 then
+            IncrementQuantity(4, NotifyData + 1)
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.athos.random"), AthosRandom)
+    
+
+    local function GumEaten(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData and NotifyData >= 0 and NotifyData <= 15 then
+            local GargNum = math.floor(NotifyData / 4) + 1
+            local Index = (NotifyData % 4) + 1
+            DecrementQuantity(GargNum, Index)
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "gum.eaten"), GumEaten)
     return TrialControl
 end

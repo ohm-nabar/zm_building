@@ -446,6 +446,7 @@ fx,shadow/shadow_zombie_eyes
 fx,shadow/shadow_zombie_cloak_eyes
 fx,shadow/fx_zmb_eye_glow_white
 fx,shadow/fx_zmb_smokey_death
+fx,shadow/cloak_shadowing
 fx,electric/fx_elec_sparks_burst_sm_physx_wind
 fx,explosions/fx_exp_generic_aerial_lg
 fx,custom/fx_zombie_cola_arsenal_on
