@@ -119,6 +119,10 @@
 // Abbey Teleporter
 #using scripts\zm\zm_abbey_teleporter;
 
+// Custom Gums
+#using scripts\zm\bgbs\_zm_bgb_aftertaste_blood;
+#using scripts\zm\bgbs\_zm_bgb_challenge_rejected;
+
 #insert scripts\zm\_zm_perks.gsh;
 
 function main()

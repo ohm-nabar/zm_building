@@ -117,10 +117,10 @@ function __init__()
 	clientfield::register( "toplayer", "trials.dart", VERSION_SHIP, 5, "float" );
 	clientfield::register( "toplayer", "trials.athos", VERSION_SHIP, 5, "float" );
 
-	clientfield::register( "toplayer", "trials.aramis.random", VERSION_SHIP, 2, "int" );
-	clientfield::register( "toplayer", "trials.porthos.random", VERSION_SHIP, 2, "int" );
-	clientfield::register( "toplayer", "trials.dart.random", VERSION_SHIP, 2, "int" );
-	clientfield::register( "toplayer", "trials.athos.random", VERSION_SHIP, 2, "int" );
+	clientfield::register( "toplayer", "trials.aramis.random", VERSION_SHIP, 3, "int" );
+	clientfield::register( "toplayer", "trials.porthos.random", VERSION_SHIP, 3, "int" );
+	clientfield::register( "toplayer", "trials.dart.random", VERSION_SHIP, 3, "int" );
+	clientfield::register( "toplayer", "trials.athos.random", VERSION_SHIP, 3, "int" );
 
 	level.gg_tier1 = [];
 	array::add(level.gg_tier1, "zm_bgb_stock_option");
@@ -132,8 +132,8 @@ function __init__()
 	level.gg_tier2 = [];
 	array::add(level.gg_tier2, "zm_bgb_immolation_liquidation");
 	array::add(level.gg_tier2, "zm_bgb_pop_shocks");
-	array::add(level.gg_tier2, "zm_bgb_cache_back");
-	array::add(level.gg_tier2, "zm_bgb_wall_power");
+	array::add(level.gg_tier2, "zm_bgb_challenge_rejected");
+	array::add(level.gg_tier2, "zm_bgb_flavor_hexed");
 	array::add(level.gg_tier2, "zm_bgb_crate_power");
 	array::add(level.gg_tier2, "zm_bgb_alchemical_antithesis");
 	array::add(level.gg_tier2, "zm_bgb_extra_credit");
@@ -142,7 +142,7 @@ function __init__()
 	array::add(level.gg_tier3, "zm_bgb_on_the_house");
 	array::add(level.gg_tier3, "zm_bgb_unquenchable");
 	array::add(level.gg_tier3, "zm_bgb_head_drama");
-	array::add(level.gg_tier3, "zm_bgb_reign_drops");
+	array::add(level.gg_tier3, "zm_bgb_aftertaste_blood");
 
 	aramis_goals = [];
 	array::add(aramis_goals, 2);
@@ -291,6 +291,8 @@ function gargoyle_progress_check(garg_num, progress)
 			gum = self.gargoyle_gums[garg_num][rand_index];
 			self.gg_quantities[gum] += 1;
 			self clientfield::set_to_player(rand_cf, rand_index);
+			util::wait_network_frame();
+			self clientfield::set_to_player(rand_cf, 4);
 		}
 		else
 		{

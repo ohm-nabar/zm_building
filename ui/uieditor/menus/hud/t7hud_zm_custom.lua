@@ -349,7 +349,13 @@ function LUI.createMenu.T7Hud_zm_factory(InstanceRef)
         if IsParamModelEqualToString(ModelRef, "zombie_bgb_token_notification") then
             AddZombieBGBTokenNotification(HudRef, GumWidget, InstanceRef, ModelRef) -- Add a popup for a 'free hit'
         elseif IsParamModelEqualToString(ModelRef, "zombie_bgb_notification") then
-            AddZombieBGBNotification(HudRef, GumWidget, ModelRef) -- Add a popup for the gum you got
+            -- func_vehicle Custom BGB Notification
+			local data = CoD.GetScriptNotifyData(ModelRef)
+			local index = data[1]
+			local tableName = "gamedata/weapons/zm/zm_levelcommon_bgb.csv"
+			local bgbName = Engine.TableLookup(nil, tableName, 1, index, 0)
+			bgbName = string.sub(bgbName, 4)
+			GumWidget:appendNotification({clip = "TextandImageBGB", title = Engine.Localize("zmui_" .. bgbName), description = Engine.Localize("zmui_" .. bgbName .. "_hint"), bgbImage = RegisterImage("t7_hud_zm_" .. bgbName)})
         elseif IsParamModelEqualToString(ModelRef, "zombie_notification") then
             AddZombieNotification(HudRef, GumWidget, ModelRef) -- Add a popup for a powerup
         end

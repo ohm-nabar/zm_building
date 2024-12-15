@@ -23,26 +23,6 @@ material,shadow_kill_indicator
 material,buy_waypoint
 material,defend_waypoint
 
-image,t7_hud_zm_bgb_aftertaste
-image,t7_hud_zm_bgb_alchemical_antithesis
-image,t7_hud_zm_bgb_cache_back
-image,t7_hud_zm_bgb_crate_power
-image,t7_hud_zm_bgb_im_feelin_lucky
-image,t7_hud_zm_bgb_immolation_liquidation
-image,t7_hud_zm_bgb_on_the_house
-image,t7_hud_zm_bgb_perkaholic
-image,t7_hud_zm_bgb_phoenix_up
-image,t7_hud_zm_bgb_profit_sharing
-image,t7_hud_zm_bgb_stock_option
-image,t7_hud_zm_bgb_sword_flay
-image,t7_hud_zm_bgb_temporal_gift
-image,t7_hud_zm_bgb_unquenchable
-image,t7_hud_zm_bgb_wall_power
-image,t7_hud_zm_bgb_in_plain_sight
-image,t7_hud_zm_bgb_pop_shocks
-
-weaponcamo,camo_t7_zmb_bgb
-
 image,uie_t7_zm_hud_score_char1
 image,uie_t7_zm_hud_score_char2
 image,uie_t7_zm_hud_score_char3
@@ -664,6 +644,9 @@ xanim,t6_ai_zombie_walk_attack_v4
 xanim,t6_ai_zombie_run_attack_v1
 xanim,t6_ai_zombie_run_attack_v2
 xanim,t6_ai_zombie_run_attack_v3
+
+// BGB Override
+include,bgb_pack
 
 // Localized Strings
 localize,zm_abbey

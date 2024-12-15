@@ -97,7 +97,7 @@ function on_player_spawned()
 	self.hasJug2 = false;
 	self.hasElectric2 = false;
 	self.hasQuick2 = false;
-	self.hasDouble2 = true;
+	self.hasDouble2 = false;
 	self.hasMule2 = false;
 	self.hasStamin2 = false;
 	self.hasPoseidon2 = false;

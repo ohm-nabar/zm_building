@@ -68,6 +68,10 @@
 // Abbey Teleporter
 #using scripts\zm\zm_abbey_teleporter;
 
+// Custom Gums
+#using scripts\zm\bgbs\_zm_bgb_aftertaste_blood;
+#using scripts\zm\bgbs\_zm_bgb_challenge_rejected;
+
 function main()
 {
 	LuiLoad( "ui.uieditor.menus.hud.t7hud_zm_custom" );
@@ -92,6 +96,9 @@ function main()
 	LuiLoad( "ui.uieditor.widgets.scoreboard.cp.scoreboardheaderwidgetcp_abbey" );
 	LuiLoad( "ui.uieditor.widgets.scoreboard.scoreboardpingheader_abbey" );
 	LuiLoad( "ui.uieditor.widgets.scoreboard.scoreboardrowwidget_abbey" );
+	LuiLoad( "ui.uieditor.widgets.hud.zm_ammowidget.zmammo_bbgummeterwidget_fix" );
+	LuiLoad( "ui.uieditor.widgets.mphudwidgets.cursorhint_image_fix" );
+	LuiLoad( "ui.uieditor.widgets.hud.zm_cursorhint.zmcursorhint_fix" );
 
 	//LuiLoad( "ui.uieditor.widgets.hud.zm_perks.LogicalZMPerksContainerFactory" );
 	//LuiLoad( "ui.uieditor.widgets.hud.zm_perks.LogicalZMPerkListItemFactory" );

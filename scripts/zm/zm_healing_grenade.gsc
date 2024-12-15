@@ -178,7 +178,7 @@ function players_check(grenade, reviver)
 			self flag::set(#"solo_healing_grenade");
 		}
 		self thread zm_laststand::remote_revive( reviver );
-		self zm_juggernog_potions::change_jug_resistance_level(true, 1);
+		self zm_juggernog_potions::maintain_jug_resistance_level();
 		for(i = 0; i < self.perksToGiveBack.size; i++)
         {
         	self zm_perks::give_perk(self.perksToGiveBack[i], false);

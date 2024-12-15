@@ -60,13 +60,6 @@
 // MAIN
 //*****************************************************************************
 
-function checkStringValid( str )
-{
-	if( str != "" )
-		return str;
-	return undefined;
-}
-
 function getColourValue( activation )
 {
 	switch(activation)
@@ -109,31 +102,26 @@ function create_gg_model_for_player(gum_struct, origin, angles)
 function lookup_gobblegum(name)
 {
     index = 1;
-    row = TableLookupRow( "gamedata/stats/zm/zm_statstable.csv", index );
+    row = TableLookupRow( "gamedata/weapons/zm/zm_levelcommon_bgb.csv", index );
     
     while ( isdefined( row ) )
     {
-        gumStr = checkStringValid( row[4] );
+        gumStr = row[0];
 
         if(gumStr == name)
             break;
 
         index++;
 
-        row = TableLookupRow( "gamedata/stats/zm/zm_statstable.csv", index );
+        row = TableLookupRow( "gamedata/weapons/zm/zm_levelcommon_bgb.csv", index );
     }
 
     struct = SpawnStruct();
     struct.name = gumStr;
     struct.displayName = gg_name(struct.name);
-    struct.camoIndex = Int(row[5]);
-    struct.image = checkStringValid( row[6] );
-    struct.description = checkStringValid( row[7] );
-    struct.rarity = Int( row[16] );    // 0 = common, 1 = mega, 2 = rare, 3 = urm, 4 = whim
-    struct.activation = checkStringValid( row[20] );
-    struct.colourValue = getColourValue(struct.activation);
-    struct.tableIndex = Int( row[0] );
-    struct.releaseType = checkStringValid( row[15] );
+    struct.camoIndex = Int(row[2]);
+    struct.rarity = Int( row[5] );
+    struct.tableIndex = Int( row[1] );
 
     return struct;
 }

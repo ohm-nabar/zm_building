@@ -212,4 +212,5 @@ xmodel,c_zom_der_zombie_body1_g_upclean
 xmodel,c_zom_der_zombie_body1_g_rarmoff
 xmodel,c_zom_der_zombie_body1_g_larmoff
 sound,zm_building
+localize,zmui
 localize,zm_abbey

@@ -35,63 +35,6 @@ LANG_ENGLISH       "Hold ^3[{+activate}]^7 to dispense GargoyleGum [Cost: &&1]"
 REFERENCE           	BGB_NEXT_ROUND
 LANG_ENGLISH       "Come back next round!"
 
-REFERENCE           	BGB_STOCK_OPTION
-LANG_ENGLISH       	"Stock Option"
-
-REFERENCE           	BGB_SWORD_FLAY
-LANG_ENGLISH       "Sword Flay"
-
-REFERENCE           	BGB_TEMPORAL_GIFT
-LANG_ENGLISH       "Temporal Gift"
-
-REFERENCE           	BGB_IN_PLAIN_SIGHT
-LANG_ENGLISH       	"In Plain Sight"
-
-REFERENCE           	BGB_IM_FEELIN_LUCKY
-LANG_ENGLISH       	"I'm Feelin' Lucky"
-
-REFERENCE           	BGB_IMMOLATION_LIQUIDATION
-LANG_ENGLISH       	"Immolation Liquidation"
-
-REFERENCE           	BGB_PHOENIX_UP
-LANG_ENGLISH       	"Phoenix Up"
-
-REFERENCE           	BGB_POP_SHOCKS
-LANG_ENGLISH       	"Pop Shocks"
-
-REFERENCE           	BGB_CACHE_BACK
-LANG_ENGLISH       	"Cache Back"
-
-REFERENCE           	BGB_ON_THE_HOUSE
-LANG_ENGLISH       	"On the House"
-
-REFERENCE           	BGB_PROFIT_SHARING
-LANG_ENGLISH       	"Profit Sharing"
-
-REFERENCE           	BGB_WALL_POWER
-LANG_ENGLISH       	"Wall Power"
-
-REFERENCE           	BGB_CRATE_POWER
-LANG_ENGLISH       	"Crate Power"
-
-REFERENCE           	BGB_UNQUENCHABLE
-LANG_ENGLISH       	"Unquenchable"
-
-REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS
-LANG_ENGLISH       	"Alchemical Antithesis"
-
-REFERENCE           	BGB_EXTRA_CREDIT
-LANG_ENGLISH       	"Extra Credit"
-
-REFERENCE           	BGB_HEAD_DRAMA
-LANG_ENGLISH       	"Head Drama"
-
-REFERENCE           	BGB_REIGN_DROPS
-LANG_ENGLISH       	"Reign Drops"
-
-REFERENCE           	BGB_PERKAHOLIC
-LANG_ENGLISH       	"Perkaholic"
-
 REFERENCE           	PAD_COOLDOWN
 LANG_ENGLISH       	"Cooling down..."
 

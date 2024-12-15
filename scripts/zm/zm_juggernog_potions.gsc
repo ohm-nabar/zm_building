@@ -126,6 +126,7 @@ function player_count_think()
 function on_player_connect()
 {
 	self.jug_resistance_level = 100;
+	self.prev_jug_resistance_level = self.jug_resistance_level;
 	self LUINotifyEvent(&"jug_hearts_update", 1, 0);
 	self thread fix_health_reset();
 	//self thread resistance_level_display();
@@ -134,11 +135,13 @@ function on_player_connect()
 
 function on_laststand()
 {
+	self.prev_jug_resistance_level = self.jug_resistance_level;
 	self change_jug_resistance_level(false, 1);
 }
 
 function change_jug_resistance_level(increment, amount)
 {
+	self.prev_jug_resistance_level = self.jug_resistance_level;
 	if(increment)
 	{
 		new_level = self.jug_resistance_level + (50 * amount);
@@ -156,6 +159,17 @@ function change_jug_resistance_level(increment, amount)
 	self.maxhealth = self.jug_resistance_level;
 	self SetMaxHealth( self.jug_resistance_level );
 	self.health = self.maxhealth;
+}
+
+function maintain_jug_resistance_level()
+{
+	if(self.prev_jug_resistance_level <= self.jug_resistance_level)
+	{
+		return;
+	}
+
+	self.prev_jug_resistance_level = self.jug_resistance_level;
+	self change_jug_resistance_level(true, 1);
 }
 
 function activator_think()
