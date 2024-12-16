@@ -648,5 +648,9 @@ xanim,t6_ai_zombie_run_attack_v3
 // BGB Override
 include,bgb_pack
 
+// Fire Sale
+scriptparsetree,scripts/zm/_zm_powerup_fire_sale.gsc
+scriptparsetree,scripts/zm/_zm_powerup_fire_sale.csc
+
 // Localized Strings
 localize,zm_abbey
