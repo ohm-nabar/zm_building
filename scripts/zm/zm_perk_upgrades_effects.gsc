@@ -73,6 +73,7 @@ function on_player_connect()
 	self thread stamin_upgrade_effects();
 	self thread cherry_upgrade_effects();
 	self thread mule_upgrade_effects();
+	self thread quick_upgrade_effects();
 	//self.player_damage_override = &player_damage_override;
 }
 
@@ -234,6 +235,66 @@ function mule_third_gun_hud()
 			//third_gun_hud.alpha = 0;
 		}
 		wait(0.05);
+	}
+}
+
+function quick_upgrade_effects()
+{
+	self endon("disconnect");
+
+	self thread quick2_heal_check();
+	self thread quick2_reviver_check();
+	while(true)
+	{
+		result = self util::waittill_any_return("quick2_heal_boost", "quick2_revive_boost");
+		if(result == "quick2_revive_boost")
+		{
+			self.quick2_player SetMoveSpeedScale(1.5);
+		}
+		self SetMoveSpeedScale(1.5);
+
+		wait(2.5);
+		if(result == "quick2_revive_boost")
+		{
+			self.quick2_player SetMoveSpeedScale(1);
+		}
+		self SetMoveSpeedScale(1);
+	}
+}
+
+function quick2_heal_check()
+{
+	self endon("disconnect");
+
+	prev_health = self.health;
+	while(true)
+	{
+		if(self.health > prev_health && self zm_perk_upgrades::IsPerkUpgradeActive(PERK_QUICK_REVIVE))
+		{
+			self notify("quick2_heal_boost");
+			while(self.health < self.maxHealth)
+			{
+				wait(0.05);
+			}
+		}
+
+		prev_health = self.health;
+		wait(0.05);
+	}
+}
+
+function quick2_reviver_check()
+{
+	self endon("disconnect");
+
+	while(true)
+	{
+		self waittill("player_revived", reviver);
+		if(reviver != self && reviver zm_perk_upgrades::IsPerkUpgradeActive(PERK_QUICK_REVIVE))
+		{
+			reviver.quick2_player = self;
+			reviver notify("quick2_revive_boost");
+		}
 	}
 }
 

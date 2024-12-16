@@ -147,7 +147,7 @@ REFERENCE           	CHALLENGE_QUICK
 LANG_ENGLISH       "Obtain kills while on low health"
 
 REFERENCE           	CHALLENGE_QUICK_REWARD
-LANG_ENGLISH       "Reward: Health regen cannot be interrupted"
+LANG_ENGLISH       "Reward: Speed boost upon revive or regen"
 
 REFERENCE           	CHALLENGE_PHD
 LANG_ENGLISH       "Obtain kills using PhD slides"
