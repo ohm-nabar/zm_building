@@ -117,10 +117,12 @@ function __init__()
 	clientfield::register( "toplayer", "trials.dart", VERSION_SHIP, 5, "float" );
 	clientfield::register( "toplayer", "trials.athos", VERSION_SHIP, 5, "float" );
 
-	clientfield::register( "toplayer", "trials.aramis.random", VERSION_SHIP, 3, "int" );
-	clientfield::register( "toplayer", "trials.porthos.random", VERSION_SHIP, 3, "int" );
-	clientfield::register( "toplayer", "trials.dart.random", VERSION_SHIP, 3, "int" );
-	clientfield::register( "toplayer", "trials.athos.random", VERSION_SHIP, 3, "int" );
+	clientfield::register( "toplayer", "trials.aramisRandom", VERSION_SHIP, 3, "int" );
+	clientfield::register( "toplayer", "trials.porthosRandom", VERSION_SHIP, 3, "int" );
+	clientfield::register( "toplayer", "trials.dartRandom", VERSION_SHIP, 3, "int" );
+	clientfield::register( "toplayer", "trials.athosRandom", VERSION_SHIP, 3, "int" );
+
+	clientfield::register( "toplayer", "trials.playerCountChange", VERSION_SHIP, 1, "int" );
 
 	level.gg_tier1 = [];
 	array::add(level.gg_tier1, "zm_bgb_stock_option");
@@ -252,12 +254,21 @@ function setup_gum_rewards()
 	tier2_factoradic = level factoradic(tier2_indices);
 	tier3_factoradic = level factoradic(tier3_indices);
 
-	self clientfield::set_to_player("trials.tier1", tier1_factoradic);
-	util::wait_network_frame();
-	self clientfield::set_to_player("trials.tier2", tier2_factoradic);
-	util::wait_network_frame();
-	self clientfield::set_to_player("trials.tier3", tier3_factoradic);
-	util::wait_network_frame();
+	while(self clientfield::get_to_player("trials.tier1") != tier1_factoradic)
+	{
+		self clientfield::set_to_player("trials.tier1", tier1_factoradic);
+		util::wait_network_frame();
+	}
+	while(self clientfield::get_to_player("trials.tier2") != tier2_factoradic)
+	{
+		self clientfield::set_to_player("trials.tier2", tier2_factoradic);
+		util::wait_network_frame();
+	}
+	while(self clientfield::get_to_player("trials.tier3") != tier3_factoradic)
+	{
+		self clientfield::set_to_player("trials.tier3", tier3_factoradic);
+		util::wait_network_frame();
+	}
 }
 
 function setup_trials()
@@ -287,7 +298,7 @@ function gargoyle_progress_check(garg_num, progress)
 		if(index >= level.gargoyle_goals[garg_num].size - 1)
 		{
 			rand_index = RandomIntRange(0, level.gargoyle_goals[garg_num].size - 1);
-			rand_cf = level.gargoyle_cfs[garg_num] + ".random";
+			rand_cf = level.gargoyle_cfs[garg_num] + "Random";
 			gum = self.gargoyle_gums[garg_num][rand_index];
 			self.gg_quantities[gum] += 1;
 			self clientfield::set_to_player(rand_cf, rand_index);
@@ -824,4 +835,64 @@ function assign_gargoyle_gums(tier1_indices, tier2_indices, tier3_indices)
 	array::add(self.gargoyle_gums, porthos_gums);
 	array::add(self.gargoyle_gums, dart_gums);
 	array::add(self.gargoyle_gums, athos_gums);
+
+	self thread monitor_player_count_gums();
+}
+
+function monitor_player_count_gums()
+{
+	self endon("disconnect");
+
+	extra_credit_i = -1;
+	extra_credit_j = -1;
+
+	head_drama_i = -1;
+	head_drama_j = -1;
+
+	for(i = 0; i < self.gargoyle_gums.size; i++)
+	{
+		for(j = 0; j < self.gargoyle_gums[i].size; j++)
+		{
+			if(self.gargoyle_gums[i][j] == "zm_bgb_extra_credit")
+			{
+				extra_credit_i = i;
+				extra_credit_j = j;
+			}
+			else if(self.gargoyle_gums[i][j] == "zm_bgb_head_drama")
+			{
+				head_drama_i = i;
+				head_drama_j = j;
+			}
+		}
+	}
+
+	prev_player_count = 1;
+	while(true)
+	{
+		if(level.players.size != prev_player_count)
+		{
+			prev_player_count = level.players.size;
+			if(level.players.size == 1)
+			{
+				self.gargoyle_gums[extra_credit_i][extra_credit_j] = "zm_bgb_extra_credit";
+				self.gargoyle_gums[head_drama_i][head_drama_j] = "zm_bgb_head_drama";
+				while(self clientfield::get_to_player("trials.playerCountChange") != 0)
+				{
+					self clientfield::set_to_player("trials.playerCountChange", 0);
+					util::wait_network_frame();
+				}
+			}
+			else
+			{
+				self.gargoyle_gums[extra_credit_i][extra_credit_j] = "zm_bgb_profit_sharing";
+				self.gargoyle_gums[head_drama_i][head_drama_j] = "zm_bgb_phoenix_up";
+				while(self clientfield::get_to_player("trials.playerCountChange") != 1)
+				{
+					self clientfield::set_to_player("trials.playerCountChange", 1);
+					util::wait_network_frame();
+				}
+			}
+		}
+		wait(0.05);
+	}
 }

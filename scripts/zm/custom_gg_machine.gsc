@@ -203,7 +203,7 @@ function judge_hintstring_think(player)
 	garg_num = self.script_int;
 	garg_name = self.script_string;
 
-	prev_index = -1;
+	prev_displayName = "";
 	prev_quantity = -1;
 
 	while(true)
@@ -211,11 +211,12 @@ function judge_hintstring_think(player)
 		index = player.judge_indices[garg_num];
 		gum = player.gargoyle_gums[garg_num][index];
 		gum_struct = zm_bgb_custom_util::lookup_gobblegum(gum);
+		displayName = gum_struct.displayName;
 		quantity = player.gg_quantities[gum];
 
-		if(index != prev_index || quantity != prev_quantity)
+		if(displayName != prev_displayName || quantity != prev_quantity)
 		{
-			prev_index = index;
+			prev_displayName = displayName;
 			prev_quantity = quantity;
 			hintstring = "Press ^3[{+activate}]^7 for " + MakeLocalizedString(gum_struct.displayName) + " [Quantity: " + quantity + "]" + "\nMelee for next GargoyleGum";
 			self SetHintStringForPlayer(player, hintstring);

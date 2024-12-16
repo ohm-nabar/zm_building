@@ -245,6 +245,9 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local TierQuantity = {Tier1Quantity, Tier2Quantity, Tier3Quantity}
 
     local CurrentIndices = {1, 1, 1, 1}
+
+    local ExtraCreditIndex = 1
+    local HeadDramaIndex = 1
     
     local function SetQuantityLR(i, j)
         local QuantityLeft = GumStartX + GumWidth + (0.42 * QuantityTable[i][j]:getTextWidth()) - 13.68 + (XOffset * (j - 1))
@@ -295,6 +298,11 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
 
         for i=1,N do
             local TableVal = PermTable[i] + 1
+            if Tier == 2 and TableVal == 7 then
+                ExtraCreditIndex = i
+            elseif Tier == 3 and TableVal == 3 then
+                HeadDramaIndex = i
+            end
             TierGum[Tier][i]:setImage(TierGumLookup[Tier][TableVal])
             TierText[Tier][i]:setText(TierTextLookup[Tier][TableVal])
             TierQuantity[Tier][i]:setText("0")
@@ -391,7 +399,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             IncrementQuantity(1, NotifyData + 1)
         end
     end
-    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.aramis.random"), AramisRandom)
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.aramisRandom"), AramisRandom)
 
     local function PorthosRandom(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
@@ -399,7 +407,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             IncrementQuantity(2, NotifyData + 1)
         end
     end
-    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.porthos.random"), PorthosRandom)
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.porthosRandom"), PorthosRandom)
 
     local function DartRandom(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
@@ -407,7 +415,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             IncrementQuantity(3, NotifyData + 1)
         end
     end
-    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.dart.random"), DartRandom)
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.dartRandom"), DartRandom)
 
     local function AthosRandom(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
@@ -415,7 +423,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             IncrementQuantity(4, NotifyData + 1)
         end
     end
-    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.athos.random"), AthosRandom)
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.athosRandom"), AthosRandom)
     
     local function GumEaten(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
@@ -426,5 +434,37 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
         end
     end
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "gum.eaten"), GumEaten)
+
+    local function PlayerCountChange(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            if NotifyData == 0 then
+                TierGumLookup[2][7] = RegisterImage("t7_hud_zm_bgb_extra_credit")
+                TierGumLookup[3][3] = RegisterImage("t7_hud_zm_bgb_head_drama")
+
+                TierTextLookup[2][7] = Engine.Localize("ZMUI_BGB_EXTRA_CREDIT")
+                TierTextLookup[3][3] = Engine.Localize("ZMUI_BGB_HEAD_DRAMA")
+
+                TierGum[2][ExtraCreditIndex]:setImage(RegisterImage("t7_hud_zm_bgb_extra_credit"))
+                TierGum[3][HeadDramaIndex]:setImage(RegisterImage("t7_hud_zm_bgb_head_drama"))
+                
+                TierText[2][ExtraCreditIndex]:setText(Engine.Localize("ZMUI_BGB_EXTRA_CREDIT"))
+                TierText[3][HeadDramaIndex]:setText(Engine.Localize("ZMUI_BGB_HEAD_DRAMA"))
+            else
+                TierGumLookup[2][7] = RegisterImage("t7_hud_zm_bgb_profit_sharing")
+                TierGumLookup[3][3] = RegisterImage("t7_hud_zm_bgb_phoenix_up")
+
+                TierTextLookup[2][7] = Engine.Localize("ZMUI_BGB_PROFIT_SHARING")
+                TierTextLookup[3][3] = Engine.Localize("ZMUI_BGB_PHOENIX_UP")
+
+                TierGum[2][ExtraCreditIndex]:setImage(RegisterImage("t7_hud_zm_bgb_profit_sharing"))
+                TierGum[3][HeadDramaIndex]:setImage(RegisterImage("t7_hud_zm_bgb_phoenix_up"))
+
+                TierText[2][ExtraCreditIndex]:setText(Engine.Localize("ZMUI_BGB_PROFIT_SHARING"))
+                TierText[3][HeadDramaIndex]:setText(Engine.Localize("ZMUI_BGB_PHOENIX_UP"))
+            end
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.playerCountChange"), PlayerCountChange)
     return TrialControl
 end

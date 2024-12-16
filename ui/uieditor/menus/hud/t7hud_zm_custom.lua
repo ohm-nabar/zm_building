@@ -47,10 +47,12 @@ local function PreLoadCallback(HudRef, InstanceRef)
     UIModelUtils.RegisterUIModel(InstanceRef, "trials.dart", -1.0)
     UIModelUtils.RegisterUIModel(InstanceRef, "trials.athos", -1.0)
 
-    UIModelUtils.RegisterUIModel(InstanceRef, "trials.aramis.random", -1)
-    UIModelUtils.RegisterUIModel(InstanceRef, "trials.porthos.random", -1)
-    UIModelUtils.RegisterUIModel(InstanceRef, "trials.dart.random", -1)
-    UIModelUtils.RegisterUIModel(InstanceRef, "trials.athos.random", -1)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.aramisRandom", -1)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.porthosRandom", -1)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.dartRandom", -1)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.athosRandom", -1)
+
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.playerCountChange", 0)
 
     UIModelUtils.RegisterUIModel(InstanceRef, "gum.eaten", -1)
 

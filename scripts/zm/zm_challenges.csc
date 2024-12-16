@@ -23,10 +23,12 @@ function __init__()
 	clientfield::register( "toplayer", "trials.dart", VERSION_SHIP, 5, "float", &trial_dart, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 	clientfield::register( "toplayer", "trials.athos", VERSION_SHIP, 5, "float", &trial_athos, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 
-	clientfield::register( "toplayer", "trials.aramis.random", VERSION_SHIP, 3, "int", &trial_aramis_random, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
-	clientfield::register( "toplayer", "trials.porthos.random", VERSION_SHIP, 3, "int", &trial_porthos_random, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
-	clientfield::register( "toplayer", "trials.dart.random", VERSION_SHIP, 3, "int", &trial_dart_random, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
-	clientfield::register( "toplayer", "trials.athos.random", VERSION_SHIP, 3, "int", &trial_athos_random, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	clientfield::register( "toplayer", "trials.aramisRandom", VERSION_SHIP, 3, "int", &trial_aramis_random, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	clientfield::register( "toplayer", "trials.porthosRandom", VERSION_SHIP, 3, "int", &trial_porthos_random, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	clientfield::register( "toplayer", "trials.dartRandom", VERSION_SHIP, 3, "int", &trial_dart_random, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	clientfield::register( "toplayer", "trials.athosRandom", VERSION_SHIP, 3, "int", &trial_athos_random, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+
+	clientfield::register( "toplayer", "trials.playerCountChange", VERSION_SHIP, 1, "int", &trial_player_count_change, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 }
 
 function trial_tier1(localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fieldName, bWasTimeJump)
@@ -73,24 +75,30 @@ function trial_athos(localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fiel
 
 function trial_aramis_random(localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fieldName, bWasTimeJump)
 {
-	model = CreateUIModel( GetUIModelForController( localClientNum ), "trials.aramis.random" );
+	model = CreateUIModel( GetUIModelForController( localClientNum ), "trials.aramisRandom" );
 	SetUIModelValue( model, newVal );
 }
 
 function trial_porthos_random(localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fieldName, bWasTimeJump)
 {
-	model = CreateUIModel( GetUIModelForController( localClientNum ), "trials.porthos.random" );
+	model = CreateUIModel( GetUIModelForController( localClientNum ), "trials.porthosRandom" );
 	SetUIModelValue( model, newVal );
 }
 
 function trial_dart_random(localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fieldName, bWasTimeJump)
 {
-	model = CreateUIModel( GetUIModelForController( localClientNum ), "trials.dart.random" );
+	model = CreateUIModel( GetUIModelForController( localClientNum ), "trials.dartRandom" );
 	SetUIModelValue( model, newVal );
 }
 
 function trial_athos_random(localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fieldName, bWasTimeJump)
 {
-	model = CreateUIModel( GetUIModelForController( localClientNum ), "trials.athos.random" );
+	model = CreateUIModel( GetUIModelForController( localClientNum ), "trials.athosRandom" );
+	SetUIModelValue( model, newVal );
+}
+
+function trial_player_count_change(localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fieldName, bWasTimeJump)
+{
+	model = CreateUIModel( GetUIModelForController( localClientNum ), "trials.playerCountChange" );
 	SetUIModelValue( model, newVal );
 }
