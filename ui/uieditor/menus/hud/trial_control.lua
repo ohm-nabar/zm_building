@@ -213,13 +213,13 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     TrialTextTable[4]:setText("Obtain kills with a newly acquired weapon from the Mystery Box (New Trial in 5 Rounds)")
 
     local Tier1GumLookup = {"t7_hud_zm_bgb_stock_option", "t7_hud_zm_bgb_sword_flay", "t7_hud_zm_bgb_temporal_gift", "t7_hud_zm_bgb_in_plain_sight", "t7_hud_zm_bgb_im_feelin_lucky"}
-    local Tier2GumLookup = {"t7_hud_zm_bgb_immolation_liquidation", "t7_hud_zm_bgb_pop_shocks", "t7_hud_zm_bgb_challenge_rejected", "t7_hud_zm_bgb_flavor_hexed", "t7_hud_zm_bgb_crate_power", "t7_hud_zm_bgb_alchemical_antithesis", "t7_hud_zm_bgb_extra_credit"}
-    local Tier3GumLookup = {"t7_hud_zm_bgb_on_the_house", "t7_hud_zm_bgb_unquenchable", "t7_hud_zm_bgb_head_drama", "t7_hud_zm_bgb_aftertaste_blood"}
+    local Tier2GumLookup = {"t7_hud_zm_bgb_immolation_liquidation", "t7_hud_zm_bgb_pop_shocks", "t7_hud_zm_bgb_challenge_rejected", "t7_hud_zm_bgb_flavor_hexed", "t7_hud_zm_bgb_crate_power", "t7_hud_zm_bgb_aftertaste_blood", "t7_hud_zm_bgb_extra_credit"}
+    local Tier3GumLookup = {"t7_hud_zm_bgb_on_the_house", "t7_hud_zm_bgb_unquenchable", "t7_hud_zm_bgb_head_drama", "t7_hud_zm_bgb_alchemical_antithesis"}
     local TierGumLookup = {Tier1GumLookup, Tier2GumLookup, Tier3GumLookup}
 
     local Tier1TextLookup = {"ZMUI_BGB_STOCK_OPTION", "ZMUI_BGB_SWORD_FLAY", "ZMUI_BGB_TEMPORAL_GIFT", "ZMUI_BGB_IN_PLAIN_SIGHT", "ZMUI_BGB_IM_FEELIN_LUCKY"}
-    local Tier2TextLookup = {"ZMUI_BGB_IMMOLATION_LIQUIDATION", "ZMUI_BGB_POP_SHOCKS", "ZMUI_BGB_CHALLENGE_REJECTED", "ZMUI_BGB_FLAVOR_HEXED", "ZMUI_BGB_CRATE_POWER", "ZMUI_BGB_ALCHEMICAL_ANTITHESIS", "ZMUI_BGB_EXTRA_CREDIT"}
-    local Tier3TextLookup = {"ZMUI_BGB_ON_THE_HOUSE", "ZMUI_BGB_UNQUENCHABLE", "ZMUI_BGB_HEAD_DRAMA", "ZMUI_BGB_AFTERTASTE_BLOOD"}
+    local Tier2TextLookup = {"ZMUI_BGB_IMMOLATION_LIQUIDATION", "ZMUI_BGB_POP_SHOCKS", "ZMUI_BGB_CHALLENGE_REJECTED", "ZMUI_BGB_FLAVOR_HEXED", "ZMUI_BGB_CRATE_POWER", "ZMUI_BGB_AFTERTASTE_BLOOD", "ZMUI_BGB_EXTRA_CREDIT"}
+    local Tier3TextLookup = {"ZMUI_BGB_ON_THE_HOUSE", "ZMUI_BGB_UNQUENCHABLE", "ZMUI_BGB_HEAD_DRAMA", "ZMUI_BGB_ALCHEMICAL_ANTITHESIS"}
     local TierTextLookup = {Tier1TextLookup, Tier2TextLookup, Tier3TextLookup}
 
     for i=1,#TierGumLookup do

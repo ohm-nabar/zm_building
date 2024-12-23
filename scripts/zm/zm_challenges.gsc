@@ -137,14 +137,14 @@ function __init__()
 	array::add(level.gg_tier2, "zm_bgb_challenge_rejected");
 	array::add(level.gg_tier2, "zm_bgb_flavor_hexed");
 	array::add(level.gg_tier2, "zm_bgb_crate_power");
-	array::add(level.gg_tier2, "zm_bgb_alchemical_antithesis");
+	array::add(level.gg_tier2, "zm_bgb_aftertaste_blood");
 	array::add(level.gg_tier2, "zm_bgb_extra_credit");
 
 	level.gg_tier3 = [];
 	array::add(level.gg_tier3, "zm_bgb_on_the_house");
 	array::add(level.gg_tier3, "zm_bgb_unquenchable");
 	array::add(level.gg_tier3, "zm_bgb_head_drama");
-	array::add(level.gg_tier3, "zm_bgb_aftertaste_blood");
+	array::add(level.gg_tier3, "zm_bgb_alchemical_antithesis");
 
 	aramis_goals = [];
 	array::add(aramis_goals, 2);
