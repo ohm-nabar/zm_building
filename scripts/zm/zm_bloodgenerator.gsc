@@ -907,10 +907,7 @@ function set_generator_hintstring()
 {
 	prev_hintstring_state = -1;
 	hintstring_state = -1;
-	hintstrings = []; 
-	array::add(hintstrings, &"ZM_ABBEY_SHADOW_DISABLED"); 
-	array::add(hintstrings,  &"ZM_ABBEY_GENERATOR_DEPOSIT"); 
-	array::add(hintstrings, &"ZM_ABBEY_GENERATOR_NO_BLOOD");
+	hintstrings = array(&"ZM_ABBEY_SHADOW_DISABLED", &"ZM_ABBEY_GENERATOR_DEPOSIT", &"ZM_ABBEY_GENERATOR_NO_BLOOD");
 	
 	while(true) 
 	{
@@ -940,12 +937,7 @@ function set_bloodgun_hintstring()
 {
 	prev_hintstring_state = -1;
 	hintstring_state = -1;
-	hintstrings = []; 
-	array::add(hintstrings, &"ZM_ABBEY_BLOODGUN_IN_USE");
-	array::add(hintstrings,  &"ZM_ABBEY_SHADOW_DISABLED");
-	array::add(hintstrings, &"ZM_ABBEY_BLOODGUN_HAS_VIAL");
-	array::add(hintstrings, &"ZM_ABBEY_BLOODGUN_COOLDOWN");
-	array::add(hintstrings, &"ZM_ABBEY_BLOODGUN_ACTIVATE");
+	hintstrings = array(&"ZM_ABBEY_BLOODGUN_IN_USE", &"ZM_ABBEY_SHADOW_DISABLED", &"ZM_ABBEY_BLOODGUN_HAS_VIAL", &"ZM_ABBEY_BLOODGUN_COOLDOWN", &"ZM_ABBEY_BLOODGUN_ACTIVATE");
 	
 	while(true) 
 	{
