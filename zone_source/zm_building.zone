@@ -606,9 +606,8 @@ image,no_hud_1_1
 
 // Mystery Box
 fx,custom/magic_box_og/fx_weapon_box_open_glow_og
-fx,custom/magic_box_og/fx_weapon_box_idle_glow_og
-//fx,custom/magic_box_og/fx_weapon_box_marker_og
-//fx,custom/magic_box_og/fx_weapon_box_marker_fl_og
+fx,custom/magic_box_og/fx_weapon_box_marker_og
+fx,custom/magic_box_og/fx_weapon_box_marker_fl_og
 xmodel,p7_zm_der_magic_box_fade
 zbarrier,zmcore_magicbox_fade
 

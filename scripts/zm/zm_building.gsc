@@ -125,11 +125,15 @@
 
 #insert scripts\zm\_zm_perks.gsh;
 
+#precache( "fx", "custom/magic_box_og/fx_weapon_box_marker_og" );
+#precache( "fx", "custom/magic_box_og/fx_weapon_box_marker_fl_og" );
+
 function main()
 {
 	//SetGametypeSetting("startRound", 12);
 	//level.default_laststandpistol = GetWeapon("ray_gun");
-
+	level._effect["lght_marker"] = "custom/magic_box_og/fx_weapon_box_marker_og";
+	level._effect["lght_marker_flare"] = "custom/magic_box_og/fx_weapon_box_marker_fl_og";
 	zm_usermap::main();
 	level.dog_round_track_override = &zm_ai_shadowpeople::dog_round_tracker;
 	zm::register_actor_damage_callback( &damage_adjustment );
