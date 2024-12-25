@@ -60,7 +60,19 @@ function event()
 	self endon("disconnect");
 	self endon("bled_out");
 
-	var_50f0f8bb = array::random(level.gg_all);
+	gg_pool = array::exclude(level.gg_all, array("zm_bgb_flavor_hexed"));
+	if(level.players.size == 1)
+	{
+		coop_gums = array("zm_bgb_profit_sharing", "zm_bgb_phoenix_up");
+		gg_pool = array::exclude(gg_pool, coop_gums);
+	}
+	else
+	{
+		solo_gums = array("zm_bgb_extra_credit", "zm_bgb_head_drama");
+		gg_pool = array::exclude(gg_pool, solo_gums);
+	}
+	
+	var_50f0f8bb = array::random(gg_pool);
 	self thread function_9a45adfb(var_50f0f8bb);
 }
 
@@ -76,10 +88,10 @@ function event()
 function function_9a45adfb(var_50f0f8bb)
 {
 	wait(1);
-	self thread function_655e0571(var_50f0f8bb);
+	//self thread function_655e0571(var_50f0f8bb);
 	self playsoundtoplayer("zmb_bgb_flavorhex", self);
 	self thread bgb::give(var_50f0f8bb);
-	arrayremovevalue(self.var_c3a5a8, var_50f0f8bb);
+	//arrayremovevalue(self.var_c3a5a8, var_50f0f8bb);
 }
 
 /*
