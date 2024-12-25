@@ -84,8 +84,8 @@
 },
 {
  	"Type" : "ALIAS",
- 	"Name" : "origins_portal_sounds",
- 	"Filename" : "origins_portal_sounds.csv",
+ 	"Name" : "t7_weapons_dlc",
+ 	"Filename" : "t7_weapons_dlc.csv",
  	"Specs" : [ ] 
 },
 ]
