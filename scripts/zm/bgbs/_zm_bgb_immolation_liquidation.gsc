@@ -37,7 +37,7 @@ function __init__()
 	{
 		return;
 	}
-	bgb::register("zm_bgb_immolation_liquidation", "activated", 1, undefined, undefined, &function_3d1f600e, &activation);
+	bgb::register("zm_bgb_immolation_liquidation", "activated", 2, undefined, undefined, &function_3d1f600e, &activation);
 }
 
 /*
