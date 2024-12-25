@@ -21,6 +21,7 @@ require("ui.uieditor.widgets.HUD.trial_upgrade_text")
 require("ui.uieditor.widgets.HUD.blood_vial")
 require("ui.uieditor.widgets.HUD.shadow_perks")
 require("ui.uieditor.widgets.HUD.revive_bar")
+require("ui.uieditor.widgets.HUD.item_inventory")
 require("ui.uieditor.widgets.HUD.RoundStatus")
 require("ui.uieditor.menus.hud.inventory_control")
 require("ui.UIModelUtils")
@@ -47,14 +48,12 @@ local function PreLoadCallback(HudRef, InstanceRef)
     UIModelUtils.RegisterUIModel(InstanceRef, "trials.dart", -1.0)
     UIModelUtils.RegisterUIModel(InstanceRef, "trials.athos", -1.0)
 
-    UIModelUtils.RegisterUIModel(InstanceRef, "trials.aramisRandom", -1)
-    UIModelUtils.RegisterUIModel(InstanceRef, "trials.porthosRandom", -1)
-    UIModelUtils.RegisterUIModel(InstanceRef, "trials.dartRandom", -1)
-    UIModelUtils.RegisterUIModel(InstanceRef, "trials.athosRandom", -1)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.aramisRandom", 0)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.porthosRandom", 0)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.dartRandom", 0)
+    UIModelUtils.RegisterUIModel(InstanceRef, "trials.athosRandom", 0)
 
     UIModelUtils.RegisterUIModel(InstanceRef, "trials.playerCountChange", 0)
-
-    UIModelUtils.RegisterUIModel(InstanceRef, "gum.eaten", -1)
 
     DisableGlobals()
     CoD.Zombie.CommonPreLoadHud(HudRef, InstanceRef)
@@ -128,6 +127,11 @@ function LUI.createMenu.T7Hud_zm_factory(InstanceRef)
     ReviveBarWidget:setLeftRight(false, false, -94, 94)
     ReviveBarWidget:setTopBottom(false, true, -173, -162)
     HudRef:addElement(ReviveBarWidget)
+
+    local ItemInventory = CoD.ItemInventory.new(HudRef, InstanceRef)
+    ItemInventory:setLeftRight(false, true, -440, -290)
+    ItemInventory:setTopBottom(false, true, -75, 0)
+    HudRef:addElement(ItemInventory)
 
     --[[
     local RoundCounter = CoD.ZmRndContainer.new(HudRef, InstanceRef)

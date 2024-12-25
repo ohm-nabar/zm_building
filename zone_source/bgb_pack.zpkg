@@ -178,3 +178,6 @@ image,i_mtl_p7_zm_bgb_mega_blue_c
 material,mc/mtl_p7_zm_bgb_mega_blue
 image,i_mtl_p7_zm_bgb_mega_purple_c
 material,mc/mtl_p7_zm_bgb_mega_purple
+
+rawfile,ui/uieditor/widgets/hud/item_inventory.lua
+image,abbey_bribe

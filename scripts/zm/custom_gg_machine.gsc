@@ -58,6 +58,12 @@
 
 #using scripts\zm\zm_bgb_custom_util;
 
+#define BRIBE_MAX 3
+#define BRIBE_MAX_PLAYER 3
+#define BRIBE_OFFSET 3.25
+
+#define EATEN_CF_NEUTRAL 0
+
 #precache( "model", "gumball_blue");
 #precache( "model", "gumball_green");
 #precache( "model", "gumball_orange");
@@ -96,28 +102,10 @@ REGISTER_SYSTEM( "custom_gg_machine", &__init__, undefined )
 
 function __init__() 
 {
-	clientfield::register( "toplayer", "gum.eaten", VERSION_SHIP, 5, "int" );
+	clientfield::register( "clientuimodel", "gumEaten", VERSION_SHIP, 5, "int" );
+	clientfield::register( "clientuimodel", "bribeCount", VERSION_SHIP, 2, "int" );
 
-	level.gg_all = [];
-	array::add(level.gg_all, "zm_bgb_stock_option");
-	array::add(level.gg_all, "zm_bgb_sword_flay");
-	array::add(level.gg_all, "zm_bgb_temporal_gift");
-	array::add(level.gg_all, "zm_bgb_in_plain_sight");
-	array::add(level.gg_all, "zm_bgb_im_feelin_lucky");
-	array::add(level.gg_all, "zm_bgb_immolation_liquidation");
-	array::add(level.gg_all, "zm_bgb_phoenix_up");
-	array::add(level.gg_all, "zm_bgb_pop_shocks");
-	array::add(level.gg_all, "zm_bgb_challenge_rejected");
-	array::add(level.gg_all, "zm_bgb_on_the_house");
-	array::add(level.gg_all, "zm_bgb_profit_sharing");
-	array::add(level.gg_all, "zm_bgb_flavor_hexed");
-	array::add(level.gg_all, "zm_bgb_crate_power");
-	array::add(level.gg_all, "zm_bgb_unquenchable");
-	array::add(level.gg_all, "zm_bgb_alchemical_antithesis");
-	array::add(level.gg_all, "zm_bgb_extra_credit");
-	array::add(level.gg_all, "zm_bgb_head_drama");
-	array::add(level.gg_all, "zm_bgb_aftertaste_blood");
-	array::add(level.gg_all, "zm_bgb_perkaholic");
+	level.gg_all = array("zm_bgb_stock_option", "zm_bgb_sword_flay", "zm_bgb_temporal_gift", "zm_bgb_in_plain_sight", "zm_bgb_im_feelin_lucky", "zm_bgb_immolation_liquidation", "zm_bgb_phoenix_up", "zm_bgb_pop_shocks", "zm_bgb_challenge_rejected", "zm_bgb_on_the_house", "zm_bgb_profit_sharing", "zm_bgb_flavor_hexed", "zm_bgb_crate_power", "zm_bgb_unquenchable", "zm_bgb_alchemical_antithesis", "zm_bgb_extra_credit", "zm_bgb_head_drama", "zm_bgb_aftertaste_blood", "zm_bgb_perkaholic");
 
 	level.gg_names = [];
 	level.gg_names["zm_bgb_stock_option"] = &"ZMUI_BGB_STOCK_OPTION";
@@ -141,8 +129,15 @@ function __init__()
 	level.gg_names["zm_bgb_perkaholic"] = &"ZMUI_BGB_PERKAHOLIC";
 
 	level.gargoyle_judges = GetEntArray("gargoyle_judge", "targetname");
-	array::thread_all(level.gargoyle_judges, &judge_think);
-	callback::on_connect( &on_player_connect );
+	level array::thread_all(level.gargoyle_judges, &judge_think);
+
+	level.gargoyle_bribes = GetEntArray("abbey_bribe", "targetname");
+	level array::thread_all(level.gargoyle_bribes, &bribe_think);
+
+	level.gargoyle_bribes_active = [];
+	level thread bribe_manager();
+
+	level callback::on_connect( &on_player_connect );
 }
 
 function on_player_connect()
@@ -164,6 +159,9 @@ function on_player_connect()
 
 	level array::thread_all(level.gargoyle_judges, &player_judge_setup, self);
 	level array::thread_all(level.gargoyle_judges, &judge_hintstring_think, self);
+
+	self.bribe_count = 0;
+	self.lua_decrement_quantity_queue_pos = 0;
 }
 
 function player_judge_setup(player)
@@ -205,6 +203,7 @@ function judge_hintstring_think(player)
 
 	prev_displayName = "";
 	prev_quantity = -1;
+	prev_bribe_count = -1;
 
 	while(true)
 	{
@@ -213,12 +212,20 @@ function judge_hintstring_think(player)
 		gum_struct = zm_bgb_custom_util::lookup_gobblegum(gum);
 		displayName = gum_struct.displayName;
 		quantity = player.gg_quantities[gum];
+		bribe_count = player.bribe_count;
 
-		if(displayName != prev_displayName || quantity != prev_quantity)
+		if(displayName != prev_displayName || quantity != prev_quantity || bribe_count != prev_bribe_count)
 		{
 			prev_displayName = displayName;
 			prev_quantity = quantity;
+			prev_bribe_count = bribe_count;
+			bribe_cost = zm_bgb_custom_util::gg_bribe_cost(gum);
 			hintstring = "Press ^3[{+activate}]^7 for " + MakeLocalizedString(gum_struct.displayName) + " [Quantity: " + quantity + "]" + "\nMelee for next GargoyleGum";
+			if(quantity == 0 && bribe_count >= bribe_cost)
+			{
+				hintstring = "Press ^3[{+activate}]^7 to Bribe for " + MakeLocalizedString(gum_struct.displayName) + " [Cost: " + bribe_cost + "]" + "\nMelee for next GargoyleGum";
+			}
+			
 			self SetHintStringForPlayer(player, hintstring);
 		}
 		wait(0.05);
@@ -260,7 +267,8 @@ function judge_think()
 		index = player.judge_indices[garg_num];
 		gum = player.gargoyle_gums[garg_num][index];
 		quantity = player.gg_quantities[gum];
-		if(! (zm_utility::is_player_valid(player)) || ! zm_perks::vending_trigger_can_player_use(player) || quantity == 0)
+		bribe_cost = zm_bgb_custom_util::gg_bribe_cost(gum);
+		if(! (zm_utility::is_player_valid(player)) || ! zm_perks::vending_trigger_can_player_use(player) || (quantity == 0 && player.bribe_count < bribe_cost))
 		{
 			wait(0.05);
 			continue;
@@ -271,16 +279,49 @@ function judge_think()
 		gum_struct = zm_bgb_custom_util::lookup_gobblegum(gum);
 		player thread zm_bgb_custom_util::give_gobblegum(gum_struct);
 
-		player.gg_quantities[gum] -= 1;
+		if(quantity > 0)
+		{	
+			player.gg_quantities[gum] -= 1;
 
-		cf_val = (garg_num * 4) + index;
-		player clientfield::set_to_player("gum.eaten", cf_val);
-		util::wait_network_frame();
-		player clientfield::set_to_player("gum.eaten", 16);
-		util::wait_network_frame();
+			cf_val = (garg_num * 4) + index + 1;
+			player thread lua_decrement_quantity(cf_val);
+		}
+		else
+		{
+			player.bribe_count -= bribe_cost;
+			player clientfield::set_player_uimodel("bribeCount", player.bribe_count);
+		}
 
 		wait(0.05);
 	}
+}
+
+function lua_decrement_quantity(cf_val)
+{
+	self endon("disconnect");
+
+	queue_pos = self.lua_decrement_quantity_queue_pos;
+	while(queue_pos > 0)
+	{
+		self waittill(#"lua_decrement_quantity_queue_pop");
+		queue_pos -= 1;
+	}
+
+	self.lua_decrement_quantity_queue_pos += 1;
+
+	while(self clientfield::get_player_uimodel("gumEaten") != cf_val)
+	{
+		self clientfield::set_player_uimodel("gumEaten", cf_val);
+		util::wait_network_frame();
+	}
+	while(self clientfield::get_player_uimodel("gumEaten") != EATEN_CF_NEUTRAL)
+	{
+		self clientfield::set_player_uimodel("gumEaten", EATEN_CF_NEUTRAL);
+		util::wait_network_frame();
+	}
+
+	self notify(#"lua_decrement_quantity_queue_pop");
+	self.lua_decrement_quantity_queue_pos -= 1;
 }
 
 function judge_model_think(garg_num)
@@ -305,4 +346,64 @@ function judge_hivemind(garg_num, player)
 	}
 
 	self gargoyle_display_update(player);
+}
+
+function bribe_think()
+{
+	model = GetEnt(self.target, "targetname");
+	fx_spot = Spawn("script_model", model.origin + (0, 0, BRIBE_OFFSET));
+	active = true;
+
+	while(true)
+	{
+		if(level array::contains(level.gargoyle_bribes_active, self))
+		{ 
+			active = true;
+
+			self SetHintString("Press ^3[{+activate}]^7 for Bribe");
+			model SetVisibleToAll();
+			fx_spot = Spawn("script_model", model.origin + (0, 0, BRIBE_OFFSET));
+			fx_spot SetModel("tag_origin");
+			PlayFXOnTag("custom/pistol_glint", fx_spot, "tag_origin");
+
+			self waittill("trigger", player);
+			while(player.bribe_count >= BRIBE_MAX_PLAYER)
+			{
+				self waittill("trigger", player);
+			}
+			player PlaySound("zmb_buildable_pickup");
+			player.bribe_count += 1;
+			player clientfield::set_player_uimodel("bribeCount", player.bribe_count);
+			ArrayRemoveValue(level.gargoyle_bribes_active, self);
+		}
+		else if(active)
+		{
+			active = false;
+
+			self SetCursorHint("HINT_NOICON");
+			self SetHintString("");
+			model SetInvisibleToAll();
+			fx_spot Delete();
+		}
+		wait(0.05);
+	}
+}
+
+function bribe_manager()
+{
+	while(true)
+	{
+		level waittill("start_of_round");
+		
+		if(level.gargoyle_bribes_active.size < BRIBE_MAX)
+		{
+			available_bribes = level array::filter(level.gargoyle_bribes, false, &bribe_filter);
+			level array::add(level.gargoyle_bribes_active, level array::random(available_bribes));
+		}
+	}
+}
+
+function bribe_filter(val)
+{
+	return ! level array::contains(level.gargoyle_bribes_active, val);
 }

@@ -87,6 +87,22 @@ function gg_name(gum)
 	return level.gg_names[gum];
 }
 
+function gg_bribe_cost(gum)
+{
+	if(level array::contains(level.gg_tier1, gum))
+	{
+		return 1;
+	}
+	else if(level array::contains(level.gg_tier2, gum))
+	{
+		return 2;
+	}
+	else
+	{
+		return 3;
+	}
+}
+
 function create_gg_model_for_player(gum_struct, origin, angles)
 {
 	gum_weapon = GetWeapon("zombie_bgb_grab");
