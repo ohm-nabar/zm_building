@@ -395,45 +395,46 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
 
     local function AramisRandom(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
-        if NotifyData and NotifyData >= 0 and NotifyData <= 3 then
-            IncrementQuantity(1, NotifyData + 1)
+        if NotifyData and NotifyData >= 1 and NotifyData <= 4 then
+            IncrementQuantity(1, NotifyData)
         end
     end
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.aramisRandom"), AramisRandom)
 
     local function PorthosRandom(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
-        if NotifyData and NotifyData >= 0 and NotifyData <= 3 then
-            IncrementQuantity(2, NotifyData + 1)
+        if NotifyData and NotifyData >= 1 and NotifyData <= 4 then
+            IncrementQuantity(2, NotifyData)
         end
     end
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.porthosRandom"), PorthosRandom)
 
     local function DartRandom(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
-        if NotifyData and NotifyData >= 0 and NotifyData <= 3 then
-            IncrementQuantity(3, NotifyData + 1)
+        if NotifyData and NotifyData >= 1 and NotifyData <= 4 then
+            IncrementQuantity(3, NotifyData)
         end
     end
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.dartRandom"), DartRandom)
 
     local function AthosRandom(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
-        if NotifyData and NotifyData >= 0 and NotifyData <= 3 then
-            IncrementQuantity(4, NotifyData + 1)
+        if NotifyData and NotifyData >= 1 and NotifyData <= 4 then
+            IncrementQuantity(4, NotifyData)
         end
     end
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.athosRandom"), AthosRandom)
     
     local function GumEaten(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
-        if NotifyData and NotifyData >= 0 and NotifyData <= 15 then
-            local GargNum = math.floor(NotifyData / 4) + 1
-            local Index = (NotifyData % 4) + 1
+        if NotifyData and NotifyData > 0  then
+            local Val = NotifyData - 1
+            local GargNum = math.floor(Val / 4) + 1
+            local Index = (Val % 4) + 1
             DecrementQuantity(GargNum, Index)
         end
     end
-    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "gum.eaten"), GumEaten)
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "gumEaten"), GumEaten)
 
     local function PlayerCountChange(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)

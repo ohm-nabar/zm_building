@@ -102,6 +102,8 @@
 #define DART_INDEX 2
 #define ATHOS_INDEX 3
 
+#define RAND_CF_NEUTRAL 0
+
 #namespace zm_challenges;
 
 REGISTER_SYSTEM( "zm_challenges", &__init__, undefined )
@@ -124,67 +126,17 @@ function __init__()
 
 	clientfield::register( "toplayer", "trials.playerCountChange", VERSION_SHIP, 1, "int" );
 
-	level.gg_tier1 = [];
-	array::add(level.gg_tier1, "zm_bgb_stock_option");
-	array::add(level.gg_tier1, "zm_bgb_sword_flay");
-	array::add(level.gg_tier1, "zm_bgb_temporal_gift");
-	array::add(level.gg_tier1, "zm_bgb_in_plain_sight");
-	array::add(level.gg_tier1, "zm_bgb_im_feelin_lucky");
+	level.gg_tier1 = array("zm_bgb_stock_option", "zm_bgb_sword_flay", "zm_bgb_temporal_gift", "zm_bgb_in_plain_sight", "zm_bgb_im_feelin_lucky");
+	level.gg_tier2 = array("zm_bgb_immolation_liquidation", "zm_bgb_pop_shocks", "zm_bgb_challenge_rejected", "zm_bgb_flavor_hexed", "zm_bgb_crate_power", "zm_bgb_aftertaste_blood", "zm_bgb_extra_credit");
+	level.gg_tier3 = array("zm_bgb_on_the_house", "zm_bgb_unquenchable", "zm_bgb_head_drama", "zm_bgb_alchemical_antithesis");
 
-	level.gg_tier2 = [];
-	array::add(level.gg_tier2, "zm_bgb_immolation_liquidation");
-	array::add(level.gg_tier2, "zm_bgb_pop_shocks");
-	array::add(level.gg_tier2, "zm_bgb_challenge_rejected");
-	array::add(level.gg_tier2, "zm_bgb_flavor_hexed");
-	array::add(level.gg_tier2, "zm_bgb_crate_power");
-	array::add(level.gg_tier2, "zm_bgb_aftertaste_blood");
-	array::add(level.gg_tier2, "zm_bgb_extra_credit");
+	aramis_goals = array(2, 3, 4, 5, 5);
+	porthos_goals = array(3, 3, 3, 3, 3);
+	dart_goals = array(2, 2, 2, 2, 2);
+	athos_goals = array(3, 3, 3, 3, 3);
+	level.gargoyle_goals = array(aramis_goals, porthos_goals, dart_goals, athos_goals);
 
-	level.gg_tier3 = [];
-	array::add(level.gg_tier3, "zm_bgb_on_the_house");
-	array::add(level.gg_tier3, "zm_bgb_unquenchable");
-	array::add(level.gg_tier3, "zm_bgb_head_drama");
-	array::add(level.gg_tier3, "zm_bgb_alchemical_antithesis");
-
-	aramis_goals = [];
-	array::add(aramis_goals, 2);
-	array::add(aramis_goals, 3);
-	array::add(aramis_goals, 4);
-	array::add(aramis_goals, 5);
-	array::add(aramis_goals, 5);
-
-	porthos_goals = [];
-	array::add(porthos_goals, 3);
-	array::add(porthos_goals, 3);
-	array::add(porthos_goals, 3);
-	array::add(porthos_goals, 3);
-	array::add(porthos_goals, 3);
-
-	dart_goals = [];
-	array::add(dart_goals, 3);
-	array::add(dart_goals, 3);
-	array::add(dart_goals, 3);
-	array::add(dart_goals, 3);
-	array::add(dart_goals, 3);
-
-	athos_goals = [];
-	array::add(athos_goals, 3);
-	array::add(athos_goals, 3);
-	array::add(athos_goals, 3);
-	array::add(athos_goals, 3);
-	array::add(athos_goals, 3);
-
-	level.gargoyle_goals = [];
-	array::add(level.gargoyle_goals, aramis_goals);
-	array::add(level.gargoyle_goals, porthos_goals);
-	array::add(level.gargoyle_goals, dart_goals);
-	array::add(level.gargoyle_goals, athos_goals);
-
-	level.gargoyle_cfs = [];
-	array::add(level.gargoyle_cfs, "trials.aramis");
-	array::add(level.gargoyle_cfs, "trials.porthos");
-	array::add(level.gargoyle_cfs, "trials.dart");
-	array::add(level.gargoyle_cfs, "trials.athos");
+	level.gargoyle_cfs = array("trials.aramis", "trials.porthos", "trials.dart", "trials.athos");
 
 	sten = GetWeapon("bo3_sten");
 	thompson = GetWeapon("s4_thompsonm1a1");
@@ -194,16 +146,7 @@ function __init__()
 	stg = GetWeapon("bo3_stg44");
 	double_barrel = GetWeapon("s4_double_barrel_sawn");
 	mas = GetWeapon("s2_mas38");
-
-	level.wallbuy_challenge_guns = [];
-	level.wallbuy_challenge_guns[level.wallbuy_challenge_guns.size] = sten;
-	level.wallbuy_challenge_guns[level.wallbuy_challenge_guns.size] = thompson;
-	level.wallbuy_challenge_guns[level.wallbuy_challenge_guns.size] = type11;
-	level.wallbuy_challenge_guns[level.wallbuy_challenge_guns.size] = bar;
-	level.wallbuy_challenge_guns[level.wallbuy_challenge_guns.size] = trench;
-	level.wallbuy_challenge_guns[level.wallbuy_challenge_guns.size] = stg;
-	level.wallbuy_challenge_guns[level.wallbuy_challenge_guns.size] = double_barrel;
-	level.wallbuy_challenge_guns[level.wallbuy_challenge_guns.size] = mas;
+	level.wallbuy_challenge_guns = array(sten, thompson, type11, bar, trench, stg, double_barrel, mas);
 
 	callback::on_connect( &on_player_connect );
 	zm::register_zombie_damage_override_callback( &zombie_damage_override );
@@ -223,6 +166,7 @@ function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags
 
 function on_player_connect()
 {
+	self.lua_increment_quantity_queue_pos = [];
 	self setup_gum_rewards();
 	self setup_trials();
 
@@ -288,22 +232,27 @@ function setup_trials()
 
 function gargoyle_progress_check(garg_num, progress)
 {
+	self endon("disconnect");
+
 	self.gargoyle_progress[garg_num] += progress;
 
 	index = self.gargoyle_indices[garg_num];
 	if(self.gargoyle_progress[garg_num] >= 1)
 	{
 		self.gargoyle_progress[garg_num] = 0;
-		self clientfield::set_to_player(level.gargoyle_cfs[garg_num], 1);
+		while(self clientfield::get_to_player(level.gargoyle_cfs[garg_num]) != 1)
+		{
+			self clientfield::set_to_player(level.gargoyle_cfs[garg_num], 1);
+			util::wait_network_frame();
+		}
 		if(index >= level.gargoyle_goals[garg_num].size - 1)
 		{
-			rand_index = RandomIntRange(0, level.gargoyle_goals[garg_num].size - 1);
+			//rand_index = RandomIntRange(0, level.gargoyle_goals[garg_num].size - 1);
+			rand_index = 0;
 			rand_cf = level.gargoyle_cfs[garg_num] + "Random";
 			gum = self.gargoyle_gums[garg_num][rand_index];
 			self.gg_quantities[gum] += 1;
-			self clientfield::set_to_player(rand_cf, rand_index);
-			util::wait_network_frame();
-			self clientfield::set_to_player(rand_cf, 4);
+			self thread lua_increment_quantity(rand_cf, rand_index + 1);
 		}
 		else
 		{
@@ -311,13 +260,44 @@ function gargoyle_progress_check(garg_num, progress)
 			self.gg_quantities[gum] += 1;
 			self.gargoyle_indices[garg_num] += 1;
 		}
-		util::wait_network_frame();
 	}
 	else if(progress > 0)
 	{
 		self clientfield::set_to_player(level.gargoyle_cfs[garg_num], self.gargoyle_progress[garg_num]);
+	}
+	util::wait_network_frame();
+}
+
+function lua_increment_quantity(cf, cf_val)
+{
+	self endon("disconnect");
+
+	if(! isdefined(self.lua_increment_quantity_queue_pos[cf]))
+	{
+		self.lua_increment_quantity_queue_pos[cf] = 0;
+	}
+	queue_pos = self.lua_increment_quantity_queue_pos[cf];
+	while(queue_pos > 0)
+	{
+		self waittill(#"lua_increment_quantity_queue_pop");
+		queue_pos -= 1;
+	}
+
+	self.lua_increment_quantity_queue_pos[cf] += 1;
+
+	while(self clientfield::get_to_player(cf) != cf_val)
+	{
+		self clientfield::set_to_player(cf, cf_val);
 		util::wait_network_frame();
 	}
+	while(self clientfield::get_to_player(cf) != RAND_CF_NEUTRAL)
+	{
+		self clientfield::set_to_player(cf, RAND_CF_NEUTRAL);
+		util::wait_network_frame();
+	}
+
+	self notify(#"lua_increment_quantity_queue_pop");
+	self.lua_increment_quantity_queue_pos[cf] -= 1;
 }
 
 function aramis_trial()
@@ -331,7 +311,6 @@ function aramis_trial()
 		index = self.gargoyle_indices[ARAMIS_INDEX];
 		progress = 1 / level.gargoyle_goals[ARAMIS_INDEX][index];
 		self gargoyle_progress_check(ARAMIS_INDEX, progress);
-		
 		wait(0.05);
 	}
 }
@@ -349,7 +328,6 @@ function porthos_trial()
 		index = self.gargoyle_indices[PORTHOS_INDEX];
 		progress = headshots / level.gargoyle_goals[PORTHOS_INDEX][index];
 		self gargoyle_progress_check(PORTHOS_INDEX, progress);
-		
 		wait(0.05);
 	}
 }
@@ -800,41 +778,17 @@ function tier_indices_init(ref)
 
 function assign_gargoyle_gums(tier1_indices, tier2_indices, tier3_indices)
 {
-	aramis_gums = [];
-	porthos_gums = [];
-	dart_gums = [];
-	athos_gums = [];
-
 	tier1_gums = tier_gums_init(tier1_indices, level.gg_tier1);
 	tier2_gums = tier_gums_init(tier2_indices, level.gg_tier2);
 	tier3_gums = tier_gums_init(tier3_indices, level.gg_tier3);
 
 	// this is very hardcoded, in the unlikely event of a refactor you gotta change this
-	array::add(aramis_gums, tier1_gums[0]);
-	array::add(aramis_gums, tier1_gums[1]);
-	array::add(aramis_gums, tier1_gums[2]);
-	array::add(aramis_gums, tier2_gums[0]);
+	aramis_gums = array(tier1_gums[0], tier1_gums[1], tier1_gums[2], tier2_gums[0]);
+	porthos_gums = array(tier1_gums[3], tier2_gums[1], tier2_gums[2], tier3_gums[0]);
+	dart_gums = array(tier1_gums[4], tier2_gums[3], tier2_gums[4], tier3_gums[1]);
+	athos_gums = array(tier2_gums[5], tier2_gums[6], tier3_gums[2], tier3_gums[3]);
 
-	array::add(porthos_gums, tier1_gums[3]);
-	array::add(porthos_gums, tier2_gums[1]);
-	array::add(porthos_gums, tier2_gums[2]);
-	array::add(porthos_gums, tier3_gums[0]);
-
-	array::add(dart_gums, tier1_gums[4]);
-	array::add(dart_gums, tier2_gums[3]);
-	array::add(dart_gums, tier2_gums[4]);
-	array::add(dart_gums, tier3_gums[1]);
-
-	array::add(athos_gums, tier2_gums[5]);
-	array::add(athos_gums, tier2_gums[6]);
-	array::add(athos_gums, tier3_gums[2]);
-	array::add(athos_gums, tier3_gums[3]);
-
-	self.gargoyle_gums = [];
-	array::add(self.gargoyle_gums, aramis_gums);
-	array::add(self.gargoyle_gums, porthos_gums);
-	array::add(self.gargoyle_gums, dart_gums);
-	array::add(self.gargoyle_gums, athos_gums);
+	self.gargoyle_gums = array(aramis_gums, porthos_gums, dart_gums, athos_gums);
 
 	self thread monitor_player_count_gums();
 }
