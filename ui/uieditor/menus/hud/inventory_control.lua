@@ -151,6 +151,21 @@ function CoD.InventoryControl.new(HudRef, InstanceRef)
     NavigationInfo:setAlpha(0.9)
     NavigationInfo:setRGB(1, 1, 1)
 
+    local function NavigationInfoUpdate(Element, Event)
+        if CoD.useController and Event.source == 0 then
+            TrialControl.AthosPrompt:setLeftRight(true, false, 195, 295)
+        else
+            TrialControl.AthosPrompt:setLeftRight(true, false, 350, 450)
+        end
+         
+        if Engine.Localize("[{+speed_throw}]") then
+            NavigationInfo:setText(Engine.Localize("^3[{+speed_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"))
+        else
+            NavigationInfo:setText(Engine.Localize("^3[{+toggleads_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"))
+        end
+    end
+    InventoryControl:registerEventHandler( "input_source_changed", NavigationInfoUpdate)
+
     InventoryControl:addElement(TabBackground)
 
     InventoryControl:addElement(ChallengeTab)

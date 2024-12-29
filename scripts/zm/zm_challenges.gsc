@@ -89,20 +89,16 @@
 #define TRIAL_BASE_TIME 1800
 #define TRIAL_EXTENDED_TIME 3000
 
-#define WALLBUY_OFFSET 1
-#define ROOM_TIME_OFFSET 11
-#define ROOM_KILLS_OFFSET 21
-#define CLASSES_OFFSET 31
-#define HEADSHOTS_OFFSET 35
-#define BOX_OFFSET 36
-#define ELEVATION_OFFSET 37
-
 #define ARAMIS_INDEX 0
 #define PORTHOS_INDEX 1
 #define DART_INDEX 2
 #define ATHOS_INDEX 3
 
 #define RAND_CF_NEUTRAL 0
+
+#define WALLBUY_OFFSET 2
+
+#define TAB_TRIAL 1
 
 #namespace zm_challenges;
 
@@ -124,6 +120,8 @@ function __init__()
 	clientfield::register( "toplayer", "trials.dartRandom", VERSION_SHIP, 3, "int" );
 	clientfield::register( "toplayer", "trials.athosRandom", VERSION_SHIP, 3, "int" );
 
+	clientfield::register( "clientuimodel", "athosTrial", VERSION_SHIP, 5, "int" );
+
 	clientfield::register( "toplayer", "trials.playerCountChange", VERSION_SHIP, 1, "int" );
 
 	level.gg_tier1 = array("zm_bgb_stock_option", "zm_bgb_sword_flay", "zm_bgb_temporal_gift", "zm_bgb_in_plain_sight", "zm_bgb_im_feelin_lucky");
@@ -138,15 +136,24 @@ function __init__()
 
 	level.gargoyle_cfs = array("trials.aramis", "trials.porthos", "trials.dart", "trials.athos");
 
-	sten = GetWeapon("bo3_sten");
-	thompson = GetWeapon("s4_thompsonm1a1");
-	type11 = GetWeapon("s4_type11");
-	bar = GetWeapon("s4_bar");
+	kar = GetWeapon("s4_kar98k_irons");
+	gewehr = GetWeapon("s4_g43");
+	garand = GetWeapon("s4_m1garand");
 	trench = GetWeapon("s4_combat_shotgun");
-	stg = GetWeapon("bo3_stg44");
+	mp40 = GetWeapon("smg_mp40_1940_zm");
 	double_barrel = GetWeapon("s4_double_barrel_sawn");
+	sten = GetWeapon("smg_sten2_zm");
 	mas = GetWeapon("s2_mas38");
-	level.wallbuy_challenge_guns = array(sten, thompson, type11, bar, trench, stg, double_barrel, mas);
+	thompson = GetWeapon("s4_thompsonm1a1");
+	stg = GetWeapon("ar_stg44_zm");
+	bar = GetWeapon("s4_bar");
+	svt = GetWeapon("s4_svt40");
+	type11 = GetWeapon("s4_type11");
+	
+	level.wallbuy_trial_guns = array(kar, gewehr, garand, trench, mp40, double_barrel, sten, mas, thompson, stg, bar, svt, type11);
+	level.wallbuy_trial_start_indices = array(0, 3, 7, 0);
+	level.wallbuy_trial_end_indices = array(3, 8, 12, 13);
+	level.wallbuy_trial_cutoff_index = 9;
 
 	callback::on_connect( &on_player_connect );
 	zm::register_zombie_damage_override_callback( &zombie_damage_override );
@@ -160,6 +167,10 @@ function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags
 		if(meansofdeath == "MOD_MELEE")
 		{
 			attacker notify(#"dart_trial_kill", self.origin);
+		}
+		if(isdefined(weapon) && isdefined(attacker.wallbuy_trial_kills) && level zm_weapons::get_base_weapon(weapon) == attacker.wallbuy_trial_weapon)
+		{
+			attacker.wallbuy_trial_kills += 1;
 		}
 	}
 }
@@ -228,6 +239,7 @@ function setup_trials()
 	self thread aramis_trial();
 	self thread porthos_trial();
 	self thread dart_trial();
+	self thread athos_trial();
 }
 
 function gargoyle_progress_check(garg_num, progress)
@@ -346,35 +358,133 @@ function dart_trial()
 	}
 }
 
-function wallbuy_challenge_hub()
-{
-	weapon_index = RandomIntRange(0, level.wallbuy_challenge_guns.size);
-	level.wallbuy_challenge_weapon = level.wallbuy_challenge_guns[weapon_index];
-
-	players = GetPlayers();
-	for(i = 0; i < players.size; i++)
-	{
-		players[i] clientfield::set_player_uimodel("trialName", WALLBUY_OFFSET + weapon_index);
-		players[i] thread wallbuy_challenge();
-	}
-}
-
-
-function wallbuy_challenge()
+function athos_trial()
 {
 	self endon("disconnect");
 
-	self thread zm_abbey_inventory::notifyText("splash_trial_wallbuy", level.open_inventory_prompt, level.abbey_alert_neutral);
+	self thread athos_indicators_monitor();
 
-	wallbuys = struct::get_array("weapon_upgrade", "targetname");
-	wallbuy = undefined;
-	for(i = 0; i < wallbuys.size; i++)
+	level waittill("start_of_round");
+	while(true)
 	{
-		if(wallbuys[i].zombie_weapon_upgrade == level.wallbuy_challenge_weapon.name)
+		self.in_athos_indicator_trial = false;
+		athos_stage = 3;
+		if(level.round_number < 4)
 		{
-			wallbuy = wallbuys[i];
+			athos_stage = 0;
+		}
+		else if(level.round_number < 7)
+		{
+			athos_stage = 1;
+		}
+		else if(level.round_number < 10)
+		{
+			athos_stage = 2;
+		}
+		self thread wallbuy_trial(athos_stage);
+
+		for(i = 0; i < 3; i++)
+		{
+			level waittill("start_of_round");
+			if(i < 2)
+			{
+				cf_val = 1 - i;
+				while(self clientfield::get_player_uimodel("athosTrial") != cf_val)
+				{
+					self clientfield::set_player_uimodel("athosTrial", cf_val);
+					util::wait_network_frame();
+				}
+			}
+		}
+
+		self notify(#"athos_trial_end");
+		self.wallbuy_trial_kills = undefined;
+	}
+}
+
+function wallbuy_trial(athos_stage)
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	self.in_athos_indicator_trial = true;
+
+	start_index = level.wallbuy_trial_start_indices[athos_stage];
+	end_index = level.wallbuy_trial_end_indices[athos_stage];
+
+	index = RandomIntRange(start_index, end_index);
+
+	airfield_path_active = level zm_room_manager::is_room_active("Water Tower");
+	pilgrimage_path_active = level zm_room_manager::is_room_active("Staminarch");
+
+	both_paths_active = airfield_path_active && pilgrimage_path_active;
+	neither_path_active = ! (airfield_path_active || pilgrimage_path_active);
+	if(athos_stage == 2 && ! both_paths_active && ! neither_path_active)
+	{
+		if(airfield_path_active && index > level.wallbuy_trial_cutoff_index)
+		{
+			index -= 2;
+			if(RandomIntRange(0, 2) == 0)
+			{
+				index = start_index;
+			}
+		}
+		else if(pilgrimage_path_active && index > start_index && index <= level.wallbuy_trial_cutoff_index)
+		{
+			index += 2;
+			if(RandomIntRange(0, 2) == 0)
+			{
+				index = start_index;
+			}
 		}
 	}
+	trial_wallbuy = level.wallbuy_trial_guns[index];
+	cf_val = WALLBUY_OFFSET + index;
+
+	self.wallbuy_trial_weapon = trial_wallbuy;
+	self.wallbuy_trial_kills = 0;
+
+	self thread wallbuy_indicators_monitor();
+
+	while(self clientfield::get_player_uimodel("athosTrial") != cf_val)
+	{
+		self clientfield::set_player_uimodel("athosTrial", cf_val);
+		util::wait_network_frame();
+	}
+
+	prev_wallbuy_trial_kills = self.wallbuy_trial_kills;
+	while(true)
+	{
+		if(self.wallbuy_trial_kills > prev_wallbuy_trial_kills)
+		{
+			index = self.gargoyle_indices[ATHOS_INDEX];
+			progress = (self.wallbuy_trial_kills - prev_wallbuy_trial_kills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			self gargoyle_progress_check(ATHOS_INDEX, progress);
+			prev_wallbuy_trial_kills = self.wallbuy_trial_kills;
+		}
+		wait(0.05);
+	}
+}
+
+function wallbuy_indicators_monitor(wallbuy_indicator)
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	all_wallbuys = struct::get_array("weapon_upgrade", "targetname");
+	foreach(wallbuy in all_wallbuys)
+	{
+		if(wallbuy.zombie_weapon_upgrade == self.wallbuy_trial_weapon.name)
+		{
+			self thread wallbuy_indicator_monitor(wallbuy);
+		}
+	}
+}
+
+function wallbuy_indicator_monitor(wallbuy)
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
 
 	waypoint_pos = Spawn("script_model", wallbuy.origin);
 	waypoint_pos SetModel("tag_origin");
@@ -383,47 +493,61 @@ function wallbuy_challenge()
 	wallbuy_indicator SetTargetEnt(waypoint_pos);
 	wallbuy_indicator SetShader("buy_waypoint");
 	wallbuy_indicator SetWayPoint(true, "buy_waypoint", false, false);
+	wallbuy_indicator.alpha = 0;
 
-	self thread wallbuy_indicator_monitor(wallbuy_indicator);
-	
-	self thread wallbuy_challenge_kill_monitor();
-	self thread monitor_pap(true);
-
-	while(level.is_in_team_challenge)
-	{
-		wait(0.05);
-	}
-
-	wallbuy_indicator Destroy();
-	waypoint_pos Delete();
-
-	self notify(#"wallbuy_challenge_finished");
-}
-
-function wallbuy_indicator_monitor(wallbuy_indicator)
-{
-	self endon("disconnect");
-	self endon(#"wallbuy_challenge_finished");
+	self thread athos_indicator_cleanup(waypoint_pos, wallbuy_indicator);
 
 	while(true)
 	{
-		weapons = self GetWeaponsListPrimaries();
-		for(i = 0; i < weapons.size; i++) 
+		has_trial_weapon = false;
+		foreach(weapon in self GetWeaponsList())
 		{
-			if(weapons[i] == level.wallbuy_challenge_weapon || zm_weapons::get_base_weapon(weapons[i]) == level.wallbuy_challenge_weapon || self.abbey_no_waypoints)
+			if(level zm_weapons::get_base_weapon(weapon) == self.wallbuy_trial_weapon)
 			{
-				wallbuy_indicator.alpha = 0;
-			}
-			else
-			{
-				wallbuy_indicator.alpha = 1;
+				has_trial_weapon = true;
+				break;
 			}
 		}
-
+		if(! has_trial_weapon && ! self.abbey_no_waypoints && self.athos_indicators_active)
+		{
+			wallbuy_indicator.alpha = 1;
+		}
+		else
+		{
+			wallbuy_indicator.alpha = 0;
+		}
 		wait(0.05);
 	}
 }
 
+function athos_indicators_monitor()
+{
+	self endon("disconnect");
+
+	self.athos_indicators_active = false;
+	while(true)
+	{
+		if(self.in_athos_indicator_trial && self.abbey_inventory_active && self.current_tab == TAB_TRIAL && self UseButtonPressed())
+		{
+			while(self UseButtonPressed())
+			{
+				wait(0.05);
+			}
+			self.athos_indicators_active = ! self.athos_indicators_active;
+		}
+		wait(0.05);
+	}
+}
+
+function athos_indicator_cleanup(waypoint_pos, indicator)
+{
+	self util::waittill_any("disconnect", #"athos_trial_end");
+
+	waypoint_pos Delete();
+	indicator Destroy();
+}
+
+/*
 function wallbuy_challenge_kill_monitor()
 {
 	self endon("disconnect");
@@ -432,7 +556,7 @@ function wallbuy_challenge_kill_monitor()
 	while(true)
 	{
 		self waittill("zom_kill");
-		if(self GetCurrentWeapon() == level.wallbuy_challenge_weapon || zm_weapons::get_base_weapon(self GetCurrentWeapon()) == level.wallbuy_challenge_weapon)
+		if(self GetCurrentWeapon() == level.wallbuy_challenge_weapon || level zm_weapons::get_base_weapon(self GetCurrentWeapon()) == level.wallbuy_challenge_weapon)
 		{
 			self.trial_progress = Min(self.trial_progress + TRIAL_KILL_INCREMENT, TRIAL_GOAL);
 		}
@@ -529,7 +653,7 @@ function box_challenge_kill_monitor()
 		self waittill("zom_kill");
 		for(i = 0; i < self.box_challenge_weapons.size; i++)
 		{
-			if(self GetCurrentWeapon() == self.box_challenge_weapons[i] || zm_weapons::get_base_weapon(self GetCurrentWeapon()) == self.box_challenge_weapons[i])
+			if(self GetCurrentWeapon() == self.box_challenge_weapons[i] || level zm_weapons::get_base_weapon(self GetCurrentWeapon()) == self.box_challenge_weapons[i])
 			{
 				self.trial_progress = Min(self.trial_progress + TRIAL_KILL_INCREMENT, TRIAL_GOAL);
 				break;
@@ -706,6 +830,7 @@ function elevation_challenge_kill_monitor()
 		wait(0.05);
 	}
 }
+*/
 
 function tier_gums_init(indices, ref)
 {

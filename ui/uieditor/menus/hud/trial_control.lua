@@ -210,7 +210,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     TrialTextTable[1]:setText("Complete Rounds")
     TrialTextTable[2]:setText("Obtain Headshot Kills")
     TrialTextTable[3]:setText("Obtain Melee Kills")
-    TrialTextTable[4]:setText("Obtain kills with a newly acquired weapon from the Mystery Box (New Trial in 5 Rounds)")
+    TrialTextTable[4]:setText("Unknown Trial")
 
     local Tier1GumLookup = {"t7_hud_zm_bgb_stock_option", "t7_hud_zm_bgb_sword_flay", "t7_hud_zm_bgb_temporal_gift", "t7_hud_zm_bgb_in_plain_sight", "t7_hud_zm_bgb_im_feelin_lucky"}
     local Tier2GumLookup = {"t7_hud_zm_bgb_immolation_liquidation", "t7_hud_zm_bgb_pop_shocks", "t7_hud_zm_bgb_challenge_rejected", "t7_hud_zm_bgb_flavor_hexed", "t7_hud_zm_bgb_crate_power", "t7_hud_zm_bgb_aftertaste_blood", "t7_hud_zm_bgb_extra_credit"}
@@ -335,6 +335,10 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     end
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.tier3"), SetTier3Gum)
     
+    local AthosRounds = 1
+    local AthosRoundsString = ""
+    local AthosTrialString = "Unknown Trial"
+
     local function GargoyleProgress(GargNum, NotifyData)
         if NotifyData == -1 then
             CurrentIndices[GargNum] = 1
@@ -346,6 +350,10 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             for i=1,#QuantityTable[GargNum] do
                 ResetQuantity(GargNum, i)
             end
+
+            AthosRounds = 1
+            AthosRoundsString = ""
+            AthosTrialString = "Unknown Trial"
         elseif NotifyData == 1 then
             local CurrentIndex = CurrentIndices[GargNum]
             if CurrentIndex >= #GumTable[GargNum] then
@@ -435,6 +443,40 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
         end
     end
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "gumEaten"), GumEaten)
+
+    local WallbuyTable = {"Kar98k", "Gewehr 43", "M1 Garand", "Trench Gun", "MP40", "Double Barreled Shotgun", "Sten Mk. IV", "MAS-38", "Thompson M1A1", "StG-44", "SVT-40", "BAR", "Type 11"}
+    
+    local AthosPrompt = LUI.UIText.new()
+    AthosPrompt:setText(Engine.Localize("^3[{+activate}]^7 Toggle Athos Waypoint"))
+    AthosPrompt:setLeftRight(true, false, 350, 450)
+    AthosPrompt:setTopBottom(true, false, 395, 415)
+    AthosPrompt:setAlpha(0.9)
+    AthosPrompt:setRGB(1, 1, 1)
+
+    TrialControl:addElement(AthosPrompt)
+    TrialControl.AthosPrompt = AthosPrompt
+
+    local function AthosTrialUpdate(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            if NotifyData <= 1 then
+                AthosRounds = NotifyData + 1
+                if AthosRounds > 1 then
+                    AthosRoundsString = " (New Trial in " .. AthosRounds .. " Rounds)"
+                else
+                    AthosRoundsString = " (New Trial in " .. AthosRounds .. " Round)"
+                end
+            else
+                AthosRounds = 3
+                AthosRoundsString = " (New Trial in " .. AthosRounds .. " Rounds)"
+                if NotifyData >= 2 and NotifyData <= 14 then
+                    AthosTrialString = "Obtain kills with the " .. WallbuyTable[NotifyData - 1]
+                end
+            end
+            TrialTextTable[4]:setText(AthosTrialString .. AthosRoundsString)
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "athosTrial"), AthosTrialUpdate)
 
     local function PlayerCountChange(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
