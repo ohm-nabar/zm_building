@@ -3,67 +3,17 @@
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
-#using scripts\shared\compass;
-#using scripts\shared\exploder_shared;
-#using scripts\shared\flag_shared;
-#using scripts\shared\laststand_shared;
-#using scripts\shared\math_shared;
-#using scripts\shared\scene_shared;
 #using scripts\shared\util_shared;
+#using scripts\shared\system_shared;
 
 #insert scripts\shared\shared.gsh;
 #insert scripts\shared\version.gsh;
 
-#insert scripts\zm\_zm_utility.gsh;
-
-#using scripts\zm\_load;
 #using scripts\zm\_zm;
-#using scripts\zm\_zm_audio;
-#using scripts\zm\_zm_powerups;
-#using scripts\zm\_zm_spawner;
-#using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_magicbox;
-#using scripts\zm\_zm_zonemgr;
 
-#using scripts\shared\ai\zombie_utility;
-
-//Perks
-#using scripts\zm\_zm_pack_a_punch;
-#using scripts\zm\_zm_pack_a_punch_util;
-#using scripts\zm\_zm_perk_additionalprimaryweapon;
-#using scripts\zm\_zm_perk_juggernaut;
-#using scripts\zm\_zm_perk_quick_revive;
-#using scripts\zm\_zm_perk_staminup;
-#using scripts\zm\_zm_perk_electric_cherry;
-
-//Powerups
-#using scripts\zm\_zm_powerup_double_points;
-#using scripts\zm\_zm_powerup_carpenter;
-#using scripts\zm\_zm_powerup_fire_sale;
-#using scripts\zm\_zm_powerup_free_perk;
-#using scripts\zm\_zm_powerup_full_ammo;
-#using scripts\zm\_zm_powerup_insta_kill;
-#using scripts\zm\_zm_powerup_nuke;
-
-//Traps
-#using scripts\zm\_zm_trap_electric;
-#using scripts\zm\_zm_bgb;
-
-#using scripts\zm\zm_usermap;
-#using scripts\zm\_zm_score;
-#using scripts\zm\_zm_laststand;
-#using scripts\zm\_zm_perks;
-#using scripts\zm\_zm_weap_cymbal_monkey;
-
-#using scripts\zm\zm_abbey_inventory;
-#using scripts\zm\zm_bgb_custom_util;
-#using scripts\zm\custom_gg_machine;
 #using scripts\zm\zm_room_manager;
-
-#using scripts\shared\system_shared;
-
-#using scripts\zm\_zm_bgb;
 
 #precache( "material", "defend_waypoint");
 #precache( "material", "buy_waypoint");
@@ -97,6 +47,14 @@
 #define RAND_CF_NEUTRAL 0
 
 #define WALLBUY_OFFSET 2
+#define AREA_ASSAULT_OFFSET 15
+#define CROUCH_OFFSET 27
+#define ELEVATION_OFFSET 28
+#define BOX_OFFSET 29
+#define TRAP_OFFSET 30
+#define BLOOD_VIAL_OFFSET 31
+
+#define ELEVATION_THRESHOLD 30
 
 #define TAB_TRIAL 1
 
@@ -136,16 +94,18 @@ function __init__()
 
 	level.gargoyle_cfs = array("trials.aramis", "trials.porthos", "trials.dart", "trials.athos");
 
+	level.athos_trials = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial, &box_trial, &trap_trial, &blood_vial_trial);
+
 	kar = GetWeapon("s4_kar98k_irons");
 	gewehr = GetWeapon("s4_g43");
 	garand = GetWeapon("s4_m1garand");
 	trench = GetWeapon("s4_combat_shotgun");
-	mp40 = GetWeapon("smg_mp40_1940_zm");
+	mp40 = GetWeapon("smg_mp40_1940");
 	double_barrel = GetWeapon("s4_double_barrel_sawn");
-	sten = GetWeapon("smg_sten2_zm");
+	sten = GetWeapon("smg_sten2");
 	mas = GetWeapon("s2_mas38");
 	thompson = GetWeapon("s4_thompsonm1a1");
-	stg = GetWeapon("ar_stg44_zm");
+	stg = GetWeapon("ar_stg44");
 	bar = GetWeapon("s4_bar");
 	svt = GetWeapon("s4_svt40");
 	type11 = GetWeapon("s4_type11");
@@ -153,7 +113,22 @@ function __init__()
 	level.wallbuy_trial_guns = array(kar, gewehr, garand, trench, mp40, double_barrel, sten, mas, thompson, stg, bar, svt, type11);
 	level.wallbuy_trial_start_indices = array(0, 3, 7, 0);
 	level.wallbuy_trial_end_indices = array(3, 8, 12, 13);
-	level.wallbuy_trial_cutoff_index = 9;
+	level.wallbuy_trial_cutoff_index = 10;
+
+	level.area_assault_trial_rooms = array("Crash Site", "Bell Tower", "Red Room", "Basilica", "Airfield", "Upper Pilgrimage Stairs", "Merveille de Verite", "Knight's Hall", "URM Laboratory", "Verite Library", "Courtyard", "No Man's Land");
+	if(GetDvarString("ui_mapname") == "zm_building")
+	{
+		level.area_assault_trial_rooms = array("Spawn Room", "Spawn Room", "Staminarch", "Water Tower", "Water Tower", "Water Tower", "Lion Room", "Lion Room", "Clean Room", "Clean Room", "Downstairs Room", "Downstairs Room");
+	}
+	level.area_assault_trial_waypoint_locs = [];
+	waypoints = struct::get_array("area_assault_waypoint", "targetname");
+	foreach(waypoint in waypoints)
+	{
+		level.area_assault_trial_waypoint_locs[waypoint.script_string] = waypoint.origin;
+	}
+	level.area_assault_trial_start_indices = array(0, 3, 6, 2);
+	level.area_assault_trial_end_indices = array(3, 6, 10, 12);
+	level.area_assault_trial_cutoff_index = 8;
 
 	callback::on_connect( &on_player_connect );
 	zm::register_zombie_damage_override_callback( &zombie_damage_override );
@@ -161,16 +136,39 @@ function __init__()
 
 function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
 {
-	if ( isPlayer( attacker ) && willBeKilled )
+	if (isdefined(attacker) && willBeKilled)
 	{
-		attacker notify(#"potential_challenge_kill", self.origin);
-		if(meansofdeath == "MOD_MELEE")
+		if(IsPlayer(attacker))
 		{
-			attacker notify(#"dart_trial_kill", self.origin);
+			attacker notify(#"potential_challenge_kill", self.origin);
+			if(meansofdeath == "MOD_MELEE")
+			{
+				attacker notify(#"dart_trial_kill");
+			}
+			if(isdefined(attacker.area_assault_trial_kills) && attacker zm_room_manager::is_player_in_room(level.abbey_rooms[attacker.area_assault_trial_room]))
+			{
+				attacker.area_assault_trial_kills += 1;
+			}
+			else if(isdefined(attacker.crouch_trial_kills) && attacker GetStance() == "crouch")
+			{
+				attacker.crouch_trial_kills += 1;
+			}
+			else if(isdefined(attacker.elevation_trial_kills) && attacker.origin[2] - self.origin[2] >= ELEVATION_THRESHOLD)
+			{
+				attacker.elevation_trial_kills += 1;
+			}
+			else if(isdefined(weapon) && isdefined(attacker.wallbuy_trial_kills) && level zm_weapons::get_base_weapon(weapon) == attacker.wallbuy_trial_weapon)
+			{
+				attacker.wallbuy_trial_kills += 1;
+			}
+			else if(isdefined(weapon) && isdefined(attacker.box_trial_kills) && array::contains(attacker.box_trial_weapons, level zm_weapons::get_base_weapon(weapon)))
+			{
+				attacker.box_trial_kills += 1;
+			}
 		}
-		if(isdefined(weapon) && isdefined(attacker.wallbuy_trial_kills) && level zm_weapons::get_base_weapon(weapon) == attacker.wallbuy_trial_weapon)
+		else if(isdefined(attacker.activated_by_player) && isdefined(attacker.activated_by_player.trap_trial_kills))
 		{
-			attacker.wallbuy_trial_kills += 1;
+			attacker.activated_by_player.trap_trial_kills += 1;
 		}
 	}
 }
@@ -251,16 +249,16 @@ function gargoyle_progress_check(garg_num, progress)
 	index = self.gargoyle_indices[garg_num];
 	if(self.gargoyle_progress[garg_num] >= 1)
 	{
-		self.gargoyle_progress[garg_num] = 0;
+		self.gargoyle_progress[garg_num] -= 1;
 		while(self clientfield::get_to_player(level.gargoyle_cfs[garg_num]) != 1)
 		{
 			self clientfield::set_to_player(level.gargoyle_cfs[garg_num], 1);
 			util::wait_network_frame();
 		}
+		self clientfield::set_to_player(level.gargoyle_cfs[garg_num], self.gargoyle_progress[garg_num]);
 		if(index >= level.gargoyle_goals[garg_num].size - 1)
 		{
-			//rand_index = RandomIntRange(0, level.gargoyle_goals[garg_num].size - 1);
-			rand_index = 0;
+			rand_index = RandomIntRange(0, level.gargoyle_goals[garg_num].size - 1);
 			rand_cf = level.gargoyle_cfs[garg_num] + "Random";
 			gum = self.gargoyle_gums[garg_num][rand_index];
 			self.gg_quantities[gum] += 1;
@@ -381,7 +379,9 @@ function athos_trial()
 		{
 			athos_stage = 2;
 		}
-		self thread wallbuy_trial(athos_stage);
+
+		trial = array::random(level.athos_trials);
+		self thread [[trial]](athos_stage);
 
 		for(i = 0; i < 3; i++)
 		{
@@ -399,6 +399,12 @@ function athos_trial()
 
 		self notify(#"athos_trial_end");
 		self.wallbuy_trial_kills = undefined;
+		self.area_assault_trial_kills = undefined;
+		self.crouch_trial_kills = undefined;
+		self.elevation_trial_kills = undefined;
+		self.box_trial_kills = undefined;
+		self.trap_trial_kills = undefined;
+		self.blood_vial_trial_fills = undefined;
 	}
 }
 
@@ -414,14 +420,20 @@ function wallbuy_trial(athos_stage)
 
 	index = RandomIntRange(start_index, end_index);
 
-	airfield_path_active = level zm_room_manager::is_room_active("Water Tower");
-	pilgrimage_path_active = level zm_room_manager::is_room_active("Staminarch");
+	airfield_path_active = level zm_room_manager::is_room_active("Airfield");
+	pilgrimage_path_active = level zm_room_manager::is_room_active("Upper Pilgrimage Stairs");
+
+	if(GetDvarString("ui_mapname") == "zm_building")
+	{
+		airfield_path_active = level zm_room_manager::is_room_active("Water Tower");
+		pilgrimage_path_active = level zm_room_manager::is_room_active("Staminarch");
+	}
 
 	both_paths_active = airfield_path_active && pilgrimage_path_active;
 	neither_path_active = ! (airfield_path_active || pilgrimage_path_active);
 	if(athos_stage == 2 && ! both_paths_active && ! neither_path_active)
 	{
-		if(airfield_path_active && index > level.wallbuy_trial_cutoff_index)
+		if(airfield_path_active && index >= level.wallbuy_trial_cutoff_index)
 		{
 			index -= 2;
 			if(RandomIntRange(0, 2) == 0)
@@ -429,7 +441,7 @@ function wallbuy_trial(athos_stage)
 				index = start_index;
 			}
 		}
-		else if(pilgrimage_path_active && index > start_index && index <= level.wallbuy_trial_cutoff_index)
+		else if(pilgrimage_path_active && index > start_index && index < level.wallbuy_trial_cutoff_index)
 		{
 			index += 2;
 			if(RandomIntRange(0, 2) == 0)
@@ -438,14 +450,13 @@ function wallbuy_trial(athos_stage)
 			}
 		}
 	}
-	trial_wallbuy = level.wallbuy_trial_guns[index];
-	cf_val = WALLBUY_OFFSET + index;
 
-	self.wallbuy_trial_weapon = trial_wallbuy;
+	self.wallbuy_trial_weapon = level.wallbuy_trial_guns[index];
 	self.wallbuy_trial_kills = 0;
 
 	self thread wallbuy_indicators_monitor();
 
+	cf_val = WALLBUY_OFFSET + index;
 	while(self clientfield::get_player_uimodel("athosTrial") != cf_val)
 	{
 		self clientfield::set_player_uimodel("athosTrial", cf_val);
@@ -520,6 +531,337 @@ function wallbuy_indicator_monitor(wallbuy)
 	}
 }
 
+function area_assault_trial(athos_stage)
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	self.in_athos_indicator_trial = true;
+
+	start_index = level.area_assault_trial_start_indices[athos_stage];
+	end_index = level.area_assault_trial_end_indices[athos_stage];
+
+	airfield_path_active = level zm_room_manager::is_room_active("Airfield");
+	pilgrimage_path_active = level zm_room_manager::is_room_active("Upper Pilgrimage Stairs");
+
+	if(GetDvarString("ui_mapname") == "zm_building")
+	{
+		airfield_path_active = level zm_room_manager::is_room_active("Water Tower");
+		pilgrimage_path_active = level zm_room_manager::is_room_active("Staminarch");
+	}
+
+	both_paths_active = airfield_path_active && pilgrimage_path_active;
+	neither_path_active = ! (airfield_path_active || pilgrimage_path_active);
+	if(athos_stage == 2 && ! both_paths_active && ! neither_path_active)
+	{
+		if(airfield_path_active)
+		{
+			end_index = level.area_assault_trial_cutoff_index;
+		}
+		else
+		{
+			start_index = level.area_assault_trial_cutoff_index;
+		}
+	}
+
+	index = RandomIntRange(start_index, end_index);
+	self.area_assault_trial_room = level.area_assault_trial_rooms[index];
+	self.area_assault_trial_kills = 0;
+
+	self thread area_assault_indicator_monitor();
+
+	cf_val = AREA_ASSAULT_OFFSET + index;
+	while(self clientfield::get_player_uimodel("athosTrial") != cf_val)
+	{
+		self clientfield::set_player_uimodel("athosTrial", cf_val);
+		util::wait_network_frame();
+	}
+
+	prev_area_assault_trial_kills = self.area_assault_trial_kills;
+	while(true)
+	{
+		if(self.area_assault_trial_kills > prev_area_assault_trial_kills)
+		{
+			index = self.gargoyle_indices[ATHOS_INDEX];
+			progress = (self.area_assault_trial_kills - prev_area_assault_trial_kills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			self gargoyle_progress_check(ATHOS_INDEX, progress);
+			prev_area_assault_trial_kills = self.area_assault_trial_kills;
+		}
+		wait(0.05);
+	}
+}
+
+function area_assault_indicator_monitor()
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	waypoint_pos = Spawn("script_model", level.area_assault_trial_waypoint_locs[self.area_assault_trial_room]);
+	waypoint_pos SetModel("tag_origin");
+
+	room_indicator = NewClientHudElem(self);
+	room_indicator SetTargetEnt(waypoint_pos);
+	room_indicator SetShader("defend_waypoint");
+	room_indicator SetWayPoint(true, "defend_waypoint", false, false);
+	room_indicator.alpha = 0;
+
+	self thread athos_indicator_cleanup(waypoint_pos, room_indicator);
+
+	while(true)
+	{
+		if(! self.abbey_no_waypoints && self.athos_indicators_active)
+		{
+			room_indicator.alpha = 1;
+		}
+		else
+		{
+			room_indicator.alpha = 0;
+		}
+		wait(0.05);
+	}
+}
+
+function crouch_trial(athos_stage)
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	self.crouch_trial_kills = 0;
+
+	self thread area_assault_indicator_monitor();
+
+	cf_val = CROUCH_OFFSET;
+	while(self clientfield::get_player_uimodel("athosTrial") != cf_val)
+	{
+		self clientfield::set_player_uimodel("athosTrial", cf_val);
+		util::wait_network_frame();
+	}
+
+	prev_crouch_trial_kills = self.crouch_trial_kills;
+	while(true)
+	{
+		if(self.crouch_trial_kills > prev_crouch_trial_kills)
+		{
+			index = self.gargoyle_indices[ATHOS_INDEX];
+			progress = (self.crouch_trial_kills - prev_crouch_trial_kills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			self gargoyle_progress_check(ATHOS_INDEX, progress);
+			prev_crouch_trial_kills = self.crouch_trial_kills;
+		}
+		wait(0.05);
+	}
+}
+
+function elevation_trial(athos_stage)
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	self.elevation_trial_kills = 0;
+
+	self thread area_assault_indicator_monitor();
+
+	cf_val = ELEVATION_OFFSET;
+	while(self clientfield::get_player_uimodel("athosTrial") != cf_val)
+	{
+		self clientfield::set_player_uimodel("athosTrial", cf_val);
+		util::wait_network_frame();
+	}
+
+	prev_elevation_trial_kills = self.elevation_trial_kills;
+	while(true)
+	{
+		if(self.elevation_trial_kills > prev_elevation_trial_kills)
+		{
+			index = self.gargoyle_indices[ATHOS_INDEX];
+			progress = (self.elevation_trial_kills - prev_elevation_trial_kills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			self gargoyle_progress_check(ATHOS_INDEX, progress);
+			prev_elevation_trial_kills = self.elevation_trial_kills;
+		}
+		wait(0.05);
+	}
+}
+
+function box_trial(athos_stage)
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	self.in_athos_indicator_trial = true;
+
+	self.box_trial_kills = 0;
+	self.box_trial_weapons = [];
+
+	self thread box_trial_weapons_monitor();
+	self thread box_trial_indicator_monitor();
+
+	cf_val = BOX_OFFSET;
+	while(self clientfield::get_player_uimodel("athosTrial") != cf_val)
+	{
+		self clientfield::set_player_uimodel("athosTrial", cf_val);
+		util::wait_network_frame();
+	}
+
+	prev_box_trial_kills = self.box_trial_kills;
+	while(true)
+	{
+		if(self.box_trial_kills > prev_box_trial_kills)
+		{
+			index = self.gargoyle_indices[ATHOS_INDEX];
+			progress = (self.box_trial_kills - prev_box_trial_kills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			self gargoyle_progress_check(ATHOS_INDEX, progress);
+			prev_box_trial_kills = self.box_trial_kills;
+		}
+		wait(0.05);
+	}
+}
+
+function box_trial_indicator_monitor()
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	waypoint_pos = Spawn("script_model", level.chests[level.chest_index].origin + (0, 0, 20));
+	waypoint_pos SetModel("tag_origin");
+
+	room_indicator = NewClientHudElem(self);
+	room_indicator SetTargetEnt(waypoint_pos);
+	room_indicator SetShader("buy_waypoint");
+	room_indicator SetWayPoint(true, "buy_waypoint", false, false);
+	room_indicator.alpha = 0;
+
+	self thread athos_indicator_cleanup(waypoint_pos, room_indicator);
+
+	prev_chest_index = level.chest_index;
+	while(true)
+	{
+		if(prev_chest_index != level.chest_index)
+		{
+			waypoint_pos.origin = level.chests[level.chest_index].origin + (0, 0, 20);
+			prev_chest_index = level.chest_index;
+		}
+		if(! self.abbey_no_waypoints && self.athos_indicators_active)
+		{
+			room_indicator.alpha = 1;
+		}
+		else
+		{
+			room_indicator.alpha = 0;
+		}
+		wait(0.05);
+	}
+}
+
+function box_trial_weapons_monitor()
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	self.check_weapon_give = undefined;
+	self.check_box_grab = false;
+
+	self thread check_weapon_give();
+	self thread check_box_grab();
+
+	while(true)
+	{
+		if(isdefined(self.check_weapon_give) && self.check_box_grab)
+		{
+			// check for Crate Power and whatnot
+			weapon = level zm_weapons::get_base_weapon(self.check_weapon_give);
+			level array::add(self.box_trial_weapons, weapon);
+			self.check_weapon_give = undefined;
+			self.check_box_grab = false;
+		}
+		wait(0.05);
+	}
+}
+
+function check_weapon_give()
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	while(true)
+	{
+		self waittill( "weapon_give", weapon );
+		self.check_weapon_give = weapon;
+		wait(0.1);
+		self.check_weapon_give = undefined;
+	}
+}
+
+function check_box_grab()
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	while(true)
+	{
+		self waittill( "user_grabbed_weapon");
+		self.check_box_grab = true;
+		wait(0.1);
+		self.check_box_grab = false;
+	}
+}
+
+function trap_trial(athos_stage)
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	self.trap_trial_kills = 0;
+
+	cf_val = TRAP_OFFSET;
+	while(self clientfield::get_player_uimodel("athosTrial") != cf_val)
+	{
+		self clientfield::set_player_uimodel("athosTrial", cf_val);
+		util::wait_network_frame();
+	}
+
+	prev_trap_trial_kills = self.trap_trial_kills;
+	while(true)
+	{
+		if(self.trap_trial_kills > prev_trap_trial_kills)
+		{
+			index = self.gargoyle_indices[ATHOS_INDEX];
+			progress = (self.trap_trial_kills - prev_trap_trial_kills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			self gargoyle_progress_check(ATHOS_INDEX, progress);
+			prev_trap_trial_kills = self.trap_trial_kills;
+		}
+		wait(0.05);
+	}
+}
+
+function blood_vial_trial(athos_stage)
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	self.in_athos_indicator_trial = true;
+	
+	self.blood_vial_trial_fills = 0;
+
+	cf_val = BLOOD_VIAL_OFFSET;
+	while(self clientfield::get_player_uimodel("athosTrial") != cf_val)
+	{
+		self clientfield::set_player_uimodel("athosTrial", cf_val);
+		util::wait_network_frame();
+	}
+
+	prev_blood_vial_trial_fills = self.blood_vial_trial_fills;
+	while(true)
+	{
+		if(self.blood_vial_trial_fills > prev_blood_vial_trial_fills)
+		{
+			index = self.gargoyle_indices[ATHOS_INDEX];
+			progress = (self.blood_vial_trial_fills - prev_blood_vial_trial_fills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			self gargoyle_progress_check(ATHOS_INDEX, progress);
+			prev_blood_vial_trial_fills = self.blood_vial_trial_fills;
+		}
+		wait(0.05);
+	}
+}
+
 function athos_indicators_monitor()
 {
 	self endon("disconnect");
@@ -546,291 +888,6 @@ function athos_indicator_cleanup(waypoint_pos, indicator)
 	waypoint_pos Delete();
 	indicator Destroy();
 }
-
-/*
-function wallbuy_challenge_kill_monitor()
-{
-	self endon("disconnect");
-	self endon(#"wallbuy_challenge_finished");
-
-	while(true)
-	{
-		self waittill("zom_kill");
-		if(self GetCurrentWeapon() == level.wallbuy_challenge_weapon || level zm_weapons::get_base_weapon(self GetCurrentWeapon()) == level.wallbuy_challenge_weapon)
-		{
-			self.trial_progress = Min(self.trial_progress + TRIAL_KILL_INCREMENT, TRIAL_GOAL);
-		}
-	}
-}
-
-function box_challenge_hub()
-{
-	players = GetPlayers();
-	for(i = 0; i < players.size; i++)
-	{
-		players[i] clientfield::set_player_uimodel("trialName", BOX_OFFSET);
-		players[i] thread box_challenge();
-	}
-}
-
-function box_challenge()
-{
-	self endon("disconnect");
-
-	self thread zm_abbey_inventory::notifyText( "splash_trial_mystery_box", level.open_inventory_prompt, level.abbey_alert_neutral );
-
-	self.box_challenge_weapons = [];
-	self thread box_challenge_weapons_monitor();
-	
-	self thread box_challenge_kill_monitor();
-	while(level.is_in_team_challenge)
-	{
-		wait(0.05);
-	}
-
-	self notify(#"box_challenge_finished");
-}
-
-function box_challenge_weapons_monitor()
-{
-	self endon("disconnect");
-	self endon(#"box_challenge_finished");
-
-	self.check_weapon_give = undefined;
-	self.check_box_grab = false;
-
-	self thread check_weapon_give();
-	self thread check_box_grab();
-	self thread monitor_pap();
-
-	while(true)
-	{
-		if(isdefined(self.check_weapon_give) && self.check_box_grab)
-		{
-			self.box_challenge_weapons[self.box_challenge_weapons.size] = self.check_weapon_give;
-			self.check_weapon_give = undefined;
-			self.check_box_grab = false;
-		}
-		wait(0.05);
-	}
-}
-
-function check_weapon_give()
-{
-	self endon("disconnect");
-	self endon(#"box_challenge_finished");
-
-	while(true)
-	{
-		self waittill( "weapon_give", weapon );
-		self.check_weapon_give = weapon;
-		wait(0.1);
-		self.check_weapon_give = undefined;
-	}
-}
-
-function check_box_grab()
-{
-	self endon("disconnect");
-	self endon(#"box_challenge_finished");
-
-	while(true)
-	{
-		self waittill( "user_grabbed_weapon");
-		self.check_box_grab = true;
-		wait(0.1);
-		self.check_box_grab = false;
-	}
-}
-
-function box_challenge_kill_monitor()
-{
-	self endon("disconnect");
-	self endon(#"box_challenge_finished");
-
-	while(true)
-	{
-		self waittill("zom_kill");
-		for(i = 0; i < self.box_challenge_weapons.size; i++)
-		{
-			if(self GetCurrentWeapon() == self.box_challenge_weapons[i] || level zm_weapons::get_base_weapon(self GetCurrentWeapon()) == self.box_challenge_weapons[i])
-			{
-				self.trial_progress = Min(self.trial_progress + TRIAL_KILL_INCREMENT, TRIAL_GOAL);
-				break;
-			}		
-		}
-		
-	}
-}
-
-function monitor_pap(wallbuy_challenge=false)
-{
-	self endon("disconnect");
-	level endon(#"team_challenge_completed");
-
-	self thread monitor_double_tap(wallbuy_challenge);
-	self thread monitor_prompt(wallbuy_challenge);
-	self thread disable_prompt();
-
-	shown_prompt = [];
-
-	while(true)
-	{
-		weapon = self challenge_upgrade_weapon_check(wallbuy_challenge);
-		if(isdefined(weapon))
-		{
-			if(! array::contains(shown_prompt, weapon))
-			{
-				//self zm_abbey_inventory::notifyText("", level.challenge_upgrade_prompt, level.abbey_alert_neutral, true);
-				shown_prompt[shown_prompt.size] = weapon;
-			}
-			// magic
-		}
-		wait(0.05);
-	}
-}
-
-function monitor_double_tap(wallbuy_challenge)
-{
-	self endon("disconnect");
-	level endon(#"team_challenge_completed");
-
-	while(true)
-	{
-		if(self UseButtonPressed())
-		{
-			while(self UseButtonPressed())
-			{
-				wait(0.05);
-			}
-			time = 0;
-			while(! self UseButtonPressed())
-			{
-				time += 0.05;
-				wait(0.05);
-			}
-			if(time > 0 && time < 0.35 && self.score >= 4000)
-			{
-				weapon = self challenge_upgrade_weapon_check(wallbuy_challenge);
-				if(isdefined(weapon))
-				{
-					self zm_score::minus_to_player_score(4000);
-					self zm_weapons::weapon_give(level.zombie_weapons[weapon].upgrade);
-				}
-			}
-		}
-		wait(0.05);
-	}
-}
-
-function monitor_prompt(wallbuy_challenge)
-{
-	self endon("disconnect");
-	level endon(#"team_challenge_completed");
-
-	showing_prompt = false;
-	while(true)
-	{
-		if(isdefined(self challenge_upgrade_weapon_check(wallbuy_challenge)) && !showing_prompt)
-		{
-			self LUINotifyEvent(&"trial_upgrade_text_show", 1, 1);
-			showing_prompt = true;
-		}
-		else if(!(isdefined(self challenge_upgrade_weapon_check(wallbuy_challenge)) && showing_prompt))
-		{
-			self LUINotifyEvent(&"trial_upgrade_text_show", 1, 0);
-			showing_prompt = false;
-		}
-		wait(0.05);
-	}
-}
-
-function disable_prompt()
-{
-	self endon("disconnect");
-
-	level waittill(#"team_challenge_completed");
-	self LUINotifyEvent(&"trial_upgrade_text_show", 1, 0);
-}
-
-function challenge_upgrade_weapon_check(wallbuy_challenge)
-{
-	self endon("disconnect");
-
-	wallbuy_arr = []; wallbuy_arr[0] = level.wallbuy_challenge_weapon;
-	challenge_weapons = (wallbuy_challenge ? wallbuy_arr : self.box_challenge_weapons);
-	foreach(weapon in challenge_weapons)
-	{
-		if(self GetCurrentWeapon() == weapon)
-		{
-			return weapon;
-		}
-	}
-	return undefined;
-}
-
-function room_kills_challenge()
-{
-	self endon("disconnect");
-
-	self thread zm_abbey_inventory::notifyText( "splash_trial_area_assault", level.open_inventory_prompt, level.abbey_alert_neutral );
-	self thread room_challenge_kill_monitor();
-
-	while(level.is_in_team_challenge)
-	{
-		wait(0.05);
-	}
-
-	self notify(#"room_challenge_finished");
-}
-
-function room_challenge_kill_monitor()
-{
-	self endon("disconnect");
-	self endon(#"room_challenge_finished");
-
-	while(true)
-	{
-		self waittill("zom_kill");
-		if(self zm_room_manager::is_player_in_room(level.challenge_room_zone))
-		{
-			self.trial_progress = Min(self.trial_progress + TRIAL_KILL_INCREMENT, TRIAL_GOAL);
-		}
-	}
-}
-
-function elevation_challenge()
-{
-	self endon("disconnect");
-
-	self thread zm_abbey_inventory::notifyText( "splash_trial_high_ground", level.open_inventory_prompt, level.abbey_alert_neutral );
-
-	self thread elevation_challenge_kill_monitor();
-
-	while(level.is_in_team_challenge)
-	{
-		wait(0.05);
-	}
-
-	self notify(#"elevation_challenge_finished");
-}
-
-function elevation_challenge_kill_monitor()
-{
-	self endon("disconnect");
-	self endon(#"elevation_challenge_finished");
-
-	while(true)
-	{
-		self waittill(#"potential_challenge_kill", origin);
-		if(self.origin[2] - origin[2] >= 30)
-		{
-			self.trial_progress = Min(self.trial_progress + TRIAL_KILL_INCREMENT, TRIAL_GOAL);
-		}
-		wait(0.05);
-	}
-}
-*/
 
 function tier_gums_init(indices, ref)
 {

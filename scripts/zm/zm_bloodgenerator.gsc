@@ -323,17 +323,48 @@ function acquire_waypoint_manage()
 		}
 		wait(0.05);
 	}
-	foreach(waypoint_pos in waypoint_poses)
+
+
+	while(true)
 	{
-		waypoint_pos Delete(); 
-	}
-	foreach(player in level.players)
-	{
-		foreach(acquire_indicator in player.acquire_indicators)
+		foreach(player in level.players)
 		{
-			acquire_indicator Destroy();
+			if(isdefined(player.blood_vial_trial_fills) && IS_TRUE(player.athos_indicators_active) && ! player.abbey_no_waypoints)
+			{
+				closest_dist = 9999999;
+				closest_dist_index = -1;
+
+				for(i = 0; i < player.acquire_indicators.size; i++)
+				{
+					dist = DistanceSquared(player.origin, player.acquire_indicators[i].linked_origin);
+					if(dist < closest_dist)
+					{
+						closest_dist = dist;
+						closest_dist_index = i;
+					}
+				}
+
+				for(i = 0; i < player.acquire_indicators.size; i++)
+				{
+					if(i == closest_dist_index)
+					{
+						player.acquire_indicators[i].alpha = 1;
+					}
+					else
+					{
+						player.acquire_indicators[i].alpha = 0.5;
+					}
+				}
+			}
+			else
+			{
+				foreach(acquire_indicator in player.acquire_indicators)
+				{
+					acquire_indicator.alpha = 0;
+				}
+			}
 		}
-		player.acquire_indicators = [];
+		wait(0.05);
 	}
 }
 
@@ -582,6 +613,10 @@ function blood_think()
 
 				level.hasVial = true;
 				success = true;
+				if(isdefined(p.blood_vial_trial_fills))
+				{
+					p.blood_vial_trial_fills += 1;
+				}
 			}
 
 			zombies = GetAISpeciesArray("axis", "all");
@@ -688,11 +723,12 @@ function zombie_super_speed()
 		wait(0.05);
 	}
 	*/
-	
+	/*
 	while(! IS_TRUE(self.completed_emerging_into_playable_area))
 	{
 		wait(0.05);
 	}
+	*/
 	self zombie_utility::set_zombie_run_cycle_override_value("super_sprint");
 	self thread play_ambient_zombie_vocals();
 }
@@ -700,7 +736,7 @@ function zombie_super_speed()
 function play_ambient_zombie_vocals()
 {
     self endon( "death" );
-	level endon(#"bloodgun_complete");
+	level endon(#"blood_finished");
     
     while(1)
     {
