@@ -44,7 +44,7 @@
 #define DART_INDEX 2
 #define ATHOS_INDEX 3
 
-#define RAND_CF_NEUTRAL 0
+#define TRIDENT_MULTIPLIER 0.1
 
 #define WALLBUY_OFFSET 2
 #define AREA_ASSAULT_OFFSET 15
@@ -54,8 +54,13 @@
 #define TRAP_OFFSET 30
 #define BLOOD_VIAL_OFFSET 31
 
+#define CROUCH_MULTIPLIER 1.5
+#define	ELEVATION_MULTIPLIER 1.5
+#define BLOOD_VIAL_MULTIPLIER 7.5
+
 #define ELEVATION_THRESHOLD 30
 
+#define RAND_CF_NEUTRAL 0
 #define TAB_TRIAL 1
 
 #namespace zm_challenges;
@@ -68,10 +73,10 @@ function __init__()
 	clientfield::register( "toplayer", "trials.tier2", VERSION_SHIP, 13, "int" );
 	clientfield::register( "toplayer", "trials.tier3", VERSION_SHIP, 5, "int" );
 
-	clientfield::register( "toplayer", "trials.aramis", VERSION_SHIP, 5, "float" );
-	clientfield::register( "toplayer", "trials.porthos", VERSION_SHIP, 5, "float" );
-	clientfield::register( "toplayer", "trials.dart", VERSION_SHIP, 5, "float" );
-	clientfield::register( "toplayer", "trials.athos", VERSION_SHIP, 5, "float" );
+	clientfield::register( "toplayer", "trials.aramis", VERSION_SHIP, 4, "float" );
+	clientfield::register( "toplayer", "trials.porthos", VERSION_SHIP, 11, "float" );
+	clientfield::register( "toplayer", "trials.dart", VERSION_SHIP, 11, "float" );
+	clientfield::register( "toplayer", "trials.athos", VERSION_SHIP, 11, "float" );
 
 	clientfield::register( "toplayer", "trials.aramisRandom", VERSION_SHIP, 3, "int" );
 	clientfield::register( "toplayer", "trials.porthosRandom", VERSION_SHIP, 3, "int" );
@@ -87,14 +92,23 @@ function __init__()
 	level.gg_tier3 = array("zm_bgb_on_the_house", "zm_bgb_unquenchable", "zm_bgb_head_drama", "zm_bgb_alchemical_antithesis");
 
 	aramis_goals = array(2, 3, 4, 5, 5);
-	porthos_goals = array(3, 3, 3, 3, 3);
-	dart_goals = array(2, 2, 2, 2, 2);
-	athos_goals = array(3, 3, 3, 3, 3);
+	porthos_goals = array(20, 25, 30, 40, 75);
+	dart_goals = array(15, 25, 25, 35, 50);
+	athos_goals = array(30, 35, 40, 45, 75);
 	level.gargoyle_goals = array(aramis_goals, porthos_goals, dart_goals, athos_goals);
 
 	level.gargoyle_cfs = array("trials.aramis", "trials.porthos", "trials.dart", "trials.athos");
 
-	level.athos_trials = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial, &box_trial, &trap_trial, &blood_vial_trial);
+	level.athos_trials = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial, &blood_vial_trial, &trap_trial, &box_trial);
+
+	level.airfield_box_indices = array(4, 5);
+	level.pilgrimage_box_indices = array(7, 8);
+
+	if(GetDvarString("ui_mapname") == "zm_building")
+	{
+		level.airfield_box_indices = array(3);
+		level.pilgrimage_box_indices = array(2);
+	}
 
 	kar = GetWeapon("s4_kar98k_irons");
 	gewehr = GetWeapon("s4_g43");
@@ -143,7 +157,12 @@ function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags
 			attacker notify(#"potential_challenge_kill", self.origin);
 			if(meansofdeath == "MOD_MELEE")
 			{
-				attacker notify(#"dart_trial_kill");
+				is_trident = false;
+				if(isdefined(weapon) && weapon == level.abbey_trident)
+				{
+					is_trident = true;
+				}
+				attacker notify(#"dart_trial_kill", is_trident);
 			}
 			if(isdefined(attacker.area_assault_trial_kills) && attacker zm_room_manager::is_player_in_room(level.abbey_rooms[attacker.area_assault_trial_room]))
 			{
@@ -348,10 +367,14 @@ function dart_trial()
 
 	while(true)
 	{
-		self waittill(#"dart_trial_kill");
+		self waittill(#"dart_trial_kill", is_trident);
 
 		index = self.gargoyle_indices[DART_INDEX];
 		progress = 1 / level.gargoyle_goals[DART_INDEX][index];
+		if(is_trident)
+		{
+			progress *= TRIDENT_MULTIPLIER;
+		}
 		self gargoyle_progress_check(DART_INDEX, progress);
 	}
 }
@@ -363,6 +386,7 @@ function athos_trial()
 	self thread athos_indicators_monitor();
 
 	level waittill("start_of_round");
+	prev_trial_index = -1;
 	while(true)
 	{
 		self.in_athos_indicator_trial = false;
@@ -380,7 +404,53 @@ function athos_trial()
 			athos_stage = 2;
 		}
 
-		trial = array::random(level.athos_trials);
+		end_index = 7;
+		switch(athos_stage)
+		{
+			case 0:
+				end_index = 4;
+				break;
+			case 1:
+				end_index = 6;
+				break;
+			case 2:
+				end_index = 6;
+
+				airfield_path_active = level zm_room_manager::is_room_active("Airfield");
+				pilgrimage_path_active = level zm_room_manager::is_room_active("Upper Pilgrimage Stairs");
+
+				if(GetDvarString("ui_mapname") == "zm_building")
+				{
+					airfield_path_active = level zm_room_manager::is_room_active("Clean Room");
+					pilgrimage_path_active = level zm_room_manager::is_room_active("Lion Room");
+				}
+				
+				both_paths_active = airfield_path_active && pilgrimage_path_active;
+				neither_path_active = ! (airfield_path_active || pilgrimage_path_active);
+
+				cur_chest = level.chests[level.chest_index];
+        		box_index = level.abbey_box_location_indices[cur_chest.script_noteworthy];
+
+				airfield_box_active = airfield_path_active && array::contains(level.airfield_box_indices, box_index);
+				pilgrimage_box_active = pilgrimage_path_active && array::contains(level.pilgrimage_box_indices, box_index);
+				
+				if(both_paths_active || neither_path_active || airfield_box_active || pilgrimage_box_active)
+				{
+					end_index += 1;
+				}
+				break;
+		}
+
+		trial_index = RandomIntRange(0, end_index);
+		if(trial_index == prev_trial_index && trial_index + 1 < end_index)
+		{
+			trial_index = RandomIntRange(trial_index + 1, end_index);
+		}
+		else if(trial_index == prev_trial_index)
+		{
+			trial_index = RandomIntRange(0, trial_index);
+		}
+		trial = level.athos_trials[trial_index];
 		self thread [[trial]](athos_stage);
 
 		for(i = 0; i < 3; i++)
@@ -425,8 +495,8 @@ function wallbuy_trial(athos_stage)
 
 	if(GetDvarString("ui_mapname") == "zm_building")
 	{
-		airfield_path_active = level zm_room_manager::is_room_active("Water Tower");
-		pilgrimage_path_active = level zm_room_manager::is_room_active("Staminarch");
+		airfield_path_active = level zm_room_manager::is_room_active("Clean Room");
+		pilgrimage_path_active = level zm_room_manager::is_room_active("Lion Room");
 	}
 
 	both_paths_active = airfield_path_active && pilgrimage_path_active;
@@ -644,6 +714,7 @@ function crouch_trial(athos_stage)
 		{
 			index = self.gargoyle_indices[ATHOS_INDEX];
 			progress = (self.crouch_trial_kills - prev_crouch_trial_kills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			progress *= CROUCH_MULTIPLIER;
 			self gargoyle_progress_check(ATHOS_INDEX, progress);
 			prev_crouch_trial_kills = self.crouch_trial_kills;
 		}
@@ -674,6 +745,7 @@ function elevation_trial(athos_stage)
 		{
 			index = self.gargoyle_indices[ATHOS_INDEX];
 			progress = (self.elevation_trial_kills - prev_elevation_trial_kills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			progress *= ELEVATION_MULTIPLIER;
 			self gargoyle_progress_check(ATHOS_INDEX, progress);
 			prev_elevation_trial_kills = self.elevation_trial_kills;
 		}
@@ -855,6 +927,7 @@ function blood_vial_trial(athos_stage)
 		{
 			index = self.gargoyle_indices[ATHOS_INDEX];
 			progress = (self.blood_vial_trial_fills - prev_blood_vial_trial_fills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			progress *= BLOOD_VIAL_MULTIPLIER;
 			self gargoyle_progress_check(ATHOS_INDEX, progress);
 			prev_blood_vial_trial_fills = self.blood_vial_trial_fills;
 		}

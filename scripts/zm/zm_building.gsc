@@ -123,6 +123,9 @@
 #using scripts\zm\bgbs\_zm_bgb_aftertaste_blood;
 #using scripts\zm\bgbs\_zm_bgb_challenge_rejected;
 
+// Mystery Box Map
+#using scripts\zm\zm_abbey_box_map;
+
 #insert scripts\zm\_zm_perks.gsh;
 
 #precache( "fx", "custom/magic_box_og/fx_weapon_box_marker_og" );
@@ -184,6 +187,7 @@ function main()
 	level thread zm_no_hud::main();
 	level thread zm_antiverse::main();
 	level thread zm_abbey_quick_revive::main();
+	level thread zm_abbey_box_map::main();
 	
 	level thread zm_castle_vox();
 	level._zombie_custom_add_weapons =&custom_add_weapons;
