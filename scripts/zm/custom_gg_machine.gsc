@@ -108,25 +108,25 @@ function __init__()
 	level.gg_all = array("zm_bgb_stock_option", "zm_bgb_sword_flay", "zm_bgb_temporal_gift", "zm_bgb_in_plain_sight", "zm_bgb_im_feelin_lucky", "zm_bgb_immolation_liquidation", "zm_bgb_phoenix_up", "zm_bgb_pop_shocks", "zm_bgb_challenge_rejected", "zm_bgb_on_the_house", "zm_bgb_profit_sharing", "zm_bgb_flavor_hexed", "zm_bgb_crate_power", "zm_bgb_unquenchable", "zm_bgb_alchemical_antithesis", "zm_bgb_extra_credit", "zm_bgb_head_drama", "zm_bgb_aftertaste_blood", "zm_bgb_perkaholic");
 
 	level.gg_names = [];
-	level.gg_names["zm_bgb_stock_option"] = &"ZMUI_BGB_STOCK_OPTION";
-	level.gg_names["zm_bgb_sword_flay"] = &"ZMUI_BGB_SWORD_FLAY";
-	level.gg_names["zm_bgb_temporal_gift"] = &"ZMUI_BGB_TEMPORAL_GIFT";
-	level.gg_names["zm_bgb_in_plain_sight"] = &"ZMUI_BGB_IN_PLAIN_SIGHT";
-	level.gg_names["zm_bgb_im_feelin_lucky"] = &"ZMUI_BGB_IM_FEELIN_LUCKY";
-	level.gg_names["zm_bgb_immolation_liquidation"] = &"ZMUI_BGB_IMMOLATION_LIQUIDATION";
-	level.gg_names["zm_bgb_phoenix_up"] = &"ZMUI_BGB_PHOENIX_UP";
-	level.gg_names["zm_bgb_pop_shocks"] = &"ZMUI_BGB_POP_SHOCKS";
-	level.gg_names["zm_bgb_challenge_rejected"] = &"ZMUI_BGB_CHALLENGE_REJECTED";
-	level.gg_names["zm_bgb_on_the_house"] = &"ZMUI_BGB_ON_THE_HOUSE";
-	level.gg_names["zm_bgb_profit_sharing"] = &"ZMUI_BGB_PROFIT_SHARING";
-	level.gg_names["zm_bgb_flavor_hexed"] = &"ZMUI_BGB_FLAVOR_HEXED";
-	level.gg_names["zm_bgb_crate_power"] = &"ZMUI_BGB_CRATE_POWER";
-	level.gg_names["zm_bgb_unquenchable"] = &"ZMUI_BGB_UNQUENCHABLE";
-	level.gg_names["zm_bgb_alchemical_antithesis"] = &"ZMUI_BGB_ALCHEMICAL_ANTITHESIS";
-	level.gg_names["zm_bgb_extra_credit"] = &"ZMUI_BGB_EXTRA_CREDIT";
-	level.gg_names["zm_bgb_head_drama"] = &"ZMUI_BGB_HEAD_DRAMA";
-	level.gg_names["zm_bgb_aftertaste_blood"] = &"ZMUI_BGB_AFTERTASTE_BLOOD";
-	level.gg_names["zm_bgb_perkaholic"] = &"ZMUI_BGB_PERKAHOLIC";
+	level.gg_names["zm_bgb_stock_option"] = MakeLocalizedString(&"ZMUI_BGB_STOCK_OPTION");
+	level.gg_names["zm_bgb_sword_flay"] = MakeLocalizedString(&"ZMUI_BGB_SWORD_FLAY");
+	level.gg_names["zm_bgb_temporal_gift"] = MakeLocalizedString(&"ZMUI_BGB_TEMPORAL_GIFT");
+	level.gg_names["zm_bgb_in_plain_sight"] = MakeLocalizedString(&"ZMUI_BGB_IN_PLAIN_SIGHT");
+	level.gg_names["zm_bgb_im_feelin_lucky"] = MakeLocalizedString(&"ZMUI_BGB_IM_FEELIN_LUCKY");
+	level.gg_names["zm_bgb_immolation_liquidation"] = MakeLocalizedString(&"ZMUI_BGB_IMMOLATION_LIQUIDATION");
+	level.gg_names["zm_bgb_phoenix_up"] = MakeLocalizedString(&"ZMUI_BGB_PHOENIX_UP");
+	level.gg_names["zm_bgb_pop_shocks"] = MakeLocalizedString(&"ZMUI_BGB_POP_SHOCKS");
+	level.gg_names["zm_bgb_challenge_rejected"] = MakeLocalizedString(&"ZMUI_BGB_CHALLENGE_REJECTED");
+	level.gg_names["zm_bgb_on_the_house"] = MakeLocalizedString(&"ZMUI_BGB_ON_THE_HOUSE");
+	level.gg_names["zm_bgb_profit_sharing"] = MakeLocalizedString(&"ZMUI_BGB_PROFIT_SHARING");
+	level.gg_names["zm_bgb_flavor_hexed"] = MakeLocalizedString(&"ZMUI_BGB_FLAVOR_HEXED");
+	level.gg_names["zm_bgb_crate_power"] = MakeLocalizedString(&"ZMUI_BGB_CRATE_POWER");
+	level.gg_names["zm_bgb_unquenchable"] = MakeLocalizedString(&"ZMUI_BGB_UNQUENCHABLE");
+	level.gg_names["zm_bgb_alchemical_antithesis"] = MakeLocalizedString(&"ZMUI_BGB_ALCHEMICAL_ANTITHESIS");
+	level.gg_names["zm_bgb_extra_credit"] = MakeLocalizedString(&"ZMUI_BGB_EXTRA_CREDIT");
+	level.gg_names["zm_bgb_head_drama"] = MakeLocalizedString(&"ZMUI_BGB_HEAD_DRAMA");
+	level.gg_names["zm_bgb_aftertaste_blood"] = MakeLocalizedString(&"ZMUI_BGB_AFTERTASTE_BLOOD");
+	level.gg_names["zm_bgb_perkaholic"] = MakeLocalizedString(&"ZMUI_BGB_PERKAHOLIC");
 
 	level.gargoyle_judges = GetEntArray("gargoyle_judge", "targetname");
 	level array::thread_all(level.gargoyle_judges, &judge_think);
@@ -157,11 +157,11 @@ function on_player_connect()
 	self.judge_display_balls = [];
 	self thread display_balls_cleanup();
 
-	level array::thread_all(level.gargoyle_judges, &player_judge_setup, self);
-	level array::thread_all(level.gargoyle_judges, &judge_hintstring_think, self);
-
 	self.bribe_count = 0;
 	self.lua_decrement_quantity_queue_pos = 0;
+
+	level array::thread_all(level.gargoyle_judges, &player_judge_setup, self);
+	level array::thread_all(level.gargoyle_judges, &judge_hintstring_think, self);
 }
 
 function player_judge_setup(player)
@@ -220,10 +220,10 @@ function judge_hintstring_think(player)
 			prev_quantity = quantity;
 			prev_bribe_count = bribe_count;
 			bribe_cost = zm_bgb_custom_util::gg_bribe_cost(gum);
-			hintstring = "Press ^3[{+activate}]^7 for " + MakeLocalizedString(gum_struct.displayName) + " [Quantity: " + quantity + "]" + "\nMelee for next GargoyleGum";
+			hintstring = "Press ^3[{+activate}]^7 for " + gum_struct.displayName + " [Quantity: " + quantity + "]" + "\nMelee for next GargoyleGum";
 			if(quantity == 0 && bribe_count >= bribe_cost)
 			{
-				hintstring = "Press ^3[{+activate}]^7 to Bribe for " + MakeLocalizedString(gum_struct.displayName) + " [Cost: " + bribe_cost + "]" + "\nMelee for next GargoyleGum";
+				hintstring = "Press ^3[{+activate}]^7 to Bribe for " + gum_struct.displayName + " [Cost: " + bribe_cost + "]" + "\nMelee for next GargoyleGum";
 			}
 			
 			self SetHintStringForPlayer(player, hintstring);

@@ -314,7 +314,7 @@ function electric_cherry_upgrade()
 		{
 			self.isUpgradingCherry = true;
 
-			while( self HasPerk(PERK_ELECTRIC_CHERRY) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
+			while( self HasPerk(PERK_ELECTRIC_CHERRY) && isdefined(level.next_dog_round) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
 			{
 				wait(0.05);
 			}
@@ -399,7 +399,7 @@ function double_tap_upgrade()
 		{
 			self.isUpgradingDouble = true;
 
-			while( self HasPerk(PERK_DOUBLE_TAP) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
+			while( self HasPerk(PERK_DOUBLE_TAP) && isdefined(level.next_dog_round) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
 			{
 				wait(0.05);
 			}
@@ -479,7 +479,7 @@ function phd_lite_upgrade()
 		{
 			self.isUpgradingPHD = true;
 
-			while( self HasPerk(PERK_PHD_LITE) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
+			while( self HasPerk(PERK_PHD_LITE) && isdefined(level.next_dog_round) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
 			{
 				wait(0.05);
 			}
@@ -558,7 +558,7 @@ function poseidon_punch_upgrade()
 		{
 			self.isUpgradingPoseidon = true;
 
-			while( self HasPerk(PERK_POSEIDON_PUNCH) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
+			while( self HasPerk(PERK_POSEIDON_PUNCH) && isdefined(level.next_dog_round) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
 			{
 				wait(0.05);
 			}
@@ -637,7 +637,7 @@ function stamin_up_upgrade()
 		{
 			self.isUpgradingStamin = true;
 
-			while( self HasPerk(PERK_STAMINUP) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
+			while( self HasPerk(PERK_STAMINUP) && isdefined(level.next_dog_round) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
 			{
 				wait(0.05);
 			}
@@ -717,7 +717,7 @@ function mule_kick_upgrade()
 		{
 			self.isUpgradingMule = true;
 
-			while( self HasPerk(PERK_ADDITIONAL_PRIMARY_WEAPON) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
+			while( self HasPerk(PERK_ADDITIONAL_PRIMARY_WEAPON) && isdefined(level.next_dog_round) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
 			{
 				wait(0.05);
 			}
@@ -797,7 +797,7 @@ function quick_revive_upgrade()
 		{
 			self.isUpgradingQuick = true;
 
-			while( self HasPerk(PERK_QUICK_REVIVE) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
+			while( self HasPerk(PERK_QUICK_REVIVE) && isdefined(level.next_dog_round) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
 			{
 				wait(0.05);
 			}
@@ -876,7 +876,7 @@ function deadshot_upgrade()
 		{
 			self.isUpgradingDeadshot = true;
 
-			while( self HasPerk(PERK_DEAD_SHOT) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
+			while( self HasPerk(PERK_DEAD_SHOT) && isdefined(level.next_dog_round) && ( level.round_number == level.next_dog_round || level flag::get("dog_round")) )
 			{
 				wait(0.05);
 			}

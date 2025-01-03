@@ -179,16 +179,21 @@ function poseidon_knockdown()
 	zombies = GetAISpeciesArray("axis", "all");
 	foreach(zombie in zombies)
 	{
-		if(IS_TRUE(zombie.completed_emerging_into_playable_area) && zombie.targetname != "zombie_cloak" && zombie.targetname != "zombie_escargot" && DistanceSquared(self.origin, zombie.origin) <= POSEIDON_RADIUS && ! IS_TRUE(zombie.poseidon_knockdown))
+		is_shadow_boss = false;
+		if(isdefined(zombie.targetname) && (zombie.targetname == "zombie_cloak" || zombie.targetname == "zombie_escargot"))
+		{
+			is_shadow_boss = true;
+		}
+		if(IS_TRUE(zombie.completed_emerging_into_playable_area) && ! is_shadow_boss && DistanceSquared(self.origin, zombie.origin) <= POSEIDON_RADIUS && ! IS_TRUE(zombie.poseidon_knockdown))
 		{
 			zombie PlaySound("pp_knockback");
-			if(IS_TRUE(zombie.is_quad_zombie))
+			if(isdefined(zombie.animname) && zombie.animname == "quad_zombie")
 			{
 				zombie thread quad_stun();
 			}
 			else
 			{
-				zombie zm_weap_thundergun::thundergun_knockdown_zombie(self, level.thundergun_knockdown_gib[0]);
+				zombie zm_weap_thundergun::thundergun_knockdown_zombie(self, false);
 			}
 			zombie thread mark_zombie();
 			if(self zm_perk_upgrades::IsPerkUpgradeActive(PERK_POSEIDON_PUNCH))

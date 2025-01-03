@@ -1,58 +1,16 @@
-#using scripts\codescripts\struct;
-
-#using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
-#using scripts\shared\clientfield_shared;
-#using scripts\shared\compass;
-#using scripts\shared\exploder_shared;
 #using scripts\shared\flag_shared;
-#using scripts\shared\laststand_shared;
-#using scripts\shared\math_shared;
-#using scripts\shared\scene_shared;
-#using scripts\shared\util_shared;
-
-#insert scripts\shared\shared.gsh;
-#insert scripts\shared\version.gsh;
-
-#insert scripts\zm\_zm_utility.gsh;
 
 #using scripts\zm\_load;
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_audio;
-#using scripts\zm\_zm_powerups;
-#using scripts\zm\_zm_utility;
-#using scripts\zm\_zm_weapons;
-#using scripts\zm\_zm_zonemgr;
-
-#using scripts\shared\ai\zombie_utility;
-
-//Perks
-#using scripts\zm\_zm_pack_a_punch;
-#using scripts\zm\_zm_pack_a_punch_util;
-#using scripts\zm\_zm_perk_additionalprimaryweapon;
-#using scripts\zm\_zm_perk_juggernaut;
-#using scripts\zm\_zm_perk_quick_revive;
-#using scripts\zm\_zm_perk_staminup;
-#using scripts\zm\_zm_perk_electric_cherry;
-
-//Powerups
-#using scripts\zm\_zm_powerup_double_points;
-#using scripts\zm\_zm_powerup_carpenter;
-#using scripts\zm\_zm_powerup_fire_sale;
-#using scripts\zm\_zm_powerup_free_perk;
-#using scripts\zm\_zm_powerup_full_ammo;
-#using scripts\zm\_zm_powerup_insta_kill;
-#using scripts\zm\_zm_powerup_nuke;
-#using scripts\zm\_zm_powerups;
 #using scripts\zm\_zm_magicbox;
-
-//Traps
-#using scripts\zm\_zm_trap_electric;
+#using scripts\zm\_zm_powerups;
 
 #using scripts\zm\zm_usermap;
 #using scripts\zm\_zm_score;
-#using scripts\zm\_zm_laststand;
 #using scripts\zm\_zm_perks;
+#using scripts\zm\_zm_perk_electric_cherry;
 #using scripts\shared\math_shared;
 
 #using scripts\zm\zm_perk_upgrades;
@@ -64,28 +22,11 @@
 #insert scripts\zm\_zm_perk_doubletaporiginal.gsh;
 #insert scripts\zm\_zm_perk_phdlite.gsh;
 
-#precache( "material", "shadow_phd" );
-#precache( "material", "shadow_stamin" );
-#precache( "material", "shadow_quick" );
-#precache( "material", "shadow_mule" );
-#precache( "material", "shadow_cherry" );
-#precache( "material", "shadow_double" );
-#precache( "material", "shadow_poseidon" );
-
-#precache( "material", "poseidon_shadow_speed" );
-#precache( "material", "poseidon_shadow_insta" );
-#precache( "material", "poseidon_shadow_double" );
-
 #precache( "eventstring", "generator_shadowed" );
 #precache( "eventstring", "shadow_perk_remove" );
 
 function main()
 {
-	level.poseidon_curses = [];
-	level.poseidon_curses[level.poseidon_curses.size] = &points_curse;
-	level.poseidon_curses[level.poseidon_curses.size] = &speed_curse;
-	level.poseidon_curses[level.poseidon_curses.size] = &melee_curse;
-
 	callback::on_connect( &on_player_connect );
 	
 	/*
@@ -99,13 +40,6 @@ function main()
 	level._custom_perks[level._custom_perks.size] = PERK_ADDITIONAL_PRIMARY_WEAPON;
 	*/
 	thread shadow_round_base_logic();
-	/*
-	if (isPlayer( attacker ) && attacker.shadowDouble)
-	{
-		return damage * 0.75;
-	} 
-	return damage;
-	*/
 }
 
 function on_player_connect()
@@ -177,11 +111,7 @@ function shadow_round_base_logic()
 			players = GetPlayers();
 			for(i = 0; i < vending_triggers.size; i++)
 			{
-				if(vending_triggers[i].script_noteworthy != "specialty_quickrevive" || level.solo_lives_given < 3 || players.size > 1)
-				{
-					vending_triggers[i] TriggerEnable(true);
-				}
-				
+				vending_triggers[i] TriggerEnable(true);
  			}
 
 			level waittill("dog_round_ending");
@@ -256,17 +186,9 @@ function generator1_shadow_monitor()
 		players[i].shadowPerks[players[i].shadowPerks.size] = quickarray;
 		players[i] notify(PERK_QUICK_REVIVE + "_stop");
 		players[i] thread monitor_has_shadowed_perk(PERK_QUICK_REVIVE);
-		
-		if(players.size == 1)
-		{
-			level.solo_lives_given--;
-		}
-
 		players[i] thread shadow_revive_effects();
-
-		electricarray = []; electricarray[electricarray.size] = PERK_ELECTRIC_CHERRY; electricarray[electricarray.size] = players[i] HasPerk(PERK_ELECTRIC_CHERRY);
-
 		
+		electricarray = []; electricarray[electricarray.size] = PERK_ELECTRIC_CHERRY; electricarray[electricarray.size] = players[i] HasPerk(PERK_ELECTRIC_CHERRY);
 		players[i].shadowPerks[players[i].shadowPerks.size] = electricarray;
 		players[i] notify(PERK_ELECTRIC_CHERRY + "_stop");
 		players[i] thread shadow_cherry_effects();
@@ -450,12 +372,17 @@ function shadow_cherry_effects()
 
 	min_damage = 10;
 	max_damage = 45;
-
+	self.wait_on_reload = [];
 	while(true)
 	{
 		self waittill("reload_start");
 					
 		current_weapon = self GetCurrentWeapon();
+
+		if( IsInArray( self.wait_on_reload, current_weapon ) )
+		{
+			continue;	
+		}
 		
 		// Add this weapon to the list so we know it needs to be reloaded before the perk can be used for again
 		self.wait_on_reload[self.wait_on_reload.size] = current_weapon;
@@ -468,12 +395,68 @@ function shadow_cherry_effects()
 		perk_dmg = math::linear_map( n_fraction, 1.0, 0.0, min_damage, max_damage );
 		
 		// Kick off a thread that will tell us when the weapon has been reloaded.
+		self thread check_for_reload_complete( current_weapon );
 
 		self thread zm_perk_electric_cherry::electric_cherry_reload_fx( n_fraction );
 		self PlaySound( "zmb_cherry_explode" );
 		self DoDamage( perk_dmg, self.origin+(0,0,20));
 
 		wait(0.05);
+	}
+}
+
+function check_for_reload_complete( weapon ) // self = player
+{
+	self endon( "death" );
+	self endon( "disconnect" );
+	//self endon( "weapon_change_complete" );
+	self endon( "player_lost_weapon_" + weapon.name );
+	level endon( "last_ai_down" );
+	
+	// Thread to watch for the case where this weapon gets replaced
+	self thread weapon_replaced_monitor( weapon );
+	
+	while( 1 )
+	{
+		// Wait for the player to complete a reload
+		self waittill( "reload" );
+		
+		// If the weapon that just got reloaded is the same as the one that was used for the electric cherry perk
+		// Kill off this thread and remove this weapon's name from the player's wait_on_reload list
+		// This allows the player to use the Electric Cherry Reload Attack with this weapon again!
+		current_weapon = self GetCurrentWeapon();
+		if( current_weapon == weapon )
+		{
+			ArrayRemoveValue( self.wait_on_reload, weapon );
+			self notify( "weapon_reload_complete_" + weapon.name );
+			break;
+		}
+	}
+}
+
+function weapon_replaced_monitor( weapon ) // self = player
+{
+	self endon( "death" );
+	self endon( "disconnect" );
+	self endon( "weapon_reload_complete_" + weapon.name );
+	level endon( "last_ai_down" );
+	
+	while( 1 )
+	{
+		// Wait for the player to change weapons (swap weapon, wall buy, magic box, etc.)
+		self waittill( "weapon_change" );
+		
+		// If the weapon that we previously used for the Electric Cherry Reload Attack is no longer equipped
+		// Kill off this thread and remove this weapon's name from the player's wait_on_reload list
+		// This handles the case when a player cancels a reload, then replaces this weapon
+		// Ensures that when the player re-aquires the weapon, he has a fresh start and can use the Electric Cherry perk immediately.
+		primaryWeapons = self GetWeaponsListPrimaries();
+		if( !IsInArray( primaryWeapons, weapon ) )
+		{
+			self notify( "player_lost_weapon_" + weapon.name );
+			ArrayRemoveValue( self.wait_on_reload, weapon );
+			break;
+		}
 	}
 }
 

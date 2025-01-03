@@ -66,6 +66,10 @@
 #using scripts\zm\zm_room_manager;
 
 #insert scripts\zm\_zm_perks.gsh;
+#insert scripts\zm\_zm_perk_quick_revive.gsh;
+#insert scripts\zm\_zm_perk_staminup.gsh;
+#insert scripts\zm\_zm_perk_additionalprimaryweapon.gsh;
+#insert scripts\zm\_zm_perk_deadshot.gsh;
 #insert scripts\zm\_zm_perk_poseidonspunch.gsh;
 #insert scripts\zm\_zm_perk_doubletaporiginal.gsh;
 #insert scripts\zm\_zm_perk_phdlite.gsh;
@@ -75,15 +79,12 @@
 #precache( "material", "deposit_waypoint" );
 #precache( "material", "deposit_waypoint_jug" );
 
-#precache( "fx", "zombie/fx_perk_juggernaut_factory_zmb" );
 #precache( "fx", "zombie/fx_perk_quick_revive_factory_zmb" );
-#precache( "fx", "zombie/fx_perk_sleight_of_hand_factory_zmb" );
 #precache( "fx", "zombie/fx_perk_doubletap2_factory_zmb" );
 #precache( "fx", "zombie/fx_perk_daiquiri_factory_zmb" );
 #precache( "fx", "zombie/fx_perk_stamin_up_factory_zmb" );
 #precache( "fx", "zombie/fx_perk_mule_kick_factory_zmb" );
 #precache( "fx", "custom/fx_poseidons_punch" );
-#precache( "fx", "custom/fx_perk_phdflopper_light");
 #precache( "fx", "custom/fx_perk_phdflopper_light");
 
 #precache( "eventstring", "blood_vial_update" );
@@ -99,36 +100,24 @@
 #precache( "string", "ZM_ABBEY_BLOODGUN_COOLDOWN" );
 #precache( "string", "ZM_ABBEY_BLOODGUN_ACTIVATE" );
 
-#define JUGGERNAUT_MACHINE_LIGHT_FX                         "jugger_light"      
-#define QUICK_REVIVE_MACHINE_LIGHT_FX                       "revive_light"      
-#define STAMINUP_MACHINE_LIGHT_FX                           "marathon_light"    
-#define WIDOWS_WINE_FX_MACHINE_LIGHT                        "widow_light"
-#define SLEIGHT_OF_HAND_MACHINE_LIGHT_FX                    "sleight_light"     
-#define DOUBLETAP2_MACHINE_LIGHT_FX                         "doubletap2_light"      
-#define DEADSHOT_MACHINE_LIGHT_FX                           "deadshot_light"        
-#define ADDITIONAL_PRIMARY_WEAPON_MACHINE_LIGHT_FX          "additionalprimaryweapon_light"
 #define ELECTRIC_CHERRY_MACHINE_LIGHT_FX                    "electric_cherry_light" 
 
 // MAIN
 //*****************************************************************************
 
-function main()
+function autoexec main()
 {
+	level flag::init("power_on1");
+	level flag::init("power_on2");
+	level flag::init("power_on3");
+	level flag::init("power_on4");
+	
 	callback::on_connect( &on_player_connect );
 	callback::on_laststand( &on_laststand );
 	zm::register_actor_damage_callback( &damage_adjustment );
 	thread pap_think();
 
 	level.zombie_powerup_weapon[ "bloodgun" ] = GetWeapon("bloodgun");
-
-	level._effect[JUGGERNAUT_MACHINE_LIGHT_FX]                  = "zombie/fx_perk_juggernaut_factory_zmb";
-    level._effect[QUICK_REVIVE_MACHINE_LIGHT_FX]                = "zombie/fx_perk_quick_revive_factory_zmb";
-    level._effect[SLEIGHT_OF_HAND_MACHINE_LIGHT_FX]             = "zombie/fx_perk_sleight_of_hand_factory_zmb";
-    level._effect[DOUBLETAP2_MACHINE_LIGHT_FX]                  = "zombie/fx_perk_doubletap2_factory_zmb";  
-    level._effect[DEADSHOT_MACHINE_LIGHT_FX]                    = "zombie/fx_perk_daiquiri_factory_zmb";
-    level._effect[STAMINUP_MACHINE_LIGHT_FX]                    = "zombie/fx_perk_stamin_up_factory_zmb";
-    level._effect[ADDITIONAL_PRIMARY_WEAPON_MACHINE_LIGHT_FX]   = "zombie/fx_perk_mule_kick_factory_zmb";
-    level._effect[ELECTRIC_CHERRY_MACHINE_LIGHT_FX]             = "zombie/fx_perk_quick_revive_factory_zmb";
 
     //level.papReady = 0; // 4 turns on PaP
 	level.vialFilled = 0;
@@ -163,10 +152,26 @@ function main()
 		bloodgenerator_trigs[i] thread generator_think();
 	}
 
-	thread blood_cool_down();
-	thread acquire_waypoint_manage();
-	thread game_over_check();
-	//thread deposit_waypoint_manage();
+	level thread blood_cool_down();
+	level thread acquire_waypoint_manage();
+	level thread perk_set_fx();
+}
+
+function perk_set_fx()
+{
+	while(! (level flag::exists("initial_blackscreen_passed") && level flag::get("initial_blackscreen_passed")))
+	{
+		wait(0.05);
+	}
+
+	level._effect[QUICK_REVIVE_MACHINE_LIGHT_FX]                = "zombie/fx_perk_quick_revive_factory_zmb";
+    level._effect[DOUBLE_TAP_MACHINE_LIGHT_FX]                  = "zombie/fx_perk_doubletap2_factory_zmb";  
+    level._effect[DEADSHOT_MACHINE_LIGHT_FX]                    = "zombie/fx_perk_daiquiri_factory_zmb";
+    level._effect[STAMINUP_MACHINE_LIGHT_FX]                    = "zombie/fx_perk_stamin_up_factory_zmb";
+    level._effect[ADDITIONAL_PRIMARY_WEAPON_MACHINE_LIGHT_FX]   = "zombie/fx_perk_mule_kick_factory_zmb";
+    level._effect[ELECTRIC_CHERRY_MACHINE_LIGHT_FX]             = "zombie/fx_perk_quick_revive_factory_zmb";
+	level._effect[PHD_LITE_MACHINE_LIGHT_FX]             = "custom/fx_perk_phdflopper_light";
+	level._effect[POSEIDON_PUNCH_MACHINE_LIGHT_FX]             = "custom/fx_poseidons_punch";
 }
 
 function game_over_check()
@@ -179,7 +184,7 @@ function game_over_check()
 
 function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType  )
 {
-    if( weapon == level.bloodgun || weapon == level.zombie_powerup_weapon[ "minigun" ] )
+    if( isdefined(weapon) && (weapon == level.bloodgun || weapon == level.zombie_powerup_weapon[ "minigun" ]) )
 	{
 		return self.health + 666;
 	}
@@ -193,7 +198,7 @@ function on_player_connect()
 	self LUINotifyEvent(&"generator_reset", 0);
 	self thread deposit_waypoint_manage();
 	self thread game_over_check();
-	//self thread set_bloodgun_ammo();
+	self thread set_bloodgun_ammo();
 }
 
 function on_laststand()
@@ -249,7 +254,12 @@ function weapon_powerup_countdown_bloodgun( ent_player, str_gun_return_notify, s
 
 function acquire_waypoint_manage()
 {
-	while(! zm_room_manager::is_room_active(level.abbey_rooms["Water Tower"]))
+	room = "Choir";
+	if(GetDvarString("ui_mapname") == "zm_building")
+	{
+		room = "Water Tower";
+	}
+	while(! (isdefined(level.abbey_rooms) && level zm_room_manager::is_room_active(level.abbey_rooms[room])))
 	{
 		wait(0.05);
 	}
@@ -263,7 +273,6 @@ function acquire_waypoint_manage()
 	{
 		waypoint_pos = Spawn("script_model", trig.origin);
 		waypoint_pos SetModel("tag_origin");
-		waypoint_pos LinkTo(trig, "tag_origin", (0, 0, 75));
 		waypoint_poses[waypoint_poses.size] = waypoint_pos;
 		foreach(player in level.players)
 		{
@@ -286,7 +295,7 @@ function acquire_waypoint_manage()
 	{
 		foreach(player in level.players)
 		{
-			if(player.abbey_no_waypoints)
+			if(IS_TRUE(player.abbey_no_waypoints))
 			{
 				foreach(acquire_indicator in player.acquire_indicators)
 				{
@@ -329,7 +338,7 @@ function acquire_waypoint_manage()
 	{
 		foreach(player in level.players)
 		{
-			if(isdefined(player.blood_vial_trial_fills) && IS_TRUE(player.athos_indicators_active) && ! player.abbey_no_waypoints)
+			if(isdefined(player.blood_vial_trial_fills) && IS_TRUE(player.athos_indicators_active) && ! IS_TRUE(player.abbey_no_waypoints))
 			{
 				closest_dist = 9999999;
 				closest_dist_index = -1;
@@ -380,7 +389,6 @@ function deposit_waypoint_manage()
 	{
 		waypoint_pos = Spawn("script_model", generator.origin);
 		waypoint_pos SetModel("tag_origin");
-		waypoint_pos LinkTo(generator, "tag_origin", (0, 0, 75));
 		deposit_indicator = NewClientHudElem(self);
 		deposit_indicator SetTargetEnt(waypoint_pos);
 		deposit_indicator SetShader("deposit_waypoint");
@@ -395,7 +403,6 @@ function deposit_waypoint_manage()
 	{
 		waypoint_pos = Spawn("script_model", fountain.origin);
 		waypoint_pos SetModel("tag_origin");
-		waypoint_pos LinkTo(fountain, "tag_origin", (0, 0, 75));
 		fountain_indicator = NewClientHudElem(self);
 		fountain_indicator SetTargetEnt(waypoint_pos);
 		fountain_indicator SetShader("deposit_waypoint_jug");
@@ -407,7 +414,7 @@ function deposit_waypoint_manage()
 
 	while(true)
 	{
-		if(!level.hasVial || self.abbey_no_waypoints || level flag::get( "dog_round" ))
+		if(!level.hasVial || IS_TRUE(self.abbey_no_waypoints) || (level flag::exists("dog_round") && level flag::get( "dog_round" )))
 		{
 			foreach(indicator in self.generator_indicators)
 			{
@@ -446,7 +453,7 @@ function deposit_waypoint_manage()
 				}
 			}
 
-			if(level.active_generators.size >= 2 && level.jug_uses_left == 0)
+			if(level.active_generators.size >= 2 && isdefined(level.jug_uses_left) && level.jug_uses_left == 0)
 			{
 				closest_dist = 9999999;
 				closest_dist_index = -1;
@@ -489,7 +496,6 @@ function set_bloodgun_ammo()
 	{
 		if(self GetCurrentWeapon() == bloodgun && has_no_bloodgun)
 		{
-			IPrintLn("Giving ammo");
 			self GiveMaxAmmo(root_gun);
 			has_no_bloodgun = false;
 		}
@@ -693,7 +699,7 @@ function blood_think()
 
 function generator_sound_think()
 {
-	while(! level flag::get("initial_blackscreen_passed"))
+	while(! (level flag::exists("initial_blackscreen_passed") && level flag::get("initial_blackscreen_passed")))
 	{
 		wait(0.05);
 	}
@@ -723,12 +729,12 @@ function zombie_super_speed()
 		wait(0.05);
 	}
 	*/
-	/*
+	
 	while(! IS_TRUE(self.completed_emerging_into_playable_area))
 	{
 		wait(0.05);
 	}
-	*/
+	
 	self zombie_utility::set_zombie_run_cycle_override_value("super_sprint");
 	self thread play_ambient_zombie_vocals();
 }
@@ -851,7 +857,7 @@ function turn_generator_on(generator_name, after_shadow)
 				fx_loc = GetEnt("pp_fx_loc", "targetname");
 				ent = Spawn("script_model", fx_loc.origin);
 				ent SetModel("tag_origin");
-				ent thread delayed_fx("custom/fx_poseidons_punch");
+				//ent thread delayed_fx("custom/fx_poseidons_punch");
 				for(i = 0; i < level.boxcages_q2.size; i++)
 				{
 					level.boxcages_q2[i] Delete();
@@ -893,7 +899,7 @@ function turn_generator_on(generator_name, after_shadow)
 				fx_loc = GetEnt("phd_fx_loc", "targetname");
 				ent = Spawn("script_model", fx_loc.origin);
 				ent SetModel("tag_origin");
-				ent thread delayed_fx("custom/fx_perk_phdflopper_light");
+				//ent thread delayed_fx("custom/fx_perk_phdflopper_light");
 				for(i = 0; i < level.boxcages_q4.size; i++)
 				{
 					level.boxcages_q4[i] Delete();
@@ -947,7 +953,7 @@ function set_generator_hintstring()
 	
 	while(true) 
 	{
-		if(level flag::get( "dog_round" ))
+		if(level flag::exists("dog_round") && level flag::get( "dog_round" ))
 		{
 			hintstring_state = 0;
 		}
@@ -981,7 +987,7 @@ function set_bloodgun_hintstring()
 		{
 			hintstring_state = 0;
 		}	
-		else if(level flag::get("dog_round"))
+		else if(level flag::exists("dog_round") && level flag::get("dog_round"))
 		{
 			hintstring_state = 1;
 		}
@@ -1029,7 +1035,7 @@ function getVendingMachineNotify(perkName)
 {
 	str_perk = undefined;
 	
-	if ( isdefined( level._custom_perks[ perkName ] ) && isdefined( isdefined( level._custom_perks[ perkName ].alias ) ) )
+	if ( isdefined( level._custom_perks[ perkName ] ) && isdefined( level._custom_perks[ perkName ].alias ) )
 	{
 		str_perk = level._custom_perks[ perkName ].alias;
 	}	

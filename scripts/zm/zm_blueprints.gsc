@@ -90,7 +90,10 @@ function on_player_connect()
 	self.got_poseidon_blueprint = 0;
 	self.got_deadshot_blueprint = 0;
 
-	level waittill("initial_blackscreen_passed");
+	while(! (level flag::exists("initial_blackscreen_passed") && level flag::get("initial_blackscreen_passed")))
+	{
+		wait(0.05);
+	}
 
 	self thread check_healing();
 	self thread check_trident();

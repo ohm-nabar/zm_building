@@ -54,6 +54,11 @@ function __init__()
     level.pack_a_punch.custom_validation = &pitchfork_pack_block;
 
     level.trident_shell_activated = false;
+	level.trident_init_room = "Choir";
+	if(GetDvarString("ui_mapname") == "zm_building")
+	{
+		level.trident_init_room = "Clean Room";
+	}
 
     statue_trig_init = GetEnt("poseidon_statue_trigger_init", "targetname");
     statue_trig_init thread upgrade_quest_init_think();
@@ -91,7 +96,7 @@ function monitor_trident_used()
 	while (true)
 	{
 		weapon = self GetCurrentWeapon();
-		if ( self IsFiring() && ! self IsMeleeing() && weapon == level.abbey_trident )
+		if ( self IsFiring() && ! self IsMeleeing() && isdefined(weapon) && weapon == level.abbey_trident )
 		{
 			alias_name = "trident_fire" + RandomIntRange(1, 4);
 			self PlaySound(alias_name);
@@ -111,7 +116,7 @@ function monitor_trident_melee_used()
 	while (true)
 	{
 		weapon = self GetCurrentWeapon();
-		if ( self IsMeleeing() && (weapon == level.abbey_pitchfork || weapon == level.abbey_trident) )
+		if ( self IsMeleeing() && isdefined(weapon) && (weapon == level.abbey_pitchfork || weapon == level.abbey_trident) )
 		{
 			alias_name = "trident_melee_" + RandomIntRange(1, 4);
 			self PlaySound(alias_name);
@@ -126,7 +131,7 @@ function monitor_trident_melee_used()
 
 function pitchfork_statue_check(weapon)
 {
-	if(weapon == level.abbey_pitchfork && level.pitchfork_upgrading)
+	if(isdefined(weapon) && weapon == level.abbey_pitchfork && level.pitchfork_upgrading)
 	{
 		return 1;
 	}
@@ -138,7 +143,8 @@ function pitchfork_statue_check(weapon)
 
 function pitchfork_pack_block(player)
 {
-	if(player GetCurrentWeapon() == level.abbey_pitchfork)
+	weapon = player GetCurrentWeapon();
+	if(isdefined(weapon) && weapon == level.abbey_pitchfork)
 	{
 		return false;
 	}
@@ -148,7 +154,7 @@ function pitchfork_pack_block(player)
 
 function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType  )
 {
-	if (isPlayer( attacker ) && isdefined(level.abbey_trident) && weapon == level.abbey_trident && meansofdeath == "MOD_PROJECTILE")
+	if (isPlayer( attacker ) && isdefined(level.abbey_trident) && isdefined(weapon) && weapon == level.abbey_trident && meansofdeath == "MOD_PROJECTILE")
 	{
 		if(self.targetname == "zombie_cloak" || self.targetname == "zombie_escargot")
 		{
@@ -161,7 +167,7 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 	if (isPlayer( attacker ) && meansofdeath == "MOD_MELEE")
 	{
 
-		if(isdefined(level.abbey_pitchfork) && weapon == level.abbey_pitchfork)
+		if(isdefined(level.abbey_pitchfork) && isdefined(weapon) && weapon == level.abbey_pitchfork)
 		{
 			if(self.targetname == "zombie_cloak" || self.targetname == "zombie_escargot")
 			{
@@ -173,7 +179,7 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 			}
 		}
 
-		if(isdefined(level.abbey_trident) && weapon == level.abbey_trident)
+		if(isdefined(level.abbey_trident) && isdefined(weapon) && weapon == level.abbey_trident)
 		{
 			if(self.targetname == "zombie_cloak" || self.targetname == "zombie_escargot")
 			{
@@ -242,7 +248,7 @@ function water_pulse(origin, attacker, should_kill)
 		{
 			if( Distance(zombies[j].origin, origin) < level.trident_pulse_radius )
 			{
-				if(zombies[j].targetname == "zombie_escargot" || zombies[j].targetname == "zombie_cloak" || IS_TRUE(self.is_quad_zombie))
+				if((isdefined(zombies[j].targetname) && (zombies[j].targetname == "zombie_escargot" || zombies[j].targetname == "zombie_cloak")) || (isdefined(self.animname) && self.animname == "quad_zombie"))
 				{
 					continue;
 				}
@@ -378,14 +384,15 @@ function display_trident_power_level()
 	trident_put_away = true;
 	while(true)
 	{
-		if (self GetCurrentWeapon() == level.abbey_trident && (self.trident_power_level != prev_power_level || trident_put_away))
+		weapon = self GetCurrentWeapon();
+		if (isdefined(weapon) && weapon == level.abbey_trident && (self.trident_power_level != prev_power_level || trident_put_away))
 		{
 			prev_power_level = self.trident_power_level;
 			trident_put_away = false;
 			power_level_hud SetText("Power Level " + self.trident_power_level);
 			power_level_hud.alpha = 1;
 		}
-		if(self GetCurrentWeapon() != level.abbey_trident && ! trident_put_away)
+		if(isdefined(weapon) && weapon != level.abbey_trident && ! trident_put_away)
 		{
 			trident_put_away = true;
 			power_level_hud.alpha = 0;
@@ -403,7 +410,8 @@ function monitor_trident_fx()
 	has_reset = false;
 	while(true)
 	{
-		while(self GetCurrentWeapon() == level.abbey_trident)
+		weapon = self GetCurrentWeapon();
+		while(isdefined(weapon) && weapon == level.abbey_trident)
 		{
 			if(self.trident_power_level != prev_power_level || has_reset)
 			{
@@ -411,6 +419,7 @@ function monitor_trident_fx()
 				prev_power_level = self.trident_power_level;
 			}
 			has_reset = false;
+			weapon = self GetCurrentWeapon();
 			wait(0.05);
 		}
 
@@ -445,7 +454,7 @@ function upgrade_quest_think()
 			{
 				continue;
 			}
-			if(player_weapon == level.abbey_pitchfork || player_weapon == level.abbey_pitchfork_upgraded)
+			if(isdefined(player_weapon) && player_weapon == level.abbey_pitchfork)
 			{
 				break;
 			}
@@ -456,7 +465,9 @@ function upgrade_quest_think()
 
 		level.pitchfork_upgrading = true;
 		self SetHintString(&"ZM_ABBEY_TRIDENT_CHARGE");
+
 		upgrading_player zm_weapons::weapon_take(player_weapon);
+
 		weapon SetModel("vm_trident");
 		weapon SetVisibleToAll();
 
@@ -646,12 +657,12 @@ function monitor_trident_fired()
 	while ( 1 )
 	{
 		self waittill( "missile_fire", e_projectile, str_weapon );
-		if ( str_weapon != level.abbey_trident && str_weapon != level.abbey_trident_upgraded )
+		
+		if ( isdefined(str_weapon) && str_weapon != level.abbey_trident )
 		{
 			continue;
 		}
-	
-				
+
 		self notify( #"trident_fired", e_projectile, str_weapon);
 	}
 }

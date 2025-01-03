@@ -195,7 +195,13 @@ function zombie_check(grenade, player)
 {
 	self endon("death");
 
-	if(IS_TRUE(self.completed_emerging_into_playable_area) && (! self.healingElectric || ! IsDefined(self.healingElectric)) && self.targetname != "zombie_choker" && self.targetname != "zombie_cloak" && self.targetname != "zombie_escargot" && DistanceSquared(grenade.origin, self.origin) <= 90000)
+	is_shadow_person = false;
+	if(isdefined(self.targetname) && (self.targetname == "zombie_choker" || self.targetname == "zombie_cloak" || self.targetname == "zombie_escargot"))
+	{
+		is_shadow_person = true;
+	}
+
+	if(IS_TRUE(self.completed_emerging_into_playable_area) && ! IS_TRUE(self.healingElectric) && ! is_shadow_person && DistanceSquared(grenade.origin, self.origin) <= 90000)
 	{
 		self zm_aat_turned::result("death", player, "MOD_UNKNOWN", level.healingGrenade);
 	}

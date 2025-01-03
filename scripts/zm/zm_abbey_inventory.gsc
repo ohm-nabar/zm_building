@@ -165,8 +165,7 @@ function on_player_spawned()
 	self thread inventory_check();
 	self thread inventory_tab_navigation();
 	self thread scroll_icon_hud();
-	//self thread parchment_hud();
-	//self thread juggernog_challenge_hud();
+
 	self thread cherry_challenge_hud();
 	self thread quick_challenge_hud();
 	self thread mule_challenge_hud();
@@ -175,13 +174,6 @@ function on_player_spawned()
 	self thread PHD_challenge_hud();
 	self thread poseidon_challenge_hud();
 	self thread deadshot_challenge_hud();
-	//self thread quick_reward_text();
-	/*
-	self thread quest_challenge_hud();
-	self thread solo_challenge_hud();
-	self thread team_challenge_hud();
-	*/
-	//self thread testeroo();
 }
 
 function scroll_icon_hud()
@@ -313,6 +305,11 @@ function cherry_challenge_hud()
 	self endon( "disconnect" );
 	self endon( "bled_out ");
 
+	while(! isdefined(self.cherry_challenge_progress))
+	{
+		wait(0.05);
+	}
+
 	while(! self.cherryUpgradeQuestDone)
 	{
 		status = CHALLENGE_INACTIVE;
@@ -339,6 +336,11 @@ function stamin_challenge_hud()
 {
 	self endon( "disconnect" );
 	self endon( "bled_out ");
+
+	while(! isdefined(self.stamin_challenge_progress))
+	{
+		wait(0.05);
+	}
 
 	while(! self.staminUpgradeQuestDone)
 	{
@@ -367,6 +369,11 @@ function double_challenge_hud()
 	self endon( "disconnect" );
 	self endon( "bled_out ");
 
+	while(! isdefined(self.double_challenge_progress))
+	{
+		wait(0.05);
+	}
+
 	while(! self.doubleUpgradeQuestDone)
 	{
 		status = CHALLENGE_INACTIVE;
@@ -393,6 +400,11 @@ function mule_challenge_hud()
 {
 	self endon( "disconnect" );
 	self endon( "bled_out ");
+
+	while(! isdefined(self.mule_challenge_progress))
+	{
+		wait(0.05);
+	}
 
 	while(! self.muleUpgradeQuestDone)
 	{
@@ -421,6 +433,11 @@ function poseidon_challenge_hud()
 	self endon( "disconnect" );
 	self endon( "bled_out ");
 
+	while(! isdefined(self.poseidon_challenge_progress))
+	{
+		wait(0.05);
+	}
+
 	while(! self.poseidonUpgradeQuestDone)
 	{
 		status = CHALLENGE_INACTIVE;
@@ -447,6 +464,11 @@ function quick_challenge_hud()
 {
 	self endon( "disconnect" );
 	self endon( "bled_out ");
+
+	while(! isdefined(self.quick_challenge_progress))
+	{
+		wait(0.05);
+	}
 
 	while(! self.quickUpgradeQuestDone)
 	{
@@ -475,6 +497,11 @@ function PHD_challenge_hud()
 	self endon( "disconnect" );
 	self endon( "bled_out ");
 
+	while(! isdefined(self.PHD_challenge_progress))
+	{
+		wait(0.05);
+	}
+
 	while(! self.PHDUpgradeQuestDone)
 	{
 		status = CHALLENGE_INACTIVE;
@@ -501,6 +528,11 @@ function deadshot_challenge_hud()
 {
 	self endon( "disconnect" );
 	self endon( "bled_out ");
+
+	while(! isdefined(self.deadshot_challenge_progress))
+	{
+		wait(0.05);
+	}
 
 	while(! self.deadshotUpgradeQuestDone)
 	{

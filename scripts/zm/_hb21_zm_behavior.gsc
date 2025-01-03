@@ -185,11 +185,19 @@ function zombie_side_step_service( behavior_tree_entity )
 			if ( behavior_tree_entity._juke_direction == "none" )
 				return;
 			
-			str_anim_name = behavior_tree_entity animMappingSearch( "anim_" + behavior_tree_entity.archetype + "_side_" + behavior_tree_entity.str_side_step_type + "_" + behavior_tree_entity._juke_direction );
-			if ( behavior_tree_entity mayMoveFromPointToPoint( behavior_tree_entity.origin, zombie_utility::getAnimEndPos( str_anim_name ) ) )
+			str_anim_name = "anim_" + behavior_tree_entity.archetype + "_side_" + behavior_tree_entity.str_side_step_type + "_" + behavior_tree_entity._juke_direction;
+			if(isdefined(str_anim_name))
 			{
-				behavior_tree_entity._zombie_side_step_type = behavior_tree_entity.str_side_step_type + "_" + behavior_tree_entity._juke_direction;
-				behavior_tree_entity.n_zombie_side_step = 1;
+				str_anim_name = istring(str_anim_name);
+				str_anim_name = behavior_tree_entity animMappingSearch(str_anim_name);
+				if(isdefined(str_anim_name))
+				{
+					if ( behavior_tree_entity mayMoveFromPointToPoint( behavior_tree_entity.origin, zombie_utility::getAnimEndPos( str_anim_name ) ) )
+					{
+						behavior_tree_entity._zombie_side_step_type = behavior_tree_entity.str_side_step_type + "_" + behavior_tree_entity._juke_direction;
+						behavior_tree_entity.n_zombie_side_step = 1;
+					}
+				}
 			}
 		}
 	}

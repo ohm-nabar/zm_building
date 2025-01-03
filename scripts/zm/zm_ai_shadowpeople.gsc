@@ -2,64 +2,30 @@
 
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
-#using scripts\shared\clientfield_shared;
-#using scripts\shared\compass;
-#using scripts\shared\exploder_shared;
 #using scripts\shared\flag_shared;
-#using scripts\shared\laststand_shared;
-#using scripts\shared\math_shared;
-#using scripts\shared\scene_shared;
 #using scripts\shared\spawner_shared;
 #using scripts\shared\util_shared;
 
 #insert scripts\shared\shared.gsh;
 #insert scripts\shared\version.gsh;
+#insert scripts\shared\ai\zombie.gsh;
 
+#insert scripts\zm\_zm.gsh;
 #insert scripts\zm\_zm_utility.gsh;
 
-#using scripts\zm\_load;
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_audio;
 #using scripts\zm\_zm_powerups;
-#using scripts\zm\_zm_utility;
-#using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_placeable_mine;
-#using scripts\zm\_zm_zonemgr;
+#using scripts\zm\_zm_utility;
 
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\array_shared;
 
-//Perks
-#using scripts\zm\_zm_pack_a_punch;
-#using scripts\zm\_zm_pack_a_punch_util;
-#using scripts\zm\_zm_perk_additionalprimaryweapon;
-#using scripts\zm\_zm_perk_juggernaut;
-#using scripts\zm\_zm_perk_quick_revive;
-#using scripts\zm\_zm_perk_staminup;
-#using scripts\zm\_zm_perk_electric_cherry;
-#using scripts\zm\_zm_perks;
-
-//Powerups
-#using scripts\zm\_zm_powerup_double_points;
-#using scripts\zm\_zm_powerup_carpenter;
-#using scripts\zm\_zm_powerup_fire_sale;
-#using scripts\zm\_zm_powerup_free_perk;
-#using scripts\zm\_zm_powerup_full_ammo;
-#using scripts\zm\_zm_powerup_insta_kill;
-#using scripts\zm\_zm_powerup_nuke;
-
-//Traps
-#using scripts\zm\_zm_trap_electric;
-
-#using scripts\zm\zm_usermap;
 #using scripts\zm\_zm_score;
-#using scripts\zm\_zm_laststand;
-
-#using scripts\shared\hud_util_shared;
 
 #using scripts\shared\ai\zombie_utility;
 #using scripts\zm\_zm_spawner;
-#using scripts\shared\ai\zombie_shared;
 
 #using scripts\zm\_zm_ai_dogs;
 
@@ -70,12 +36,6 @@
 #using scripts\zm\zm_abbey_inventory;
 
 #using scripts\zm\zm_room_manager;
-
-#insert scripts\shared\ai\zombie.gsh;
-#insert scripts\shared\ai\systems\gib.gsh;
-
-#insert scripts\zm\_zm.gsh;
-#insert scripts\zm\_zm_perks.gsh;
 
 #precache( "fx", "shadow/fx_zmb_smokey_death" );
 #precache( "fx", "shadow/shadow_zombie_cloak_eyes" );
@@ -131,29 +91,32 @@ function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags
 {
 	if ( isPlayer( attacker ) && willBeKilled && ! IS_TRUE(attacker.no_shadow_points) )
 	{
-		if(self.targetname == "zombie_cloak")
+		if(isdefined(self.targetname))
 		{
-			if(level.zombie_vars[attacker.team]["zombie_point_scalar"] == 2)
+			if(self.targetname == "zombie_cloak")
 			{
-				attacker thread zm_score::add_to_player_score( 1500 );
+				if(level.zombie_vars[attacker.team]["zombie_point_scalar"] == 2)
+				{
+					attacker thread zm_score::add_to_player_score( 1500 );
+				}
+				else
+				{
+					attacker thread zm_score::add_to_player_score( 750 );
+				}
 			}
-			else
+			else if(self.targetname == "zombie_escargot")
 			{
-				attacker thread zm_score::add_to_player_score( 750 );
+				if(level.zombie_vars[attacker.team]["zombie_point_scalar"] == 2)
+				{
+					attacker thread zm_score::add_to_player_score( 3000 );
+				}
+				else
+				{
+					attacker thread zm_score::add_to_player_score( 1500 );
+				}
 			}
 		}
-		else if(self.targetname == "zombie_escargot")
-		{
-			if(level.zombie_vars[attacker.team]["zombie_point_scalar"] == 2)
-			{
-				attacker thread zm_score::add_to_player_score( 3000 );
-			}
-			else
-			{
-				attacker thread zm_score::add_to_player_score( 1500 );
-			}
-		}
-	} 
+	}
 }
 
 function pause(antiverse=false)
@@ -465,7 +428,7 @@ function dog_round_spawning()
 	level lui::screen_fade_in( 1, "black" );
 	foreach(player in level.players)
 	{
-		visionset_mgr::activate("visionset", "abbey_shadow", player);
+		visionset_mgr::activate("visionset", "abbey_shadow", player, 0.5, 9999, 0.5);
 	}
 	level.shadow_vision_active = true;
 	wait(1);
@@ -496,16 +459,12 @@ function dog_round_spawning()
 
 	while(level.num_cloaks > 0)
 	{
-		if(level.num_cloaks <= 0)
-		{
-			break;
-		}
 		if(zombie_utility::get_current_zombie_count() >= level.shadow_ai_limit || level.shadow_round_paused)
 		{
 			wait(0.05);
 			continue;
 		}
-		thread choker_spawn(randomintrange( 0, players.size ));
+		thread choker_spawn(level get_random_valid_player());
 		choker_wait_time = 1 - ( 0.2 * (players.size - 1) );
 		wait(choker_wait_time);
 		//IPrintLn("num_cloaks: " + level.num_cloaks);
@@ -532,32 +491,31 @@ function dog_round_spawning()
 
 	for(i = 0; i < level.num_escargots; i++)
 	{
-		index = i % players.size;
-		if(i == 0 && ! level.trident_shell_activated && zm_room_manager::is_room_active(level.trident_init_room) && ! level.shadow_round_paused)
+		while(level.shadow_round_paused)
+		{
+			wait(0.05);
+		}
+		if(i == 0 && ! level.trident_shell_activated && zm_room_manager::is_room_active(level.abbey_rooms[level.trident_init_room]))
 		{
 			//IPrintLn("escargot special spawn");
-			thread escargot_spawn(players[index], true);
+			thread escargot_spawn(level get_random_valid_player(), true);
 		}
-		else if(! level.shadow_round_paused)
+		else
 		{
 			//IPrintLn("escargot normal spawn");
-			thread escargot_spawn(players[index]);
+			thread escargot_spawn(level get_random_valid_player());
 		}
 		wait(1.5);
 	}
 
 	while(level.num_escargots > 0)
 	{
-		if(level.num_escargots <= 0)
-		{
-			break;
-		}
 		if(zombie_utility::get_current_zombie_count() >= level.shadow_ai_limit || level.shadow_round_paused)
 		{
 			wait(0.05);
 			continue;
 		}
-		thread choker_spawn(randomintrange( 0, players.size ));
+		thread choker_spawn(level get_random_valid_player());
 		choker_wait_time = 1.25 - ( 0.25 * (players.size - 1) );
 		wait(choker_wait_time);
 	}
@@ -578,7 +536,6 @@ function dog_round_spawning()
 		player PlaySoundToPlayer("shadow_flash", player);
 		visionset_mgr::deactivate("visionset", "abbey_shadow", player);
 	}
-	level.shadow_moon SetInvisibleToAll();
 
 	level.in_shadow_spawn_sequence = false;
 	level.no_powerups = false;
@@ -594,6 +551,19 @@ function dog_round_spawning()
 		//spawn_loc = level.choker_spawn_points[0];
 		
 		//choker thread ai_testeroo("choker");
+}
+
+function get_random_valid_player()
+{
+	valid_players = [];
+	foreach(player in level.players)
+	{
+		if(level zm_utility::is_player_valid(player, false, true))
+		{
+			array::add(valid_players, player);
+		}
+	}
+	return array::random(valid_players);
 }
 
 function cloak_spawn_sequence()
@@ -652,7 +622,7 @@ function cloak_spawn_sequence()
 
 		trigger_volume = GetEnt(trigger.target, "targetname");
 
-		while(! cloak IsTouching(trigger_volume) && level.num_cloaks == num_cloaks_prev)
+		while(level.num_cloaks == num_cloaks_prev && ! cloak IsTouching(trigger_volume))
 		{
 			wait(0.05);
 		}
@@ -662,7 +632,7 @@ function cloak_spawn_sequence()
 			cloak notify("goal_reached");
 			cloak.ignoreall = false; 
 			cloak.v_zombie_custom_goal_pos = undefined;
-			cloak SetGoal(undefined);
+			//cloak SetGoal(undefined);
 
 			PlayFXOnTag("shadow/cloak_shadowing", cloak, "tag_weapon_right");
 			cloak AnimScripted("cloak_conjuring", cloak.origin, cloak.angles, "cloak_conjuring");
@@ -801,7 +771,7 @@ function cloak_think()
 	self.ai_state = "zombie_think";
 	//self.find_flesh_struct_string = "find_flesh";
 
-	self SetGoal( self.origin );
+	//self SetGoal( self.origin );
 	self PathMode( "move allowed" );
 	self.zombie_think_done = true;
 }
@@ -1381,13 +1351,14 @@ function escargot_death_notify()
 {
 	self waittill("death");
 	level.num_escargots--;
+	
 	alias_name = "shadow_kill" + RandomIntRange(1, 4);
 	PlaySoundAtPosition(alias_name, self.origin);
 	PlayFX("shadow/fx_zmb_smokey_death", self.origin + (0, 0, 40));
 
 	level notify("escargot_killed", self.origin);
 
-	if(!level.trident_shell_activated && self zm_room_manager::is_player_in_room(level.trident_init_room))
+	if(!level.trident_shell_activated && self zm_room_manager::is_player_in_room(level.abbey_rooms[level.trident_init_room]))
 	{
 		level.trident_shell_activated = true;
 	}
@@ -1405,8 +1376,6 @@ function escargot_death_notify()
 			zm_powerups::specific_powerup_drop("free_perk", self.origin + (-40,0,0));
 		}
 	}
-	//self clientfield::set( "shadow_choker_fx", 0 );
-	//self clientfield::set( "shadow_fx", 0 );
 	self Delete();
 }
 
@@ -1417,7 +1386,6 @@ function cloak_death_notify()
 	alias_name = "shadow_kill" + RandomIntRange(1, 4);
 	PlaySoundAtPosition(alias_name, self.origin);
 	PlayFX("shadow/fx_zmb_smokey_death", self.origin + (0, 0, 40));
-	//self clientfield::set( "shadow_wizard_fx", 0 );
 	self Delete();
 }
 
@@ -1427,7 +1395,6 @@ function choker_death_notify()
 	alias_name = "shadow_kill" + RandomIntRange(1, 4);
 	PlaySoundAtPosition(alias_name, self.origin);
 	PlayFX("shadow/fx_zmb_smokey_death", self.origin + (0, 0, 40));
-	//self clientfield::set( "shadow_choker_fx", 0 );
 	self Delete();
 }
 
@@ -1438,7 +1405,6 @@ function escargot_death_notify_ee_radio()
 	alias_name = "shadow_kill" + RandomIntRange(1, 4);
 	PlaySoundAtPosition(alias_name, self.origin);
 	PlayFX("shadow/fx_zmb_smokey_death", self.origin + (0, 0, 40));
-
 	self Delete();
 }
 
@@ -1448,7 +1414,6 @@ function cloak_death_notify_ee_radio()
 	alias_name = "shadow_kill" + RandomIntRange(1, 4);
 	PlaySoundAtPosition(alias_name, self.origin);
 	PlayFX("shadow/fx_zmb_smokey_death", self.origin + (0, 0, 40));
-
 	self Delete();
 }
 
@@ -1458,7 +1423,6 @@ function choker_death_notify_ee_radio()
 	alias_name = "shadow_kill" + RandomIntRange(1, 4);
 	PlaySoundAtPosition(alias_name, self.origin);
 	PlayFX("shadow/fx_zmb_smokey_death", self.origin + (0, 0, 40));
-	//self clientfield::set( "shadow_choker_fx", 0 );
 	self Delete();
 }
 

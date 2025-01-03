@@ -81,8 +81,6 @@ function main()
 	level.beach_rooms = [];
 	level.beach_rooms[level.beach_rooms.size] = "Clean Room";
 
-	level.trident_init_room = clean_room_zones;
-
     callback::on_connect( &on_player_connect );
     //monitor_beach_zones();
 }

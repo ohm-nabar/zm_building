@@ -73,12 +73,12 @@
 #using scripts\zm\zm_perk_upgrades_effects;
 #using scripts\zm\custom_gg_machine;
 #using scripts\zm\zm_healing_grenade;
-#using scripts\zm\_zm_perk_doubletaporiginal; 
+#using scripts\zm\_zm_perk_doubletaporiginal;
 #using scripts\zm\_zm_perk_poseidonspunch;
 #using scripts\zm\_zm_perk_phdlite;
 #using scripts\zm\_zm_perk_deadshot;
-#using scripts\zm\zm_starting_pistol_choose; 
-#using scripts\zm\zm_ai_shadowpeople; 
+#using scripts\zm\zm_starting_pistol_choose;
+#using scripts\zm\zm_ai_shadowpeople;
 #using scripts\zm\zm_shadow_perks; 
 #using scripts\zm\zm_challenges;
 #using scripts\zm\zm_abbey_inventory;
@@ -125,6 +125,9 @@
 
 // Mystery Box Map
 #using scripts\zm\zm_abbey_box_map;
+// Stats
+#using scripts\zm\gametypes\_globallogic;
+#using scripts\zm\gametypes\_globallogic_score;
 
 #insert scripts\zm\_zm_perks.gsh;
 
@@ -150,38 +153,21 @@ function main()
 
 	zm_utility::register_lethal_grenade_for_level( "frag_grenade_potato_masher" );
 	level.zombie_lethal_grenade_player_init = GetWeapon( "frag_grenade_potato_masher" );
-	/*
-	level._custom_perks = array::exclude( level._custom_perks, level._custom_perks[PERK_SLEIGHT_OF_HAND] );
-	level._custom_perks = array::exclude( level._custom_perks, level._custom_perks[PERK_DOUBLETAP2] );
-	level._custom_perks = array::exclude( level._custom_perks, level._custom_perks[PERK_DEAD_SHOT] );
-	*/
-		//SetDvar( "bg_falldamageminheight", "200" );
-	//SetDvar( "bg_falldamagemaxheight", "350" );
-	//level.aat_in_use = false;
-	//level.overridePlayerDamage		= &player_damage_override;
+	level.player_stats_init = &player_stats_init;
+
 	level thread zm_abbey_audio::main();
-	level thread zm_bloodgenerator::main();
 	level thread zm_klauser::main();
-	//level thread zm_perk_upgrades::main();
 	level thread zm_perk_upgrades_effects::main();
 	level thread zm_healing_grenade::main();
 	level thread zm_starting_pistol_choose::main();
-	//level thread zm_ai_shadowpeople::main();
 	level thread zm_shadow_perks::main();
-	//level thread custom_gg_machine::main();
-	//level thread zm_challenges::main();
-	//level thread zm_abbey_inventory::main();
 	level thread zm_pause::main();
 	level thread zm_high_round_health::main();
 	level thread zm_diedrich::main();
-	//level thread zm_abbey_dialogue::main();
-	//level thread zm_tides::main();
 	level thread zm_juggernog_potions::main();
 	level thread zm_room_manager::main();
-	//level thread zm_abbey_quest::main();
-	//level thread zm_trident::main();
 	level thread zm_variable_pricing::main();
-	level thread zm_abbey_boss::main();
+	//level thread zm_abbey_boss::main();
 	level thread zm_revive_icon::main();
 	level thread zm_solo_revive::main();
 	level thread zm_no_hud::main();
@@ -226,7 +212,7 @@ function zombie_custom_melee_speed()
 			return;
 		}
 
-        if( ZombieBehavior::zombieShouldMeleeCondition( self ) )
+        if( level ZombieBehavior::zombieShouldMeleeCondition( self ) )
         {
             if( self.zombie_move_speed != "walk" )
             {
@@ -338,7 +324,7 @@ function add_to_player_score( points )
 
 function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType  )
 {
-    if (isPlayer( attacker ) && attacker.shadowDouble)
+    if (isPlayer( attacker ) && IS_TRUE(attacker.shadowDouble))
 	{
 		return Int(damage * 0.75);
 	}
@@ -353,7 +339,7 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 
 function player_damage_adjustment(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, weapon, vPoint, vDir, sHitLoc, psOffsetTime)
 {
-	if(sMeansOfDeath == "MOD_FALLING")
+	if(istring(sMeansOfDeath) == istring("MOD_FALLING"))
 	{
 		return iDamage * 2;
 	}
@@ -368,7 +354,6 @@ function usermap_test_zone_init()
 	zm_zonemgr::add_adjacent_zone( "wtower", "dirty", "enter_dirty");
 	zm_zonemgr::add_adjacent_zone( "wtower", "clean", "enter_clean");
 	zm_zonemgr::add_adjacent_zone( "clean", "downstairs", "enter_downstairs");
-	zm_zonemgr::add_adjacent_zone( "downstairs", "paproom", "enter_paproom");
 	zm_zonemgr::add_adjacent_zone( "start_zone", "staminarch", "enter_staminarch");
 	level flag::init( "always_on" );
 	level flag::set( "always_on" );
@@ -384,15 +369,160 @@ function zm_castle_vox()
 	zm_audio::loadPlayerVoiceCategories("gamedata/audio/zm/zm_castle_vox.csv");
 }
 
-function testeroo()
+function player_stats_init()
 {
-	while(1)
+	self  globallogic_score::initPersStat( "kills", false );
+	self  globallogic_score::initPersStat( "suicides", false );
+	self  globallogic_score::initPersStat( "downs", false );
+	self.downs = self  globallogic_score::getPersStat( "downs" );
+
+	self  globallogic_score::initPersStat( "revives", false );
+	self.revives = self  globallogic_score::getPersStat( "revives" );
+
+	self  globallogic_score::initPersStat( "perks_drank", false );
+	self  globallogic_score::initPersStat( "bgbs_chewed", false );	
+	self  globallogic_score::initPersStat( "headshots", false );
+
+	self  globallogic_score::initPersStat( "melee_kills", false );
+	self  globallogic_score::initPersStat( "grenade_kills", false );
+	self  globallogic_score::initPersStat( "doors_purchased", false );
+	
+	self  globallogic_score::initPersStat( "distance_traveled", false );
+	self.distance_traveled = self  globallogic_score::getPersStat( "distance_traveled" );
+
+	self  globallogic_score::initPersStat( "total_shots", false );
+	self.total_shots = self  globallogic_score::getPersStat( "total_shots" );
+
+	self  globallogic_score::initPersStat( "hits", false );
+	self.hits = self  globallogic_score::getPersStat( "hits" );
+
+	self  globallogic_score::initPersStat( "misses", false );
+	self.misses = self  globallogic_score::getPersStat( "misses" );
+
+	self  globallogic_score::initPersStat( "deaths", false );
+	self.deaths = self  globallogic_score::getPersStat( "deaths" );
+
+	self  globallogic_score::initPersStat( "boards", false );
+	
+	self  globallogic_score::initPersStat( "failed_revives", false );	
+	self  globallogic_score::initPersStat( "sacrifices", false );		
+	self  globallogic_score::initPersStat( "failed_sacrifices", false );	
+	self  globallogic_score::initPersStat( "drops", false );	
+	//individual drops pickedup
+	self  globallogic_score::initPersStat( "nuke_pickedup",false);
+	self  globallogic_score::initPersStat( "insta_kill_pickedup",false);
+	self  globallogic_score::initPersStat( "full_ammo_pickedup",false);
+	self  globallogic_score::initPersStat( "double_points_pickedup",false);
+	self  globallogic_score::initPersStat( "carpenter_pickedup",false);
+	self  globallogic_score::initPersStat( "fire_sale_pickedup",false);
+	self  globallogic_score::initPersStat( "minigun_pickedup",false);
+	self  globallogic_score::initPersStat( "island_seed_pickedup",false);
+
+	self  globallogic_score::initPersStat( "bonus_points_team_pickedup",false);
+	self  globallogic_score::initPersStat( "ww_grenade_pickedup",false);
+	
+	self  globallogic_score::initPersStat( "use_magicbox", false );	
+	self  globallogic_score::initPersStat( "grabbed_from_magicbox", false );		
+	self  globallogic_score::initPersStat( "use_perk_random", false );	
+	self  globallogic_score::initPersStat( "grabbed_from_perk_random", false );		
+	self  globallogic_score::initPersStat( "use_pap", false );	
+	self  globallogic_score::initPersStat( "pap_weapon_grabbed", false );	
+	self  globallogic_score::initPersStat( "pap_weapon_not_grabbed", false );
+	
+	//individual perks drank
+	self  globallogic_score::initPersStat( "specialty_armorvest_drank", false );	
+	self  globallogic_score::initPersStat( "specialty_quickrevive_drank", false );
+	self  globallogic_score::initPersStat( "specialty_fastreload_drank", false );	
+	self  globallogic_score::initPersStat( "specialty_additionalprimaryweapon_drank", false );		
+	self  globallogic_score::initPersStat( "specialty_staminup_drank", false );		
+	self  globallogic_score::initPersStat( "specialty_doubletap2_drank", false );	
+	self  globallogic_score::initPersStat( "specialty_widowswine_drank", false );
+	self  globallogic_score::initPersStat( "specialty_deadshot_drank", false );	
+	self  globallogic_score::initPersStat( "specialty_electriccherry_drank", false );
+	self  globallogic_score::initPersStat( "specialty_holdbreath_drank", false );
+	self  globallogic_score::initPersStat( "specialty_jetpack_drank", false );
+	self  globallogic_score::initPersStat( "specialty_disarmexplosive_drank", false );				
+	
+	//weapons that can be planted/picked up ( claymores, ballistics...)
+	self  globallogic_score::initPersStat( "claymores_planted", false );	
+	self  globallogic_score::initPersStat( "claymores_pickedup", false );	
+
+	self  globallogic_score::initPersStat( "bouncingbetty_planted", false );
+	self  globallogic_score::initPersStat( "bouncingbetty_pickedup", false );
+	
+	self  globallogic_score::initPersStat( "bouncingbetty_devil_planted", false );
+	self  globallogic_score::initPersStat( "bouncingbetty_devil_pickedup", false );
+
+	self  globallogic_score::initPersStat( "bouncingbetty_holly_planted", false );
+	self  globallogic_score::initPersStat( "bouncingbetty_holly_pickedup", false );
+
+	self  globallogic_score::initPersStat( "ballistic_knives_pickedup", false );
+	
+	self  globallogic_score::initPersStat( "wallbuy_weapons_purchased", false );
+	self  globallogic_score::initPersStat( "ammo_purchased", false );
+	self  globallogic_score::initPersStat( "upgraded_ammo_purchased", false );
+	
+	self  globallogic_score::initPersStat( "power_turnedon", false );	
+	self  globallogic_score::initPersStat( "power_turnedoff", false );
+	self  globallogic_score::initPersStat( "planted_buildables_pickedup", false );	
+	self  globallogic_score::initPersStat( "buildables_built", false );
+	self  globallogic_score::initPersStat( "time_played_total", false );
+	self  globallogic_score::initPersStat( "weighted_rounds_played", false ); 
+	
+	
+	self  globallogic_score::initpersstat( "zdogs_killed", false );
+	self  globallogic_score::initpersstat( "zspiders_killed", false );
+	self  globallogic_score::initpersstat( "zthrashers_killed", false );
+	self  globallogic_score::initpersstat( "zraps_killed", false );
+	self  globallogic_score::initpersstat( "zwasp_killed", false );
+	self  globallogic_score::initpersstat( "zsentinel_killed", false );
+	self  globallogic_score::initpersstat( "zraz_killed", false );
+	
+	self  globallogic_score::initpersstat( "zdog_rounds_finished", false );
+	self  globallogic_score::initpersstat( "zdog_rounds_lost", false );
+	self  globallogic_score::initpersstat( "killed_by_zdog", false );
+	
+	//cheats
+	self  globallogic_score::initPersStat( "cheat_too_many_weapons", false );	
+	self  globallogic_score::initPersStat( "cheat_out_of_playable", false );	
+	self  globallogic_score::initPersStat( "cheat_too_friendly",false);
+	self  globallogic_score::initPersStat( "cheat_total",false);
+
+	//DLC1 - castle
+	self  globallogic_score::initPersStat( "castle_tram_token_pickedup",false);
+	
+
+	// Persistent system "player" globals
+	//self zm_pers_upgrades::pers_abilities_init_globals();
+	
+	// some extra ... 
+	self  globallogic_score::initPersStat( "total_points", false );
+	self  globallogic_score::initPersStat( "rounds", false );
+	if ( level.resetPlayerScoreEveryRound )
 	{
-		traps = GetEntArray( "zombie_trap", "targetname" );
-		IPrintLn("hello!");
-		IPrintLn(traps.size);
-		wait(0.5);
+		self.pers["score"] = 0;
 	}
+	
+	self.pers["score"] = level.player_starting_points;
+	self.score = self.pers["score"];
+	self IncrementPlayerStat( "score", self.score );
+	self zm_stats::add_map_stat( "score", self.score );
+
+	self globallogic_score::initPersStat( "zteam", false );
+
+	if ( IsDefined( level.level_specific_stats_init ) )
+	{
+		[[ level.level_specific_stats_init ]]();
+	}
+
+	if( !isDefined( self.stats_this_frame ) )
+	{
+		self.pers_upgrade_force_test = true;
+		self.stats_this_frame = [];				// used to track if stats is update in current frame
+		self.pers_upgrades_awarded = [];
+	}
+	
+	//update daily challenge stats
+	self globallogic_score::initPersStat( "ZM_DAILY_CHALLENGE_INGAME_TIME", true, true );
+	self zm_stats::add_global_stat( "ZM_DAILY_CHALLENGE_GAMES_PLAYED", 1 );
 }
-
-

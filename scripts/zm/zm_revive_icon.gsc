@@ -40,7 +40,10 @@ function revive_icon_think()
 	while (true)
 	{
 		self waittill("player_downed");
-		self thread revive_icon_display();
+		if(level.players.size > 1)
+		{
+			self thread revive_icon_display();
+		}
 	}
 }
 
@@ -93,7 +96,7 @@ function revive_icon_display()
 		red = (0.071 * x) + 0.92783;
 		green = (-0.78 * x) + 0.83033;
 		blue = 0;
-		if(self.revivetrigger.beingRevived == 0)
+		if(isdefined(self.revivetrigger.beingRevived) && self.revivetrigger.beingRevived == 0)
 		{
 			revive_icon.color = (red, green, blue);
 		}

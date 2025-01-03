@@ -592,9 +592,9 @@ function quad_prespawn()
 {
 	self.custom_location 							= &quad_location;
 	
+	self.animname = "quad_zombie";
 	self zm_spawner::zombie_spawn_init( 1 );
 	
-	self.animName 									= "quad_zombie";
 	self.no_gib 											= 1;
 	self.no_eye_glow 								= 1;
 	self.no_widows_wine 							= 1;
@@ -616,7 +616,6 @@ function quad_prespawn()
 	self.zombie_can_forwardstep 				= 1;
 	self.goalRadius 										= 16;
 	self.maxsightdistsqrd 							= 16384;
-	self.is_quad_zombie = true;
 	self BloodImpact("none");
 	
 	if ( IS_TRUE( level.quad_explode ) )

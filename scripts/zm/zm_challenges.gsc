@@ -44,7 +44,7 @@
 #define DART_INDEX 2
 #define ATHOS_INDEX 3
 
-#define TRIDENT_MULTIPLIER 0.1
+#define TRIDENT_MULTIPLIER 0.4
 
 #define WALLBUY_OFFSET 2
 #define AREA_ASSAULT_OFFSET 15
@@ -101,15 +101,18 @@ function __init__()
 
 	level.athos_trials = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial, &blood_vial_trial, &trap_trial, &box_trial);
 
+	level.airfield_name = "Airfield";
+	level.pilgrimage_name ="Upper Pilgrimage Stairs";
 	level.airfield_box_indices = array(4, 5);
 	level.pilgrimage_box_indices = array(7, 8);
-
 	if(GetDvarString("ui_mapname") == "zm_building")
 	{
+		level.airfield_name = "Clean Room";
+		level.pilgrimage_name = "Lion Room";
 		level.airfield_box_indices = array(3);
 		level.pilgrimage_box_indices = array(2);
 	}
-
+	
 	kar = GetWeapon("s4_kar98k_irons");
 	gewehr = GetWeapon("s4_g43");
 	garand = GetWeapon("s4_m1garand");
@@ -252,6 +255,8 @@ function setup_trials()
 		array::add(self.gargoyle_indices, 0);
 		array::add(self.gargoyle_progress, 0.0);
 	}
+
+	self.athos_indicators_active = false;
 
 	self thread aramis_trial();
 	self thread porthos_trial();
@@ -416,14 +421,8 @@ function athos_trial()
 			case 2:
 				end_index = 6;
 
-				airfield_path_active = level zm_room_manager::is_room_active("Airfield");
-				pilgrimage_path_active = level zm_room_manager::is_room_active("Upper Pilgrimage Stairs");
-
-				if(GetDvarString("ui_mapname") == "zm_building")
-				{
-					airfield_path_active = level zm_room_manager::is_room_active("Clean Room");
-					pilgrimage_path_active = level zm_room_manager::is_room_active("Lion Room");
-				}
+				airfield_path_active = level zm_room_manager::is_room_active(level.airfield_name);
+				pilgrimage_path_active = level zm_room_manager::is_room_active(level.pilgrimage_name);
 				
 				both_paths_active = airfield_path_active && pilgrimage_path_active;
 				neither_path_active = ! (airfield_path_active || pilgrimage_path_active);
@@ -490,14 +489,8 @@ function wallbuy_trial(athos_stage)
 
 	index = RandomIntRange(start_index, end_index);
 
-	airfield_path_active = level zm_room_manager::is_room_active("Airfield");
-	pilgrimage_path_active = level zm_room_manager::is_room_active("Upper Pilgrimage Stairs");
-
-	if(GetDvarString("ui_mapname") == "zm_building")
-	{
-		airfield_path_active = level zm_room_manager::is_room_active("Clean Room");
-		pilgrimage_path_active = level zm_room_manager::is_room_active("Lion Room");
-	}
+	airfield_path_active = level zm_room_manager::is_room_active(level.airfield_name);
+	pilgrimage_path_active = level zm_room_manager::is_room_active(level.pilgrimage_name);
 
 	both_paths_active = airfield_path_active && pilgrimage_path_active;
 	neither_path_active = ! (airfield_path_active || pilgrimage_path_active);
@@ -611,14 +604,8 @@ function area_assault_trial(athos_stage)
 	start_index = level.area_assault_trial_start_indices[athos_stage];
 	end_index = level.area_assault_trial_end_indices[athos_stage];
 
-	airfield_path_active = level zm_room_manager::is_room_active("Airfield");
-	pilgrimage_path_active = level zm_room_manager::is_room_active("Upper Pilgrimage Stairs");
-
-	if(GetDvarString("ui_mapname") == "zm_building")
-	{
-		airfield_path_active = level zm_room_manager::is_room_active("Water Tower");
-		pilgrimage_path_active = level zm_room_manager::is_room_active("Staminarch");
-	}
+	airfield_path_active = level zm_room_manager::is_room_active(level.airfield_name);
+	pilgrimage_path_active = level zm_room_manager::is_room_active(level.pilgrimage_name);
 
 	both_paths_active = airfield_path_active && pilgrimage_path_active;
 	neither_path_active = ! (airfield_path_active || pilgrimage_path_active);
@@ -698,8 +685,6 @@ function crouch_trial(athos_stage)
 
 	self.crouch_trial_kills = 0;
 
-	self thread area_assault_indicator_monitor();
-
 	cf_val = CROUCH_OFFSET;
 	while(self clientfield::get_player_uimodel("athosTrial") != cf_val)
 	{
@@ -728,8 +713,6 @@ function elevation_trial(athos_stage)
 	self endon(#"athos_trial_end");
 
 	self.elevation_trial_kills = 0;
-
-	self thread area_assault_indicator_monitor();
 
 	cf_val = ELEVATION_OFFSET;
 	while(self clientfield::get_player_uimodel("athosTrial") != cf_val)
@@ -939,7 +922,8 @@ function athos_indicators_monitor()
 {
 	self endon("disconnect");
 
-	self.athos_indicators_active = false;
+	level waittill("start_of_round");
+
 	while(true)
 	{
 		if(self.in_athos_indicator_trial && self.abbey_inventory_active && self.current_tab == TAB_TRIAL && self UseButtonPressed())

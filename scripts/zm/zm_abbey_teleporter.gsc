@@ -416,7 +416,7 @@ function player_teleporting( index )
 	exploder::exploder_duration( "mainframe_warm_up", 4.8 );
 
 	//AUDIO
-	level util::clientNotify( "tpw" + index );
+	level util::clientNotify( "tpw" + (index % 3));
 	//level thread zm_giant::sndPA_DoVox( "vox_maxis_teleporter_success_0" ); temp
 
 	// start fps fx
@@ -429,7 +429,6 @@ function player_teleporting( index )
 
 	// Activate the TP zombie kill effect
 	//self thread teleport_nuke( 20, 300);	// Max 20 zombies and range 300
-
 
 	// wait a bit
 	wait( level.teleport_delay );
@@ -446,25 +445,6 @@ function player_teleporting( index )
 	self teleport_players(dest_index);
 
 	thread pad_manager();
-
-	/*
-	// Now spawn a powerup goodie after a few seconds
-	wait( 2.0 );
-	ss = struct::get( "teleporter_powerup", "targetname" );
-	if ( IsDefined( ss ) )
-	{
-		ss thread zm_powerups::special_powerup_drop(ss.origin);
-	}
-
-	// Special for teleporting too much.  The Dogs attack!
-	if ( time_since_last_teleport < 60000 && level.active_links == 3 && level.round_number > 20 )
-	{
-		//dog_spawners = GetEntArray( "special_dog_spawner", "targetname" );
-		//_zombiemode_ai_dogs::special_dog_spawn( undefined, 4 );
-		//iprintlnbold( "Samantha Sez: No Powerup For You!" );
-		thread zm_utility::play_sound_2D( "vox_sam_nospawn" );
-	}
-	*/
 	level.teleport_time = GetTime();
 }
 
@@ -668,9 +648,11 @@ function teleport_players(dest_index)
 
 		player unlink();
 
-		assert( IsDefined( player.teleport_origin ) );
-		player.teleport_origin delete();
-		player.teleport_origin = undefined;
+		if(isdefined(player.teleport_origin))
+		{
+			player.teleport_origin delete();
+			player.teleport_origin = undefined;
+		}
 
 		visionset_mgr::deactivate( "overlay", "zm_factory_teleport", player ); // turn off the mid-teleport stargate effects
 		if(players[i].isInBloodMode)
@@ -678,6 +660,7 @@ function teleport_players(dest_index)
 			visionset_mgr::activate("visionset", "zm_bgb_in_plain_sight", player, 0.5, 9999, 0.5);
 			visionset_mgr::activate("overlay", "zm_bgb_in_plain_sight", player);
 		}
+		
 		player thread reactivate_shadow_vision();
 		player enableweapons();
 		player enableoffhandweapons();
@@ -685,20 +668,6 @@ function teleport_players(dest_index)
 		player setplayerangles( core_pos[slot].angles );
 		player FreezeControls( false );
 		player thread teleport_aftereffects();
-		
-		vox_rand = randomintrange(1,100);  //RARE: Sets up rare post-teleport line
-		
-		if( vox_rand <= 2 )
-		{
-			//player teleporter_vo( "vox_tele_sick_rare" );
-			//iprintlnbold( "Hey, this is the random teleport sickness line!" );
-		}
-		else
-		{
-			//player teleporter_vo( "vox_tele_sick" );
-		}
-		
-		//player achievement_notify( "DLC3_ZOMBIE_FIVE_TELEPORTS" );
 	}
 
 	// play beam fx at the core
