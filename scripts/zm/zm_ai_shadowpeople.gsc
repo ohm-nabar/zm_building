@@ -1431,7 +1431,7 @@ function escargot_trident_spawn_logic()
 	dog_locs = array::randomize( level.zm_loc_types[ "dog_location" ] );
 	for( i = 0; i < dog_locs.size; i++ )
 	{
-		if( dog_locs[i].script_string != "escargot" )
+		if( ! (isdefined(dog_locs[i].script_string) && dog_locs[i].script_string == "escargot" ))
 		{
 			continue;
 		}
