@@ -580,7 +580,7 @@ function activate_quad_spawners()
 
 function quad_spawn_check()
 {
-	return isDefined( level.zm_loc_types[ "quad_location" ] ) && level.zm_loc_types[ "quad_location" ].size > 0 && level.allow_quad_spawn;
+	return isDefined( level.zm_loc_types[ "quad_location" ] ) && isdefined(level.zm_loc_types[ "quad_location" ]) && level.zm_loc_types[ "quad_location" ].size > 0 && level.allow_quad_spawn;
 }
 
 function get_quad_spawners()
