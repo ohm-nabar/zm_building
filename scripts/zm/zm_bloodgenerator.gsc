@@ -412,9 +412,14 @@ function deposit_waypoint_manage()
 		self.fountain_indicators[self.fountain_indicators.size] = fountain_indicator;
 	}
 
+	while(! isdefined(level.shadow_vision_active))
+	{
+		wait(0.05);
+	}
+
 	while(true)
 	{
-		if(!level.hasVial || IS_TRUE(self.abbey_no_waypoints) || (level flag::exists("dog_round") && level flag::get( "dog_round" )))
+		if(!level.hasVial || IS_TRUE(self.abbey_no_waypoints) || level.shadow_vision_active)
 		{
 			foreach(indicator in self.generator_indicators)
 			{
@@ -536,7 +541,7 @@ function blood_think()
 	{
 		self thread set_bloodgun_hintstring();
 		self waittill("trigger", player);
-		if(! (zm_utility::is_player_valid(player)) || level.bloodgun_active || level.blood_cooling_down || level.hasVial || ! player zm_magicbox::can_buy_weapon() || level flag::get("dog_round"))
+		if(! (zm_utility::is_player_valid(player)) || level.bloodgun_active || level.blood_cooling_down || level.hasVial || ! player zm_magicbox::can_buy_weapon() || level.shadow_vision_active)
 		{
 			wait(0.05);
 			continue;
@@ -598,7 +603,7 @@ function blood_think()
 				wait(0.05);
 				break;
 			}
-			else if(level flag::get("dog_round"))
+			else if(level.shadow_vision_active)
 			{
 				//player zm_score::add_to_player_score(level.bloodgun_cost);
 				wait(0.05);
@@ -795,7 +800,7 @@ function generator_think()
 		self thread set_generator_hintstring();
 		self waittill("trigger", player);
 		//IPrintLn(generator_name + " had an attempt to activate it");
-		if(level.hasVial && ! level flag::get( "dog_round" )) 
+		if(level.hasVial && ! level.shadow_vision_active) 
 		{
 			//IPrintLn(generator_name + " was successfully activated, and the blood vial was taken.");
 			level.hasVial = false;
@@ -950,10 +955,15 @@ function set_generator_hintstring()
 	prev_hintstring_state = -1;
 	hintstring_state = -1;
 	hintstrings = array(&"ZM_ABBEY_SHADOW_DISABLED", &"ZM_ABBEY_GENERATOR_DEPOSIT", &"ZM_ABBEY_GENERATOR_NO_BLOOD");
+
+	while(! isdefined(level.shadow_vision_active))
+	{
+		wait(0.05);
+	}
 	
 	while(true) 
 	{
-		if(level flag::exists("dog_round") && level flag::get( "dog_round" ))
+		if(level.shadow_vision_active)
 		{
 			hintstring_state = 0;
 		}
@@ -981,13 +991,18 @@ function set_bloodgun_hintstring()
 	hintstring_state = -1;
 	hintstrings = array(&"ZM_ABBEY_BLOODGUN_IN_USE", &"ZM_ABBEY_SHADOW_DISABLED", &"ZM_ABBEY_BLOODGUN_HAS_VIAL", &"ZM_ABBEY_BLOODGUN_COOLDOWN", &"ZM_ABBEY_BLOODGUN_ACTIVATE");
 	
+	while(! isdefined(level.shadow_vision_active))
+	{
+		wait(0.05);
+	}
+
 	while(true) 
 	{
 		if(level.bloodgun_active)
 		{
 			hintstring_state = 0;
 		}	
-		else if(level flag::exists("dog_round") && level flag::get("dog_round"))
+		else if(level.shadow_vision_active)
 		{
 			hintstring_state = 1;
 		}

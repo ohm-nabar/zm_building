@@ -271,7 +271,7 @@ function shadow_trial_update()
 {
 	self endon("disconnect");
 
-	while(! level flag::exists("dog_round"))
+	while(! isdefined(level.shadow_vision_active))
 	{
 		wait(0.05);
 	}
@@ -283,7 +283,7 @@ function shadow_trial_update()
 			self clientfield::set_player_uimodel("shadowTrial", 0);
 			util::wait_network_frame();
 		}
-		while(! level flag::get("dog_round"))
+		while(! level.shadow_vision_active)
 		{
 			wait(0.05);
 		}
@@ -292,7 +292,7 @@ function shadow_trial_update()
 			self clientfield::set_player_uimodel("shadowTrial", 1);
 			util::wait_network_frame();
 		}
-		while(level flag::get("dog_round"))
+		while(level.shadow_vision_active)
 		{
 			wait(0.05);
 		}
@@ -303,7 +303,7 @@ function gargoyle_progress_check(garg_num, progress)
 {
 	self endon("disconnect");
 
-	if(garg_num != ARAMIS_INDEX && level flag::get("dog_round"))
+	if(garg_num != ARAMIS_INDEX && level.shadow_vision_active)
 	{
 		return;
 	}
