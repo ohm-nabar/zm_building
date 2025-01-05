@@ -500,6 +500,48 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     end
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "athosTrial"), AthosTrialUpdate)
 
+    local function ShadowTrialUpdate(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            if NotifyData == 0 then
+                for i=2,4 do
+                    IconTable[i]:setAlpha(1)
+                    NameTextTable[i]:setAlpha(1)
+                    TrialTextTable[i]:setAlpha(1)
+                    DividerTable[i]:setAlpha(1)
+
+                    for j=1,5 do
+                        PBBTable[i][j]:setAlpha(1)
+                        PBTable[i][j]:setAlpha(1)
+                        GumTable[i][j]:setAlpha(1)
+                        if j < 5 then
+                            QuantityTable[i][j]:setAlpha(1)
+                        end
+                        TextTable[i][j]:setAlpha(1)
+                    end
+                end
+            else
+                for i=2,4 do
+                    IconTable[i]:setAlpha(0.5)
+                    NameTextTable[i]:setAlpha(0.5)
+                    TrialTextTable[i]:setAlpha(0.5)
+                    DividerTable[i]:setAlpha(0.5)
+
+                    for j=1,5 do
+                        PBBTable[i][j]:setAlpha(0.5)
+                        PBTable[i][j]:setAlpha(0.5)
+                        GumTable[i][j]:setAlpha(0.5)
+                        if j < 5 then
+                            QuantityTable[i][j]:setAlpha(0.5)
+                        end
+                        TextTable[i][j]:setAlpha(0.5)
+                    end
+                end
+            end
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "shadowTrial"), ShadowTrialUpdate)
+
     local function PlayerCountChange(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
         if NotifyData then

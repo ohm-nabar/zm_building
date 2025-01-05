@@ -3,6 +3,7 @@
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
+#using scripts\shared\flag_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\system_shared;
 
@@ -84,6 +85,7 @@ function __init__()
 	clientfield::register( "toplayer", "trials.athosRandom", VERSION_SHIP, 3, "int" );
 
 	clientfield::register( "clientuimodel", "athosTrial", VERSION_SHIP, 5, "int" );
+	clientfield::register( "clientuimodel", "shadowTrial", VERSION_SHIP, 1, "int" );
 
 	clientfield::register( "toplayer", "trials.playerCountChange", VERSION_SHIP, 1, "int" );
 
@@ -262,11 +264,49 @@ function setup_trials()
 	self thread porthos_trial();
 	self thread dart_trial();
 	self thread athos_trial();
+	self thread shadow_trial_update();
+}
+
+function shadow_trial_update()
+{
+	self endon("disconnect");
+
+	while(! level flag::exists("dog_round"))
+	{
+		wait(0.05);
+	}
+
+	while(true)
+	{
+		while(self clientfield::get_player_uimodel("shadowTrial") != 0)
+		{
+			self clientfield::set_player_uimodel("shadowTrial", 0);
+			util::wait_network_frame();
+		}
+		while(! level flag::get("dog_round"))
+		{
+			wait(0.05);
+		}
+		while(self clientfield::get_player_uimodel("shadowTrial") != 1)
+		{
+			self clientfield::set_player_uimodel("shadowTrial", 1);
+			util::wait_network_frame();
+		}
+		while(level flag::get("dog_round"))
+		{
+			wait(0.05);
+		}
+	}
 }
 
 function gargoyle_progress_check(garg_num, progress)
 {
 	self endon("disconnect");
+
+	if(garg_num != ARAMIS_INDEX && level flag::get("dog_round"))
+	{
+		return;
+	}
 
 	self.gargoyle_progress[garg_num] += progress;
 

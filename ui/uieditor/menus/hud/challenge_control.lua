@@ -384,53 +384,90 @@ function CoD.ChallengeControl.new(HudRef, InstanceRef)
     DeadshotProgressText:setAlpha(0.9)
     DeadshotProgressText:setRGB(1, 1, 1)
 
-    local GoalTable = {10, 5, 3, 10, 8, 4, 8, 10}
+    local IconTable = {CherryIcon, StaminIcon, DoubleIcon, MuleIcon, PoseidonIcon, QuickIcon, PHDIcon, DeadshotIcon}
+    local ChallengeTextTable = {CherryChallengeText, StaminChallengeText, DoubleChallengeText, MuleChallengeText, PoseidonChallengeText, QuickChallengeText, PHDChallengeText, DeadshotChallengeText}
+    local RewardTextTable = {CherryRewardText, StaminRewardText, DoubleRewardText, MuleRewardText, PoseidonRewardText, QuickRewardText, PHDRewardText, DeadshotRewardText}
     local StatusTextTable = {CherryStatusText, StaminStatusText, DoubleStatusText, MuleStatusText, PoseidonStatusText, QuickStatusText, PHDStatusText, DeadshotStatusText}
-    local ProgressCircleTable = {CherryProgressCircle, StaminProgressCircle, DoubleProgressCircle, MuleProgressCircle, PoseidonProgressCircle, QuickProgressCircle, PHDProgressCircle, DeadshotProgressCircle}
     local ProgressTextTable = {CherryProgressText, StaminProgressText, DoubleProgressText, MuleProgressText, PoseidonProgressText, QuickProgressText, PHDProgressText, DeadshotProgressText}
+    local BackgroundCircleTable = {CherryBackgroundCircle, StaminBackgroundCircle, DoubleBackgroundCircle, MuleBackgroundCircle, PoseidonBackgroundCircle, QuickBackgroundCircle, PHDBackgroundCircle, DeadshotBackgroundCircle}
+    local ProgressCircleTable = {CherryProgressCircle, StaminProgressCircle, DoubleProgressCircle, MuleProgressCircle, PoseidonProgressCircle, QuickProgressCircle, PHDProgressCircle, DeadshotProgressCircle}
+    local GoalTable = {10, 5, 3, 10, 8, 4, 8, 10}
     local ProgressTextXTable = {431, 431, 431, 431, 921, 921, 921, 921}
 
-    local function StatusUpdate(StatusText, ProgressCircle, ProgressText, Data, Goal)
+    local function StatusUpdate(Icon, ChallengeText, RewardText, StatusText, ProgressText, BackgroundCircle, ProgressCircle, Data, Goal)
         if Data == Goal + 1 then
+            Icon:setAlpha(0.5)
+            ChallengeText:setAlpha(0.5)
+            RewardText:setAlpha(0.5)
             StatusText:setText(Engine.Localize("ZM_ABBEY_CHALLENGE_INACTIVE"))
-            StatusText:setRGB(1, 0, 0)
+            StatusText:setRGB(1, 1, 1)
+            StatusText:setAlpha(0.4)
             ProgressText:setText(Engine.Localize("ZM_ABBEY_CHALLENGE_INACTIVE"))
-            ProgressText:setRGB(1, 0, 0)
+            ProgressText:setRGB(1, 1, 1)
+            ProgressText:setAlpha(0.4)
+            BackgroundCircle:setAlpha(0.5)
             ProgressCircle:setShaderVector(0, 0, 1, 1, 1)
+            ProgressCircle:setAlpha(0.5)
         elseif Data == Goal + 2 then
+            Icon:setAlpha(0.5)
+            ChallengeText:setAlpha(0.5)
+            RewardText:setAlpha(0.5)
             StatusText:setText(Engine.Localize("ZM_ABBEY_CHALLENGE_INACTIVE_SHADOW"))
             StatusText:setRGB(1, 0, 1)
+            StatusText:setAlpha(0.4)
             ProgressText:setText(Engine.Localize("ZM_ABBEY_CHALLENGE_INACTIVE"))
             ProgressText:setRGB(1, 0, 1)
+            ProgressText:setAlpha(0.4)
+            BackgroundCircle:setAlpha(0.5)
             ProgressCircle:setShaderVector(0, 0, 1, 1, 1)
+            ProgressCircle:setAlpha(0.5)
         elseif Data == Goal + 3 then
+            Icon:setAlpha(1)
+            ChallengeText:setAlpha(1)
+            RewardText:setAlpha(1)
             StatusText:setText(Engine.Localize("ZM_ABBEY_CHALLENGE_ACTIVE"))
-            StatusText:setRGB(0, 1, 0)
+            StatusText:setRGB(1, 1, 1)
+            StatusText:setAlpha(0.9)
+            ProgressText:setRGB(1, 1, 1)
+            ProgressText:setAlpha(0.9)
+            BackgroundCircle:setAlpha(1)
+            ProgressCircle:setAlpha(1)
         else
+            Icon:setAlpha(1)
+            ChallengeText:setAlpha(1)
+            RewardText:setAlpha(1)
             StatusText:setText(Engine.Localize("ZM_ABBEY_CHALLENGE_COMPLETE"))
             StatusText:setRGB(0, 1, 0)
-            ProgressCircle:setShaderVector(0, 1, 1, 1, 1)
+            StatusText:setAlpha(0.9)
             ProgressText:setText(Engine.Localize("ZM_ABBEY_CHALLENGE_COMPLETE"))
             ProgressText:setRGB(0, 1, 0)
+            ProgressText:setAlpha(0.9)
+            BackgroundCircle:setAlpha(1)
+            ProgressCircle:setShaderVector(0, 0, 1, 1, 1)
+            ProgressCircle:setAlpha(1)
         end
     end
 
     local function ProgressUpdate(ProgressCircle, ProgressText, ProgressTextX, Data, Goal)
         local ProgressString = Data .. "/" .. Goal
         ProgressText:setText(Data .. "/" .. Goal)
-        ProgressText:setRGB(0, 1, 0)
+        ProgressText:setRGB(1, 1, 1)
         ProgressCircle:setShaderVector(0, Data / Goal, 1, 1, 1)
     end
 
     local function ChallengeControlUpdate(PerkID, Data)
-        local Goal = GoalTable[PerkID]
+        local Icon = IconTable[PerkID]
+        local ChallengeText = ChallengeTextTable[PerkID]
+        local RewardText = RewardTextTable[PerkID]
         local StatusText = StatusTextTable[PerkID]
-        local ProgressCircle = ProgressCircleTable[PerkID]
         local ProgressText = ProgressTextTable[PerkID]
+        local BackgroundCircle = BackgroundCircleTable[PerkID]
+        local ProgressCircle = ProgressCircleTable[PerkID]
+        local Goal = GoalTable[PerkID]
         local ProgressTextX = ProgressTextXTable[PerkID]
 
         if Data > Goal then
-            StatusUpdate(StatusText, ProgressCircle, ProgressText, Data, Goal)
+            StatusUpdate(Icon, ChallengeText, RewardText, StatusText, ProgressText, BackgroundCircle, ProgressCircle, Data, Goal)
         else
             ProgressUpdate(ProgressCircle, ProgressText, ProgressTextX, Data, Goal)
         end

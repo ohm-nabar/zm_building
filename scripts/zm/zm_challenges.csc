@@ -29,6 +29,7 @@ function __init__()
 	clientfield::register( "toplayer", "trials.athosRandom", VERSION_SHIP, 3, "int", &trial_athos_random, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 
 	clientfield::register( "clientuimodel", "athosTrial", VERSION_SHIP, 5, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	clientfield::register( "clientuimodel", "shadowTrial", VERSION_SHIP, 1, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 
 	clientfield::register( "toplayer", "trials.playerCountChange", VERSION_SHIP, 1, "int", &trial_player_count_change, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 }
