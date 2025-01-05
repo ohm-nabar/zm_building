@@ -68,7 +68,16 @@ function __init__()
 
     callback::on_connect( &on_player_connect );
     zm::register_actor_damage_callback( &damage_adjustment );
+	zm::register_zombie_damage_override_callback( &zombie_damage_override );
     zm_weapons::add_custom_limited_weapon_check( &pitchfork_statue_check );
+}
+
+function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
+{
+	if(willBeKilled && isdefined(attacker) && IsPlayer(attacker) && isdefined(weapon) && weapon == level.abbey_trident)
+	{
+		self.no_powerups = true;
+	}
 }
 
 function on_player_connect()
@@ -166,7 +175,6 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 
 	if (isPlayer( attacker ) && meansofdeath == "MOD_MELEE")
 	{
-
 		if(isdefined(level.abbey_pitchfork) && isdefined(weapon) && weapon == level.abbey_pitchfork)
 		{
 			if(self.targetname == "zombie_cloak" || self.targetname == "zombie_escargot")
@@ -246,7 +254,7 @@ function water_pulse(origin, attacker, should_kill)
 	{
 		for(j = 0; j < zombies.size; j++)
 		{
-			if( Distance(zombies[j].origin, origin) < level.trident_pulse_radius )
+			if( isdefined(zombies[j]) && IsAlive(zombies[j]) && Distance(zombies[j].origin, origin) < level.trident_pulse_radius )
 			{
 				if((isdefined(zombies[j].targetname) && (zombies[j].targetname == "zombie_escargot" || zombies[j].targetname == "zombie_cloak")) || (isdefined(self.animname) && self.animname == "quad_zombie"))
 				{
@@ -255,6 +263,7 @@ function water_pulse(origin, attacker, should_kill)
 				else if(should_kill)
 				{
 					//IPrintLn("real damage");
+					zombies[j].no_powerups = true;
 					zombies[j] DoDamage( zombies[j].health + 666, origin, attacker );
 				}
 				else
