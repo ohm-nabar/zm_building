@@ -45,8 +45,6 @@
 #define DART_INDEX 2
 #define ATHOS_INDEX 3
 
-#define TRIDENT_MULTIPLIER 0.4
-
 #define WALLBUY_OFFSET 2
 #define AREA_ASSAULT_OFFSET 15
 #define CROUCH_OFFSET 27
@@ -162,12 +160,7 @@ function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags
 			attacker notify(#"potential_challenge_kill", self.origin);
 			if(meansofdeath == "MOD_MELEE")
 			{
-				is_trident = false;
-				if(isdefined(weapon) && weapon == level.abbey_trident)
-				{
-					is_trident = true;
-				}
-				attacker notify(#"dart_trial_kill", is_trident);
+				attacker notify(#"dart_trial_kill");
 			}
 			if(isdefined(attacker.area_assault_trial_kills) && attacker zm_room_manager::is_player_in_room(level.abbey_rooms[attacker.area_assault_trial_room]))
 			{
