@@ -374,6 +374,20 @@ function lua_increment_quantity(cf, cf_val)
 	self.lua_increment_quantity_queue_pos[cf] -= 1;
 }
 
+function trial_progress_scale(garg_num, progress)
+{
+	self endon("disconnect");
+
+	index = self.gargoyle_indices[garg_num];
+	goal = level.gargoyle_goals[garg_num][index];
+	if(garg_num != ARAMIS_INDEX && level.round_number >= 20 && index == 4)
+	{
+		goal = 0.05 * (level.round_number * level.round_number) + (goal - 20);
+	}
+
+	return progress / goal;
+}
+
 function aramis_trial()
 {
 	self endon("disconnect");
@@ -382,8 +396,7 @@ function aramis_trial()
 	while(true)
 	{
 		level waittill("start_of_round");
-		index = self.gargoyle_indices[ARAMIS_INDEX];
-		progress = 1 / level.gargoyle_goals[ARAMIS_INDEX][index];
+		progress = trial_progress_scale(ARAMIS_INDEX, 1);
 		self gargoyle_progress_check(ARAMIS_INDEX, progress);
 		wait(0.05);
 	}
@@ -399,8 +412,7 @@ function porthos_trial()
 	{
 		headshots = self.pers["headshots"] - prev_headshots;
 		prev_headshots = self.pers["headshots"];
-		index = self.gargoyle_indices[PORTHOS_INDEX];
-		progress = headshots / level.gargoyle_goals[PORTHOS_INDEX][index];
+		progress = trial_progress_scale(PORTHOS_INDEX, headshots);
 		self gargoyle_progress_check(PORTHOS_INDEX, progress);
 		wait(0.05);
 	}
@@ -412,14 +424,8 @@ function dart_trial()
 
 	while(true)
 	{
-		self waittill(#"dart_trial_kill", is_trident);
-
-		index = self.gargoyle_indices[DART_INDEX];
-		progress = 1 / level.gargoyle_goals[DART_INDEX][index];
-		if(is_trident)
-		{
-			progress *= TRIDENT_MULTIPLIER;
-		}
+		self waittill(#"dart_trial_kill");
+		progress = trial_progress_scale(DART_INDEX, 1);
 		self gargoyle_progress_check(DART_INDEX, progress);
 	}
 }
@@ -571,8 +577,7 @@ function wallbuy_trial(athos_stage)
 	{
 		if(self.wallbuy_trial_kills > prev_wallbuy_trial_kills)
 		{
-			index = self.gargoyle_indices[ATHOS_INDEX];
-			progress = (self.wallbuy_trial_kills - prev_wallbuy_trial_kills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			progress = trial_progress_scale(ATHOS_INDEX, self.wallbuy_trial_kills - prev_wallbuy_trial_kills);
 			self gargoyle_progress_check(ATHOS_INDEX, progress);
 			prev_wallbuy_trial_kills = self.wallbuy_trial_kills;
 		}
@@ -679,8 +684,7 @@ function area_assault_trial(athos_stage)
 	{
 		if(self.area_assault_trial_kills > prev_area_assault_trial_kills)
 		{
-			index = self.gargoyle_indices[ATHOS_INDEX];
-			progress = (self.area_assault_trial_kills - prev_area_assault_trial_kills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			progress = trial_progress_scale(ATHOS_INDEX, self.area_assault_trial_kills - prev_area_assault_trial_kills);
 			self gargoyle_progress_check(ATHOS_INDEX, progress);
 			prev_area_assault_trial_kills = self.area_assault_trial_kills;
 		}
@@ -737,8 +741,7 @@ function crouch_trial(athos_stage)
 	{
 		if(self.crouch_trial_kills > prev_crouch_trial_kills)
 		{
-			index = self.gargoyle_indices[ATHOS_INDEX];
-			progress = (self.crouch_trial_kills - prev_crouch_trial_kills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			progress = trial_progress_scale(ATHOS_INDEX, self.crouch_trial_kills - prev_crouch_trial_kills);
 			progress *= CROUCH_MULTIPLIER;
 			self gargoyle_progress_check(ATHOS_INDEX, progress);
 			prev_crouch_trial_kills = self.crouch_trial_kills;
@@ -766,8 +769,7 @@ function elevation_trial(athos_stage)
 	{
 		if(self.elevation_trial_kills > prev_elevation_trial_kills)
 		{
-			index = self.gargoyle_indices[ATHOS_INDEX];
-			progress = (self.elevation_trial_kills - prev_elevation_trial_kills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			progress = trial_progress_scale(ATHOS_INDEX, self.elevation_trial_kills - prev_elevation_trial_kills);
 			progress *= ELEVATION_MULTIPLIER;
 			self gargoyle_progress_check(ATHOS_INDEX, progress);
 			prev_elevation_trial_kills = self.elevation_trial_kills;
@@ -801,8 +803,7 @@ function box_trial(athos_stage)
 	{
 		if(self.box_trial_kills > prev_box_trial_kills)
 		{
-			index = self.gargoyle_indices[ATHOS_INDEX];
-			progress = (self.box_trial_kills - prev_box_trial_kills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			progress = trial_progress_scale(ATHOS_INDEX, self.box_trial_kills - prev_box_trial_kills);
 			self gargoyle_progress_check(ATHOS_INDEX, progress);
 			prev_box_trial_kills = self.box_trial_kills;
 		}
@@ -918,8 +919,7 @@ function trap_trial(athos_stage)
 	{
 		if(self.trap_trial_kills > prev_trap_trial_kills)
 		{
-			index = self.gargoyle_indices[ATHOS_INDEX];
-			progress = (self.trap_trial_kills - prev_trap_trial_kills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			progress = trial_progress_scale(ATHOS_INDEX, self.trap_trial_kills - prev_trap_trial_kills);
 			self gargoyle_progress_check(ATHOS_INDEX, progress);
 			prev_trap_trial_kills = self.trap_trial_kills;
 		}
@@ -948,8 +948,7 @@ function blood_vial_trial(athos_stage)
 	{
 		if(self.blood_vial_trial_fills > prev_blood_vial_trial_fills)
 		{
-			index = self.gargoyle_indices[ATHOS_INDEX];
-			progress = (self.blood_vial_trial_fills - prev_blood_vial_trial_fills) / level.gargoyle_goals[ATHOS_INDEX][index];
+			progress = trial_progress_scale(ATHOS_INDEX, self.blood_vial_trial_fills - prev_blood_vial_trial_fills);
 			progress *= BLOOD_VIAL_MULTIPLIER;
 			self gargoyle_progress_check(ATHOS_INDEX, progress);
 			prev_blood_vial_trial_fills = self.blood_vial_trial_fills;
