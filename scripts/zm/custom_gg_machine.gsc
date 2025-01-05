@@ -60,6 +60,7 @@
 
 #define BRIBE_MAX 3
 #define BRIBE_MAX_PLAYER 3
+#define BRIBE_WAIT 3
 #define BRIBE_OFFSET 3.25
 
 #define EATEN_CF_NEUTRAL 0
@@ -135,6 +136,7 @@ function __init__()
 	level array::thread_all(level.gargoyle_bribes, &bribe_think);
 
 	level.gargoyle_bribes_active = [];
+	level.gargoyle_first_bribe_taken = false;
 	level thread bribe_manager();
 
 	level callback::on_connect( &on_player_connect );
@@ -162,6 +164,7 @@ function on_player_connect()
 
 	level array::thread_all(level.gargoyle_judges, &player_judge_setup, self);
 	level array::thread_all(level.gargoyle_judges, &judge_hintstring_think, self);
+	level array::thread_all(level.gargoyle_bribes, &bribe_hintstring_think, self);
 }
 
 function player_judge_setup(player)
@@ -230,7 +233,6 @@ function judge_hintstring_think(player)
 		}
 		wait(0.05);
 	}
-	
 }
 
 function display_balls_cleanup()
@@ -348,6 +350,39 @@ function judge_hivemind(garg_num, player)
 	self gargoyle_display_update(player);
 }
 
+function bribe_hintstring_think(player)
+{
+	player endon("disconnect");
+
+	prev_bribe_active = true;
+	prev_max_bribes = true;
+
+	while(true)
+	{
+		bribe_active = level array::contains(level.gargoyle_bribes_active, self);
+		max_bribes = player.bribe_count >= 3;
+
+		if(bribe_active != prev_bribe_active || max_bribes != prev_max_bribes)
+		{
+			prev_bribe_active = bribe_active;
+			prev_max_bribes = max_bribes;
+			if(! bribe_active)
+			{
+				self SetHintStringForPlayer(player, "");
+			}
+			else if(max_bribes)
+			{
+				self SetHintStringForPlayer(player, "Cannot hold more Bribes");
+			}
+			else
+			{
+				self SetHintStringForPlayer(player, "Press ^3[{+activate}]^7 for Bribe");
+			}
+		}
+		wait(0.05);
+	}
+}
+
 function bribe_think()
 {
 	model = GetEnt(self.target, "targetname");
@@ -371,6 +406,7 @@ function bribe_think()
 			{
 				self waittill("trigger", player);
 			}
+			level.gargoyle_first_bribe_taken = true;
 			player PlaySound("zmb_buildable_pickup");
 			player.bribe_count += 1;
 			player clientfield::set_player_uimodel("bribeCount", player.bribe_count);
@@ -393,12 +429,18 @@ function bribe_manager()
 {
 	while(true)
 	{
-		level waittill("start_of_round");
-		
 		if(level.gargoyle_bribes_active.size < BRIBE_MAX)
 		{
 			available_bribes = level array::filter(level.gargoyle_bribes, false, &bribe_filter);
 			level array::add(level.gargoyle_bribes_active, level array::random(available_bribes));
+		}
+		while(! level.gargoyle_first_bribe_taken)
+		{
+			wait(0.05);
+		}
+		for(i = 0; i < BRIBE_WAIT; i++)
+		{
+			level waittill("start_of_round");
 		}
 	}
 }
