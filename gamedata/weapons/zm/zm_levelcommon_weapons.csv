@@ -40,6 +40,6 @@ frag_grenade_potato_masher,,,250,grenade,,250,,,FALSE,FALSE,FALSE,,,FALSE,TRUE,g
 m2_flamethrower,m2_flamethrower_up,,250,,,250,,,TRUE,FALSE,FALSE,,,FALSE,TRUE,gas,TRUE,FALSE,
 s4_g43,s4_g43_up,,600,rifle,,,,,TRUE,FALSE,FALSE,,,FALSE,TRUE,rifle,TRUE,FALSE,
 s2_mas38,s2_mas38_up,,1000,smg,,,,,TRUE,FALSE,FALSE,,,FALSE,TRUE,smg,TRUE,FALSE,
-ar_stg44,ar_stg44_upgraded,,1400,rifle,,,,,TRUE,FALSE,FALSE,,,FALSE,TRUE,rifle,TRUE,FALSE,
-smg_sten2,smg_sten2_upgraded,,2000,smg,,,,,TRUE,FALSE,FALSE,,,FALSE,TRUE,smg,,,
-smg_mp40_1940,smg_mp40_1940_upgraded,,1400,smg,,,,,TRUE,FALSE,FALSE,,,FALSE,TRUE,smg,,,
+bo3_sten,bo3_sten_upgraded,,2000,rifle,,,,,TRUE,FALSE,FALSE,,,FALSE,TRUE,smg,TRUE,,
+bo3_mp40,bo3_mp40_upgraded,,5000,smg,,,,,TRUE,FALSE,FALSE,,,FALSE,TRUE,smg,TRUE,,reddot fastreload
+bo3_stg44,bo3_stg44_upgraded,,1400,rifle,,,,,TRUE,FALSE,FALSE,,,FALSE,TRUE,rifle,TRUE,,

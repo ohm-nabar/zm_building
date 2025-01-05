@@ -117,12 +117,12 @@ function __init__()
 	gewehr = GetWeapon("s4_g43");
 	garand = GetWeapon("s4_m1garand");
 	trench = GetWeapon("s4_combat_shotgun");
-	mp40 = GetWeapon("smg_mp40_1940");
+	mp40 = GetWeapon("bo3_mp40");
 	double_barrel = GetWeapon("s4_double_barrel_sawn");
-	sten = GetWeapon("smg_sten2");
+	sten = GetWeapon("bo3_sten");
 	mas = GetWeapon("s2_mas38");
 	thompson = GetWeapon("s4_thompsonm1a1");
-	stg = GetWeapon("ar_stg44");
+	stg = GetWeapon("bo3_stg44");
 	bar = GetWeapon("s4_bar");
 	svt = GetWeapon("s4_svt40");
 	type11 = GetWeapon("s4_type11");
