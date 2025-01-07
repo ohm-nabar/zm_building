@@ -339,6 +339,16 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local AthosRoundsString = ""
     local AthosTrialString = "Unknown Trial"
 
+    local AthosPrompt = LUI.UIText.new()
+    AthosPrompt:setText(Engine.Localize("^3[{+activate}]^7 Toggle Athos Waypoint"))
+    AthosPrompt:setLeftRight(true, false, 350, 450)
+    AthosPrompt:setTopBottom(true, false, 395, 415)
+    AthosPrompt:setAlpha(0.9)
+    AthosPrompt:setRGB(1, 1, 1)
+
+    TrialControl:addElement(AthosPrompt)
+    TrialControl.AthosPrompt = AthosPrompt
+
     local WallbuyTable = {"Kar98k", "Gewehr 43", "M1 Garand", "Trench Gun", "MP40", "Double Barreled Shotgun", "Sten Mk. IV", "MAS-38", "Thompson M1A1", "StG-44", "SVT-40", "BAR", "Type 11"}
     local RoomTable = {"ZM_ABBEY_ROOM_CRASH_SITE", "ZM_ABBEY_ROOM_BELL_TOWER", "ZM_ABBEY_ROOM_RED_ROOM", "ZM_ABBEY_ROOM_BASILICA", "ZM_ABBEY_ROOM_AIRFIELD", "ZM_ABBEY_ROOM_UPPER_PILGRIMAGE_STAIRS", "ZM_ABBEY_ROOM_MERVEILLE_DE_VERITE", "ZM_ABBEY_ROOM_KNIGHTS_HALL", "ZM_ABBEY_ROOM_URM_LABORATORY", "ZM_ABBEY_ROOM_VERITE_LIBRARY", "ZM_ABBEY_ROOM_COURTYARD", "ZM_ABBEY_ROOM_NO_MANS_LAND"}
 
@@ -353,10 +363,13 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             for i=1,#QuantityTable[GargNum] do
                 ResetQuantity(GargNum, i)
             end
-
-            AthosRounds = 1
-            AthosRoundsString = ""
-            AthosTrialString = "Unknown Trial"
+            
+            if GargNum == 4 then
+                AthosRounds = 1
+                AthosRoundsString = ""
+                AthosTrialString = "Unknown Trial"
+                AthosPrompt:setAlpha(0)
+            end
 
             if CoD.Zombie.GetUIMapName() == "zm_building" then
                 RoomTable = {"ZM_ABBEY_ROOM_SPAWN_ROOM", "ZM_ABBEY_ROOM_SPAWN_ROOM", "ZM_ABBEY_ROOM_STAMINARCH", "ZM_ABBEY_ROOM_WATER_TOWER", "ZM_ABBEY_ROOM_WATER_TOWER", "ZM_ABBEY_ROOM_WATER_TOWER", "ZM_ABBEY_ROOM_LION_ROOM", "ZM_ABBEY_ROOM_LION_ROOM", "ZM_ABBEY_ROOM_CLEAN_ROOM", "ZM_ABBEY_ROOM_CLEAN_ROOM", "ZM_ABBEY_ROOM_DOWNSTAIRS_ROOM", "ZM_ABBEY_ROOM_DOWNSTAIRS_ROOM"}
@@ -451,16 +464,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     end
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "gumEaten"), GumEaten)
 
-    local AthosPrompt = LUI.UIText.new()
-    AthosPrompt:setText(Engine.Localize("^3[{+activate}]^7 Toggle Athos Waypoint"))
-    AthosPrompt:setLeftRight(true, false, 350, 450)
-    AthosPrompt:setTopBottom(true, false, 395, 415)
-    AthosPrompt:setAlpha(0.9)
-    AthosPrompt:setRGB(1, 1, 1)
-
-    TrialControl:addElement(AthosPrompt)
-    TrialControl.AthosPrompt = AthosPrompt
-
     local function AthosTrialUpdate(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
         if NotifyData then
@@ -490,6 +493,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
                     AthosPrompt:setAlpha(0.9)
                 elseif NotifyData == 30 then
                     AthosTrialString = "Obtain Trap Kills"
+                    AthosPrompt:setAlpha(0.9)
                 elseif NotifyData == 31 then
                     AthosTrialString = "Fill Blood Vials"
                     AthosPrompt:setAlpha(0.9)

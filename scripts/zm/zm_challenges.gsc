@@ -150,6 +150,31 @@ function __init__()
 	level.area_assault_trial_end_indices = array(3, 6, 10, 12);
 	level.area_assault_trial_cutoff_index = 8;
 
+	trap_a = GetEntArray("trap_a", "targetname");
+	trap_b = GetEntArray("trap_b", "targetname");
+	trap_c = GetEntArray("trap_c", "targetname");
+	trap_d = GetEntArray("trap_d", "targetname");
+	trap_e = GetEntArray("trap_e", "targetname");
+	trap_f = GetEntArray("trap_f", "targetname");
+	trap_g = GetEntArray("trap_g", "targetname");
+	trap_h = GetEntArray("trap_h", "targetname");
+	trap_i = GetEntArray("trap_i", "targetname");
+	trap_j = GetEntArray("trap_j", "targetname");
+	component_arrays = array(trap_a, trap_b, trap_c, trap_d, trap_e, trap_f, trap_g, trap_h, trap_i, trap_j);
+
+	level.athos_trap_trigs = [];
+	foreach(component_array in component_arrays)
+	{
+		foreach(component in component_array)
+		{
+			if(component.classname == "trigger_use")
+			{
+				level array::add(level.athos_trap_trigs, component);
+				break;
+			}
+		}
+	}
+
 	callback::on_connect( &on_player_connect );
 	zm::register_zombie_damage_override_callback( &zombie_damage_override );
 }
@@ -560,7 +585,7 @@ function wallbuy_trial(athos_stage)
 	self.wallbuy_trial_weapon = level.wallbuy_trial_guns[index];
 	self.wallbuy_trial_kills = 0;
 
-	self thread wallbuy_indicators_monitor();
+	self thread wallbuy_trial_indicators_monitor();
 
 	cf_val = WALLBUY_OFFSET + index;
 	while(self clientfield::get_player_uimodel("athosTrial") != cf_val)
@@ -582,7 +607,7 @@ function wallbuy_trial(athos_stage)
 	}
 }
 
-function wallbuy_indicators_monitor(wallbuy_indicator)
+function wallbuy_trial_indicators_monitor()
 {
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
@@ -592,12 +617,12 @@ function wallbuy_indicators_monitor(wallbuy_indicator)
 	{
 		if(wallbuy.zombie_weapon_upgrade == self.wallbuy_trial_weapon.name)
 		{
-			self thread wallbuy_indicator_monitor(wallbuy);
+			self thread wallbuy_trial_indicator_monitor(wallbuy);
 		}
 	}
 }
 
-function wallbuy_indicator_monitor(wallbuy)
+function wallbuy_trial_indicator_monitor(wallbuy)
 {
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
@@ -902,6 +927,7 @@ function trap_trial(athos_stage)
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
 
+	self.in_athos_indicator_trial = true;
 	self.trap_trial_kills = 0;
 
 	cf_val = TRAP_OFFSET;
@@ -911,6 +937,8 @@ function trap_trial(athos_stage)
 		util::wait_network_frame();
 	}
 
+	self thread trap_trial_indicators_monitor();
+
 	prev_trap_trial_kills = self.trap_trial_kills;
 	while(true)
 	{
@@ -919,6 +947,47 @@ function trap_trial(athos_stage)
 			progress = trial_progress_scale(ATHOS_INDEX, self.trap_trial_kills - prev_trap_trial_kills);
 			self gargoyle_progress_check(ATHOS_INDEX, progress);
 			prev_trap_trial_kills = self.trap_trial_kills;
+		}
+		wait(0.05);
+	}
+}
+
+function trap_trial_indicators_monitor()
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	foreach(trap_trig in level.athos_trap_trigs)
+	{
+		self thread trap_trial_indicator_monitor(trap_trig);
+	}
+}
+
+function trap_trial_indicator_monitor(trap_trig)
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	waypoint_pos = Spawn("script_model", trap_trig.origin);
+	waypoint_pos SetModel("tag_origin");
+
+	trap_indicator = NewClientHudElem(self);
+	trap_indicator SetTargetEnt(waypoint_pos);
+	trap_indicator SetShader("buy_waypoint");
+	trap_indicator SetWayPoint(true, "buy_waypoint", false, false);
+	trap_indicator.alpha = 0;
+
+	self thread athos_indicator_cleanup(waypoint_pos, trap_indicator);
+
+	while(true)
+	{
+		if(! self.abbey_no_waypoints && self.athos_indicators_active)
+		{
+			trap_indicator.alpha = 1;
+		}
+		else
+		{
+			trap_indicator.alpha = 0;
 		}
 		wait(0.05);
 	}
