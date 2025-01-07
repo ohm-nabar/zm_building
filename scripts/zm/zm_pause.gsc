@@ -216,6 +216,7 @@ function on_player_connect() {
 	self LUINotifyEvent(&"abbey_pause", 1, 0);
 
 	self thread can_pause();
+	self thread can_revive();
 
 	if( self IsHost() )
 	{
@@ -225,6 +226,31 @@ function on_player_connect() {
 	
 	//self thread manage_personal_pause_indicator();
 	//self thread testeroo();
+}
+
+function can_revive()
+{
+	self endon("disconnect");
+
+	paused_and_downed = false;
+	bleedout_time = 30;
+	while(true)
+	{
+		if(level.is_coop_paused && self laststand::player_is_in_laststand() && ! paused_and_downed)
+		{
+			paused_and_downed = true;
+			self notify("stop_revive_trigger");
+		}
+		else if(paused_and_downed)
+		{
+			paused_and_downed = false;
+			if(self laststand::player_is_in_laststand())
+			{
+				self zm_laststand::revive_trigger_spawn();
+			}
+		}
+		wait(0.05);
+	}
 }
 
 function health_check()
