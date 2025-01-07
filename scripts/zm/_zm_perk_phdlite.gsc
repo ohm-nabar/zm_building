@@ -82,14 +82,13 @@ function phd_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfD
 			case "MOD_BURNED":
 			case "MOD_ELECTOCUTED":
 			case "MOD_FALLING":
-				iDamage = 0;
 				return 0;
 
 			default:
 				break;
 		}
 
-	if(self zm_perk_upgrades::IsPerkUpgradeActive(PERK_PHD_LITE))
+	if(self zm_perk_upgrades::IsPerkUpgradeActive(PERK_PHD_LITE) || IS_TRUE(self.shadowPHD))
 	{
 		switch(sMeansOfDeath)
 		{
@@ -101,8 +100,7 @@ function phd_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfD
 			case "MOD_GRENADE":
 			case "MOD_GRENADE_SPLASH":
 			case "MOD_IMPACT":
-				iDamage = 0;
-				return 0;
+				return (IS_TRUE(self.shadowPHD) ? iDamage * 1.5 : 0);
 
 			default:
 				break;
@@ -137,8 +135,7 @@ function phd_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfD
 			case "tesla_gun_upgraded":
 			case "zm_diedrich":
 			case "zm_diedrich_upgraded":
-				iDamage = 0;
-				return 0;
+				return (IS_TRUE(self.shadowPHD) ? iDamage * 1.5 : 0);
 
 			default:
 				break;

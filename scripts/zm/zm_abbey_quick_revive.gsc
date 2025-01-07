@@ -140,6 +140,10 @@ function playerHealthRegen()
 				{
 					regenTime /= 2;
 				}
+				else if(IS_TRUE(self.shadowQuick))
+				{
+					regenTime *= 1.5;
+				}
 				if( gettime() > hurtTime + regenTime )
 				{
 					newHealth += regenRate;

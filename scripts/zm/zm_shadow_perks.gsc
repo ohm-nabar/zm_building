@@ -45,9 +45,9 @@ function main()
 function on_player_connect()
 {
 	self.shadowPerks = [];
-	self.get_revive_time = &get_revive_time;
 	self.shadowQuick = false;
 	self.shadowDouble = false;
+	self.shadowPHD = false;
 	self LUINotifyEvent(&"shadow_perk_remove", 0);
 }
 
@@ -501,23 +501,6 @@ function shadow_solo_revive_effects()
 }
 
 
-function get_revive_time( e_revivee )
-{
-	reviveTime = 3;
-
-	if ( self HasPerk( PERK_QUICK_REVIVE ) )
-	{
-		reviveTime = reviveTime / 2;
-	}
-
-	if( self.shadowQuick )
-	{
-		reviveTime = reviveTime * 2;
-	}
-
-	return reviveTime;
-}
-
 function shadow_stamin_effects()
 {
 	self endon("disconnect");
@@ -579,9 +562,9 @@ function shadow_PHD_effects()
 
 	//self thread custom_perk_shader::add_custom_perk_shader_shadow("shadow_phd");
 
-	self AllowSlide(false);
+	self.shadowPHD = true;
 	level waittill( "last_ai_down" );
-	self AllowSlide(true);
+	self.shadowPHD = false;
 }
 
 function shadow_deadshot_effects()
