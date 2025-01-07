@@ -14,6 +14,7 @@
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_magicbox;
 
+#using scripts\zm\zm_abbey_inventory;
 #using scripts\zm\zm_room_manager;
 
 #precache( "material", "defend_waypoint");
@@ -98,6 +99,8 @@ function __init__()
 	level.gargoyle_goals = array(aramis_goals, porthos_goals, dart_goals, athos_goals);
 
 	level.gargoyle_cfs = array("trials.aramis", "trials.porthos", "trials.dart", "trials.athos");
+
+	level.gargoyle_notifs = array("splash_trial_aramis", "splash_trial_porthos", "splash_trial_dart", "splash_trial_athos");
 
 	level.athos_trials = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial, &blood_vial_trial, &trap_trial, &box_trial);
 
@@ -327,6 +330,7 @@ function gargoyle_progress_check(garg_num, progress)
 			self.gg_quantities[gum] += 1;
 			self.gargoyle_indices[garg_num] += 1;
 		}
+		self zm_abbey_inventory::notifyText(level.gargoyle_notifs[garg_num], level.open_inventory_prompt, level.abbey_alert_garg);
 	}
 	else if(progress > 0)
 	{

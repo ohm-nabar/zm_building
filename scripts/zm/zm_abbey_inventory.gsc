@@ -101,6 +101,7 @@ function __init__()
 	level.abbey_alert_neutral = "notification_neut";
 	level.abbey_alert_pos = "notification_pos";
 	level.abbey_alert_neg = "notification_neg";
+	level.abbey_alert_garg = "gobble_activate";
 
 	level.abbey_alert_indices = [];
 	level.abbey_alert_indices["splash_blood_obtained"] = 0;
@@ -136,10 +137,10 @@ function __init__()
 	level.abbey_alert_indices["splash_shadow_complete_generator2"] = 30;
 	level.abbey_alert_indices["splash_shadow_complete_generator3"] = 31;
 	level.abbey_alert_indices["splash_shadow_complete_generator4"] = 32;
-	level.abbey_alert_indices["splash_trial_filled"] = 33;
-	level.abbey_alert_indices["splash_trial_area_assault"] = 34;
-	level.abbey_alert_indices["splash_trial_area_defense"] = 35;
-	level.abbey_alert_indices["splash_trial_high_ground"] = 36;
+	level.abbey_alert_indices["splash_trial_aramis"] = 33;
+	level.abbey_alert_indices["splash_trial_porthos"] = 34;
+	level.abbey_alert_indices["splash_trial_dart"] = 35;
+	level.abbey_alert_indices["splash_trial_athos"] = 36;
 	level.abbey_alert_indices["splash_trial_mystery_box"] = 37;
 	level.abbey_alert_indices["splash_trial_wallbuy"] = 38;
 	level.abbey_alert_indices["splash_trial_weapon_class"] = 39;

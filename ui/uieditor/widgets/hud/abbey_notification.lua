@@ -42,10 +42,10 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
         "splash_shadow_complete_generator2",
         "splash_shadow_complete_generator3",
         "splash_shadow_complete_generator4",
-        "splash_trial_filled",
-        "splash_trial_area_assault",
-		"splash_trial_area_defense",
-		"splash_trial_high_ground",
+        "splash_trial_aramis",
+        "splash_trial_porthos",
+		"splash_trial_dart",
+		"splash_trial_athos",
 		"splash_trial_mystery_box",
 		"splash_trial_wallbuy",
 		"splash_trial_weapon_class",
@@ -66,6 +66,12 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
     BloodGenerator:setTopBottom(true, false, -25, 200)
 	BloodGenerator:hide()
 
+    local Gargoyle = LUI.UIImage.new()
+    Gargoyle:setLeftRight(true, false, 150, 250)
+    Gargoyle:setTopBottom(true, false, 50, 150)
+    Gargoyle:setImage(RegisterImage("solo_trial_icon"))
+    Gargoyle:hide()
+
     AbbeyNotificationImage.clipsPerState = {
         DefaultState = { --DefaultState is the element state if no other condition is met.
             DefaultClip = function() --This is the default clip to play for this specified state.
@@ -85,6 +91,8 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
 			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
 			if (NotifyData[1] >= 25 and NotifyData[1] <= 32) or NotifyData[1] >= 43 then
 				BloodGenerator:show()
+            elseif NotifyData[1] >= 33 and NotifyData[1] <= 36 then
+                Gargoyle:show()
 			else
 				AbbeyNotificationImage:setImage( RegisterImage( NotificationImageLookup[NotifyData[1] + 1] ) )
 				AbbeyNotificationImage:show()
@@ -96,6 +104,7 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
 
  	AbbeyNotification:addElement(AbbeyNotificationImage)
 	AbbeyNotification:addElement(BloodGenerator)
+    AbbeyNotification:addElement(Gargoyle)
 
     local function FlashDPad(ModelRef)
         if IsParamModelEqualToString(ModelRef, "notification_text_show") then
@@ -118,6 +127,7 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
             AbbeyNotificationImage:hide()
 			AbbeyNotificationImage:setTopBottom(true, false, -200, 0)
 			BloodGenerator:hide()
+            Gargoyle:hide()
         end
     end
 	AbbeyNotification:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", NotificationHide)
