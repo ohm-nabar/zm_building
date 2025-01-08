@@ -542,6 +542,7 @@ function athos_trial()
 		self.box_trial_kills = undefined;
 		self.trap_trial_kills = undefined;
 		self.blood_vial_trial_fills = undefined;
+		self.athos_closest_origin = undefined;
 	}
 }
 
@@ -613,13 +614,17 @@ function wallbuy_trial_indicators_monitor()
 	self endon(#"athos_trial_end");
 
 	all_wallbuys = struct::get_array("weapon_upgrade", "targetname");
+	wallbuys = [];
 	foreach(wallbuy in all_wallbuys)
 	{
 		if(wallbuy.zombie_weapon_upgrade == self.wallbuy_trial_weapon.name)
 		{
 			self thread wallbuy_trial_indicator_monitor(wallbuy);
+			level array::add(wallbuys, wallbuy);
 		}
 	}
+
+	self thread athos_closest_origin(wallbuys);
 }
 
 function wallbuy_trial_indicator_monitor(wallbuy)
@@ -649,13 +654,17 @@ function wallbuy_trial_indicator_monitor(wallbuy)
 				break;
 			}
 		}
-		if(! has_trial_weapon && ! self.abbey_no_waypoints && self.athos_indicators_active)
+		if(has_trial_weapon || self.abbey_no_waypoints || ! self.athos_indicators_active)
+		{
+			wallbuy_indicator.alpha = 0;
+		}
+		else if(isdefined(self.athos_closest_origin) && wallbuy.origin == self.athos_closest_origin)
 		{
 			wallbuy_indicator.alpha = 1;
 		}
 		else
 		{
-			wallbuy_indicator.alpha = 0;
+			wallbuy_indicator.alpha = 0.5;
 		}
 		wait(0.05);
 	}
@@ -961,6 +970,8 @@ function trap_trial_indicators_monitor()
 	{
 		self thread trap_trial_indicator_monitor(trap_trig);
 	}
+
+	self thread athos_closest_origin(level.athos_trap_trigs);
 }
 
 function trap_trial_indicator_monitor(trap_trig)
@@ -981,13 +992,17 @@ function trap_trial_indicator_monitor(trap_trig)
 
 	while(true)
 	{
-		if(! self.abbey_no_waypoints && self.athos_indicators_active)
+		if(self.abbey_no_waypoints || ! self.athos_indicators_active)
+		{
+			trap_indicator.alpha = 0;
+		}
+		else if(isdefined(self.athos_closest_origin) && self.athos_closest_origin == trap_trig.origin)
 		{
 			trap_indicator.alpha = 1;
 		}
 		else
 		{
-			trap_indicator.alpha = 0;
+			trap_indicator.alpha = 0.5;
 		}
 		wait(0.05);
 	}
@@ -1049,6 +1064,37 @@ function athos_indicator_cleanup(waypoint_pos, indicator)
 
 	waypoint_pos Delete();
 	indicator Destroy();
+}
+
+function athos_closest_origin(arr)
+{
+	self endon("disconnect");
+	self endon(#"athos_trial_end");
+
+	while(true)
+	{
+		closest_dist = 9999999;
+		closest_dist_index = -1;
+		for(i = 0; i < arr.size; i++)
+		{
+			dist = DistanceSquared(self.origin, arr[i].origin);
+			if(dist < closest_dist)
+			{
+				closest_dist = dist;
+				closest_dist_index = i;
+			}
+		}
+
+		for(i = 0; i < arr.size; i++)
+		{
+			if(i == closest_dist_index)
+			{
+				self.athos_closest_origin = arr[i].origin;
+				break;
+			}
+		}
+		wait(0.05);
+	}
 }
 
 function tier_gums_init(indices, ref)
