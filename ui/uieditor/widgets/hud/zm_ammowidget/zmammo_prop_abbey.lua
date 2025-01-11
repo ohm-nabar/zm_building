@@ -436,22 +436,6 @@ CoD.ZmAmmo_Prop.new = function ( menu, controller )
         end
     end
 	DpadIconPause:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", IconPauseAvailable)
-
-	local RoomLookup = {Engine.Localize("ZM_ABBEY_ROOM_SPAWN_ROOM"), Engine.Localize("ZM_ABBEY_ROOM_STAMINARCH"), Engine.Localize("ZM_ABBEY_ROOM_WATER_TOWER"), Engine.Localize("ZM_ABBEY_ROOM_CLEAN_ROOM"), Engine.Localize("ZM_ABBEY_ROOM_LION_ROOM"), Engine.Localize("ZM_ABBEY_ROOM_DOWNSTAIRS_ROOM")}
-	local RoomName = LUI.UIText.new()
-	RoomName:setAlignment(Enum.LUIAlignment.LUI_ALIGNMENT_CENTER)
-	RoomName:setLeftRight( true, false, -31.5, 154.5 )
-	RoomName:setTopBottom( true, false, 149, 167 )
-	DpadElement:addElement(RoomName)
-
-	local function RoomDisplay(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "abbey_room") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-
-            RoomName:setText(RoomLookup[NotifyData[1] + 1])
-        end
-    end
-	RoomName:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", RoomDisplay)
 	
 	local DpadIconShld = CoD.ZmAmmo_DpadIconShield.new( menu, controller )
 	DpadIconShld:setLeftRight( false, false, 166.31, 181.31 )

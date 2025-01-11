@@ -276,7 +276,7 @@ function teleport_pad_countdown( index, time )
 	players = GetPlayers();
 	for( i = 0; i < players.size; i++ )
 	{
-		players[i] thread zm_timer::start_timer( time+1, "stop_countdown" );
+		players[i] thread start_timer( time+1, "stop_countdown" );
 	}
 	wait( time+1 );
 
@@ -309,6 +309,56 @@ function teleport_pad_countdown( index, time )
 
 	level.countdown--;
 }
+
+function start_timer( time, stop_notify )
+{
+	self notify ("stop_prev_timer");
+	self endon ("stop_prev_timer");
+	self endon ("disconnect");
+
+	if( !isdefined( self.stopwatch_elem ) )
+	{
+		self.stopwatch_elem = newClientHudElem(self);
+		self.stopwatch_elem.horzAlign = "left";
+		self.stopwatch_elem.vertAlign = "top";
+		self.stopwatch_elem.alignX = "left";
+		self.stopwatch_elem.alignY = "top";
+		self.stopwatch_elem.x = 10;
+		self.stopwatch_elem.y = 30;
+		self.stopwatch_elem.alpha = 0;
+		self.stopwatch_elem.sort = 2;
+		
+		self.stopwatch_elem_glass = newClientHudElem(self);
+		self.stopwatch_elem_glass.horzAlign = "left";
+		self.stopwatch_elem_glass.vertAlign = "top";
+		self.stopwatch_elem_glass.alignX = "left";
+		self.stopwatch_elem_glass.alignY = "top";
+		self.stopwatch_elem_glass.x = 10;
+		self.stopwatch_elem_glass.y = 30;
+		self.stopwatch_elem_glass.alpha = 0;
+		self.stopwatch_elem_glass.sort = 3;
+		self.stopwatch_elem_glass setShader( "zombie_stopwatch_glass", level.stopwatch_length_width, level.stopwatch_length_width );
+	}
+
+	if( isdefined( stop_notify ) )
+	{
+		self thread zm_timer::wait_for_stop_notify( stop_notify );
+	}
+	if( time > 60 )
+	{
+		time = 0;
+	}
+	self.stopwatch_elem setClock( time, 60, "zombie_stopwatch", level.stopwatch_length_width, level.stopwatch_length_width );
+	self.stopwatch_elem.alpha = 1;
+	self.stopwatch_elem_glass.alpha = 1;
+	wait( time );
+	self notify( "countdown_finished" );
+	wait( 1 );
+	self.stopwatch_elem.alpha = 0;
+	self.stopwatch_elem_glass.alpha = 0;
+	
+}
+
 function sndCountdown()
 {
 	self endon( "stop_countdown" );

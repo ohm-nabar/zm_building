@@ -21,68 +21,153 @@
 
 function main() 
 {
-    spawn_room_zones = []; spawn_room_zones[spawn_room_zones.size] = "start_zone";
+	if(GetDvarString("ui_mapname") == "zm_building")
+	{
+		spawn_room_zones = []; spawn_room_zones[spawn_room_zones.size] = "start_zone";
+		staminarch_zones = []; staminarch_zones[staminarch_zones.size] = "staminarch";
+		water_tower_zones = []; water_tower_zones[water_tower_zones.size] = "wtower";
+		clean_room_zones = []; clean_room_zones[clean_room_zones.size] = "clean";
+		lion_room_zones = []; lion_room_zones[lion_room_zones.size] = "dirty";
+		downstairs_room_zones = []; downstairs_room_zones[downstairs_room_zones.size] = "downstairs";
 
-	staminarch_zones = []; staminarch_zones[staminarch_zones.size] = "staminarch";
+		level.abbey_rooms = [];
+		level.abbey_rooms["Spawn Room"] = spawn_room_zones;
+		level.abbey_rooms["Staminarch"] = staminarch_zones;
+		level.abbey_rooms["Water Tower"] = water_tower_zones;
+		level.abbey_rooms["Clean Room"] = clean_room_zones;
+		level.abbey_rooms["Lion Room"] = lion_room_zones;
+		level.abbey_rooms["Downstairs Room"] = downstairs_room_zones;
 
-	water_tower_zones = []; water_tower_zones[water_tower_zones.size] = "wtower";
+		level.abbey_rooms_indices = [];
+		level.abbey_rooms_indices["Spawn Room"] = 0;
+		level.abbey_rooms_indices["Staminarch"] = 1;
+		level.abbey_rooms_indices["Water Tower"] = 2;
+		level.abbey_rooms_indices["Clean Room"] = 3;
+		level.abbey_rooms_indices["Lion Room"] = 4;
+		level.abbey_rooms_indices["Downstairs Room"] = 5;
 
-	clean_room_zones = []; clean_room_zones[clean_room_zones.size] = "clean";
+		level.above_rooms = [];
+		level.above_rooms[level.above_rooms.size] = "Spawn Room";
+		level.above_rooms[level.above_rooms.size] = "Water Tower";
+		level.above_rooms[level.above_rooms.size] = "Staminarch";
+		level.above_rooms[level.above_rooms.size] = "Lion Room";
+		level.above_rooms[level.above_rooms.size] = "Downstairs Room";
 
-	lion_room_zones = []; lion_room_zones[lion_room_zones.size] = "dirty";
+		level.beach_rooms = [];
+		level.beach_rooms[level.beach_rooms.size] = "Clean Room";
+	}
+	else
+	{
+		spawn_room_zones = []; spawn_room_zones[spawn_room_zones.size] = "start_zone";
+		redroom_zones = []; redroom_zones[redroom_zones.size] = "red_zone";
+		bell_zones = []; bell_zones[bell_zones.size] = "bell_zone";
+		platform_zones = []; platform_zones[platform_zones.size] = "platform_r_zone"; platform_zones[platform_zones.size] = "platform_t_zone"; platform_zones[platform_zones.size] = "platform_l_zone";
+		scaffolding_zones = []; scaffolding_zones[scaffolding_zones.size] = "platform_m_zone";
+		choir_zones = []; choir_zones[choir_zones.size] = "heart_zone"; choir_zones[choir_zones.size] = "choir_r_zone"; choir_zones[choir_zones.size] = "choir_l_zone"; choir_zones[choir_zones.size] = "choir_t_zone";
+		centre_zones = []; centre_zones[centre_zones.size] = "centre_zone";
+		basilica_zones = []; basilica_zones[basilica_zones.size] = "basilica_zone";
+		pilgrimage_zones = []; pilgrimage_zones[pilgrimage_zones.size] = "pilgrimage_zone";
+		urm_lab_zones = []; urm_lab_zones[urm_lab_zones.size] = "urm_labs_zone";
+		bridge_zones = []; bridge_zones[bridge_zones.size] = "bridge_zone";
+		mid_pilgrimage_zones = []; mid_pilgrimage_zones[mid_pilgrimage_zones.size] = "mid_pilgrimage_zone";
+		guardcatwalk_zones = []; guardcatwalk_zones[guardcatwalk_zones.size] = "guardcatwalk_zone";
+		library_zones = []; library_zones[library_zones.size] = "library_zone";
+		lower_pilgrimage_zones = []; lower_pilgrimage_zones[lower_pilgrimage_zones.size] = "lower_pilgrimage_zone";
+		courtroom_zones = []; courtroom_zones[courtroom_zones.size] = "courtroom_zone";
+		courtyard_zones = []; courtyard_zones[courtyard_zones.size] = "courtyard_zone";
+		airfield_zones = []; airfield_zones[airfield_zones.size] = "airfield_zone";
+		dormitory_zones = []; dormitory_zones[dormitory_zones.size] = "dormitory_zone";
+		cloitre_zones = []; cloitre_zones[cloitre_zones.size] = "cloitre_zone";
+		merveille_zones = []; merveille_zones[merveille_zones.size] = "merveille_zone";
+		spiral_zones = []; spiral_zones[spiral_zones.size] = "spiral_zone";
+		forum_zones = []; forum_zones[forum_zones.size] = "forum_zone";
+		bridge2_zones = []; bridge2_zones[bridge2_zones.size] = "bridge2_zone";
+		nml_zones = []; nml_zones[nml_zones.size] = "nml_zone";
 
-	downstairs_room_zones = []; downstairs_room_zones[downstairs_room_zones.size] = "downstairs";
+		level.abbey_rooms = [];
+		level.abbey_rooms["Crash Site"] = spawn_room_zones;
+		level.abbey_rooms["Red Room"] = redroom_zones;
+		level.abbey_rooms["Bell Tower"] = bell_zones;
+		level.abbey_rooms["Radio Gallery"] = platform_zones;
+		level.abbey_rooms["Scaffolding"] = scaffolding_zones;
+		level.abbey_rooms["Choir"] = choir_zones;
+		level.abbey_rooms["Centre"] = centre_zones;
+		level.abbey_rooms["Basilica"] = basilica_zones;
+		level.abbey_rooms["Airfield"] = airfield_zones;
+		level.abbey_rooms["Dormitory"] = dormitory_zones;
+		level.abbey_rooms["Cloitre"] = cloitre_zones;
+		level.abbey_rooms["Merveille de Verite"] = merveille_zones;
+		level.abbey_rooms["Guard Tower"] = spiral_zones;
+		level.abbey_rooms["Courtyard"] = courtyard_zones;
+		level.abbey_rooms["Courtroom"] = courtroom_zones;
+		level.abbey_rooms["Verite Library"] = library_zones;
+		level.abbey_rooms["Lower Pilgrimage Stairs"] = lower_pilgrimage_zones;
+		level.abbey_rooms["Guard Tower Catwalk"] = guardcatwalk_zones;
+		level.abbey_rooms["Bridge"] = bridge_zones;
+		level.abbey_rooms["URM Laboratory"] = urm_lab_zones;
+		level.abbey_rooms["Upper Pilgrimage Stairs"] = pilgrimage_zones;
+		level.abbey_rooms["Middle Pilgrimage Stairs"] = mid_pilgrimage_zones;
+		level.abbey_rooms["Bridge v2"] = bridge2_zones;
+		level.abbey_rooms["Knight's Hall"] = forum_zones;
+		level.abbey_rooms["No Man's Land"] = nml_zones;
 
-	level.abbey_rooms = [];
-	level.abbey_rooms["Spawn Room"] = spawn_room_zones;
-	level.abbey_rooms["Staminarch"] = staminarch_zones;
-	level.abbey_rooms["Water Tower"] = water_tower_zones;
-	level.abbey_rooms["Clean Room"] = clean_room_zones;
-	level.abbey_rooms["Lion Room"] = lion_room_zones;
-	level.abbey_rooms["Downstairs Room"] = downstairs_room_zones;
+		level.abbey_rooms_indices = [];
+		level.abbey_rooms_indices["Crash Site"] = 0;
+		level.abbey_rooms_indices["Red Room"] = 1;
+		level.abbey_rooms_indices["Bell Tower"] = 2;
+		level.abbey_rooms_indices["Radio Gallery"] = 3;
+		level.abbey_rooms_indices["Scaffolding"] = 4;
+		level.abbey_rooms_indices["Choir"] = 5;
+		level.abbey_rooms_indices["Centre"] = 6;
+		level.abbey_rooms_indices["Basilica"] = 7;
+		level.abbey_rooms_indices["Airfield"] = 8;
+		level.abbey_rooms_indices["Dormitory"] = 9;
+		level.abbey_rooms_indices["Cloitre"] = 10;
+		level.abbey_rooms_indices["Merveille de Verite"] = 11;
+		level.abbey_rooms_indices["Guard Tower"] = 12;
+		level.abbey_rooms_indices["Courtyard"] = 13;
+		level.abbey_rooms_indices["Courtroom"] = 14;
+		level.abbey_rooms_indices["Verite Library"] = 15;
+		level.abbey_rooms_indices["Lower Pilgrimage Stairs"] = 16;
+		level.abbey_rooms_indices["Guard Tower Catwalk"] = 17;
+		level.abbey_rooms_indices["Bridge"] = 18;
+		level.abbey_rooms_indices["URM Laboratory"] = 19;
+		level.abbey_rooms_indices["Upper Pilgrimage Stairs"] = 20;
+		level.abbey_rooms_indices["Middle Pilgrimage Stairs"] = 21;
+		level.abbey_rooms_indices["Bridge v2"] = 22;
+		level.abbey_rooms_indices["Knight's Hall"] = 23;
+		level.abbey_rooms_indices["No Man's Land"] = 24;
 
-	level.floodable_rooms = [];
-	level.floodable_rooms["Spawn Room"] = spawn_room_zones;
-	level.floodable_rooms["Staminarch"] = staminarch_zones;
-	level.floodable_rooms["Clean Room"] = clean_room_zones;
-	//level.floodable_rooms["Lion Room"] = lion_room_zones;
+		level.above_rooms = [];
+		level.above_rooms[level.above_rooms.size] = "Crash Site";
+		level.above_rooms[level.above_rooms.size] = "Red Room";
+		level.above_rooms[level.above_rooms.size] = "Bell Tower";
+		level.above_rooms[level.above_rooms.size] = "Radio Gallery";
+		level.above_rooms[level.above_rooms.size] = "Scaffolding";
+		level.above_rooms[level.above_rooms.size] = "Choir";
+		level.above_rooms[level.above_rooms.size] = "Centre";
+		level.above_rooms[level.above_rooms.size] = "Basilica";
+		level.above_rooms[level.above_rooms.size] = "Airfield";
+		level.above_rooms[level.above_rooms.size] = "Dormitory";
+		level.above_rooms[level.above_rooms.size] = "Cloitre";
+		level.above_rooms[level.above_rooms.size] = "Merveille de Verite";
+		level.above_rooms[level.above_rooms.size] = "Courtyard";
+		level.above_rooms[level.above_rooms.size] = "Courtroom";
+		level.above_rooms[level.above_rooms.size] = "Verite Library";
+		level.above_rooms[level.above_rooms.size] = "Bridge";
+		level.above_rooms[level.above_rooms.size] = "URM Laboratory";
+		level.above_rooms[level.above_rooms.size] = "Upper Pilgrimage Stairs";
+		level.above_rooms[level.above_rooms.size] = "Lower Pilgrimage Stairs";
+		level.above_rooms[level.above_rooms.size] = "Middle Pilgrimage Stairs";
+		level.above_rooms[level.above_rooms.size] = "Bridge v2";
+		level.above_rooms[level.above_rooms.size] = "Knight's Hall";
+		level.above_rooms[level.above_rooms.size] = "Guard Tower";
 
-	level.abbey_rooms_indices = [];
-	level.abbey_rooms_indices["Spawn Room"] = 0;
-	level.abbey_rooms_indices["Staminarch"] = 1;
-	level.abbey_rooms_indices["Water Tower"] = 2;
-	level.abbey_rooms_indices["Clean Room"] = 3;
-	level.abbey_rooms_indices["Lion Room"] = 4;
-	level.abbey_rooms_indices["Downstairs Room"] = 5;
-
-	level.one_room_challenge_rooms = [];
-	level.one_room_challenge_rooms["Spawn Room"] = spawn_room_zones;
-	level.one_room_challenge_rooms["Staminarch"] = staminarch_zones;
-	level.one_room_challenge_rooms["Water Tower"] = water_tower_zones;
-	level.one_room_challenge_rooms["Clean Room"] = clean_room_zones;
-	level.one_room_challenge_rooms["Lion Room"] = lion_room_zones;
-	level.one_room_challenge_rooms["Downstairs Room"] = downstairs_room_zones;
-
-	level.one_room_challenge_rooms_indices = [];
-	level.one_room_challenge_rooms_indices["Spawn Room"] = 0;
-	level.one_room_challenge_rooms_indices["Staminarch"] = 1;
-	level.one_room_challenge_rooms_indices["Water Tower"] = 2;
-	level.one_room_challenge_rooms_indices["Clean Room"] = 3;
-	level.one_room_challenge_rooms_indices["Lion Room"] = 4;
-	level.one_room_challenge_rooms_indices["Downstairs Room"] = 5;
-
-	level.above_rooms = [];
-	level.above_rooms[level.above_rooms.size] = "Spawn Room";
-	level.above_rooms[level.above_rooms.size] = "Water Tower";
-	level.above_rooms[level.above_rooms.size] = "Staminarch";
-	level.above_rooms[level.above_rooms.size] = "Lion Room";
-	level.above_rooms[level.above_rooms.size] = "Downstairs Room";
-
-	level.beach_rooms = [];
-	level.beach_rooms[level.beach_rooms.size] = "Clean Room";
+		level.beach_rooms = [];
+		level.beach_rooms[level.beach_rooms.size] = "No Man's Land";
+	}
 
     callback::on_connect( &on_player_connect );
-    //monitor_beach_zones();
 }
 
 function on_player_connect()

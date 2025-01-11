@@ -292,7 +292,7 @@ rawfile,ui/uieditor/menus/hud/perkbp_control.lua
 rawfile,ui/uieditor/menus/hud/weaponbp_control.lua
 rawfile,ui/uieditor/widgets/hud/jug_hearts.lua
 rawfile,ui/uieditor/widgets/hud/abbey_notification.lua
-rawfile,ui/uieditor/widgets/hud/trial_upgrade_text.lua
+rawfile,ui/uieditor/widgets/hud/room_manager.lua
 rawfile,ui/uieditor/widgets/hud/shadow_perks.lua
 rawfile,ui/uieditor/widgets/hud/blood_vial.lua
 rawfile,ui/UIModelUtils.lua

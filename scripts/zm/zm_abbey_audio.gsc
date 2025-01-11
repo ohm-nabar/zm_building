@@ -9,53 +9,72 @@
 
 function main()
 {
-	zm_audio::musicState_Create("cue_redroom", PLAYTYPE_SPECIAL, "cue_redroom");
-	zm_audio::musicState_Create("cue_choir", PLAYTYPE_SPECIAL, "cue_choir");
-	zm_audio::musicState_Create("shadow_breach", PLAYTYPE_SPECIAL, "shadow_breach");
-	zm_audio::musicState_Create("ascendance", PLAYTYPE_SPECIAL, "ascendance");
-	zm_audio::musicState_Create("blood_gene1_mx", PLAYTYPE_SPECIAL, "blood_gene1_mx");
-	zm_audio::musicState_Create("blood_gene2_mx", PLAYTYPE_SPECIAL, "blood_gene2_mx");
-	zm_audio::musicState_Create("blood_gene3_mx", PLAYTYPE_SPECIAL, "blood_gene3_mx");
-	zm_audio::musicState_Create("blood_gene4_mx", PLAYTYPE_SPECIAL, "blood_gene4_mx");
-	zm_audio::musicState_Create("antiverse_amb_0", PLAYTYPE_SPECIAL, "antiverse_amb_0");
-	zm_audio::musicState_Create("antiverse_amb_1", PLAYTYPE_SPECIAL, "antiverse_amb_1");
-	zm_audio::musicState_Create("antiverse_amb_2", PLAYTYPE_SPECIAL, "antiverse_amb_2");
-	zm_audio::musicState_Create("antiverse_amb_3", PLAYTYPE_SPECIAL, "antiverse_amb_3");
-	zm_audio::musicState_Create("antiverse_amb_4", PLAYTYPE_SPECIAL, "antiverse_amb_4");
-	zm_audio::musicState_Create("antiverse_amb_5", PLAYTYPE_SPECIAL, "antiverse_amb_5");
+	if(GetDvarString("ui_mapname") == "zm_building")
+	{
+		level zm_audio::musicState_Create("cue_redroom", PLAYTYPE_SPECIAL, "cue_redroom");
+		level zm_audio::musicState_Create("cue_choir", PLAYTYPE_SPECIAL, "cue_choir");
+		level zm_audio::musicState_Create("shadow_breach", PLAYTYPE_SPECIAL, "shadow_breach");
+		level zm_audio::musicState_Create("ascendance", PLAYTYPE_SPECIAL, "ascendance");
+		level zm_audio::musicState_Create("blood_gene1_mx", PLAYTYPE_SPECIAL, "blood_gene1_mx");
+		level zm_audio::musicState_Create("blood_gene2_mx", PLAYTYPE_SPECIAL, "blood_gene2_mx");
+		level zm_audio::musicState_Create("blood_gene3_mx", PLAYTYPE_SPECIAL, "blood_gene3_mx");
+		level zm_audio::musicState_Create("blood_gene4_mx", PLAYTYPE_SPECIAL, "blood_gene4_mx");
+		level zm_audio::musicState_Create("antiverse_amb_0", PLAYTYPE_SPECIAL, "antiverse_amb_0");
+		level zm_audio::musicState_Create("antiverse_amb_1", PLAYTYPE_SPECIAL, "antiverse_amb_1");
+		level zm_audio::musicState_Create("antiverse_amb_2", PLAYTYPE_SPECIAL, "antiverse_amb_2");
+		level zm_audio::musicState_Create("antiverse_amb_3", PLAYTYPE_SPECIAL, "antiverse_amb_3");
+		level zm_audio::musicState_Create("antiverse_amb_4", PLAYTYPE_SPECIAL, "antiverse_amb_4");
+		level zm_audio::musicState_Create("antiverse_amb_5", PLAYTYPE_SPECIAL, "antiverse_amb_5");
 
-	thread redroom_ambience_think();
-	thread choir_ambience_think();
+		level thread create_ambience_think("Water Tower", "cue_redroom");
+		level thread create_ambience_think("Staminarch", "cue_choir");
+	}
+	else
+	{
+		level zm_audio::musicState_Create("cue_redroom", PLAYTYPE_SPECIAL, "cue_redroom");
+		level zm_audio::musicState_Create("cue_choir", PLAYTYPE_SPECIAL, "cue_choir");
+		level zm_audio::musicState_Create("cue_airfield", PLAYTYPE_SPECIAL, "cue_airfield");
+		level zm_audio::musicState_Create("cue_beach", PLAYTYPE_SPECIAL, "cue_beach");
+		level zm_audio::musicState_Create("cue_courtroom", PLAYTYPE_SPECIAL, "cue_courtroom");
+		level zm_audio::musicState_Create("cue_knighthall", PLAYTYPE_SPECIAL, "cue_knighthall");
+		level zm_audio::musicState_Create("cue_lab", PLAYTYPE_SPECIAL, "cue_lab");
+		level zm_audio::musicState_Create("cue_merveille", PLAYTYPE_SPECIAL, "cue_merveille");
+		//zm_audio::musicState_Create("cue_prison", PLAYTYPE_SPECIAL, "cue_prison");
+
+		level zm_audio::musicState_Create("shadow_breach", PLAYTYPE_SPECIAL, "shadow_breach");
+		level zm_audio::musicState_Create("ascendance", PLAYTYPE_SPECIAL, "ascendance");
+		level zm_audio::musicState_Create("blood_gene1_mx", PLAYTYPE_SPECIAL, "blood_gene1_mx");
+		level zm_audio::musicState_Create("blood_gene2_mx", PLAYTYPE_SPECIAL, "blood_gene2_mx");
+		level zm_audio::musicState_Create("blood_gene3_mx", PLAYTYPE_SPECIAL, "blood_gene3_mx");
+		level zm_audio::musicState_Create("blood_gene4_mx", PLAYTYPE_SPECIAL, "blood_gene4_mx");
+		level zm_audio::musicState_Create("antiverse_amb_0", PLAYTYPE_SPECIAL, "antiverse_amb_0");
+		level zm_audio::musicState_Create("antiverse_amb_1", PLAYTYPE_SPECIAL, "antiverse_amb_1");
+		level zm_audio::musicState_Create("antiverse_amb_2", PLAYTYPE_SPECIAL, "antiverse_amb_2");
+		level zm_audio::musicState_Create("antiverse_amb_3", PLAYTYPE_SPECIAL, "antiverse_amb_3");
+		level zm_audio::musicState_Create("antiverse_amb_4", PLAYTYPE_SPECIAL, "antiverse_amb_4");
+		level zm_audio::musicState_Create("antiverse_amb_5", PLAYTYPE_SPECIAL, "antiverse_amb_5");
+
+		level thread create_ambience_think("Red Room", "cue_redroom");
+		level thread create_ambience_think("Choir", "cue_choir");
+		level thread create_ambience_think("Airfield", "cue_airfield");
+		//thread create_ambience_think("No Man's Land", "cue_beach");
+		level thread create_ambience_think("Courtroom", "cue_courtroom");
+		level thread create_ambience_think("Knight's Hall", "cue_knighthall");
+		level thread create_ambience_think("Merveille de Verite", "cue_merveille");
+		level thread create_ambience_think("URM Laboratory", "cue_lab");
+		//thread create_ambience_think("Antimatter Dungeon", "cue_prison");
+	}
+	
 	//thread testeroo();
 }
 
-function redroom_ambience_think()
+function create_ambience_think(room_name, room_cue)
 {
-	while(! (isdefined(level.abbey_rooms) && isdefined(level.abbey_rooms["Water Tower"])))
+	while(! (isdefined(level.abbey_rooms) && zm_room_manager::is_room_active(level.abbey_rooms[room_name])))
 	{
 		wait(0.05);
 	}
-
-	while(! zm_room_manager::is_room_active(level.abbey_rooms["Water Tower"]))
-	{
-		wait(0.05);
-	}
-	level thread zm_audio::sndMusicSystem_PlayState("cue_redroom");
-}
-
-function choir_ambience_think()
-{
-	while(! (isdefined(level.abbey_rooms) && isdefined(level.abbey_rooms["Staminarch"])))
-	{
-		wait(0.05);
-	}
-
-	while(! zm_room_manager::is_room_active(level.abbey_rooms["Staminarch"]))
-	{
-		//IPrintLn("triggered lol");
-		wait(0.05);
-	}
-	level thread zm_audio::sndMusicSystem_PlayState("cue_choir");
+	level thread zm_audio::sndMusicSystem_PlayState(room_cue);
 }
 
 /*

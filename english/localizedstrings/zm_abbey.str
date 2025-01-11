@@ -239,6 +239,81 @@ LANG_ENGLISH       	"Lion Room"
 REFERENCE           	ROOM_DOWNSTAIRS_ROOM
 LANG_ENGLISH       	"Downstairs Room"
 
+REFERENCE           	ROOM_CRASH_SITE
+LANG_ENGLISH       	"Crash Site"
+
+REFERENCE           	ROOM_RED_ROOM
+LANG_ENGLISH       	"Red Room"
+
+REFERENCE           	ROOM_BELL_TOWER
+LANG_ENGLISH       	"Bell Tower"
+
+REFERENCE           	ROOM_RADIO_GALLERY
+LANG_ENGLISH       	"Radio Gallery"
+
+REFERENCE           	ROOM_SCAFFOLDING
+LANG_ENGLISH       	"Scaffolding"
+
+REFERENCE           	ROOM_CHOIR
+LANG_ENGLISH       	"Choir"
+
+REFERENCE           	ROOM_CENTRE
+LANG_ENGLISH       	"Centre"
+
+REFERENCE           	ROOM_BASILICA
+LANG_ENGLISH       	"Basilica"
+
+REFERENCE           	ROOM_AIRFIELD
+LANG_ENGLISH       	"Airfield"
+
+REFERENCE           	ROOM_DORMITORY
+LANG_ENGLISH       	"Dormitory"
+
+REFERENCE           	ROOM_CLOITRE
+LANG_ENGLISH       	"Cloitre"
+
+REFERENCE           	ROOM_MERVEILLE
+LANG_ENGLISH       	"Merveille de Verite"
+
+REFERENCE           	ROOM_GUARD_TOWER
+LANG_ENGLISH       	"GUARD_TOWER"
+
+REFERENCE           	ROOM_COURTYARD
+LANG_ENGLISH       	"Courtyard"
+
+REFERENCE           	ROOM_COURTROOM
+LANG_ENGLISH       	"Courtroom"
+
+REFERENCE           	ROOM_VERITE_LIBRARY
+LANG_ENGLISH       	"Verite Library"
+
+REFERENCE           	ROOM_LOWER_PILGRIMAGE
+LANG_ENGLISH       	"Lower Pilgrimage Stairs"
+
+REFERENCE           	ROOM_CATWALK
+LANG_ENGLISH       	"Catwalk"
+
+REFERENCE           	ROOM_BRIDGE
+LANG_ENGLISH       	"Bridge"
+
+REFERENCE           	ROOM_URM_LABORATORY
+LANG_ENGLISH       	"URM Laboratory"
+
+REFERENCE           	ROOM_UPPER_PILGRIMAGE
+LANG_ENGLISH       	"Upper Pilgrimage Stairs"
+
+REFERENCE           	ROOM_MIDDLE_PILGRIMAGE
+LANG_ENGLISH       	"Middle Pilgrimage Stairs"
+
+REFERENCE           	ROOM_BRIDGE_V2
+LANG_ENGLISH       	"Bridge v2"
+
+REFERENCE           	ROOM_KNIGHTS_HALL
+LANG_ENGLISH       	"Knight's Hall"
+
+REFERENCE           	ROOM_NO_MANS_LAND
+LANG_ENGLISH       	"No Man's Land"
+
 REFERENCE           	SB_POINTS
 LANG_ENGLISH       	"Points"
 
