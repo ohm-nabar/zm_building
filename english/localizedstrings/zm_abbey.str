@@ -173,23 +173,176 @@ LANG_ENGLISH       "Inactive during Shadow Breach"
 REFERENCE           	CHALLENGE_ACTIVE
 LANG_ENGLISH       "Active: Progress resets next round"
 
-REFERENCE           	TRIAL_INACTIVE
-LANG_ENGLISH       	"No Divinium Trial active"
+REFERENCE           	TRIAL_ARAMIS_NAME
+LANG_ENGLISH       	"Judge Aramis"
 
-REFERENCE           	TRIAL_DESC_REWARD
-LANG_ENGLISH       	"Reward: +2 to all GargoyleGums, 1 free GargoyleGum"
+REFERENCE           	TRIAL_ARAMIS_NAME_SHORT
+LANG_ENGLISH       	"Aramis"
 
-REFERENCE           	TRIAL_DESC_NO_REWARD
-LANG_ENGLISH       "No reward available"
+REFERENCE           	TRIAL_PORTHOS_NAME
+LANG_ENGLISH       "Judge Porthos"
 
-REFERENCE           	TRIAL_DESC_INFO
-LANG_ENGLISH       "Visit the Courtroom to claim your rewards and customize your GargoyleGum Pack!"
+REFERENCE           	TRIAL_DART_NAME
+LANG_ENGLISH       "Judge D'Artagnan"
 
-REFERENCE           	TRIAL_DESC_YES_REWARD
-LANG_ENGLISH       "Reward available"
+REFERENCE           	TRIAL_ATHOS_NAME
+LANG_ENGLISH       "Judge Athos"
 
-REFERENCE           	TRIAL_DESC_TIMER
-LANG_ENGLISH       "Current Trial expires in "
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS0
+LANG_ENGLISH       ": “Hi, I’m Judge Aramis, but you can just call me Aramis! I see a lot of potential in you!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS1
+LANG_ENGLISH       ": “You’re already off to a hot start!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS2
+LANG_ENGLISH       ": “Nice work!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS3
+LANG_ENGLISH       ": “Yo! Champ in the making! Sorry, I hope that wasn’t weird...”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS4
+LANG_ENGLISH       ": “Wowzers!! I knew you were something special!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS10
+LANG_ENGLISH       ": “I can’t believe what I’m watching! This is like a top class motion picture!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS15
+LANG_ENGLISH       ": “I’m going to write an ode to your greatness!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS25
+LANG_ENGLISH       ": “Oh my, you made it to Round 115!! That’s my favorite number!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE1
+LANG_ENGLISH       ": “Thanks for the gold! Hope you enjoy what I gave you!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE2
+LANG_ENGLISH       ": “More gold, nice!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE3
+LANG_ENGLISH       ": “Aww, aren’t you sweet?”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE4
+LANG_ENGLISH       ": “You shouldn’t have...”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE5
+LANG_ENGLISH       ": “What a generous soul you are!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS0
+LANG_ENGLISH       ": “Are you willing to do what it takes to be a true marksman?”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS1
+LANG_ENGLISH       ": “This is just the beginning. You have yet much ground to travel on your sharpshooting journey.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS2
+LANG_ENGLISH       ": “If you are to proceed along the path of a deadshot, daiquiri doubles as an effective aiming partner.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS3
+LANG_ENGLISH       ": “It seems you have taken well to the craft of precision.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS4
+LANG_ENGLISH       ": “At last, you have attained the rank of a true marksman!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS10
+LANG_ENGLISH       ": “Wonderful work! I’ll be extending you an invite to my rifle club shortly.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS15
+LANG_ENGLISH       ": “You’re cementing your place in the history books!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS25
+LANG_ENGLISH       ": “It is my pleasure to crown you as the greatest marksman of all time!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE1
+LANG_ENGLISH       ": “Hmmph. A real marksman would never take shortcuts.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE2
+LANG_ENGLISH       ": “Is this any way for a sharpshooter to conduct themselves?”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE3
+LANG_ENGLISH       ": “Entirely undignified.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE4
+LANG_ENGLISH       ": “I don’t even know what to say at this point.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE5
+LANG_ENGLISH       ": “Where are you getting all this money?”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART0
+LANG_ENGLISH       ": “Look at you, so innocent and pure… that must change. Get your hands dirty!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART1
+LANG_ENGLISH       ": “Good… good… do not hesitate to delve further into the blood of your enemies.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART2
+LANG_ENGLISH       ": “More! More! More bloodshed!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART3
+LANG_ENGLISH       ": “SWISH SWHOOSH STAB! STAB STAB STAB!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART4
+LANG_ENGLISH       ": “The scent of your vanquished foes is just... so... intoxicating! BWAHAHAHA!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART10
+LANG_ENGLISH       ": “Isn’t total annihilation simply beautiful?”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART15
+LANG_ENGLISH       ": “Your brutality rivals that of The Doctor! Oh, you've never heard of him?”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART25
+LANG_ENGLISH       ": “You know I love your murderous spirit, but maybe you should take a break at this point.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE1
+LANG_ENGLISH       ": “This is a little too sterile for me.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE2
+LANG_ENGLISH       ": “This is so humdrum! You know what I crave.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE3
+LANG_ENGLISH       ": “I’m just going to tell myself that this is blood money.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE4
+LANG_ENGLISH       ": “Whose slaughter generated this wealth? No — don’t tell me. It’s more fun to imagine!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE5
+LANG_ENGLISH       ": “It’s a wonder what reframing can do for the mind. I feel so much better about accepting these bribes now!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS0
+LANG_ENGLISH       ": “Pathetic creature! You are most certainly not worthy of anything!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS1
+LANG_ENGLISH       ": “I suppose you think you’re some hotshot now. No. You. Are. Nothing.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS2
+LANG_ENGLISH       ": “I guess you’ve managed to luck your way this far. Take your reward and get out of my sight.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS3
+LANG_ENGLISH       ": “Have I been applying my standards incorrectly? No, it’s these scoundrel that are wrong!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS4
+LANG_ENGLISH       ": “Ugh, fine, I guess I maybe sort of misjudged you...”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS10
+LANG_ENGLISH       ": “Go ahead, rub it in.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS15
+LANG_ENGLISH       ": “Enough already!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS25
+LANG_ENGLISH       ": “I don’t have anything more to say. I hope you’re pleased with yourself.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE1
+LANG_ENGLISH       ": “I feel dirty accepting anything from you.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE2
+LANG_ENGLISH       ": “I suppose you’ve lived a comfortable life, haven’t you? Explains your weak character.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE3
+LANG_ENGLISH       ": “I’ll have you know this is illegal. When the authorities return, I’ll be reporting you.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE4
+LANG_ENGLISH       ": “Can I bribe you to never come back?”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE5
+LANG_ENGLISH       ": “I wish you’d just die already.”"
 
 REFERENCE           	TRIAL_DESC_WALLBUY
 LANG_ENGLISH       "Obtain kills with the "

@@ -129,6 +129,20 @@ function __init__()
 	level.gg_names["zm_bgb_aftertaste_blood"] = MakeLocalizedString(&"ZMUI_BGB_AFTERTASTE_BLOOD");
 	level.gg_names["zm_bgb_perkaholic"] = MakeLocalizedString(&"ZMUI_BGB_PERKAHOLIC");
 
+	aramis_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS0", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS1", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS2", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS3", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS4", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS10", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS15", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS25");
+	porthos_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS0", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS1", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS2", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS3", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS4", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS10", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS15", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS25");
+	dart_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_DART0", &"ZM_ABBEY_TRIAL_DIALOGUE_DART1", &"ZM_ABBEY_TRIAL_DIALOGUE_DART2", &"ZM_ABBEY_TRIAL_DIALOGUE_DART3", &"ZM_ABBEY_TRIAL_DIALOGUE_DART4", &"ZM_ABBEY_TRIAL_DIALOGUE_DART10", &"ZM_ABBEY_TRIAL_DIALOGUE_DART15", &"ZM_ABBEY_TRIAL_DIALOGUE_DART25");
+	athos_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS0", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS1", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS2", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS3", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS4", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS10", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS15", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS25");
+
+	aramis_dialogue_bribe = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE1", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE2", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE3", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE4", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE5");
+	porthos_dialogue_bribe = array(&"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE1", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE2", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE3", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE4", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE5");
+	dart_dialogue_bribe = array(&"ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE1", &"ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE2", &"ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE3", &"ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE4", &"ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE5");
+	athos_dialogue_bribe = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE1", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE2", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE3", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE4", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE5");
+
+	level.gargoyle_dialogue = array(aramis_dialogue, porthos_dialogue, dart_dialogue, athos_dialogue);
+	level.gargoyle_dialogue_bribe = array(aramis_dialogue_bribe, porthos_dialogue_bribe, dart_dialogue_bribe, athos_dialogue_bribe);
+	level.gargoyle_prefixes = array(&"ZM_ABBEY_TRIAL_ARAMIS_NAME_SHORT", &"ZM_ABBEY_TRIAL_PORTHOS_NAME", &"ZM_ABBEY_TRIAL_DART_NAME", &"ZM_ABBEY_TRIAL_ATHOS_NAME");
+
 	level.gargoyle_judges = GetEntArray("gargoyle_judge", "targetname");
 	level array::thread_all(level.gargoyle_judges, &judge_think);
 
@@ -151,9 +165,17 @@ function on_player_connect()
 	}
 
 	self.judge_indices = [];
+	self.judge_dialogue = [];
 	for(i = 0; i < 4; i++)
 	{
 		self.judge_indices[i] = 0;
+		prefix = MakeLocalizedString(&"ZM_ABBEY_TRIAL_ARAMIS_NAME");
+		if(i != 0)
+		{
+			prefix = MakeLocalizedString(level.gargoyle_prefixes[i]);
+		}
+		self.judge_dialogue[i] = prefix + MakeLocalizedString(level.gargoyle_dialogue[i][0]);
+		self thread judge_dialogue_think(i);
 	}
 
 	self.judge_display_balls = [];
@@ -165,6 +187,47 @@ function on_player_connect()
 	level array::thread_all(level.gargoyle_judges, &player_judge_setup, self);
 	level array::thread_all(level.gargoyle_judges, &judge_hintstring_think, self);
 	level array::thread_all(level.gargoyle_bribes, &bribe_hintstring_think, self);
+}
+
+function judge_dialogue_think(garg_num)
+{
+	self endon("disconnect");
+
+	prefix = MakeLocalizedString(level.gargoyle_prefixes[garg_num]);
+	num_trials_completed = 0;
+	num_bribes_given = 0;
+
+	while(true)
+	{
+		result = self util::waittill_any_return("trial_complete" + garg_num, "bribe_given" + garg_num);
+		if(result == "trial_complete" + garg_num)
+		{
+			num_trials_completed += 1;
+			if(num_trials_completed < 10)
+			{
+				trial_index = Int(Min(num_trials_completed, 4));
+				self.judge_dialogue[garg_num] = prefix + MakeLocalizedString(level.gargoyle_dialogue[garg_num][trial_index]);
+			}
+			else if(num_trials_completed >= 10 && num_trials_completed < 15)
+			{
+				self.judge_dialogue[garg_num] = prefix + MakeLocalizedString(level.gargoyle_dialogue[garg_num][5]);
+			}
+			else if(num_trials_completed >= 15 && num_trials_completed < 25)
+			{
+				self.judge_dialogue[garg_num] = prefix + MakeLocalizedString(level.gargoyle_dialogue[garg_num][6]);
+			}
+			else
+			{
+				self.judge_dialogue[garg_num] = prefix + MakeLocalizedString(level.gargoyle_dialogue[garg_num][7]);
+			}
+		}
+		else
+		{
+			num_bribes_given += 1;
+			bribe_index = Int(Min((num_bribes_given - 1), 4));
+			self.judge_dialogue[garg_num] = prefix + MakeLocalizedString(level.gargoyle_dialogue_bribe[garg_num][bribe_index]);
+		}
+	}
 }
 
 function player_judge_setup(player)
@@ -207,6 +270,7 @@ function judge_hintstring_think(player)
 	prev_displayName = "";
 	prev_quantity = -1;
 	prev_bribe_count = -1;
+	prev_dialogue = "";
 
 	while(true)
 	{
@@ -216,17 +280,18 @@ function judge_hintstring_think(player)
 		displayName = gum_struct.displayName;
 		quantity = player.gg_quantities[gum];
 		bribe_count = player.bribe_count;
+		dialogue = player.judge_dialogue[garg_num];
 
-		if(displayName != prev_displayName || quantity != prev_quantity || bribe_count != prev_bribe_count)
+		if(displayName != prev_displayName || quantity != prev_quantity || bribe_count != prev_bribe_count || dialogue != prev_dialogue)
 		{
 			prev_displayName = displayName;
 			prev_quantity = quantity;
 			prev_bribe_count = bribe_count;
 			bribe_cost = zm_bgb_custom_util::gg_bribe_cost(gum);
-			hintstring = "Press ^3[{+activate}]^7 for " + gum_struct.displayName + " [Quantity: " + quantity + "]" + "\nMelee for next GargoyleGum";
+			hintstring = "Press ^3[{+activate}]^7 for " + gum_struct.displayName + " [Quantity: " + quantity + "]" + "\nMelee for next GargoyleGum\n" + dialogue;
 			if(quantity == 0 && bribe_count >= bribe_cost)
 			{
-				hintstring = "Press ^3[{+activate}]^7 to Bribe for " + gum_struct.displayName + " [Cost: " + bribe_cost + "]" + "\nMelee for next GargoyleGum";
+				hintstring = "Press ^3[{+activate}]^7 to Bribe for " + gum_struct.displayName + " [Cost: " + bribe_cost + "]" + "\nMelee for next GargoyleGum\n" + dialogue;
 			}
 			
 			self SetHintStringForPlayer(player, hintstring);
@@ -291,7 +356,8 @@ function judge_think()
 		else
 		{
 			player.bribe_count -= bribe_cost;
-			player clientfield::set_player_uimodel("bribeCount", player.bribe_count);
+			player notify("bribe_given" + garg_num);
+			player thread lua_decrement_bribe_count();
 		}
 
 		wait(0.05);
@@ -324,6 +390,17 @@ function lua_decrement_quantity(cf_val)
 
 	self notify(#"lua_decrement_quantity_queue_pop");
 	self.lua_decrement_quantity_queue_pos -= 1;
+}
+
+function lua_decrement_bribe_count()
+{
+	self endon("disconnect");
+
+	while(self clientfield::get_player_uimodel("bribeCount") != self.bribe_count)
+	{
+		self clientfield::set_player_uimodel("bribeCount", self.bribe_count);
+		util::wait_network_frame();
+	}
 }
 
 function judge_model_think(garg_num)

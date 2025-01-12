@@ -334,6 +334,7 @@ function gargoyle_progress_check(garg_num, progress)
 	index = self.gargoyle_indices[garg_num];
 	if(self.gargoyle_progress[garg_num] >= 1)
 	{
+		self notify("trial_complete" + garg_num);
 		self.gargoyle_progress[garg_num] -= 1;
 		while(self clientfield::get_to_player(level.gargoyle_cfs[garg_num]) != 1)
 		{
