@@ -151,18 +151,18 @@ function CoD.InventoryControl.new(HudRef, InstanceRef)
     NavigationInfo:setAlpha(0.9)
     NavigationInfo:setRGB(1, 1, 1)
 
+    local AthosPromptX = NavigationInfo:getTextWidth() + 21
+        TrialControl.AthosPrompt:setLeftRight(true, false, AthosPromptX, AthosPromptX + 100)
+
     local function NavigationInfoUpdate(Element, Event)
-        if CoD.useController and Event.source == 0 then
-            TrialControl.AthosPrompt:setLeftRight(true, false, 195, 295)
-        else
-            TrialControl.AthosPrompt:setLeftRight(true, false, 350, 450)
-        end
-         
         if Engine.Localize("[{+speed_throw}]") then
             NavigationInfo:setText(Engine.Localize("ZM_ABBEY_JOURNAL_NAVIGATION_SPEED"))
         else
             NavigationInfo:setText(Engine.Localize("ZM_ABBEY_JOURNAL_NAVIGATION_TOGGLE"))
         end
+
+        AthosPromptX = NavigationInfo:getTextWidth() + 21
+        TrialControl.AthosPrompt:setLeftRight(true, false, AthosPromptX, AthosPromptX + 100)
     end
     InventoryControl:registerEventHandler( "input_source_changed", NavigationInfoUpdate)
 

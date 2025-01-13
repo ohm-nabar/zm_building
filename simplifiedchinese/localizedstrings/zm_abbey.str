@@ -20,117 +20,6 @@ LANG_SIMPLIFIED_CHINESE       	"Hold ^3[{+activate}]^7 for Poseidon's Punch [Cos
 REFERENCE           	PERK_DEADSHOT_DOUBLE
 LANG_SIMPLIFIED_CHINESE       	"Hold ^3[{+activate}]^7 for Deadshot Daiquiri Double [Cost: &&1]"
 
-REFERENCE           	BGB_SELECT
-LANG_SIMPLIFIED_CHINESE       	"Press ^3[{+activate}]^7 to switch GargoyleGums\n&&1Quantity: &&2"
-
-REFERENCE           	BGB_ACCEPT
-LANG_SIMPLIFIED_CHINESE       	"Press ^3[{+activate}]^7 for &&1"
-
-REFERENCE           	BGB_NO_STOCK
-LANG_SIMPLIFIED_CHINESE       	"Out of stock! Obtain more GargoyleGums through Divinium Trials!"
-
-REFERENCE           	BGB_ACTIVATE
-LANG_SIMPLIFIED_CHINESE       "Hold ^3[{+activate}]^7 to dispense GargoyleGum [Cost: &&1]"
-
-REFERENCE           	BGB_NEXT_ROUND
-LANG_SIMPLIFIED_CHINESE       "Come back next round!"
-
-REFERENCE           	BGB_STOCK_OPTION
-LANG_SIMPLIFIED_CHINESE       	"Stock Option"
-
-REFERENCE           	BGB_SWORD_FLAY
-LANG_SIMPLIFIED_CHINESE       "Sword Flay"
-
-REFERENCE           	BGB_TEMPORAL_GIFT
-LANG_SIMPLIFIED_CHINESE       "Temporal Gift"
-
-REFERENCE           	BGB_IN_PLAIN_SIGHT
-LANG_SIMPLIFIED_CHINESE       	"In Plain Sight"
-
-REFERENCE           	BGB_IM_FEELIN_LUCKY
-LANG_SIMPLIFIED_CHINESE       	"I'm Feelin' Lucky"
-
-REFERENCE           	BGB_IMMOLATION_LIQUIDATION
-LANG_SIMPLIFIED_CHINESE       	"Immolation Liquidation"
-
-REFERENCE           	BGB_PHOENIX_UP
-LANG_SIMPLIFIED_CHINESE       	"Phoenix Up"
-
-REFERENCE           	BGB_POP_SHOCKS
-LANG_SIMPLIFIED_CHINESE       	"Pop Shocks"
-
-REFERENCE           	BGB_CACHE_BACK
-LANG_SIMPLIFIED_CHINESE       	"Cache Back"
-
-REFERENCE           	BGB_ON_THE_HOUSE
-LANG_SIMPLIFIED_CHINESE       	"On the House"
-
-REFERENCE           	BGB_PROFIT_SHARING
-LANG_SIMPLIFIED_CHINESE       	"Profit Sharing"
-
-REFERENCE           	BGB_WALL_POWER
-LANG_SIMPLIFIED_CHINESE       	"Wall Power"
-
-REFERENCE           	BGB_CRATE_POWER
-LANG_SIMPLIFIED_CHINESE       	"Crate Power"
-
-REFERENCE           	BGB_UNQUENCHABLE
-LANG_SIMPLIFIED_CHINESE       	"Unquenchable"
-
-REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS
-LANG_SIMPLIFIED_CHINESE       	"Alchemical Antithesis"
-
-REFERENCE           	BGB_PERKAHOLIC
-LANG_SIMPLIFIED_CHINESE       	"Perkaholic"
-
-REFERENCE           	BGB_STOCK_OPTION_DESC
-LANG_SIMPLIFIED_CHINESE       	"Stock Option\nAmmo is taken from the player's stockpile instead of their weapon's magazine\n"
-
-REFERENCE           	BGB_SWORD_FLAY_DESC
-LANG_SIMPLIFIED_CHINESE       "Sword Flay\n Melee attacks will inflict 5x more damage on zombies\n"
-
-REFERENCE           	BGB_TEMPORAL_GIFT_DESC
-LANG_SIMPLIFIED_CHINESE       "Temporal Gift\n Powerups last longer\n"
-
-REFERENCE           	BGB_IN_PLAIN_SIGHT_DESC
-LANG_SIMPLIFIED_CHINESE       	"In Plain Sight\n All zombies ignore the player\n"
-
-REFERENCE           	BGB_IM_FEELIN_LUCKY_DESC
-LANG_SIMPLIFIED_CHINESE       	"I'm Feeling Lucky\n Spawns a random powerup\n"
-
-REFERENCE           	BGB_IMMOLATION_LIQUIDATION_DESC
-LANG_SIMPLIFIED_CHINESE       	"Immolation Liquidation\n Spawns a Fire Sale powerup\n"
-
-REFERENCE           	BGB_PHOENIX_UP_DESC
-LANG_SIMPLIFIED_CHINESE       	"Phoenix Up\n Revives all teammates. Teammates keep all of their perks\n"
-
-REFERENCE           	BGB_POP_SHOCKS_DESC
-LANG_SIMPLIFIED_CHINESE       	"Pop Shocks\n Melee attacks trigger an electrostatic discharge, electrocuting nearby zombies\n"
-
-REFERENCE           	BGB_CACHE_BACK_DESC
-LANG_SIMPLIFIED_CHINESE       	"Cache Back\n Spawns a Max Ammo powerup\n"
-
-REFERENCE           	BGB_ON_THE_HOUSE_DESC
-LANG_SIMPLIFIED_CHINESE       	"On the House\nSpawns a Perk Bottle powerup\n"
-
-REFERENCE           	BGB_PROFIT_SHARING_DESC
-LANG_SIMPLIFIED_CHINESE       	"Profit Sharing\nPoints you earn are also received by nearby players and vice versa\n"
-
-REFERENCE           	BGB_WALL_POWER_DESC
-LANG_SIMPLIFIED_CHINESE       	"Wall Power\nThe next wall weapon purchased becomes Pack-a-Punched\n"
-
-REFERENCE           	BGB_CRATE_POWER_DESC
-LANG_SIMPLIFIED_CHINESE       	"Crate Power\nThe next gun taken from the magic box becomes Pack-a-Punched\n"
-
-REFERENCE           	BGB_UNQUENCHABLE_DESC
-LANG_SIMPLIFIED_CHINESE       	"Unquenchable\nCan buy an extra Perk-a-Cola\n"
-
-REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS_DESC
-LANG_SIMPLIFIED_CHINESE       	"Alchemical Antithesis\nEvery 10 points earned is instead awarded 1 ammo in the stock of the current weapon\n"
-
-REFERENCE           	BGB_PERKAHOLIC_DESC
-LANG_SIMPLIFIED_CHINESE       	"Perkaholic\nGives the player all Perk-a-Colas in the map\n"
-
 REFERENCE           	PAD_COOLDOWN
 LANG_SIMPLIFIED_CHINESE       	"Cooling down..."
 
@@ -209,6 +98,12 @@ LANG_SIMPLIFIED_CHINESE       "Perk Blueprints"
 REFERENCE           	JOURNAL_HEADER_WEAPONBP
 LANG_SIMPLIFIED_CHINESE       "Weapon Blueprints"
 
+REFERENCE           	JOURNAL_NAVIGATION_SPEED
+LANG_SIMPLIFIED_CHINESE       "^3[{+speed_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"
+
+REFERENCE           	JOURNAL_NAVIGATION_TOGGLE
+LANG_SIMPLIFIED_CHINESE       "^3[{+toggleads_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"
+
 REFERENCE           	CHALLENGE_CHERRY
 LANG_SIMPLIFIED_CHINESE       "Obtain kills with Electric Cherry reloads"
 
@@ -243,7 +138,7 @@ REFERENCE           	CHALLENGE_QUICK
 LANG_SIMPLIFIED_CHINESE       "Obtain kills while on low health"
 
 REFERENCE           	CHALLENGE_QUICK_REWARD
-LANG_SIMPLIFIED_CHINESE      "Reward: Health regen cannot be interrupted"
+LANG_SIMPLIFIED_CHINESE       "Reward: Speed boost upon revive or regen"
 
 REFERENCE           	CHALLENGE_PHD
 LANG_SIMPLIFIED_CHINESE       "Obtain kills using PhD slides"
@@ -269,53 +164,242 @@ LANG_SIMPLIFIED_CHINESE       "Inactive during Shadow Breach"
 REFERENCE           	CHALLENGE_ACTIVE
 LANG_SIMPLIFIED_CHINESE       "Active: Progress resets next round"
 
-REFERENCE           	TRIAL_INACTIVE
-LANG_SIMPLIFIED_CHINESE       	"No Divinium Trial active"
+REFERENCE           	TRIAL_ARAMIS_NAME
+LANG_SIMPLIFIED_CHINESE       	"Judge Aramis"
 
-REFERENCE           	TRIAL_DESC_REWARD
-LANG_SIMPLIFIED_CHINESE       	"Reward: +2 to all GargoyleGums, 1 free GargoyleGum"
+REFERENCE           	TRIAL_ARAMIS_NAME_SHORT
+LANG_SIMPLIFIED_CHINESE       	"Aramis"
 
-REFERENCE           	TRIAL_DESC_NO_REWARD
-LANG_SIMPLIFIED_CHINESE       "No reward available"
+REFERENCE           	TRIAL_PORTHOS_NAME
+LANG_SIMPLIFIED_CHINESE       "Judge Porthos"
 
-REFERENCE           	TRIAL_DESC_INFO
-LANG_SIMPLIFIED_CHINESE       "Visit the Courtroom to claim your rewards and customize your GargoyleGum Pack!"
+REFERENCE           	TRIAL_DART_NAME
+LANG_SIMPLIFIED_CHINESE       "Judge D'Artagnan"
 
-REFERENCE           	TRIAL_DESC_YES_REWARD
-LANG_SIMPLIFIED_CHINESE       "Reward available"
+REFERENCE           	TRIAL_ATHOS_NAME
+LANG_SIMPLIFIED_CHINESE       "Judge Athos"
 
-REFERENCE           	TRIAL_DESC_TIMER
-LANG_SIMPLIFIED_CHINESE       "Current Trial expires in "
+REFERENCE           	TRIAL_HINTSTRING_START
+LANG_SIMPLIFIED_CHINESE       "Press ^3[{+activate}]^7 for "
 
-REFERENCE           	TRIAL_DESC_WALLBUY
-LANG_SIMPLIFIED_CHINESE       "Obtain kills with the "
+REFERENCE           	TRIAL_HINTSTRING_BRIBE_START
+LANG_SIMPLIFIED_CHINESE       "Press ^3[{+activate}]^7 to Bribe for "
 
-REFERENCE           	TRIAL_DESC_BOX
-LANG_SIMPLIFIED_CHINESE       "Obtain kills with a newly aqcuired weapon from the Mystery Box"
+REFERENCE           	TRIAL_HINTSTRING_VALUE
+LANG_SIMPLIFIED_CHINESE       " [Quantity: "
 
-REFERENCE           	TRIAL_DESC_CLASS
-LANG_SIMPLIFIED_CHINESE       "Obtain kills with"
+REFERENCE           	TRIAL_HINTSTRING_BRIBE_VALUE
+LANG_SIMPLIFIED_CHINESE       " [Cost: "
 
-REFERENCE           	TRIAL_DESC_ELEVATION
-LANG_SIMPLIFIED_CHINESE       "Obtain kills from a higher elevation"
+REFERENCE           	TRIAL_HINTSTRING_NEXT
+LANG_SIMPLIFIED_CHINESE       "\nMelee for next GargoyleGum\n"
 
-REFERENCE           	TRIAL_DESC_HEADSHOT
-LANG_SIMPLIFIED_CHINESE       "Obtain kills with headshots"
+REFERENCE           	TRIAL_BRIBE_PICKUP
+LANG_SIMPLIFIED_CHINESE       "Press ^3[{+activate}]^7 for Bribe"
 
-REFERENCE           	TRIAL_DESC_AASSAULT
-LANG_SIMPLIFIED_CHINESE       "Obtain kills in the "
+REFERENCE           	TRIAL_BRIBE_PICKUP_MAX
+LANG_SIMPLIFIED_CHINESE       "Cannot hold more Bribes"
 
-REFERENCE           	TRIAL_DESC_ADEFENSE
-LANG_SIMPLIFIED_CHINESE       "Remain in the "
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS0
+LANG_SIMPLIFIED_CHINESE       ": “Hi, I’m Judge Aramis, but you can just call me Aramis! I see a lot of potential in you!”"
 
-REFERENCE           	TRIAL_DESC_PACK_CURRENT
-LANG_SIMPLIFIED_CHINESE       "Current GargoyleGum Pack"
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS1
+LANG_SIMPLIFIED_CHINESE       ": “You’re already off to a hot start!”"
 
-REFERENCE           	TRIAL_DESC_PACK_NEXT
-LANG_SIMPLIFIED_CHINESE       "Next GargoyleGum Pack"
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS2
+LANG_SIMPLIFIED_CHINESE       ": “Nice work!”"
 
-REFERENCE           	TRIAL_UPGRADE
-LANG_SIMPLIFIED_CHINESE       "Press ^3[{+activate}]^7 twice rapidly to upgrade Trial weapon [Cost: 4000]"
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS3
+LANG_SIMPLIFIED_CHINESE       ": “Yo! Champ in the making! Sorry, I hope that wasn’t weird...”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS4
+LANG_SIMPLIFIED_CHINESE       ": “Wowzers!! I knew you were something special!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS10
+LANG_SIMPLIFIED_CHINESE       ": “I can’t believe what I’m watching! This is like a top class motion picture!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS15
+LANG_SIMPLIFIED_CHINESE       ": “I’m going to write an ode to your greatness!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS25
+LANG_SIMPLIFIED_CHINESE       ": “Oh my, you made it to Round 115!! That’s my favorite number!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE1
+LANG_SIMPLIFIED_CHINESE       ": “Thanks for the gold! Hope you enjoy what I gave you!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE2
+LANG_SIMPLIFIED_CHINESE       ": “More gold, nice!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE3
+LANG_SIMPLIFIED_CHINESE       ": “Aww, aren’t you sweet?”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE4
+LANG_SIMPLIFIED_CHINESE       ": “You shouldn’t have...”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE5
+LANG_SIMPLIFIED_CHINESE       ": “What a generous soul you are!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS0
+LANG_SIMPLIFIED_CHINESE       ": “Are you willing to do what it takes to be a true marksman?”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS1
+LANG_SIMPLIFIED_CHINESE       ": “This is just the beginning. You have yet much ground to travel on your sharpshooting journey.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS2
+LANG_SIMPLIFIED_CHINESE       ": “If you are to proceed along the path of a deadshot, daiquiri doubles as an effective aiming partner.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS3
+LANG_SIMPLIFIED_CHINESE       ": “It seems you have taken well to the craft of precision.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS4
+LANG_SIMPLIFIED_CHINESE       ": “At last, you have attained the rank of a true marksman!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS10
+LANG_SIMPLIFIED_CHINESE       ": “Wonderful work! I’ll be extending you an invite to my rifle club shortly.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS15
+LANG_SIMPLIFIED_CHINESE       ": “You’re cementing your place in the history books!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS25
+LANG_SIMPLIFIED_CHINESE       ": “It is my pleasure to crown you as the greatest marksman of all time!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE1
+LANG_SIMPLIFIED_CHINESE       ": “Hmmph. A real marksman would never take shortcuts.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE2
+LANG_SIMPLIFIED_CHINESE       ": “Is this any way for a sharpshooter to conduct themselves?”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE3
+LANG_SIMPLIFIED_CHINESE       ": “Entirely undignified.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE4
+LANG_SIMPLIFIED_CHINESE       ": “I don’t even know what to say at this point.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE5
+LANG_SIMPLIFIED_CHINESE       ": “Where are you getting all this money?”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART0
+LANG_SIMPLIFIED_CHINESE       ": “Look at you, so innocent and pure… that must change. Get your hands dirty!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART1
+LANG_SIMPLIFIED_CHINESE       ": “Good… good… do not hesitate to delve further into the blood of your enemies.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART2
+LANG_SIMPLIFIED_CHINESE       ": “More! More! More bloodshed!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART3
+LANG_SIMPLIFIED_CHINESE       ": “SWISH SWHOOSH STAB! STAB STAB STAB!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART4
+LANG_SIMPLIFIED_CHINESE       ": “The scent of your vanquished foes is just... so... intoxicating! BWAHAHAHA!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART10
+LANG_SIMPLIFIED_CHINESE       ": “Isn’t total annihilation simply beautiful?”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART15
+LANG_SIMPLIFIED_CHINESE       ": “Your brutality rivals that of The Doctor! Oh, you've never heard of him?”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART25
+LANG_SIMPLIFIED_CHINESE       ": “You know I love your murderous spirit, but maybe you should take a break at this point.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE1
+LANG_SIMPLIFIED_CHINESE       ": “This is a little too sterile for me.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE2
+LANG_SIMPLIFIED_CHINESE       ": “This is so humdrum! You know what I crave.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE3
+LANG_SIMPLIFIED_CHINESE       ": “I’m just going to tell myself that this is blood money.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE4
+LANG_SIMPLIFIED_CHINESE       ": “Whose slaughter generated this wealth? No — don’t tell me. It’s more fun to imagine!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE5
+LANG_SIMPLIFIED_CHINESE       ": “It’s a wonder what reframing can do for the mind. I feel so much better about accepting these bribes now!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS0
+LANG_SIMPLIFIED_CHINESE       ": “Pathetic creature! You are most certainly not worthy of anything!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS1
+LANG_SIMPLIFIED_CHINESE       ": “I suppose you think you’re some hotshot now. No. You. Are. Nothing.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS2
+LANG_SIMPLIFIED_CHINESE       ": “I guess you’ve managed to luck your way this far. Take your reward and get out of my sight.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS3
+LANG_SIMPLIFIED_CHINESE       ": “Have I been applying my standards incorrectly? No, it’s these scoundrel that are wrong!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS4
+LANG_SIMPLIFIED_CHINESE       ": “Ugh, fine, I guess I maybe sort of misjudged you...”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS10
+LANG_SIMPLIFIED_CHINESE       ": “Go ahead, rub it in.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS15
+LANG_SIMPLIFIED_CHINESE       ": “Enough already!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS25
+LANG_SIMPLIFIED_CHINESE       ": “I don’t have anything more to say. I hope you’re pleased with yourself.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE1
+LANG_SIMPLIFIED_CHINESE       ": “I feel dirty accepting anything from you.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE2
+LANG_SIMPLIFIED_CHINESE       ": “I suppose you’ve lived a comfortable life, haven’t you? Explains your weak character.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE3
+LANG_SIMPLIFIED_CHINESE       ": “I’ll have you know this is illegal. When the authorities return, I’ll be reporting you.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE4
+LANG_SIMPLIFIED_CHINESE       ": “Can I bribe you to never come back?”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE5
+LANG_SIMPLIFIED_CHINESE       ": “I wish you’d just die already.”"
+
+REFERENCE           	TRIAL_RANDOM_GUM
+LANG_SIMPLIFIED_CHINESE       "Random GargoyleGum"
+
+REFERENCE           	TRIAL_ARAMIS_DESC
+LANG_SIMPLIFIED_CHINESE       "Complete Rounds"
+
+REFERENCE           	TRIAL_PORTHOS_DESC
+LANG_SIMPLIFIED_CHINESE       "Obtain Headshot Kills"
+
+REFERENCE           	TRIAL_DART_DESC
+LANG_SIMPLIFIED_CHINESE       "Obtain Melee Kills"
+
+REFERENCE           	TRIAL_ATHOS_DESC
+LANG_SIMPLIFIED_CHINESE       "Unknown Trial"
+
+REFERENCE           	TRIAL_ATHOS_NEW_TRIAL
+LANG_SIMPLIFIED_CHINESE       " (New Trial in "
+
+REFERENCE           	TRIAL_ATHOS_NEW_TRIAL_END
+LANG_SIMPLIFIED_CHINESE       " Rounds)"
+
+REFERENCE           	TRIAL_ATHOS_NEW_TRIAL_SING_END
+LANG_SIMPLIFIED_CHINESE       " Round)"
+
+REFERENCE           	TRIAL_ATHOS_DESC_WALLBUY
+LANG_SIMPLIFIED_CHINESE       "Obtain Kills with the "
+
+REFERENCE           	TRIAL_ATHOS_DESC_BOX
+LANG_SIMPLIFIED_CHINESE       "Obtain Kills with a Weapon newly acquired from the Mystery Box"
+
+REFERENCE           	TRIAL_ATHOS_DESC_ELEVATION
+LANG_SIMPLIFIED_CHINESE       "Obtain Kills from a Higher Elevation"
+
+REFERENCE           	TRIAL_ATHOS_DESC_AASSAULT
+LANG_SIMPLIFIED_CHINESE       "Obtain Kills in the "
+
+REFERENCE           	TRIAL_ATHOS_DESC_CROUCH
+LANG_SIMPLIFIED_CHINESE       "Obtain Kills while Crouched"
+
+REFERENCE           	TRIAL_ATHOS_DESC_TRAP
+LANG_SIMPLIFIED_CHINESE       "Obtain Trap Kills"
+
+REFERENCE           	TRIAL_ATHOS_DESC_BLOOD_VIAL
+LANG_SIMPLIFIED_CHINESE       "Fill Blood Vials"
 
 REFERENCE           	ROOM_SPAWN_ROOM
 LANG_SIMPLIFIED_CHINESE       	"Spawn Room"
@@ -334,5 +418,95 @@ LANG_SIMPLIFIED_CHINESE       	"Lion Room"
 
 REFERENCE           	ROOM_DOWNSTAIRS_ROOM
 LANG_SIMPLIFIED_CHINESE       	"Downstairs Room"
+
+REFERENCE           	ROOM_CRASH_SITE
+LANG_SIMPLIFIED_CHINESE       	"Crash Site"
+
+REFERENCE           	ROOM_RED_ROOM
+LANG_SIMPLIFIED_CHINESE       	"Red Room"
+
+REFERENCE           	ROOM_BELL_TOWER
+LANG_SIMPLIFIED_CHINESE       	"Bell Tower"
+
+REFERENCE           	ROOM_RADIO_GALLERY
+LANG_SIMPLIFIED_CHINESE       	"Radio Gallery"
+
+REFERENCE           	ROOM_SCAFFOLDING
+LANG_SIMPLIFIED_CHINESE       	"Scaffolding"
+
+REFERENCE           	ROOM_CHOIR
+LANG_SIMPLIFIED_CHINESE       	"Choir"
+
+REFERENCE           	ROOM_CENTRE
+LANG_SIMPLIFIED_CHINESE       	"Centre"
+
+REFERENCE           	ROOM_BASILICA
+LANG_SIMPLIFIED_CHINESE       	"Basilica"
+
+REFERENCE           	ROOM_AIRFIELD
+LANG_SIMPLIFIED_CHINESE       	"Airfield"
+
+REFERENCE           	ROOM_DORMITORY
+LANG_SIMPLIFIED_CHINESE       	"Dormitory"
+
+REFERENCE           	ROOM_CLOITRE
+LANG_SIMPLIFIED_CHINESE       	"Cloitre"
+
+REFERENCE           	ROOM_MERVEILLE
+LANG_SIMPLIFIED_CHINESE       	"Merveille de Verite"
+
+REFERENCE           	ROOM_GUARD_TOWER
+LANG_SIMPLIFIED_CHINESE       	"GUARD_TOWER"
+
+REFERENCE           	ROOM_COURTYARD
+LANG_SIMPLIFIED_CHINESE       	"Courtyard"
+
+REFERENCE           	ROOM_COURTROOM
+LANG_SIMPLIFIED_CHINESE       	"Courtroom"
+
+REFERENCE           	ROOM_VERITE_LIBRARY
+LANG_SIMPLIFIED_CHINESE       	"Verite Library"
+
+REFERENCE           	ROOM_LOWER_PILGRIMAGE
+LANG_SIMPLIFIED_CHINESE       	"Lower Pilgrimage Stairs"
+
+REFERENCE           	ROOM_CATWALK
+LANG_SIMPLIFIED_CHINESE       	"Catwalk"
+
+REFERENCE           	ROOM_BRIDGE
+LANG_SIMPLIFIED_CHINESE       	"Bridge"
+
+REFERENCE           	ROOM_URM_LABORATORY
+LANG_SIMPLIFIED_CHINESE       	"URM Laboratory"
+
+REFERENCE           	ROOM_UPPER_PILGRIMAGE
+LANG_SIMPLIFIED_CHINESE       	"Upper Pilgrimage Stairs"
+
+REFERENCE           	ROOM_MIDDLE_PILGRIMAGE
+LANG_SIMPLIFIED_CHINESE       	"Middle Pilgrimage Stairs"
+
+REFERENCE           	ROOM_BRIDGE_V2
+LANG_SIMPLIFIED_CHINESE       	"Bridge v2"
+
+REFERENCE           	ROOM_KNIGHTS_HALL
+LANG_SIMPLIFIED_CHINESE       	"Knight's Hall"
+
+REFERENCE           	ROOM_NO_MANS_LAND
+LANG_SIMPLIFIED_CHINESE       	"No Man's Land"
+
+REFERENCE           	SB_POINTS
+LANG_SIMPLIFIED_CHINESE       	"Points"
+
+REFERENCE           	SB_KILLS
+LANG_SIMPLIFIED_CHINESE       	"Kills"
+
+REFERENCE           	SB_DOWNS
+LANG_SIMPLIFIED_CHINESE       	"Downs"
+
+REFERENCE           	SB_REVIVES
+LANG_SIMPLIFIED_CHINESE       	"Revives"
+
+REFERENCE           	SB_HEADSHOTS
+LANG_SIMPLIFIED_CHINESE       	"Headshots"
 
 ENDMARKER

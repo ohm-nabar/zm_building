@@ -20,117 +20,6 @@ LANG_FRENCH       	"Hold ^3[{+activate}]^7 for Poseidon's Punch [Cost: &&1]"
 REFERENCE           	PERK_DEADSHOT_DOUBLE
 LANG_FRENCH       	"Hold ^3[{+activate}]^7 for Deadshot Daiquiri Double [Cost: &&1]"
 
-REFERENCE           	BGB_SELECT
-LANG_FRENCH       	"Press ^3[{+activate}]^7 to switch GargoyleGums\n&&1Quantity: &&2"
-
-REFERENCE           	BGB_ACCEPT
-LANG_FRENCH       	"Press ^3[{+activate}]^7 for &&1"
-
-REFERENCE           	BGB_NO_STOCK
-LANG_FRENCH       	"Out of stock! Obtain more GargoyleGums through Divinium Trials!"
-
-REFERENCE           	BGB_ACTIVATE
-LANG_FRENCH       "Hold ^3[{+activate}]^7 to dispense GargoyleGum [Cost: &&1]"
-
-REFERENCE           	BGB_NEXT_ROUND
-LANG_FRENCH       "Come back next round!"
-
-REFERENCE           	BGB_STOCK_OPTION
-LANG_FRENCH       	"Stock Option"
-
-REFERENCE           	BGB_SWORD_FLAY
-LANG_FRENCH       "Sword Flay"
-
-REFERENCE           	BGB_TEMPORAL_GIFT
-LANG_FRENCH       "Temporal Gift"
-
-REFERENCE           	BGB_IN_PLAIN_SIGHT
-LANG_FRENCH       	"In Plain Sight"
-
-REFERENCE           	BGB_IM_FEELIN_LUCKY
-LANG_FRENCH       	"I'm Feelin' Lucky"
-
-REFERENCE           	BGB_IMMOLATION_LIQUIDATION
-LANG_FRENCH       	"Immolation Liquidation"
-
-REFERENCE           	BGB_PHOENIX_UP
-LANG_FRENCH       	"Phoenix Up"
-
-REFERENCE           	BGB_POP_SHOCKS
-LANG_FRENCH       	"Pop Shocks"
-
-REFERENCE           	BGB_CACHE_BACK
-LANG_FRENCH       	"Cache Back"
-
-REFERENCE           	BGB_ON_THE_HOUSE
-LANG_FRENCH       	"On the House"
-
-REFERENCE           	BGB_PROFIT_SHARING
-LANG_FRENCH       	"Profit Sharing"
-
-REFERENCE           	BGB_WALL_POWER
-LANG_FRENCH       	"Wall Power"
-
-REFERENCE           	BGB_CRATE_POWER
-LANG_FRENCH       	"Crate Power"
-
-REFERENCE           	BGB_UNQUENCHABLE
-LANG_FRENCH       	"Unquenchable"
-
-REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS
-LANG_FRENCH       	"Alchemical Antithesis"
-
-REFERENCE           	BGB_PERKAHOLIC
-LANG_FRENCH       	"Perkaholic"
-
-REFERENCE           	BGB_STOCK_OPTION_DESC
-LANG_FRENCH       	"Stock Option\nAmmo is taken from the player's stockpile instead of their weapon's magazine\n"
-
-REFERENCE           	BGB_SWORD_FLAY_DESC
-LANG_FRENCH       "Sword Flay\n Melee attacks will inflict 5x more damage on zombies\n"
-
-REFERENCE           	BGB_TEMPORAL_GIFT_DESC
-LANG_FRENCH       "Temporal Gift\n Powerups last longer\n"
-
-REFERENCE           	BGB_IN_PLAIN_SIGHT_DESC
-LANG_FRENCH       	"In Plain Sight\n All zombies ignore the player\n"
-
-REFERENCE           	BGB_IM_FEELIN_LUCKY_DESC
-LANG_FRENCH       	"I'm Feeling Lucky\n Spawns a random powerup\n"
-
-REFERENCE           	BGB_IMMOLATION_LIQUIDATION_DESC
-LANG_FRENCH       	"Immolation Liquidation\n Spawns a Fire Sale powerup\n"
-
-REFERENCE           	BGB_PHOENIX_UP_DESC
-LANG_FRENCH       	"Phoenix Up\n Revives all teammates. Teammates keep all of their perks\n"
-
-REFERENCE           	BGB_POP_SHOCKS_DESC
-LANG_FRENCH       	"Pop Shocks\n Melee attacks trigger an electrostatic discharge, electrocuting nearby zombies\n"
-
-REFERENCE           	BGB_CACHE_BACK_DESC
-LANG_FRENCH       	"Cache Back\n Spawns a Max Ammo powerup\n"
-
-REFERENCE           	BGB_ON_THE_HOUSE_DESC
-LANG_FRENCH       	"On the House\nSpawns a Perk Bottle powerup\n"
-
-REFERENCE           	BGB_PROFIT_SHARING_DESC
-LANG_FRENCH       	"Profit Sharing\nPoints you earn are also received by nearby players and vice versa\n"
-
-REFERENCE           	BGB_WALL_POWER_DESC
-LANG_FRENCH       	"Wall Power\nThe next wall weapon purchased becomes Pack-a-Punched\n"
-
-REFERENCE           	BGB_CRATE_POWER_DESC
-LANG_FRENCH       	"Crate Power\nThe next gun taken from the magic box becomes Pack-a-Punched\n"
-
-REFERENCE           	BGB_UNQUENCHABLE_DESC
-LANG_FRENCH       	"Unquenchable\nCan buy an extra Perk-a-Cola\n"
-
-REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS_DESC
-LANG_FRENCH       	"Alchemical Antithesis\nEvery 10 points earned is instead awarded 1 ammo in the stock of the current weapon\n"
-
-REFERENCE           	BGB_PERKAHOLIC_DESC
-LANG_FRENCH       	"Perkaholic\nGives the player all Perk-a-Colas in the map\n"
-
 REFERENCE           	PAD_COOLDOWN
 LANG_FRENCH       	"Cooling down..."
 
@@ -209,6 +98,12 @@ LANG_FRENCH       "Perk Blueprints"
 REFERENCE           	JOURNAL_HEADER_WEAPONBP
 LANG_FRENCH       "Weapon Blueprints"
 
+REFERENCE           	JOURNAL_NAVIGATION_SPEED
+LANG_FRENCH       "^3[{+speed_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"
+
+REFERENCE           	JOURNAL_NAVIGATION_TOGGLE
+LANG_FRENCH       "^3[{+toggleads_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"
+
 REFERENCE           	CHALLENGE_CHERRY
 LANG_FRENCH       "Obtain kills with Electric Cherry reloads"
 
@@ -243,7 +138,7 @@ REFERENCE           	CHALLENGE_QUICK
 LANG_FRENCH       "Obtain kills while on low health"
 
 REFERENCE           	CHALLENGE_QUICK_REWARD
-LANG_FRENCH       "Reward: Health regen cannot be interrupted"
+LANG_FRENCH       "Reward: Speed boost upon revive or regen"
 
 REFERENCE           	CHALLENGE_PHD
 LANG_FRENCH       "Obtain kills using PhD slides"
@@ -269,53 +164,242 @@ LANG_FRENCH       "Inactive during Shadow Breach"
 REFERENCE           	CHALLENGE_ACTIVE
 LANG_FRENCH       "Active: Progress resets next round"
 
-REFERENCE           	TRIAL_INACTIVE
-LANG_FRENCH       	"No Divinium Trial active"
+REFERENCE           	TRIAL_ARAMIS_NAME
+LANG_FRENCH       	"Judge Aramis"
 
-REFERENCE           	TRIAL_DESC_REWARD
-LANG_FRENCH       	"Reward: +2 to all GargoyleGums, 1 free GargoyleGum"
+REFERENCE           	TRIAL_ARAMIS_NAME_SHORT
+LANG_FRENCH       	"Aramis"
 
-REFERENCE           	TRIAL_DESC_NO_REWARD
-LANG_FRENCH       "No reward available"
+REFERENCE           	TRIAL_PORTHOS_NAME
+LANG_FRENCH       "Judge Porthos"
 
-REFERENCE           	TRIAL_DESC_INFO
-LANG_FRENCH       "Visit the Courtroom to claim your rewards and customize your GargoyleGum Pack!"
+REFERENCE           	TRIAL_DART_NAME
+LANG_FRENCH       "Judge D'Artagnan"
 
-REFERENCE           	TRIAL_DESC_YES_REWARD
-LANG_FRENCH       "Reward available"
+REFERENCE           	TRIAL_ATHOS_NAME
+LANG_FRENCH       "Judge Athos"
 
-REFERENCE           	TRIAL_DESC_TIMER
-LANG_FRENCH       "Current Trial expires in "
+REFERENCE           	TRIAL_HINTSTRING_START
+LANG_FRENCH       "Press ^3[{+activate}]^7 for "
 
-REFERENCE           	TRIAL_DESC_WALLBUY
-LANG_FRENCH       "Obtain kills with the "
+REFERENCE           	TRIAL_HINTSTRING_BRIBE_START
+LANG_FRENCH       "Press ^3[{+activate}]^7 to Bribe for "
 
-REFERENCE           	TRIAL_DESC_BOX
-LANG_FRENCH       "Obtain kills with a newly aqcuired weapon from the Mystery Box"
+REFERENCE           	TRIAL_HINTSTRING_VALUE
+LANG_FRENCH       " [Quantity: "
 
-REFERENCE           	TRIAL_DESC_CLASS
-LANG_FRENCH       "Obtain kills with"
+REFERENCE           	TRIAL_HINTSTRING_BRIBE_VALUE
+LANG_FRENCH       " [Cost: "
 
-REFERENCE           	TRIAL_DESC_ELEVATION
-LANG_FRENCH       "Obtain kills from a higher elevation"
+REFERENCE           	TRIAL_HINTSTRING_NEXT
+LANG_FRENCH       "\nMelee for next GargoyleGum\n"
 
-REFERENCE           	TRIAL_DESC_HEADSHOT
-LANG_FRENCH       "Obtain kills with headshots"
+REFERENCE           	TRIAL_BRIBE_PICKUP
+LANG_FRENCH       "Press ^3[{+activate}]^7 for Bribe"
 
-REFERENCE           	TRIAL_DESC_AASSAULT
-LANG_FRENCH       "Obtain kills in the "
+REFERENCE           	TRIAL_BRIBE_PICKUP_MAX
+LANG_FRENCH       "Cannot hold more Bribes"
 
-REFERENCE           	TRIAL_DESC_ADEFENSE
-LANG_FRENCH       "Remain in the "
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS0
+LANG_FRENCH       ": “Hi, I’m Judge Aramis, but you can just call me Aramis! I see a lot of potential in you!”"
 
-REFERENCE           	TRIAL_DESC_PACK_CURRENT
-LANG_FRENCH       "Current GargoyleGum Pack"
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS1
+LANG_FRENCH       ": “You’re already off to a hot start!”"
 
-REFERENCE           	TRIAL_DESC_PACK_NEXT
-LANG_FRENCH       "Next GargoyleGum Pack"
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS2
+LANG_FRENCH       ": “Nice work!”"
 
-REFERENCE           	TRIAL_UPGRADE
-LANG_FRENCH       "Press ^3[{+activate}]^7 twice rapidly to upgrade Trial weapon [Cost: 4000]"
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS3
+LANG_FRENCH       ": “Yo! Champ in the making! Sorry, I hope that wasn’t weird...”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS4
+LANG_FRENCH       ": “Wowzers!! I knew you were something special!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS10
+LANG_FRENCH       ": “I can’t believe what I’m watching! This is like a top class motion picture!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS15
+LANG_FRENCH       ": “I’m going to write an ode to your greatness!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS25
+LANG_FRENCH       ": “Oh my, you made it to Round 115!! That’s my favorite number!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE1
+LANG_FRENCH       ": “Thanks for the gold! Hope you enjoy what I gave you!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE2
+LANG_FRENCH       ": “More gold, nice!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE3
+LANG_FRENCH       ": “Aww, aren’t you sweet?”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE4
+LANG_FRENCH       ": “You shouldn’t have...”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE5
+LANG_FRENCH       ": “What a generous soul you are!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS0
+LANG_FRENCH       ": “Are you willing to do what it takes to be a true marksman?”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS1
+LANG_FRENCH       ": “This is just the beginning. You have yet much ground to travel on your sharpshooting journey.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS2
+LANG_FRENCH       ": “If you are to proceed along the path of a deadshot, daiquiri doubles as an effective aiming partner.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS3
+LANG_FRENCH       ": “It seems you have taken well to the craft of precision.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS4
+LANG_FRENCH       ": “At last, you have attained the rank of a true marksman!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS10
+LANG_FRENCH       ": “Wonderful work! I’ll be extending you an invite to my rifle club shortly.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS15
+LANG_FRENCH       ": “You’re cementing your place in the history books!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS25
+LANG_FRENCH       ": “It is my pleasure to crown you as the greatest marksman of all time!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE1
+LANG_FRENCH       ": “Hmmph. A real marksman would never take shortcuts.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE2
+LANG_FRENCH       ": “Is this any way for a sharpshooter to conduct themselves?”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE3
+LANG_FRENCH       ": “Entirely undignified.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE4
+LANG_FRENCH       ": “I don’t even know what to say at this point.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE5
+LANG_FRENCH       ": “Where are you getting all this money?”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART0
+LANG_FRENCH       ": “Look at you, so innocent and pure… that must change. Get your hands dirty!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART1
+LANG_FRENCH       ": “Good… good… do not hesitate to delve further into the blood of your enemies.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART2
+LANG_FRENCH       ": “More! More! More bloodshed!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART3
+LANG_FRENCH       ": “SWISH SWHOOSH STAB! STAB STAB STAB!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART4
+LANG_FRENCH       ": “The scent of your vanquished foes is just... so... intoxicating! BWAHAHAHA!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART10
+LANG_FRENCH       ": “Isn’t total annihilation simply beautiful?”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART15
+LANG_FRENCH       ": “Your brutality rivals that of The Doctor! Oh, you've never heard of him?”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART25
+LANG_FRENCH       ": “You know I love your murderous spirit, but maybe you should take a break at this point.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE1
+LANG_FRENCH       ": “This is a little too sterile for me.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE2
+LANG_FRENCH       ": “This is so humdrum! You know what I crave.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE3
+LANG_FRENCH       ": “I’m just going to tell myself that this is blood money.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE4
+LANG_FRENCH       ": “Whose slaughter generated this wealth? No — don’t tell me. It’s more fun to imagine!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE5
+LANG_FRENCH       ": “It’s a wonder what reframing can do for the mind. I feel so much better about accepting these bribes now!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS0
+LANG_FRENCH       ": “Pathetic creature! You are most certainly not worthy of anything!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS1
+LANG_FRENCH       ": “I suppose you think you’re some hotshot now. No. You. Are. Nothing.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS2
+LANG_FRENCH       ": “I guess you’ve managed to luck your way this far. Take your reward and get out of my sight.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS3
+LANG_FRENCH       ": “Have I been applying my standards incorrectly? No, it’s these scoundrel that are wrong!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS4
+LANG_FRENCH       ": “Ugh, fine, I guess I maybe sort of misjudged you...”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS10
+LANG_FRENCH       ": “Go ahead, rub it in.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS15
+LANG_FRENCH       ": “Enough already!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS25
+LANG_FRENCH       ": “I don’t have anything more to say. I hope you’re pleased with yourself.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE1
+LANG_FRENCH       ": “I feel dirty accepting anything from you.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE2
+LANG_FRENCH       ": “I suppose you’ve lived a comfortable life, haven’t you? Explains your weak character.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE3
+LANG_FRENCH       ": “I’ll have you know this is illegal. When the authorities return, I’ll be reporting you.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE4
+LANG_FRENCH       ": “Can I bribe you to never come back?”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE5
+LANG_FRENCH       ": “I wish you’d just die already.”"
+
+REFERENCE           	TRIAL_RANDOM_GUM
+LANG_FRENCH       "Random GargoyleGum"
+
+REFERENCE           	TRIAL_ARAMIS_DESC
+LANG_FRENCH       "Complete Rounds"
+
+REFERENCE           	TRIAL_PORTHOS_DESC
+LANG_FRENCH       "Obtain Headshot Kills"
+
+REFERENCE           	TRIAL_DART_DESC
+LANG_FRENCH       "Obtain Melee Kills"
+
+REFERENCE           	TRIAL_ATHOS_DESC
+LANG_FRENCH       "Unknown Trial"
+
+REFERENCE           	TRIAL_ATHOS_NEW_TRIAL
+LANG_FRENCH       " (New Trial in "
+
+REFERENCE           	TRIAL_ATHOS_NEW_TRIAL_END
+LANG_FRENCH       " Rounds)"
+
+REFERENCE           	TRIAL_ATHOS_NEW_TRIAL_SING_END
+LANG_FRENCH       " Round)"
+
+REFERENCE           	TRIAL_ATHOS_DESC_WALLBUY
+LANG_FRENCH       "Obtain Kills with the "
+
+REFERENCE           	TRIAL_ATHOS_DESC_BOX
+LANG_FRENCH       "Obtain Kills with a Weapon newly acquired from the Mystery Box"
+
+REFERENCE           	TRIAL_ATHOS_DESC_ELEVATION
+LANG_FRENCH       "Obtain Kills from a Higher Elevation"
+
+REFERENCE           	TRIAL_ATHOS_DESC_AASSAULT
+LANG_FRENCH       "Obtain Kills in the "
+
+REFERENCE           	TRIAL_ATHOS_DESC_CROUCH
+LANG_FRENCH       "Obtain Kills while Crouched"
+
+REFERENCE           	TRIAL_ATHOS_DESC_TRAP
+LANG_FRENCH       "Obtain Trap Kills"
+
+REFERENCE           	TRIAL_ATHOS_DESC_BLOOD_VIAL
+LANG_FRENCH       "Fill Blood Vials"
 
 REFERENCE           	ROOM_SPAWN_ROOM
 LANG_FRENCH       	"Spawn Room"
@@ -334,6 +418,81 @@ LANG_FRENCH       	"Lion Room"
 
 REFERENCE           	ROOM_DOWNSTAIRS_ROOM
 LANG_FRENCH       	"Downstairs Room"
+
+REFERENCE           	ROOM_CRASH_SITE
+LANG_FRENCH       	"Crash Site"
+
+REFERENCE           	ROOM_RED_ROOM
+LANG_FRENCH       	"Red Room"
+
+REFERENCE           	ROOM_BELL_TOWER
+LANG_FRENCH       	"Bell Tower"
+
+REFERENCE           	ROOM_RADIO_GALLERY
+LANG_FRENCH       	"Radio Gallery"
+
+REFERENCE           	ROOM_SCAFFOLDING
+LANG_FRENCH       	"Scaffolding"
+
+REFERENCE           	ROOM_CHOIR
+LANG_FRENCH       	"Choir"
+
+REFERENCE           	ROOM_CENTRE
+LANG_FRENCH       	"Centre"
+
+REFERENCE           	ROOM_BASILICA
+LANG_FRENCH       	"Basilica"
+
+REFERENCE           	ROOM_AIRFIELD
+LANG_FRENCH       	"Airfield"
+
+REFERENCE           	ROOM_DORMITORY
+LANG_FRENCH       	"Dormitory"
+
+REFERENCE           	ROOM_CLOITRE
+LANG_FRENCH       	"Cloitre"
+
+REFERENCE           	ROOM_MERVEILLE
+LANG_FRENCH       	"Merveille de Verite"
+
+REFERENCE           	ROOM_GUARD_TOWER
+LANG_FRENCH       	"GUARD_TOWER"
+
+REFERENCE           	ROOM_COURTYARD
+LANG_FRENCH       	"Courtyard"
+
+REFERENCE           	ROOM_COURTROOM
+LANG_FRENCH       	"Courtroom"
+
+REFERENCE           	ROOM_VERITE_LIBRARY
+LANG_FRENCH       	"Verite Library"
+
+REFERENCE           	ROOM_LOWER_PILGRIMAGE
+LANG_FRENCH       	"Lower Pilgrimage Stairs"
+
+REFERENCE           	ROOM_CATWALK
+LANG_FRENCH       	"Catwalk"
+
+REFERENCE           	ROOM_BRIDGE
+LANG_FRENCH       	"Bridge"
+
+REFERENCE           	ROOM_URM_LABORATORY
+LANG_FRENCH       	"URM Laboratory"
+
+REFERENCE           	ROOM_UPPER_PILGRIMAGE
+LANG_FRENCH       	"Upper Pilgrimage Stairs"
+
+REFERENCE           	ROOM_MIDDLE_PILGRIMAGE
+LANG_FRENCH       	"Middle Pilgrimage Stairs"
+
+REFERENCE           	ROOM_BRIDGE_V2
+LANG_FRENCH       	"Bridge v2"
+
+REFERENCE           	ROOM_KNIGHTS_HALL
+LANG_FRENCH       	"Knight's Hall"
+
+REFERENCE           	ROOM_NO_MANS_LAND
+LANG_FRENCH       	"No Man's Land"
 
 REFERENCE           	SB_POINTS
 LANG_FRENCH       	"Points"

@@ -3,351 +3,510 @@ CONFIG					"C:\projects\cod\t7\bin\StringEd.cfg"
 FILENOTES				""
 
 REFERENCE           	EMPTY
-LANG_PORTUGESE       	""
+LANG_PORTUGUESE       	""
 
 REFERENCE           	PERK_DOUBLETAP_ORIGINAL
-LANG_PORTUGESE       	"Hold ^3[{+activate}]^7 for Double Tap Root Beer [Cost: &&1]"
+LANG_PORTUGUESE       	"Hold ^3[{+activate}]^7 for Double Tap Root Beer [Cost: &&1]"
 
 REFERENCE           	PERK_ELECTRIC_CHERRY_RED
-LANG_PORTUGESE       	"Hold ^3[{+activate}]^7 for Electric Cherry [Cost: &&1]"
+LANG_PORTUGUESE       	"Hold ^3[{+activate}]^7 for Electric Cherry [Cost: &&1]"
 
 REFERENCE           	PERK_PHD_LITE
-LANG_PORTUGESE       	"Hold ^3[{+activate}]^7 for PhD Slider [Cost: &&1]"
+LANG_PORTUGUESE       	"Hold ^3[{+activate}]^7 for PhD Slider [Cost: &&1]"
 
 REFERENCE           	PERK_POSEIDON_PUNCH
-LANG_PORTUGESE       	"Hold ^3[{+activate}]^7 for Poseidon's Punch [Cost: &&1]"
+LANG_PORTUGUESE       	"Hold ^3[{+activate}]^7 for Poseidon's Punch [Cost: &&1]"
 
 REFERENCE           	PERK_DEADSHOT_DOUBLE
-LANG_PORTUGESE       	"Hold ^3[{+activate}]^7 for Deadshot Daiquiri Double [Cost: &&1]"
-
-REFERENCE           	BGB_SELECT
-LANG_PORTUGESE       	"Press ^3[{+activate}]^7 to switch GargoyleGums\n&&1Quantity: &&2"
-
-REFERENCE           	BGB_ACCEPT
-LANG_PORTUGESE       	"Press ^3[{+activate}]^7 for &&1"
-
-REFERENCE           	BGB_NO_STOCK
-LANG_PORTUGESE       	"Out of stock! Obtain more GargoyleGums through Divinium Trials!"
-
-REFERENCE           	BGB_ACTIVATE
-LANG_PORTUGESE       "Hold ^3[{+activate}]^7 to dispense GargoyleGum [Cost: &&1]"
-
-REFERENCE           	BGB_NEXT_ROUND
-LANG_PORTUGESE       "Come back next round!"
-
-REFERENCE           	BGB_STOCK_OPTION
-LANG_PORTUGESE       	"Stock Option"
-
-REFERENCE           	BGB_SWORD_FLAY
-LANG_PORTUGESE       "Sword Flay"
-
-REFERENCE           	BGB_TEMPORAL_GIFT
-LANG_PORTUGESE       "Temporal Gift"
-
-REFERENCE           	BGB_IN_PLAIN_SIGHT
-LANG_PORTUGESE       	"In Plain Sight"
-
-REFERENCE           	BGB_IM_FEELIN_LUCKY
-LANG_PORTUGESE       	"I'm Feelin' Lucky"
-
-REFERENCE           	BGB_IMMOLATION_LIQUIDATION
-LANG_PORTUGESE       	"Immolation Liquidation"
-
-REFERENCE           	BGB_PHOENIX_UP
-LANG_PORTUGESE       	"Phoenix Up"
-
-REFERENCE           	BGB_POP_SHOCKS
-LANG_PORTUGESE       	"Pop Shocks"
-
-REFERENCE           	BGB_CACHE_BACK
-LANG_PORTUGESE       	"Cache Back"
-
-REFERENCE           	BGB_ON_THE_HOUSE
-LANG_PORTUGESE       	"On the House"
-
-REFERENCE           	BGB_PROFIT_SHARING
-LANG_PORTUGESE       	"Profit Sharing"
-
-REFERENCE           	BGB_WALL_POWER
-LANG_PORTUGESE       	"Wall Power"
-
-REFERENCE           	BGB_CRATE_POWER
-LANG_PORTUGESE       	"Crate Power"
-
-REFERENCE           	BGB_UNQUENCHABLE
-LANG_PORTUGESE       	"Unquenchable"
-
-REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS
-LANG_PORTUGESE       	"Alchemical Antithesis"
-
-REFERENCE           	BGB_PERKAHOLIC
-LANG_PORTUGESE       	"Perkaholic"
-
-REFERENCE           	BGB_STOCK_OPTION_DESC
-LANG_PORTUGESE       	"Stock Option\nAmmo is taken from the player's stockpile instead of their weapon's magazine\n"
-
-REFERENCE           	BGB_SWORD_FLAY_DESC
-LANG_PORTUGESE       "Sword Flay\n Melee attacks will inflict 5x more damage on zombies\n"
-
-REFERENCE           	BGB_TEMPORAL_GIFT_DESC
-LANG_PORTUGESE       "Temporal Gift\n Powerups last longer\n"
-
-REFERENCE           	BGB_IN_PLAIN_SIGHT_DESC
-LANG_PORTUGESE       	"In Plain Sight\n All zombies ignore the player\n"
-
-REFERENCE           	BGB_IM_FEELIN_LUCKY_DESC
-LANG_PORTUGESE       	"I'm Feeling Lucky\n Spawns a random powerup\n"
-
-REFERENCE           	BGB_IMMOLATION_LIQUIDATION_DESC
-LANG_PORTUGESE       	"Immolation Liquidation\n Spawns a Fire Sale powerup\n"
-
-REFERENCE           	BGB_PHOENIX_UP_DESC
-LANG_PORTUGESE       	"Phoenix Up\n Revives all teammates. Teammates keep all of their perks\n"
-
-REFERENCE           	BGB_POP_SHOCKS_DESC
-LANG_PORTUGESE       	"Pop Shocks\n Melee attacks trigger an electrostatic discharge, electrocuting nearby zombies\n"
-
-REFERENCE           	BGB_CACHE_BACK_DESC
-LANG_PORTUGESE       	"Cache Back\n Spawns a Max Ammo powerup\n"
-
-REFERENCE           	BGB_ON_THE_HOUSE_DESC
-LANG_PORTUGESE       	"On the House\nSpawns a Perk Bottle powerup\n"
-
-REFERENCE           	BGB_PROFIT_SHARING_DESC
-LANG_PORTUGESE       	"Profit Sharing\nPoints you earn are also received by nearby players and vice versa\n"
-
-REFERENCE           	BGB_WALL_POWER_DESC
-LANG_PORTUGESE       	"Wall Power\nThe next wall weapon purchased becomes Pack-a-Punched\n"
-
-REFERENCE           	BGB_CRATE_POWER_DESC
-LANG_PORTUGESE       	"Crate Power\nThe next gun taken from the magic box becomes Pack-a-Punched\n"
-
-REFERENCE           	BGB_UNQUENCHABLE_DESC
-LANG_PORTUGESE       	"Unquenchable\nCan buy an extra Perk-a-Cola\n"
-
-REFERENCE           	BGB_ALCHEMICAL_ANTITHESIS_DESC
-LANG_PORTUGESE       	"Alchemical Antithesis\nEvery 10 points earned is instead awarded 1 ammo in the stock of the current weapon\n"
-
-REFERENCE           	BGB_PERKAHOLIC_DESC
-LANG_PORTUGESE       	"Perkaholic\nGives the player all Perk-a-Colas in the map\n"
+LANG_PORTUGUESE       	"Hold ^3[{+activate}]^7 for Deadshot Daiquiri Double [Cost: &&1]"
 
 REFERENCE           	PAD_COOLDOWN
-LANG_PORTUGESE       	"Cooling down..."
+LANG_PORTUGUESE       	"Cooling down..."
 
 REFERENCE           	TELEPORTER_OFFLINE
-LANG_PORTUGESE       	"Mainframe offline"
+LANG_PORTUGUESE       	"Mainframe offline"
 
 REFERENCE           	TELEPORTER_SYNCHRONIZE
-LANG_PORTUGESE       	"Hold ^3[{+activate}]^7 to synchronize teleportation network [&&1/4]"
+LANG_PORTUGUESE       	"Hold ^3[{+activate}]^7 to synchronize teleportation network [&&1/4]"
 
 REFERENCE           	TELEPORTER_SYNCHRONIZING
-LANG_PORTUGESE       	"Synchronizing... [&&1/4]"
+LANG_PORTUGUESE       	"Synchronizing... [&&1/4]"
 
 REFERENCE           	TELEPORTER_ACTIVATE
-LANG_PORTUGESE       	"Press ^3[{+activate}]^7 to teleport"
+LANG_PORTUGUESE       	"Press ^3[{+activate}]^7 to teleport"
 
 REFERENCE           	SHADOW_DISABLED
-LANG_PORTUGESE       	"Cannot perform this action during a Shadow Breach"
+LANG_PORTUGUESE       	"Cannot perform this action during a Shadow Breach"
 
 REFERENCE           	GENERATOR_DEPOSIT
-LANG_PORTUGESE       	"Press and hold ^3[{+activate}]^7 to deposit a Blood Vial into the generator"
+LANG_PORTUGUESE       	"Press and hold ^3[{+activate}]^7 to deposit a Blood Vial into the generator"
 
 REFERENCE           	GENERATOR_NO_BLOOD
-LANG_PORTUGESE       	"Security Protocol 38: Blood Vial required"
+LANG_PORTUGUESE       	"Security Protocol 38: Blood Vial required"
 
 REFERENCE           	BLOODGUN_IN_USE
-LANG_PORTUGESE       	"L'Arme Ensanglante in use"
+LANG_PORTUGUESE       	"L'Arme Ensanglante in use"
 
 REFERENCE           	BLOODGUN_HAS_VIAL
-LANG_PORTUGESE       	"Already have Blood Vial"
+LANG_PORTUGUESE       	"Already have Blood Vial"
 
 REFERENCE           	BLOODGUN_COOLDOWN
-LANG_PORTUGESE       	"Cooling down... Please wait a round"
+LANG_PORTUGUESE       	"Cooling down... Please wait a round"
 
 REFERENCE           	BLOODGUN_ACTIVATE
-LANG_PORTUGESE       	"Press and hold ^3[{+activate}]^7 to acuire L'Arme Ensanglante
+LANG_PORTUGUESE       	"Press and hold ^3[{+activate}]^7 to acuire L'Arme Ensanglante
 
 REFERENCE           	TRIAL_ACTIVATE
-LANG_PORTUGESE       	"Press ^3[{+activate}]^7 to accept a Divinium Trial [Cost: &&1]"
+LANG_PORTUGUESE       	"Press ^3[{+activate}]^7 to accept a Divinium Trial [Cost: &&1]"
 
 REFERENCE           	TRIAL_IN_PROGRESS
-LANG_PORTUGESE       	"Divinium Trial in progress"
+LANG_PORTUGUESE       	"Divinium Trial in progress"
 
 REFERENCE           	TRIAL_REWARD
-LANG_PORTUGESE       	"Press ^3[{+activate}]^7 for &&1"
+LANG_PORTUGUESE       	"Press ^3[{+activate}]^7 for &&1"
 
 REFERENCE           	FOUNTAIN_OFFLINE
-LANG_PORTUGESE       	"Juggernog Station Offline - At least 2 Blood Generators must be powered on"
+LANG_PORTUGUESE       	"Juggernog Station Offline - At least 2 Blood Generators must be powered on"
 
 REFERENCE           	FOUNTAIN_DEPOSIT
-LANG_PORTUGESE       "Press and hold ^3[{+activate}]^7 to insert a Blood Vial into the Juggernog Station"
+LANG_PORTUGUESE       "Press and hold ^3[{+activate}]^7 to insert a Blood Vial into the Juggernog Station"
 
 REFERENCE           	FOUNTAIN_ACTIVATE
-LANG_PORTUGESE       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [&&1 use(s) left]"
+LANG_PORTUGUESE       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [&&1 use(s) left]"
 
 REFERENCE           	TAKE_WEAPON
-LANG_PORTUGESE       "Press ^3[{+activate}]^7 to take &&1"
+LANG_PORTUGUESE       "Press ^3[{+activate}]^7 to take &&1"
 
 REFERENCE           	TRIDENT_SEEK
-LANG_PORTUGESE       "I seem to have misplaced my weapon. Can you help me find it?"
+LANG_PORTUGUESE       "I seem to have misplaced my weapon. Can you help me find it?"
 
 REFERENCE           	TRIDENT_REJECT
-LANG_PORTUGESE       "You do not posess the weapon I seek"
+LANG_PORTUGUESE       "You do not posess the weapon I seek"
 
 REFERENCE           	TRIDENT_CHARGE
-LANG_PORTUGESE       "Charging weapon..."
+LANG_PORTUGUESE       "Charging weapon..."
 
 REFERENCE           	JOURNAL_HEADER_CHALLENGE
-LANG_PORTUGESE       "Perk Challenges"
+LANG_PORTUGUESE       "Perk Challenges"
 
 REFERENCE           	JOURNAL_HEADER_BGB
-LANG_PORTUGESE       "Divinium Trials"
+LANG_PORTUGUESE       "Divinium Trials"
 
 REFERENCE           	JOURNAL_HEADER_PERKBP
-LANG_PORTUGESE       "Perk Blueprints"
+LANG_PORTUGUESE       "Perk Blueprints"
 
 REFERENCE           	JOURNAL_HEADER_WEAPONBP
-LANG_PORTUGESE       "Weapon Blueprints"
+LANG_PORTUGUESE       "Weapon Blueprints"
+
+REFERENCE           	JOURNAL_NAVIGATION_SPEED
+LANG_PORTUGUESE       "^3[{+speed_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"
+
+REFERENCE           	JOURNAL_NAVIGATION_TOGGLE
+LANG_PORTUGUESE       "^3[{+toggleads_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"
 
 REFERENCE           	CHALLENGE_CHERRY
-LANG_PORTUGESE       "Obtain kills with Electric Cherry reloads"
+LANG_PORTUGUESE       "Obtain kills with Electric Cherry reloads"
 
 REFERENCE           	CHALLENGE_CHERRY_REWARD
-LANG_PORTUGESE       "Reward: 50% faster reload speed"
+LANG_PORTUGUESE       "Reward: 50% faster reload speed"
 
 REFERENCE           	CHALLENGE_STAMIN
-LANG_PORTUGESE       "Obtain kills after 2+ second sprints"
+LANG_PORTUGUESE       "Obtain kills after 2+ second sprints"
 
 REFERENCE           	CHALLENGE_STAMIN_REWARD
-LANG_PORTUGESE       "Reward: Unlimited sprint duration"
+LANG_PORTUGUESE       "Reward: Unlimited sprint duration"
 
 REFERENCE           	CHALLENGE_DOUBLE
-LANG_PORTUGESE       "Obtain pentakills"
+LANG_PORTUGUESE       "Obtain pentakills"
 
 REFERENCE           	CHALLENGE_DOUBLE_REWARD
-LANG_PORTUGESE       "Reward: Bullets double upon being fired"
+LANG_PORTUGUESE       "Reward: Bullets double upon being fired"
 
 REFERENCE           	CHALLENGE_MULE
-LANG_PORTUGESE       "Obtain kills with third weapon"
+LANG_PORTUGUESE       "Obtain kills with third weapon"
 
 REFERENCE           	CHALLENGE_MULE_REWARD
-LANG_PORTUGESE       "Reward: Lost third weapons are saved"
+LANG_PORTUGUESE       "Reward: Lost third weapons are saved"
 
 REFERENCE           	CHALLENGE_POSEIDON
-LANG_PORTUGESE       "Obtain kills on fallen zombies"
+LANG_PORTUGUESE       "Obtain kills on fallen zombies"
 
 REFERENCE           	CHALLENGE_POSEIDON_REWARD
-LANG_PORTUGESE       "Reward: +15 health per fallen zombie"
+LANG_PORTUGUESE       "Reward: +15 health per fallen zombie"
 
 REFERENCE           	CHALLENGE_QUICK
-LANG_PORTUGESE       "Obtain kills while on low health"
+LANG_PORTUGUESE       "Obtain kills while on low health"
 
 REFERENCE           	CHALLENGE_QUICK_REWARD
-LANG_PORTUGESE      "Reward: Health regen cannot be interrupted"
+LANG_PORTUGUESE       "Reward: Speed boost upon revive or regen"
 
 REFERENCE           	CHALLENGE_PHD
-LANG_PORTUGESE       "Obtain kills using PhD slides"
+LANG_PORTUGUESE       "Obtain kills using PhD slides"
 
 REFERENCE           	CHALLENGE_PHD_REWARD
-LANG_PORTUGESE       "Reward: Immunity to splash damage"
+LANG_PORTUGUESE       "Reward: Immunity to splash damage"
 
 REFERENCE           	CHALLENGE_DEADSHOT
-LANG_PORTUGESE       "Blow zombie minds"
+LANG_PORTUGUESE       "Blow zombie minds"
 
 REFERENCE           	CHALLENGE_DEADSHOT_REWARD
-LANG_PORTUGESE       "Reward: Blow up to 16 minds at a time"
+LANG_PORTUGUESE       "Reward: Blow up to 16 minds at a time"
 
 REFERENCE           	CHALLENGE_INACTIVE
-LANG_PORTUGESE       "Inactive"
+LANG_PORTUGUESE       "Inactive"
 
 REFERENCE           	CHALLENGE_COMPLETE
-LANG_PORTUGESE       "Complete"
+LANG_PORTUGUESE       "Complete"
 
 REFERENCE           	CHALLENGE_INACTIVE_SHADOW
-LANG_PORTUGESE       "Inactive during Shadow Breach"
+LANG_PORTUGUESE       "Inactive during Shadow Breach"
 
 REFERENCE           	CHALLENGE_ACTIVE
-LANG_PORTUGESE       "Active: Progress resets next round"
+LANG_PORTUGUESE       "Active: Progress resets next round"
 
-REFERENCE           	TRIAL_INACTIVE
-LANG_PORTUGESE       	"No Divinium Trial active"
+REFERENCE           	TRIAL_ARAMIS_NAME
+LANG_PORTUGUESE       	"Judge Aramis"
 
-REFERENCE           	TRIAL_DESC_REWARD
-LANG_PORTUGESE       	"Reward: +2 to all GargoyleGums, 1 free GargoyleGum"
+REFERENCE           	TRIAL_ARAMIS_NAME_SHORT
+LANG_PORTUGUESE       	"Aramis"
 
-REFERENCE           	TRIAL_DESC_NO_REWARD
-LANG_PORTUGESE       "No reward available"
+REFERENCE           	TRIAL_PORTHOS_NAME
+LANG_PORTUGUESE       "Judge Porthos"
 
-REFERENCE           	TRIAL_DESC_INFO
-LANG_PORTUGESE       "Visit the Courtroom to claim your rewards and customize your GargoyleGum Pack!"
+REFERENCE           	TRIAL_DART_NAME
+LANG_PORTUGUESE       "Judge D'Artagnan"
 
-REFERENCE           	TRIAL_DESC_YES_REWARD
-LANG_PORTUGESE       "Reward available"
+REFERENCE           	TRIAL_ATHOS_NAME
+LANG_PORTUGUESE       "Judge Athos"
 
-REFERENCE           	TRIAL_DESC_TIMER
-LANG_PORTUGESE       "Current Trial expires in "
+REFERENCE           	TRIAL_HINTSTRING_START
+LANG_PORTUGUESE       "Press ^3[{+activate}]^7 for "
 
-REFERENCE           	TRIAL_DESC_WALLBUY
-LANG_PORTUGESE       "Obtain kills with the "
+REFERENCE           	TRIAL_HINTSTRING_BRIBE_START
+LANG_PORTUGUESE       "Press ^3[{+activate}]^7 to Bribe for "
 
-REFERENCE           	TRIAL_DESC_BOX
-LANG_PORTUGESE       "Obtain kills with a newly aqcuired weapon from the Mystery Box"
+REFERENCE           	TRIAL_HINTSTRING_VALUE
+LANG_PORTUGUESE       " [Quantity: "
 
-REFERENCE           	TRIAL_DESC_CLASS
-LANG_PORTUGESE       "Obtain kills with"
+REFERENCE           	TRIAL_HINTSTRING_BRIBE_VALUE
+LANG_PORTUGUESE       " [Cost: "
 
-REFERENCE           	TRIAL_DESC_ELEVATION
-LANG_PORTUGESE       "Obtain kills from a higher elevation"
+REFERENCE           	TRIAL_HINTSTRING_NEXT
+LANG_PORTUGUESE       "\nMelee for next GargoyleGum\n"
 
-REFERENCE           	TRIAL_DESC_HEADSHOT
-LANG_PORTUGESE       "Obtain kills with headshots"
+REFERENCE           	TRIAL_BRIBE_PICKUP
+LANG_PORTUGUESE       "Press ^3[{+activate}]^7 for Bribe"
 
-REFERENCE           	TRIAL_DESC_AASSAULT
-LANG_PORTUGESE       "Obtain kills in the "
+REFERENCE           	TRIAL_BRIBE_PICKUP_MAX
+LANG_PORTUGUESE       "Cannot hold more Bribes"
 
-REFERENCE           	TRIAL_DESC_ADEFENSE
-LANG_PORTUGESE       "Remain in the "
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS0
+LANG_PORTUGUESE       ": “Hi, I’m Judge Aramis, but you can just call me Aramis! I see a lot of potential in you!”"
 
-REFERENCE           	TRIAL_DESC_PACK_CURRENT
-LANG_PORTUGESE       "Current GargoyleGum Pack"
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS1
+LANG_PORTUGUESE       ": “You’re already off to a hot start!”"
 
-REFERENCE           	TRIAL_DESC_PACK_NEXT
-LANG_PORTUGESE       "Next GargoyleGum Pack"
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS2
+LANG_PORTUGUESE       ": “Nice work!”"
 
-REFERENCE           	TRIAL_UPGRADE
-LANG_PORTUGESE       "Press ^3[{+activate}]^7 twice rapidly to upgrade Trial weapon [Cost: 4000]"
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS3
+LANG_PORTUGUESE       ": “Yo! Champ in the making! Sorry, I hope that wasn’t weird...”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS4
+LANG_PORTUGUESE       ": “Wowzers!! I knew you were something special!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS10
+LANG_PORTUGUESE       ": “I can’t believe what I’m watching! This is like a top class motion picture!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS15
+LANG_PORTUGUESE       ": “I’m going to write an ode to your greatness!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS25
+LANG_PORTUGUESE       ": “Oh my, you made it to Round 115!! That’s my favorite number!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE1
+LANG_PORTUGUESE       ": “Thanks for the gold! Hope you enjoy what I gave you!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE2
+LANG_PORTUGUESE       ": “More gold, nice!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE3
+LANG_PORTUGUESE       ": “Aww, aren’t you sweet?”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE4
+LANG_PORTUGUESE       ": “You shouldn’t have...”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE5
+LANG_PORTUGUESE       ": “What a generous soul you are!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS0
+LANG_PORTUGUESE       ": “Are you willing to do what it takes to be a true marksman?”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS1
+LANG_PORTUGUESE       ": “This is just the beginning. You have yet much ground to travel on your sharpshooting journey.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS2
+LANG_PORTUGUESE       ": “If you are to proceed along the path of a deadshot, daiquiri doubles as an effective aiming partner.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS3
+LANG_PORTUGUESE       ": “It seems you have taken well to the craft of precision.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS4
+LANG_PORTUGUESE       ": “At last, you have attained the rank of a true marksman!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS10
+LANG_PORTUGUESE       ": “Wonderful work! I’ll be extending you an invite to my rifle club shortly.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS15
+LANG_PORTUGUESE       ": “You’re cementing your place in the history books!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS25
+LANG_PORTUGUESE       ": “It is my pleasure to crown you as the greatest marksman of all time!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE1
+LANG_PORTUGUESE       ": “Hmmph. A real marksman would never take shortcuts.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE2
+LANG_PORTUGUESE       ": “Is this any way for a sharpshooter to conduct themselves?”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE3
+LANG_PORTUGUESE       ": “Entirely undignified.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE4
+LANG_PORTUGUESE       ": “I don’t even know what to say at this point.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE5
+LANG_PORTUGUESE       ": “Where are you getting all this money?”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART0
+LANG_PORTUGUESE       ": “Look at you, so innocent and pure… that must change. Get your hands dirty!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART1
+LANG_PORTUGUESE       ": “Good… good… do not hesitate to delve further into the blood of your enemies.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART2
+LANG_PORTUGUESE       ": “More! More! More bloodshed!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART3
+LANG_PORTUGUESE       ": “SWISH SWHOOSH STAB! STAB STAB STAB!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART4
+LANG_PORTUGUESE       ": “The scent of your vanquished foes is just... so... intoxicating! BWAHAHAHA!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART10
+LANG_PORTUGUESE       ": “Isn’t total annihilation simply beautiful?”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART15
+LANG_PORTUGUESE       ": “Your brutality rivals that of The Doctor! Oh, you've never heard of him?”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART25
+LANG_PORTUGUESE       ": “You know I love your murderous spirit, but maybe you should take a break at this point.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE1
+LANG_PORTUGUESE       ": “This is a little too sterile for me.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE2
+LANG_PORTUGUESE       ": “This is so humdrum! You know what I crave.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE3
+LANG_PORTUGUESE       ": “I’m just going to tell myself that this is blood money.”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE4
+LANG_PORTUGUESE       ": “Whose slaughter generated this wealth? No — don’t tell me. It’s more fun to imagine!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE5
+LANG_PORTUGUESE       ": “It’s a wonder what reframing can do for the mind. I feel so much better about accepting these bribes now!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS0
+LANG_PORTUGUESE       ": “Pathetic creature! You are most certainly not worthy of anything!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS1
+LANG_PORTUGUESE       ": “I suppose you think you’re some hotshot now. No. You. Are. Nothing.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS2
+LANG_PORTUGUESE       ": “I guess you’ve managed to luck your way this far. Take your reward and get out of my sight.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS3
+LANG_PORTUGUESE       ": “Have I been applying my standards incorrectly? No, it’s these scoundrel that are wrong!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS4
+LANG_PORTUGUESE       ": “Ugh, fine, I guess I maybe sort of misjudged you...”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS10
+LANG_PORTUGUESE       ": “Go ahead, rub it in.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS15
+LANG_PORTUGUESE       ": “Enough already!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS25
+LANG_PORTUGUESE       ": “I don’t have anything more to say. I hope you’re pleased with yourself.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE1
+LANG_PORTUGUESE       ": “I feel dirty accepting anything from you.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE2
+LANG_PORTUGUESE       ": “I suppose you’ve lived a comfortable life, haven’t you? Explains your weak character.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE3
+LANG_PORTUGUESE       ": “I’ll have you know this is illegal. When the authorities return, I’ll be reporting you.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE4
+LANG_PORTUGUESE       ": “Can I bribe you to never come back?”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE5
+LANG_PORTUGUESE       ": “I wish you’d just die already.”"
+
+REFERENCE           	TRIAL_RANDOM_GUM
+LANG_PORTUGUESE       "Random GargoyleGum"
+
+REFERENCE           	TRIAL_ARAMIS_DESC
+LANG_PORTUGUESE       "Complete Rounds"
+
+REFERENCE           	TRIAL_PORTHOS_DESC
+LANG_PORTUGUESE       "Obtain Headshot Kills"
+
+REFERENCE           	TRIAL_DART_DESC
+LANG_PORTUGUESE       "Obtain Melee Kills"
+
+REFERENCE           	TRIAL_ATHOS_DESC
+LANG_PORTUGUESE       "Unknown Trial"
+
+REFERENCE           	TRIAL_ATHOS_NEW_TRIAL
+LANG_PORTUGUESE       " (New Trial in "
+
+REFERENCE           	TRIAL_ATHOS_NEW_TRIAL_END
+LANG_PORTUGUESE       " Rounds)"
+
+REFERENCE           	TRIAL_ATHOS_NEW_TRIAL_SING_END
+LANG_PORTUGUESE       " Round)"
+
+REFERENCE           	TRIAL_ATHOS_DESC_WALLBUY
+LANG_PORTUGUESE       "Obtain Kills with the "
+
+REFERENCE           	TRIAL_ATHOS_DESC_BOX
+LANG_PORTUGUESE       "Obtain Kills with a Weapon newly acquired from the Mystery Box"
+
+REFERENCE           	TRIAL_ATHOS_DESC_ELEVATION
+LANG_PORTUGUESE       "Obtain Kills from a Higher Elevation"
+
+REFERENCE           	TRIAL_ATHOS_DESC_AASSAULT
+LANG_PORTUGUESE       "Obtain Kills in the "
+
+REFERENCE           	TRIAL_ATHOS_DESC_CROUCH
+LANG_PORTUGUESE       "Obtain Kills while Crouched"
+
+REFERENCE           	TRIAL_ATHOS_DESC_TRAP
+LANG_PORTUGUESE       "Obtain Trap Kills"
+
+REFERENCE           	TRIAL_ATHOS_DESC_BLOOD_VIAL
+LANG_PORTUGUESE       "Fill Blood Vials"
 
 REFERENCE           	ROOM_SPAWN_ROOM
-LANG_PORTUGESE       	"Spawn Room"
+LANG_PORTUGUESE       	"Spawn Room"
 
 REFERENCE           	ROOM_STAMINARCH
-LANG_PORTUGESE       	"Staminarch"
+LANG_PORTUGUESE       	"Staminarch"
 
 REFERENCE           	ROOM_WATER_TOWER
-LANG_PORTUGESE       	"Water Tower"
+LANG_PORTUGUESE       	"Water Tower"
 
 REFERENCE           	ROOM_CLEAN_ROOM
-LANG_PORTUGESE       	"Clean Room"
+LANG_PORTUGUESE       	"Clean Room"
 
 REFERENCE           	ROOM_LION_ROOM
-LANG_PORTUGESE       	"Lion Room"
+LANG_PORTUGUESE       	"Lion Room"
 
 REFERENCE           	ROOM_DOWNSTAIRS_ROOM
-LANG_PORTUGESE       	"Downstairs Room"
+LANG_PORTUGUESE       	"Downstairs Room"
+
+REFERENCE           	ROOM_CRASH_SITE
+LANG_PORTUGUESE       	"Crash Site"
+
+REFERENCE           	ROOM_RED_ROOM
+LANG_PORTUGUESE       	"Red Room"
+
+REFERENCE           	ROOM_BELL_TOWER
+LANG_PORTUGUESE       	"Bell Tower"
+
+REFERENCE           	ROOM_RADIO_GALLERY
+LANG_PORTUGUESE       	"Radio Gallery"
+
+REFERENCE           	ROOM_SCAFFOLDING
+LANG_PORTUGUESE       	"Scaffolding"
+
+REFERENCE           	ROOM_CHOIR
+LANG_PORTUGUESE       	"Choir"
+
+REFERENCE           	ROOM_CENTRE
+LANG_PORTUGUESE       	"Centre"
+
+REFERENCE           	ROOM_BASILICA
+LANG_PORTUGUESE       	"Basilica"
+
+REFERENCE           	ROOM_AIRFIELD
+LANG_PORTUGUESE       	"Airfield"
+
+REFERENCE           	ROOM_DORMITORY
+LANG_PORTUGUESE       	"Dormitory"
+
+REFERENCE           	ROOM_CLOITRE
+LANG_PORTUGUESE       	"Cloitre"
+
+REFERENCE           	ROOM_MERVEILLE
+LANG_PORTUGUESE       	"Merveille de Verite"
+
+REFERENCE           	ROOM_GUARD_TOWER
+LANG_PORTUGUESE       	"GUARD_TOWER"
+
+REFERENCE           	ROOM_COURTYARD
+LANG_PORTUGUESE       	"Courtyard"
+
+REFERENCE           	ROOM_COURTROOM
+LANG_PORTUGUESE       	"Courtroom"
+
+REFERENCE           	ROOM_VERITE_LIBRARY
+LANG_PORTUGUESE       	"Verite Library"
+
+REFERENCE           	ROOM_LOWER_PILGRIMAGE
+LANG_PORTUGUESE       	"Lower Pilgrimage Stairs"
+
+REFERENCE           	ROOM_CATWALK
+LANG_PORTUGUESE       	"Catwalk"
+
+REFERENCE           	ROOM_BRIDGE
+LANG_PORTUGUESE       	"Bridge"
+
+REFERENCE           	ROOM_URM_LABORATORY
+LANG_PORTUGUESE       	"URM Laboratory"
+
+REFERENCE           	ROOM_UPPER_PILGRIMAGE
+LANG_PORTUGUESE       	"Upper Pilgrimage Stairs"
+
+REFERENCE           	ROOM_MIDDLE_PILGRIMAGE
+LANG_PORTUGUESE       	"Middle Pilgrimage Stairs"
+
+REFERENCE           	ROOM_BRIDGE_V2
+LANG_PORTUGUESE       	"Bridge v2"
+
+REFERENCE           	ROOM_KNIGHTS_HALL
+LANG_PORTUGUESE       	"Knight's Hall"
+
+REFERENCE           	ROOM_NO_MANS_LAND
+LANG_PORTUGUESE       	"No Man's Land"
 
 REFERENCE           	SB_POINTS
-LANG_PORTUGESE       	"Points"
+LANG_PORTUGUESE       	"Points"
 
 REFERENCE           	SB_KILLS
-LANG_PORTUGESE       	"Kills"
+LANG_PORTUGUESE       	"Kills"
 
 REFERENCE           	SB_DOWNS
-LANG_PORTUGESE       	"Downs"
+LANG_PORTUGUESE       	"Downs"
 
 REFERENCE           	SB_REVIVES
-LANG_PORTUGESE       	"Revives"
+LANG_PORTUGUESE       	"Revives"
 
 REFERENCE           	SB_HEADSHOTS
-LANG_PORTUGESE       	"Headshots"
+LANG_PORTUGUESE       	"Headshots"
 
 ENDMARKER

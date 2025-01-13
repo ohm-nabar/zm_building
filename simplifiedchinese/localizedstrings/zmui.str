@@ -1,0 +1,35 @@
+VERSION			"1"
+CONFIG			""
+FILENOTES		""
+
+REFERENCE			BGB_AFTERTASTE_BLOOD
+LANG_SIMPLIFIED_CHINESE		"Aftertaste Blood"
+
+REFERENCE			BGB_AFTERTASTE_BLOOD_DESC
+LANG_SIMPLIFIED_CHINESE		"^1NEW\n^7Activates Immediately (Lasts 3 full rounds)\n Maintain Juggernog Shield level after downing\nEvery 15 kills without taking damage, receive a Death Machine"
+
+REFERENCE			BGB_AFTERTASTE_BLOOD_HINT
+LANG_SIMPLIFIED_CHINESE		"Activates Immediately (Lasts 3 full rounds)\n Maintain Juggernog Shield level after downing\nEvery 15 kills without taking damage, receive a Death Machine"
+
+REFERENCE			BGB_CHALLENGE_REJECTED
+LANG_SIMPLIFIED_CHINESE		"Challenge Rejected"
+
+REFERENCE			BGB_CHALLENGE_REJECTED_DESC
+LANG_SIMPLIFIED_CHINESE		"^1NEW\n^7Activated (1x Activation)\n Immediately upgrade a random equipped Perk"
+
+REFERENCE			BGB_CHALLENGE_REJECTED_HINT
+LANG_SIMPLIFIED_CHINESE		"Press ^3[{+actionslot 1}]^7 to activate\n Immediately upgrade a random equipped Perk"
+
+REFERENCE			BGB_PROFIT_SHARING_DESC
+LANG_SIMPLIFIED_CHINESE		"Lasts 1 minute 15 seconds\n Points you earn are also received by nearby players, and vice versa"
+
+REFERENCE			BGB_PROFIT_SHARING_HINT
+LANG_SIMPLIFIED_CHINESE		"Lasts 1 minute 15 seconds\n Points you earn are also received by nearby players, and vice versa"
+
+REFERENCE			BGB_FLAVOR_HEXED_DESC
+LANG_SIMPLIFIED_CHINESE		"Auto-activates\n Transforms into a random GargoyleGum"
+
+REFERENCE			BGB_FLAVOR_HEXED_HINT
+LANG_SIMPLIFIED_CHINESE		"Auto-activates\n Transforms into a random GargoyleGum"
+
+ENDMARKER
