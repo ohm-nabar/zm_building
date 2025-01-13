@@ -21,10 +21,10 @@ REFERENCE			BGB_CHALLENGE_REJECTED_HINT
 LANG_GERMAN		"Press ^3[{+actionslot 1}]^7 to activate\n Immediately upgrade a random equipped Perk"
 
 REFERENCE			BGB_PROFIT_SHARING_DESC
-LANG_GERMAN		"Lasts 1 minute 15 seconds\n Points you earn are also received by nearby players, and vice versa"
+LANG_GERMAN		"Lasts 1.5 minutes\n Points you earn are also received by nearby players, and vice versa"
 
 REFERENCE			BGB_PROFIT_SHARING_HINT
-LANG_GERMAN		"Lasts 1 minute 15 seconds\n Points you earn are also received by nearby players, and vice versa"
+LANG_GERMAN		"Lasts 1.5 minutes\n Points you earn are also received by nearby players, and vice versa"
 
 REFERENCE			BGB_FLAVOR_HEXED_DESC
 LANG_GERMAN		"Auto-activates\n Transforms into a random GargoyleGum"
