@@ -508,13 +508,13 @@ function athos_trial()
 				}
 				break;
 		}
-
+		// temporary shenanigans until unlimited blood vial deposits are implemented
 		trial_index = RandomIntRange(0, end_index);
-		if(trial_index == prev_trial_index && trial_index + 1 < end_index)
+		if((trial_index == prev_trial_index || (trial_index == 4 && athos_stage == 3)) && trial_index + 1 < end_index)
 		{
 			trial_index = RandomIntRange(trial_index + 1, end_index);
 		}
-		else if(trial_index == prev_trial_index)
+		else if(trial_index == prev_trial_index || (trial_index == 4 && athos_stage == 3))
 		{
 			trial_index = RandomIntRange(0, trial_index);
 		}
@@ -655,7 +655,7 @@ function wallbuy_trial_indicator_monitor(wallbuy)
 				break;
 			}
 		}
-		if(has_trial_weapon || self.abbey_no_waypoints || ! self.athos_indicators_active)
+		if(has_trial_weapon || ! self.athos_indicators_active)
 		{
 			wallbuy_indicator.alpha = 0;
 		}
@@ -742,7 +742,7 @@ function area_assault_indicator_monitor()
 
 	while(true)
 	{
-		if(! self.abbey_no_waypoints && self.athos_indicators_active)
+		if(self.athos_indicators_active)
 		{
 			room_indicator.alpha = 1;
 		}
@@ -867,7 +867,7 @@ function box_trial_indicator_monitor()
 			waypoint_pos.origin = level.chests[level.chest_index].origin + (0, 0, 20);
 			prev_chest_index = level.chest_index;
 		}
-		if(! self.abbey_no_waypoints && self.athos_indicators_active)
+		if(self.athos_indicators_active)
 		{
 			room_indicator.alpha = 1;
 		}
@@ -993,7 +993,7 @@ function trap_trial_indicator_monitor(trap_trig)
 
 	while(true)
 	{
-		if(self.abbey_no_waypoints || ! self.athos_indicators_active)
+		if(! self.athos_indicators_active)
 		{
 			trap_indicator.alpha = 0;
 		}

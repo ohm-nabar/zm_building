@@ -338,7 +338,7 @@ function acquire_waypoint_manage()
 	{
 		foreach(player in level.players)
 		{
-			if(isdefined(player.blood_vial_trial_fills) && IS_TRUE(player.athos_indicators_active) && ! IS_TRUE(player.abbey_no_waypoints))
+			if(isdefined(player.blood_vial_trial_fills) && IS_TRUE(player.athos_indicators_active))
 			{
 				closest_dist = 9999999;
 				closest_dist_index = -1;
