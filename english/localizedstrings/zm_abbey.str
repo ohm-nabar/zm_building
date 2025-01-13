@@ -20,21 +20,6 @@ LANG_ENGLISH       	"Hold ^3[{+activate}]^7 for Poseidon's Punch [Cost: &&1]"
 REFERENCE           	PERK_DEADSHOT_DOUBLE
 LANG_ENGLISH       	"Hold ^3[{+activate}]^7 for Deadshot Daiquiri Double [Cost: &&1]"
 
-REFERENCE           	BGB_SELECT
-LANG_ENGLISH       	"Press ^3[{+activate}]^7 to switch GargoyleGums\n&&1Quantity: &&2"
-
-REFERENCE           	BGB_ACCEPT
-LANG_ENGLISH       	"Press ^3[{+activate}]^7 for &&1"
-
-REFERENCE           	BGB_NO_STOCK
-LANG_ENGLISH       	"Out of stock! Obtain more GargoyleGums through Divinium Trials!"
-
-REFERENCE           	BGB_ACTIVATE
-LANG_ENGLISH       "Hold ^3[{+activate}]^7 to dispense GargoyleGum [Cost: &&1]"
-
-REFERENCE           	BGB_NEXT_ROUND
-LANG_ENGLISH       "Come back next round!"
-
 REFERENCE           	PAD_COOLDOWN
 LANG_ENGLISH       	"Cooling down..."
 
@@ -113,6 +98,12 @@ LANG_ENGLISH       "Perk Blueprints"
 REFERENCE           	JOURNAL_HEADER_WEAPONBP
 LANG_ENGLISH       "Weapon Blueprints"
 
+REFERENCE           	JOURNAL_NAVIGATION_SPEED
+LANG_ENGLISH       "^3[{+speed_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"
+
+REFERENCE           	JOURNAL_NAVIGATION_TOGGLE
+LANG_ENGLISH       "^3[{+toggleads_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"
+
 REFERENCE           	CHALLENGE_CHERRY
 LANG_ENGLISH       "Obtain kills with Electric Cherry reloads"
 
@@ -187,6 +178,27 @@ LANG_ENGLISH       "Judge D'Artagnan"
 
 REFERENCE           	TRIAL_ATHOS_NAME
 LANG_ENGLISH       "Judge Athos"
+
+REFERENCE           	TRIAL_HINTSTRING_START
+LANG_ENGLISH       "Press ^3[{+activate}]^7 for "
+
+REFERENCE           	TRIAL_HINTSTRING_BRIBE_START
+LANG_ENGLISH       "Press ^3[{+activate}]^7 to Bribe for "
+
+REFERENCE           	TRIAL_HINTSTRING_VALUE
+LANG_ENGLISH       " [Quantity: "
+
+REFERENCE           	TRIAL_HINTSTRING_BRIBE_VALUE
+LANG_ENGLISH       " [Cost: "
+
+REFERENCE           	TRIAL_HINTSTRING_NEXT
+LANG_ENGLISH       "\nMelee for next GargoyleGum\n"
+
+REFERENCE           	TRIAL_BRIBE_PICKUP
+LANG_ENGLISH       "Press ^3[{+activate}]^7 for Bribe"
+
+REFERENCE           	TRIAL_BRIBE_PICKUP_MAX
+LANG_ENGLISH       "Cannot hold more Bribes"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS0
 LANG_ENGLISH       ": “Hi, I’m Judge Aramis, but you can just call me Aramis! I see a lot of potential in you!”"
@@ -344,35 +356,50 @@ LANG_ENGLISH       ": “Can I bribe you to never come back?”"
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE5
 LANG_ENGLISH       ": “I wish you’d just die already.”"
 
-REFERENCE           	TRIAL_DESC_WALLBUY
-LANG_ENGLISH       "Obtain kills with the "
+REFERENCE           	TRIAL_RANDOM_GUM
+LANG_ENGLISH       "Random GargoyleGum"
 
-REFERENCE           	TRIAL_DESC_BOX
-LANG_ENGLISH       "Obtain kills with a newly aqcuired weapon from the Mystery Box"
+REFERENCE           	TRIAL_ARAMIS_DESC
+LANG_ENGLISH       "Complete Rounds"
 
-REFERENCE           	TRIAL_DESC_CLASS
-LANG_ENGLISH       "Obtain kills with"
+REFERENCE           	TRIAL_PORTHOS_DESC
+LANG_ENGLISH       "Obtain Headshot Kills"
 
-REFERENCE           	TRIAL_DESC_ELEVATION
-LANG_ENGLISH       "Obtain kills from a higher elevation"
+REFERENCE           	TRIAL_DART_DESC
+LANG_ENGLISH       "Obtain Melee Kills"
 
-REFERENCE           	TRIAL_DESC_HEADSHOT
-LANG_ENGLISH       "Obtain kills with headshots"
+REFERENCE           	TRIAL_ATHOS_DESC
+LANG_ENGLISH       "Unknown Trial"
 
-REFERENCE           	TRIAL_DESC_AASSAULT
-LANG_ENGLISH       "Obtain kills in the "
+REFERENCE           	TRIAL_ATHOS_NEW_TRIAL
+LANG_ENGLISH       " (New Trial in "
 
-REFERENCE           	TRIAL_DESC_ADEFENSE
-LANG_ENGLISH       "Remain in the "
+REFERENCE           	TRIAL_ATHOS_NEW_TRIAL_END
+LANG_ENGLISH       " Rounds)"
 
-REFERENCE           	TRIAL_DESC_PACK_CURRENT
-LANG_ENGLISH       "Current GargoyleGum Pack"
+REFERENCE           	TRIAL_ATHOS_NEW_TRIAL_SING_END
+LANG_ENGLISH       " Round)"
 
-REFERENCE           	TRIAL_DESC_PACK_NEXT
-LANG_ENGLISH       "Next GargoyleGum Pack"
+REFERENCE           	TRIAL_ATHOS_DESC_WALLBUY
+LANG_ENGLISH       "Obtain Kills with the "
 
-REFERENCE           	TRIAL_UPGRADE
-LANG_ENGLISH       "Press ^3[{+activate}]^7 twice rapidly to upgrade Trial weapon [Cost: 4000]"
+REFERENCE           	TRIAL_ATHOS_DESC_BOX
+LANG_ENGLISH       "Obtain Kills with a Weapon newly acquired from the Mystery Box"
+
+REFERENCE           	TRIAL_ATHOS_DESC_ELEVATION
+LANG_ENGLISH       "Obtain Kills from a Higher Elevation"
+
+REFERENCE           	TRIAL_ATHOS_DESC_AASSAULT
+LANG_ENGLISH       "Obtain Kills in the "
+
+REFERENCE           	TRIAL_ATHOS_DESC_CROUCH
+LANG_ENGLISH       "Obtain Kills while Crouched"
+
+REFERENCE           	TRIAL_ATHOS_DESC_TRAP
+LANG_ENGLISH       "Obtain Trap Kills"
+
+REFERENCE           	TRIAL_ATHOS_DESC_BLOOD_VIAL
+LANG_ENGLISH       "Fill Blood Vials"
 
 REFERENCE           	ROOM_SPAWN_ROOM
 LANG_ENGLISH       	"Spawn Room"

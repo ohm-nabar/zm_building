@@ -142,9 +142,9 @@ function CoD.InventoryControl.new(HudRef, InstanceRef)
 
     local NavigationInfo = LUI.UIText.new()
     if Engine.Localize("[{+speed_throw}]") then
-        NavigationInfo:setText(Engine.Localize("^3[{+speed_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"))
+        NavigationInfo:setText(Engine.Localize("ZM_ABBEY_JOURNAL_NAVIGATION_SPEED"))
     else
-        NavigationInfo:setText(Engine.Localize("^3[{+toggleads_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"))
+        NavigationInfo:setText(Engine.Localize("ZM_ABBEY_JOURNAL_NAVIGATION_TOGGLE"))
     end
     NavigationInfo:setLeftRight(true, false, 16, 76)
     NavigationInfo:setTopBottom(true, false, 395, 415)
@@ -159,9 +159,9 @@ function CoD.InventoryControl.new(HudRef, InstanceRef)
         end
          
         if Engine.Localize("[{+speed_throw}]") then
-            NavigationInfo:setText(Engine.Localize("^3[{+speed_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"))
+            NavigationInfo:setText(Engine.Localize("ZM_ABBEY_JOURNAL_NAVIGATION_SPEED"))
         else
-            NavigationInfo:setText(Engine.Localize("^3[{+toggleads_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"))
+            NavigationInfo:setText(Engine.Localize("ZM_ABBEY_JOURNAL_NAVIGATION_TOGGLE"))
         end
     end
     InventoryControl:registerEventHandler( "input_source_changed", NavigationInfoUpdate)

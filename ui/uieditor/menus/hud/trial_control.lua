@@ -68,6 +68,9 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local DividerLeft = DividerStartX -- same here
     local DividerRight = DividerLeft + DividerWidth
 
+    local GargoyleNames = {"ZM_ABBEY_TRIAL_ARAMIS_NAME", "ZM_ABBEY_TRIAL_PORTHOS_NAME", "ZM_ABBEY_TRIAL_DART_NAME", "ZM_ABBEY_TRIAL_ATHOS_NAME"}
+    local GargoyleDescs = {"ZM_ABBEY_TRIAL_ARAMIS_DESC", "ZM_ABBEY_TRIAL_PORTHOS_DESC", "ZM_ABBEY_TRIAL_DART_DESC", "ZM_ABBEY_TRIAL_ATHOS_DESC"}
+
     for i=1,4 do
         local IconTop = IconStartY + (YOffset * (i - 1))
         local IconBottom = IconTop + IconHeight
@@ -101,14 +104,14 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
         local NameText = LUI.UIText.new()
         NameText:setLeftRight(true, false, NameTextLeft, NameTextRight)
         NameText:setTopBottom(true, false, NameTextTop, NameTextBottom)
-        NameText:setText(Engine.Localize("Judge D'Artagnan"))
+        NameText:setText(Engine.Localize(GargoyleNames[i]))
         NameText:setRGB(1, 1, 1)
 
         local TrialText = LUI.UIText.new()
         TrialText:setAlignment(Enum.LUIAlignment.LUI_ALIGNMENT_CENTER)
         TrialText:setLeftRight(true, false, TrialTextLeft, TrialTextRight)
         TrialText:setTopBottom(true, false, TrialTextTop, TrialTextBottom)
-        TrialText:setText(Engine.Localize("Complete Rounds"))
+        TrialText:setText(Engine.Localize(GargoyleDescs[i]))
         TrialText:setRGB(1, 1, 1)
         TrialText:setTTF("fonts/CaslonAntique-Bold.ttf")
 
@@ -199,18 +202,8 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
 
     for i=1,4 do
         GumTable[i][5]:setImage(RegisterImage("t7_hud_zm_bgb_im_feelin_lucky"))
-        TextTable[i][5]:setText("Random GargoyleGum")
+        TextTable[i][5]:setText(Engine.Localize("ZM_ABBEY_TRIAL_RANDOM_GUM"))
     end
-
-    NameTextTable[1]:setText("Judge Aramis")
-    NameTextTable[2]:setText("Judge Porthos")
-    NameTextTable[3]:setText("Judge D'Artagnan")
-    NameTextTable[4]:setText("Judge Athos")
-
-    TrialTextTable[1]:setText("Complete Rounds")
-    TrialTextTable[2]:setText("Obtain Headshot Kills")
-    TrialTextTable[3]:setText("Obtain Melee Kills")
-    TrialTextTable[4]:setText("Unknown Trial")
 
     local Tier1GumLookup = {"t7_hud_zm_bgb_stock_option", "t7_hud_zm_bgb_sword_flay", "t7_hud_zm_bgb_temporal_gift", "t7_hud_zm_bgb_in_plain_sight", "t7_hud_zm_bgb_im_feelin_lucky"}
     local Tier2GumLookup = {"t7_hud_zm_bgb_immolation_liquidation", "t7_hud_zm_bgb_pop_shocks", "t7_hud_zm_bgb_challenge_rejected", "t7_hud_zm_bgb_flavor_hexed", "t7_hud_zm_bgb_crate_power", "t7_hud_zm_bgb_aftertaste_blood", "t7_hud_zm_bgb_extra_credit"}
@@ -336,8 +329,8 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.tier3"), SetTier3Gum)
     
     local AthosRounds = 1
-    local AthosRoundsString = ""
-    local AthosTrialString = "Unknown Trial"
+    local AthosRoundsString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_NEW_TRIAL") .. AthosRounds .. Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_NEW_TRIAL_END")
+    local AthosTrialString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_DESC")
 
     local AthosPrompt = LUI.UIText.new()
     AthosPrompt:setText(Engine.Localize("^3[{+activate}]^7 Toggle Athos Waypoint"))
@@ -365,9 +358,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             end
             
             if GargNum == 4 then
-                AthosRounds = 1
-                AthosRoundsString = ""
-                AthosTrialString = "Unknown Trial"
                 AthosPrompt:setAlpha(0)
             end
 
@@ -470,32 +460,32 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             if NotifyData <= 1 then
                 AthosRounds = NotifyData + 1
                 if AthosRounds > 1 then
-                    AthosRoundsString = " (New Trial in " .. AthosRounds .. " Rounds)"
+                    AthosRoundsString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_NEW_TRIAL") .. AthosRounds .. Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_NEW_TRIAL_END")
                 else
-                    AthosRoundsString = " (New Trial in " .. AthosRounds .. " Round)"
+                    AthosRoundsString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_NEW_TRIAL") .. AthosRounds .. Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_NEW_TRIAL_SING_END")
                 end
             else
                 AthosRounds = 3
-                AthosRoundsString = " (New Trial in " .. AthosRounds .. " Rounds)"
+                AthosRoundsString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_NEW_TRIAL") .. AthosRounds .. Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_NEW_TRIAL_END")
                 AthosPrompt:setAlpha(0)
                 if NotifyData >= 2 and NotifyData <= 14 then
-                    AthosTrialString = "Obtain Kills with the " .. WallbuyTable[NotifyData - 1]
+                    AthosTrialString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_DESC_WALLBUY") .. WallbuyTable[NotifyData - 1]
                     AthosPrompt:setAlpha(0.9)
                 elseif NotifyData >= 15 and NotifyData <= 26 then
-                    AthosTrialString = "Obtain Kills in the " .. Engine.Localize(RoomTable[NotifyData - 14])
+                    AthosTrialString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_DESC_AASSAULT") .. Engine.Localize(RoomTable[NotifyData - 14])
                     AthosPrompt:setAlpha(0.9)
                 elseif NotifyData == 27 then
-                    AthosTrialString = "Obtain Kills while Crouched"
+                    AthosTrialString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_DESC_CROUCH")
                 elseif NotifyData == 28 then
-                    AthosTrialString = "Obtain Kills from a Higher Elevation"
+                    AthosTrialString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_DESC_ELEVATION")
                 elseif NotifyData == 29 then
-                    AthosTrialString = "Obtain Kills with a Weapon newly acquired from the Mystery Box"
+                    AthosTrialString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_DESC_BOX")
                     AthosPrompt:setAlpha(0.9)
                 elseif NotifyData == 30 then
-                    AthosTrialString = "Obtain Trap Kills"
+                    AthosTrialString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_DESC_TRAP")
                     AthosPrompt:setAlpha(0.9)
                 elseif NotifyData == 31 then
-                    AthosTrialString = "Fill Blood Vials"
+                    AthosTrialString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_DESC_BLOOD_VIAL")
                     AthosPrompt:setAlpha(0.9)
                 end
             end

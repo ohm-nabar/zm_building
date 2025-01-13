@@ -288,10 +288,10 @@ function judge_hintstring_think(player)
 			prev_quantity = quantity;
 			prev_bribe_count = bribe_count;
 			bribe_cost = zm_bgb_custom_util::gg_bribe_cost(gum);
-			hintstring = "Press ^3[{+activate}]^7 for " + gum_struct.displayName + " [Quantity: " + quantity + "]" + "\nMelee for next GargoyleGum\n" + dialogue;
+			hintstring = MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_START") + gum_struct.displayName + MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_VALUE") + quantity + "]" + MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_NEXT") + dialogue;
 			if(quantity == 0 && bribe_count >= bribe_cost)
 			{
-				hintstring = "Press ^3[{+activate}]^7 to Bribe for " + gum_struct.displayName + " [Cost: " + bribe_cost + "]" + "\nMelee for next GargoyleGum\n" + dialogue;
+				hintstring = MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_START") + gum_struct.displayName + MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_VALUE") + bribe_cost + "]" + MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_NEXT") + dialogue;
 			}
 			
 			self SetHintStringForPlayer(player, hintstring);
@@ -445,15 +445,15 @@ function bribe_hintstring_think(player)
 			prev_max_bribes = max_bribes;
 			if(! bribe_active)
 			{
-				self SetHintStringForPlayer(player, "");
+				self SetHintStringForPlayer(player, &"ZM_ABBEY_EMPTY");
 			}
 			else if(max_bribes)
 			{
-				self SetHintStringForPlayer(player, "Cannot hold more Bribes");
+				self SetHintStringForPlayer(player, &"ZM_ABBEY_TRIAL_BRIBE_PICKUP_MAX");
 			}
 			else
 			{
-				self SetHintStringForPlayer(player, "Press ^3[{+activate}]^7 for Bribe");
+				self SetHintStringForPlayer(player, &"ZM_ABBEY_TRIAL_BRIBE_PICKUP");
 			}
 		}
 		wait(0.05);
@@ -465,14 +465,13 @@ function bribe_think()
 	model = GetEnt(self.target, "targetname");
 	fx_spot = Spawn("script_model", model.origin + (0, 0, BRIBE_OFFSET));
 	active = true;
+	self SetCursorHint("HINT_NOICON");
 
 	while(true)
 	{
 		if(level array::contains(level.gargoyle_bribes_active, self))
 		{ 
 			active = true;
-
-			self SetHintString("Press ^3[{+activate}]^7 for Bribe");
 			model SetVisibleToAll();
 			fx_spot = Spawn("script_model", model.origin + (0, 0, BRIBE_OFFSET));
 			fx_spot SetModel("tag_origin");
@@ -492,9 +491,6 @@ function bribe_think()
 		else if(active)
 		{
 			active = false;
-
-			self SetCursorHint("HINT_NOICON");
-			self SetHintString("");
 			model SetInvisibleToAll();
 			fx_spot Delete();
 		}
