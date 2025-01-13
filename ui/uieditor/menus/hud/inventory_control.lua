@@ -141,11 +141,7 @@ function CoD.InventoryControl.new(HudRef, InstanceRef)
     InventoryControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "currentTab"), SwitchTab)
 
     local NavigationInfo = LUI.UIText.new()
-    if Engine.Localize("[{+speed_throw}]") then
-        NavigationInfo:setText(Engine.Localize("ZM_ABBEY_JOURNAL_NAVIGATION_SPEED"))
-    else
-        NavigationInfo:setText(Engine.Localize("ZM_ABBEY_JOURNAL_NAVIGATION_TOGGLE"))
-    end
+    NavigationInfo:setText(Engine.Localize("ZM_ABBEY_JOURNAL_NAVIGATION_INFO"))
     NavigationInfo:setLeftRight(true, false, 16, 76)
     NavigationInfo:setTopBottom(true, false, 395, 415)
     NavigationInfo:setAlpha(0.9)
@@ -155,11 +151,7 @@ function CoD.InventoryControl.new(HudRef, InstanceRef)
         TrialControl.AthosPrompt:setLeftRight(true, false, AthosPromptX, AthosPromptX + 100)
 
     local function NavigationInfoUpdate(Element, Event)
-        if Engine.Localize("[{+speed_throw}]") then
-            NavigationInfo:setText(Engine.Localize("ZM_ABBEY_JOURNAL_NAVIGATION_SPEED"))
-        else
-            NavigationInfo:setText(Engine.Localize("ZM_ABBEY_JOURNAL_NAVIGATION_TOGGLE"))
-        end
+        NavigationInfo:setText(Engine.Localize("ZM_ABBEY_JOURNAL_NAVIGATION_INFO"))
 
         AthosPromptX = NavigationInfo:getTextWidth() + 21
         TrialControl.AthosPrompt:setLeftRight(true, false, AthosPromptX, AthosPromptX + 100)

@@ -98,11 +98,8 @@ LANG_POLISH       "Perk Blueprints"
 REFERENCE           	JOURNAL_HEADER_WEAPONBP
 LANG_POLISH       "Weapon Blueprints"
 
-REFERENCE           	JOURNAL_NAVIGATION_SPEED
+REFERENCE           	JOURNAL_NAVIGATION_INFO
 LANG_POLISH       "^3[{+speed_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"
-
-REFERENCE           	JOURNAL_NAVIGATION_TOGGLE
-LANG_POLISH       "^3[{+toggleads_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"
 
 REFERENCE           	CHALLENGE_CHERRY
 LANG_POLISH       "Obtain kills with Electric Cherry reloads"

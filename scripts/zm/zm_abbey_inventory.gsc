@@ -254,6 +254,8 @@ function inventory_tab_navigation()
 	self endon( "disconnect" );
 	self endon( "bled_out ");
 
+	ads_allowed = true;
+
 	while(true)
 	{
 		while(self.abbey_inventory_active)
@@ -290,13 +292,25 @@ function inventory_tab_navigation()
 				alias_name = "journal_flip" + RandomIntRange(1, 4);
 				self PlaySoundToPlayer(alias_name, self);
 				self clientfield::set_player_uimodel("currentTab", self.current_tab);
+
+				ads_allowed = false;
+				self AllowAds(false);
 				while(self AdsButtonPressed())
 				{
 					wait(0.05);
 				}
+				ads_allowed = true;
+				self AllowAds(true);
 			}
 			wait(0.05);
 		}
+
+		if(! ads_allowed)
+		{
+			ads_allowed = true;
+			self AllowAds(true);
+		}
+
 		wait(0.05);
 	}
 }
