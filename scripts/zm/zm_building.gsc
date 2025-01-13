@@ -331,7 +331,7 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 
 	if(isPlayer(attacker) && attacker HasPerk(PERK_DEAD_SHOT) && zm_utility::is_headshot( weapon, sHitLoc, meansofdeath ))
 	{
-		return Int(damage * 1.5);
+		return Int(damage * 1.3);
 	}
 
 	return -1;
