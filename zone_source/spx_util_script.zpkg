@@ -1,0 +1,5 @@
+// Sphynx's Utility script
+scriptparsetree,scripts/Sphynx/_zm_sphynx_util.gsc
+stringtable,gamedata/audio/zm/zm_castle_vox.csv
+material,robit_hitmarker
+material,robit_hitmarker_death

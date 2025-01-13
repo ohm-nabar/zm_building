@@ -162,18 +162,18 @@ function player_maze_setup(origin, angles)
 function player_finish_monitor()
 {
 	timer = 0;
-	flashlight_75 = false;
 	flashlight_50 = false;
+	flashlight_25 = false;
 	while (DistanceSquared(self.origin, level.antiverse_end.origin) > 40000 && timer <= 1200)
 	{
-		if(timer > 1000 && ! flashlight_50)
+		if(timer > 900 && ! flashlight_25)
 		{
-			flashlight_50 = true;
+			flashlight_25 = true;
 			self zm_flashlight::flashlight_state(3);
 		}
-		else if(timer > 600 && ! flashlight_75)
+		else if(timer > 600 && ! flashlight_50)
 		{
-			flashlight_75 = true;
+			flashlight_50 = true;
 			self zm_flashlight::flashlight_state(2);
 		}
 
@@ -188,6 +188,7 @@ function player_finish_monitor()
 		self zm_flashlight::flashlight_state(0);
 		wait(0.75);
 		self lui::screen_fade_out( 0.75, "black" );
+		self visionset_mgr::deactivate("visionset", "abbey_shadow", self);
 		self Kill();
 		wait(8);
 		self lui::screen_fade_in( 0.1, "black" );
