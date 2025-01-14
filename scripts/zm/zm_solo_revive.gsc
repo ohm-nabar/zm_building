@@ -36,6 +36,7 @@ function main()
 	level.override_use_solo_revive = &override_use_solo_revive;
 	level.playerlaststand_func = &player_laststand;
 	level.overridePlayerDamage = &player_damage_override;
+	level.player_out_of_playable_area_monitor_callback = &player_out_of_playable_area_monitor_callback;
 	callback::on_connect( &on_player_connect );
 }
 
@@ -82,6 +83,11 @@ function manage_solo_lives()
 }
 
 function override_use_solo_revive()
+{
+	return false;
+}
+
+function player_out_of_playable_area_monitor_callback()
 {
 	return false;
 }
