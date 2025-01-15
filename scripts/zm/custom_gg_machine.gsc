@@ -143,6 +143,16 @@ function __init__()
 	level.gargoyle_dialogue_bribe = array(aramis_dialogue_bribe, porthos_dialogue_bribe, dart_dialogue_bribe, athos_dialogue_bribe);
 	level.gargoyle_prefixes = array(&"ZM_ABBEY_TRIAL_ARAMIS_NAME_SHORT", &"ZM_ABBEY_TRIAL_PORTHOS_NAME", &"ZM_ABBEY_TRIAL_DART_NAME", &"ZM_ABBEY_TRIAL_ATHOS_NAME");
 
+	level.judge_gumballs = [];
+	for(i = 0; i < 4; i++)
+	{
+		gumballs = GetEntArray("gumball" + i, "targetname");
+		models = GetEntArray("gargoyle" + i, "targetname");
+		level.judge_gumballs[i] = gumballs;
+		level array::thread_all(gumballs, &judge_gumball_fx, i);
+		level array::thread_all(models, &judge_model_think, i);
+	}
+
 	level.gargoyle_judges = GetEntArray("gargoyle_judge", "targetname");
 	level array::thread_all(level.gargoyle_judges, &judge_think);
 
@@ -176,15 +186,12 @@ function on_player_connect()
 		}
 		self.judge_dialogue[i] = prefix + MakeLocalizedString(level.gargoyle_dialogue[i][0]);
 		self thread judge_dialogue_think(i);
+		level array::thread_all(level.judge_gumballs[i], &judge_display_ball_think, i, self);
 	}
-
-	self.judge_display_balls = [];
-	self thread display_balls_cleanup();
 
 	self.bribe_count = 0;
 	self.lua_decrement_quantity_queue_pos = 0;
 
-	level array::thread_all(level.gargoyle_judges, &player_judge_setup, self);
 	level array::thread_all(level.gargoyle_judges, &judge_hintstring_think, self);
 	level array::thread_all(level.gargoyle_bribes, &bribe_hintstring_think, self);
 }
@@ -230,7 +237,7 @@ function judge_dialogue_think(garg_num)
 	}
 }
 
-function player_judge_setup(player)
+function judge_display_ball_think(garg_num, player)
 {
 	player endon("disconnect");
 
@@ -239,25 +246,31 @@ function player_judge_setup(player)
 		wait(0.05);
 	}
 
-	self gargoyle_display_update(player);
+	notif = "judge_display_update" + garg_num;
+	display_ball = undefined;
+	while(true)
+	{
+		index = player.judge_indices[garg_num];
+		gum = player.gargoyle_gums[garg_num][index];
+		gum_struct = zm_bgb_custom_util::lookup_gobblegum(gum);
+
+		if(isdefined(display_ball))
+		{
+			display_ball Delete();
+		}
+
+		display_ball = player zm_bgb_custom_util::create_gg_model_for_player(gum_struct, self.origin, self.angles);
+		display_ball thread display_ball_cleanup(player);
+		player waittill(notif);
+	}
 }
 
-function gargoyle_display_update(player)
+function display_ball_cleanup(player)
 {
-	garg_num = self.script_int;
-	garg_name = self.script_string;
+	self endon("delete");
 
-	gumball = GetEnt(garg_name + "_gumball", "targetname");
-	index = player.judge_indices[garg_num];
-	gum = player.gargoyle_gums[garg_num][index];
-	gum_struct = zm_bgb_custom_util::lookup_gobblegum(gum);
-
-	if(isdefined(player.judge_display_balls[garg_name]))
-	{
-		player.judge_display_balls[garg_name] Delete();
-	}
-
-	player.judge_display_balls[garg_name] = player zm_bgb_custom_util::create_gg_model_for_player(gum_struct, gumball.origin, gumball.angles); 
+	player waittill("disconnect");
+	self Delete();
 }
 
 function judge_hintstring_think(player)
@@ -265,7 +278,6 @@ function judge_hintstring_think(player)
 	player endon("disconnect");
 
 	garg_num = self.script_int;
-	garg_name = self.script_string;
 
 	prev_displayName = "";
 	prev_quantity = -1;
@@ -300,34 +312,12 @@ function judge_hintstring_think(player)
 	}
 }
 
-function display_balls_cleanup()
-{
-	self waittill("disconnect");
-
-	foreach(display_ball in self.judge_display_balls)
-	{
-		display_ball Delete();
-	}
-}
-
 // logic for gum machines
 function judge_think() 
 {
 	self SetCursorHint( "HINT_NOICON" );
 
 	garg_num = self.script_int;
-	garg_name = self.script_string;
-
-	gumball = GetEnt(garg_name + "_gumball", "targetname");
-	gumball SetInvisibleToAll();
-	
-	tag_origin = Spawn("script_model", gumball.origin);
-	tag_origin SetModel("tag_origin");
-	PlayFXOnTag("custom/fx_trail_blood_soul_zmb", tag_origin, "tag_origin");
-
-	model = GetEnt(garg_name + "_model", "targetname");
-	model thread judge_model_think(garg_num);
-
 	while(true) {
 		self waittill("trigger", player);
 
@@ -403,6 +393,15 @@ function lua_decrement_bribe_count()
 	}
 }
 
+function judge_gumball_fx(garg_num)
+{
+	self SetInvisibleToAll();
+		
+	tag_origin = Spawn("script_model", self.origin);
+	tag_origin SetModel("tag_origin");
+	PlayFXOnTag("custom/fx_trail_blood_soul_zmb", tag_origin, "tag_origin");
+}
+
 function judge_model_think(garg_num)
 {
 	self SetCanDamage(true);
@@ -412,19 +411,10 @@ function judge_model_think(garg_num)
 		if(IsPlayer(e_attacker) && str_type == "MOD_MELEE")
 		{	
 			e_attacker.judge_indices[garg_num] = (e_attacker.judge_indices[garg_num] + 1) % e_attacker.gargoyle_gums[garg_num].size;
-			level array::thread_all(level.gargoyle_judges, &judge_hivemind, garg_num, e_attacker);
+			notif = "judge_display_update" + garg_num;
+			e_attacker notify(notif);
 		}
 	}
-}
-
-function judge_hivemind(garg_num, player)
-{
-	if(self.script_int != garg_num)
-	{
-		return;
-	}
-
-	self gargoyle_display_update(player);
 }
 
 function bribe_hintstring_think(player)
