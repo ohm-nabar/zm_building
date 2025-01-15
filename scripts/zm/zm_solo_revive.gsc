@@ -89,7 +89,29 @@ function override_use_solo_revive()
 
 function player_out_of_playable_area_monitor_callback()
 {
-	return false;
+	if(self IsHost())
+	{
+		if(! IS_TRUE(self.prev_lives_saved))
+		{
+			self.prev_lives_saved = true;
+			self.prev_lives = self.lives;
+			self thread give_back_lives();
+		}
+	}
+	return true;
+}
+
+function give_back_lives()
+{
+	self endon("disconnect");
+
+	while( !self zm::in_life_brush() && (self zm::in_kill_brush() || !self zm::in_enabled_playable_area() || ( isdefined(level.player_out_of_playable_area_override) && IS_TRUE( self [[level.player_out_of_playable_area_override]]() ) ) ) )
+	{
+		wait(0.05);
+	}
+	
+	self.lives = self.prev_lives;
+	self.prev_lives_saved = false;
 }
 
 function player_laststand( eInflictor, attacker, iDamage, sMeansOfDeath, weapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration )
