@@ -198,7 +198,7 @@ REFERENCE           	TRIAL_BRIBE_PICKUP_MAX
 LANG_RUSSIAN       "Cannot hold more Bribes"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS0
-LANG_RUSSIAN       ": “Hi, I’m Judge Aramis, but you can just call me Aramis! I see a lot of potential in you!”"
+LANG_RUSSIAN       ": “Hi, I’m Judge Aramis, but you can just call me Aramis!\nI see a lot of potential in you!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS1
 LANG_RUSSIAN       ": “You’re already off to a hot start!”"
@@ -213,7 +213,7 @@ REFERENCE           	TRIAL_DIALOGUE_ARAMIS4
 LANG_RUSSIAN       ": “Wowzers!! I knew you were something special!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS10
-LANG_RUSSIAN       ": “I can’t believe what I’m watching! This is like a top class motion picture!”"
+LANG_RUSSIAN       ": “I can’t believe what I’m watching!\nThis is like a top class motion picture!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS15
 LANG_RUSSIAN       ": “I’m going to write an ode to your greatness!”"
@@ -240,10 +240,10 @@ REFERENCE           	TRIAL_DIALOGUE_PORTHOS0
 LANG_RUSSIAN       ": “Are you willing to do what it takes to be a true marksman?”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS1
-LANG_RUSSIAN       ": “This is just the beginning. You have yet much ground to travel on your sharpshooting journey.”"
+LANG_RUSSIAN       ": “This is just the beginning.\nYou have yet much ground to travel on your sharpshooting journey.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS2
-LANG_RUSSIAN       ": “If you are to proceed along the path of a deadshot, daiquiri doubles as an effective aiming partner.”"
+LANG_RUSSIAN       ": “If you are to proceed along the path of a deadshot,\ndaiquiri doubles as an effective aiming partner.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS3
 LANG_RUSSIAN       ": “It seems you have taken well to the craft of precision.”"
@@ -252,13 +252,13 @@ REFERENCE           	TRIAL_DIALOGUE_PORTHOS4
 LANG_RUSSIAN       ": “At last, you have attained the rank of a true marksman!”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS10
-LANG_RUSSIAN       ": “Wonderful work! I’ll be extending you an invite to my rifle club shortly.”"
+LANG_RUSSIAN       ": “Wonderful work!\nI’ll be extending you an invite to my rifle club shortly.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS15
 LANG_RUSSIAN       ": “You’re cementing your place in the history books!”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS25
-LANG_RUSSIAN       ": “It is my pleasure to crown you as the greatest marksman of all time!”"
+LANG_RUSSIAN       ": “It is my pleasure to crown you as\nthe greatest marksman of all time!”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE1
 LANG_RUSSIAN       ": “Hmmph. A real marksman would never take shortcuts.”"
@@ -273,13 +273,13 @@ REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE4
 LANG_RUSSIAN       ": “I don’t even know what to say at this point.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE5
-LANG_RUSSIAN       ": “Where are you getting all this money?”"
+LANG_RUSSIAN       ": “Where are you even getting all this money?”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART0
-LANG_RUSSIAN       ": “Look at you, so innocent and pure… that must change. Get your hands dirty!”"
+LANG_RUSSIAN       ": “Look at you, so innocent and pure… that must change.\nGet your hands dirty!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART1
-LANG_RUSSIAN       ": “Good… good… do not hesitate to delve further into the blood of your enemies.”"
+LANG_RUSSIAN       ": “Good… good… do not hesitate to delve further\ninto the blood of your enemies.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART2
 LANG_RUSSIAN       ": “More! More! More bloodshed!”"
@@ -288,16 +288,16 @@ REFERENCE           	TRIAL_DIALOGUE_DART3
 LANG_RUSSIAN       ": “SWISH SWHOOSH STAB! STAB STAB STAB!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART4
-LANG_RUSSIAN       ": “The scent of your vanquished foes is just... so... intoxicating! BWAHAHAHA!”"
+LANG_RUSSIAN       ": “The scent of your vanquished foes is just... so... intoxicating!\nBWAHAHAHA!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART10
 LANG_RUSSIAN       ": “Isn’t total annihilation simply beautiful?”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART15
-LANG_RUSSIAN       ": “Your brutality rivals that of The Doctor! Oh, you've never heard of him?”"
+LANG_RUSSIAN       ": “Your brutality rivals that of The Doctor!\nOh, you've never heard of him?”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART25
-LANG_RUSSIAN       ": “You know I love your murderous spirit, but maybe you should take a break at this point.”"
+LANG_RUSSIAN       ": “You know I love your murderous spirit,\nbut maybe you should take a break at this point.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE1
 LANG_RUSSIAN       ": “This is a little too sterile for me.”"
@@ -309,22 +309,22 @@ REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE3
 LANG_RUSSIAN       ": “I’m just going to tell myself that this is blood money.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE4
-LANG_RUSSIAN       ": “Whose slaughter generated this wealth? No — don’t tell me. It’s more fun to imagine!”"
+LANG_RUSSIAN       ": “Whose slaughter generated this wealth?\nNo — don’t tell me. It’s more fun to imagine!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE5
-LANG_RUSSIAN       ": “It’s a wonder what reframing can do for the mind. I feel so much better about accepting these bribes now!”"
+LANG_RUSSIAN       ": “It’s a wonder what reframing can do for the mind.\nI feel so much better about accepting these bribes now!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS0
 LANG_RUSSIAN       ": “Pathetic creature! You are most certainly not worthy of anything!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS1
-LANG_RUSSIAN       ": “I suppose you think you’re some hotshot now. No. You. Are. Nothing.”"
+LANG_RUSSIAN       ": “I suppose you think you’re some hotshot now.\nNo. You. Are. Nothing.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS2
-LANG_RUSSIAN       ": “I guess you’ve managed to luck your way this far. Take your reward and get out of my sight.”"
+LANG_RUSSIAN       ": “I guess you’ve managed to luck your way this far.\nTake your reward and get out of my sight.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS3
-LANG_RUSSIAN       ": “Have I been applying my standards incorrectly? No, it’s these scoundrel that are wrong!”"
+LANG_RUSSIAN       ": “Have I been applying my standards incorrectly?\nNo, it’s these scoundrel that are wrong!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS4
 LANG_RUSSIAN       ": “Ugh, fine, I guess I maybe sort of misjudged you...”"
@@ -336,16 +336,16 @@ REFERENCE           	TRIAL_DIALOGUE_ATHOS15
 LANG_RUSSIAN       ": “Enough already!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS25
-LANG_RUSSIAN       ": “I don’t have anything more to say. I hope you’re pleased with yourself.”"
+LANG_RUSSIAN       ": “I don’t have anything more to say.\nI hope you’re pleased with yourself.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE1
 LANG_RUSSIAN       ": “I feel dirty accepting anything from you.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE2
-LANG_RUSSIAN       ": “I suppose you’ve lived a comfortable life, haven’t you? Explains your weak character.”"
+LANG_RUSSIAN       ": “I suppose you’ve lived a comfortable life, haven’t you?\nExplains your weak character.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE3
-LANG_RUSSIAN       ": “I’ll have you know this is illegal. When the authorities return, I’ll be reporting you.”"
+LANG_RUSSIAN       ": “I’ll have you know this is illegal.\nWhen the authorities return, I’ll be reporting you.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE4
 LANG_RUSSIAN       ": “Can I bribe you to never come back?”"
