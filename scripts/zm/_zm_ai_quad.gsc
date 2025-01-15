@@ -565,10 +565,32 @@ function activate_quad_spawners_power_check()
 	if ( !flag::get( "initial_blackscreen_passed" ) )
 		level flag::wait_till( "initial_blackscreen_passed" );
 	
+
 	if ( IS_TRUE( QUAD_ZOMBIE_ONLY_IF_POWER_ACTIVE ) && level flag::exists( "power_on" ) && !IS_TRUE( level flag::get( "power_on" ) ) )
-		level flag::wait_till( "power_on" );
+	{
+		level flag::init("trident_obtained");
+		level thread trident_check();
+		level flag::wait_till_any( array("power_on", "trident_obtained") );
+	}
+		
 	
 	activate_quad_spawners();
+}
+
+function trident_check()
+{
+	while(! (level flag::get("trident_obtained") || level flag::get("power_on")))
+	{
+		foreach(player in level.players)
+		{
+			if(player HasWeapon(level.abbey_trident))
+			{
+				level flag::set("trident_obtained");
+				break;
+			}
+		}
+		wait(0.05);
+	}
 }
 	
 function activate_quad_spawners()
