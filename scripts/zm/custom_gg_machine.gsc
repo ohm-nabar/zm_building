@@ -359,13 +359,12 @@ function lua_decrement_quantity(cf_val)
 	self endon("disconnect");
 
 	queue_pos = self.lua_decrement_quantity_queue_pos;
+	self.lua_decrement_quantity_queue_pos += 1;
 	while(queue_pos > 0)
 	{
 		self waittill(#"lua_decrement_quantity_queue_pop");
 		queue_pos -= 1;
 	}
-
-	self.lua_decrement_quantity_queue_pos += 1;
 
 	while(self clientfield::get_player_uimodel("gumEaten") != cf_val)
 	{

@@ -374,13 +374,12 @@ function lua_increment_quantity(cf, cf_val)
 		self.lua_increment_quantity_queue_pos[cf] = 0;
 	}
 	queue_pos = self.lua_increment_quantity_queue_pos[cf];
+	self.lua_increment_quantity_queue_pos[cf] += 1;
 	while(queue_pos > 0)
 	{
 		self waittill(#"lua_increment_quantity_queue_pop");
 		queue_pos -= 1;
 	}
-
-	self.lua_increment_quantity_queue_pos[cf] += 1;
 
 	while(self clientfield::get_to_player(cf) != cf_val)
 	{
