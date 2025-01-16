@@ -88,5 +88,11 @@
  	"Filename" : "t7_weapons_dlc.csv",
  	"Specs" : [ ] 
 },
+{
+ 	"Type" : "ALIAS",
+ 	"Name" : "trap_sounds",
+ 	"Filename" : "trap_sounds.csv",
+ 	"Specs" : [ ] 
+},
 ]
 }
