@@ -5,8 +5,6 @@
 
 #using scripts\zm\zm_room_manager;
 
-#precache( "fx", "light/fx_light_button_green_traincar_zod_zmb" );
-
 function main()
 {
     level.abbey_box_location_indices = [];
@@ -18,6 +16,19 @@ function main()
         level.abbey_box_location_indices["start_chest_1"] = 2; // Lion Room
         level.abbey_box_location_indices["start_chest_2"] = 3; // Downstairs Room
     }
+    else
+    {
+        level.abbey_box_location_indices["chest_1"] = 0; // Bell Tower
+        level.abbey_box_location_indices["chest_2"] = 1; // Radio Gallery
+        level.abbey_box_location_indices["chest_3"] = 2; // Choir
+        level.abbey_box_location_indices["chest_4"] = 3; // Basilica
+        level.abbey_box_location_indices["start_chest_1"] = 4; // Airfield
+        level.abbey_box_location_indices["chest_5"] = 5; // Merveille de Verite
+        level.abbey_box_location_indices["chest_6"] = 6; // Courtyard
+        level.abbey_box_location_indices["chest_7"] = 7; // Lower Pilgrimage Stairs
+        level.abbey_box_location_indices["start_chest_2"] = 8; // URM Labs
+        level.abbey_box_location_indices["chest_8"] = 9; // No Man's Land
+    }
     
     box_maps = GetEntArray("abbey_box_map", "targetname");
     level array::thread_all(box_maps, &box_map_think);
@@ -25,10 +36,6 @@ function main()
 
 function box_map_think()
 {
-    if(self.script_int != 1)
-    {
-        return;
-    }
     level flag::wait_till("power_on" + self.script_int);
 
     self thread fire_sale_monitor();
@@ -50,7 +57,7 @@ function box_map_think()
         }
 
         self notify(#"bulb_flash_stop");
-        for(i = 0; i < 4; i++)
+        for(i = 0; i < 10; i++)
         {
             level exploder::stop_exploder("abbey_box_map_light" + self.script_int + "" + i);
         }
@@ -73,7 +80,7 @@ function fire_sale_monitor()
                 self notify(#"bulb_flash_stop");
                 cur_chest = level.chests[level.chest_index];
                 index = level.abbey_box_location_indices[cur_chest.script_noteworthy];
-                for(i = 0; i < 4; i++)
+                for(i = 0; i < 10; i++)
                 {
                     if(i == index)
                     {
