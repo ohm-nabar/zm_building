@@ -104,12 +104,12 @@ function bulb_flash(interval)
 
     while(true)
     {
-        for(i = 0; i < 4; i++)
+        for(i = 0; i < 10; i++)
         {
             level exploder::exploder("abbey_box_map_light" + self.script_int + "" + i);
         }
         wait(interval);
-        for(i = 0; i < 4; i++)
+        for(i = 0; i < 10; i++)
         {
             level exploder::stop_exploder("abbey_box_map_light" + self.script_int + "" + i);
         }
