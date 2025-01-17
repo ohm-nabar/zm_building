@@ -73,30 +73,29 @@ function main()
 	cz = GetWeapon("s4_machinepistol");
 
 	pistol_pickup_trigs = GetEntArray("pistol_pickup", "targetname");
-
 	for(i = 0; i < pistol_pickup_trigs.size; i++)
 	{
-		name = "";
+		weapon = undefined;
 
 		if(pistol_pickup_trigs[i].script_noteworthy == "bloodhound")
 		{
-			name = bloodhound.displayname;
+			weapon = bloodhound;
 		}
 		else if(pistol_pickup_trigs[i].script_noteworthy == "colt")
 		{
-			name = colt.displayname;
+			weapon = colt;
 		}
 		else if(pistol_pickup_trigs[i].script_noteworthy == "luger")
 		{
-			name = luger.displayname;
+			weapon = luger;
 		}
 		else
 		{
-			name = cz.displayname;
+			weapon = cz;
 		}
 
-		pistol_pickup_trigs[i] SetHintString(&"ZM_ABBEY_TAKE_WEAPON", name);
-		pistol_pickup_trigs[i] thread pistol_pickup_think();
+		pistol_pickup_trigs[i] SetHintString(&"ZM_ABBEY_TAKE_WEAPON", weapon.displayName);
+		pistol_pickup_trigs[i] thread pistol_pickup_think(weapon);
 	}
 
 	level.default_laststandpistol = GetWeapon("s4_1911");
@@ -171,41 +170,22 @@ function take_starting_gun()
 }
 
 
-function pistol_pickup_think()
+function pistol_pickup_think(weapon)
 {
-	bloodhound = GetWeapon("s4_topbreak");
-	colt = GetWeapon("s4_1911");
-	luger = GetWeapon("s4_klauser");
-	cz = GetWeapon("s4_machinepistol");
+	while(!(level flag::exists("initial_blackscreen_passed") && level flag::get("initial_blackscreen_passed")))
+	{
+		wait(0.05);
+	}
 
-	// x = top and bottom (bottom is bigger x)
-	// y = left and right (right is bigger y)
 	pistol_model = GetEnt(self.target, "targetname");
-
+	exploder_name = self.script_noteworthy + "_exploder";
 	while(true)
 	{
-		fx_spot = Spawn("script_model", pistol_model.origin + (0, -10, -7));
-		fx_spot SetModel("tag_origin");
-		PlayFXOnTag("custom/pistol_glint", fx_spot, "tag_origin");
+		level exploder::exploder(exploder_name);
 		self waittill("trigger", player);
 		if(player.startingpistol == level.start_weapon)
 		{
-			if(self.script_noteworthy == "bloodhound")
-			{
-				player.startingpistol = bloodhound;
-			}
-			else if(self.script_noteworthy == "colt")
-			{
-				player.startingpistol = colt;
-			}
-			else if(self.script_noteworthy == "luger")
-			{
-				player.startingpistol = luger;
-			}
-			else
-			{
-				player.startingpistol = cz;
-			}
+			player.startingpistol = weapon;
 
 			if(player HasWeapon(level.start_weapon))
 			{
@@ -221,38 +201,19 @@ function pistol_pickup_think()
 			pistol_pickup_trigs = GetEntArray("pistol_pickup", "targetname");
 			foreach(trig in pistol_pickup_trigs)
 			{
-				trig SetHintStringForPlayer(player, "");
+				trig SetHintStringForPlayer(player, &"ZM_ABBEY_EMPTY");
 			}
 
-			fx_spot Delete();
 			pistol_model SetInvisibleToAll();
-			self SetHintString("");
+			level exploder::stop_exploder(exploder_name);
+			self SetHintString(&"ZM_ABBEY_EMPTY");
 
 			player waittill("disconnect");
 
 			pistol_model SetVisibleToAll();
+			level exploder::exploder(exploder_name);
 
-			hintstring = "Press ^3[{+activate}]^7 to take ";
-			if(self.script_noteworthy == "bloodhound")
-			{
-				hintstring += bloodhound.displayname;
-			}
-			else if(self.script_noteworthy == "colt")
-			{
-				hintstring += colt.displayname;
-			}
-			else if(self.script_noteworthy == "luger")
-			{
-				hintstring += luger.displayname;
-			}
-			else
-			{
-				hintstring += cz.displayname;
-			}
-			self SetHintString(hintstring);
-
-			//fx_spot = Spawn("script_model", pistol_model.origin);
-			//PlayFXOnTag("custom/fx_buried_booze_candy_spawn", fx_spot, "tag_origin");
+			self SetHintString(&"ZM_ABBEY_TAKE_WEAPON", weapon.displayName);
 		}
 		wait(0.05);
 	}
