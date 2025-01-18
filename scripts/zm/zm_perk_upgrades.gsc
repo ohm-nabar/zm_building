@@ -61,9 +61,6 @@
 #insert scripts\zm\_zm_perk_doubletaporiginal.gsh;
 #insert scripts\zm\_zm_perk_phdlite.gsh;
 
-#precache( "eventstring", "set_perk_upgrade" );
-#precache( "eventstring", "perk_upgrade_reset" );
-
 #namespace zm_perk_upgrades;
 
 REGISTER_SYSTEM( "zm_perk_upgrades", &__init__, undefined )
@@ -82,14 +79,8 @@ function __init__()
 	level.abbey_perk_indices[PERK_POSEIDON_PUNCH] = 6;
 	level.abbey_perk_indices[PERK_DEAD_SHOT] = 7;
 
-	callback::on_connect( &on_player_connect );
 	callback::on_spawned( &on_player_spawned );
 	zm::register_zombie_damage_override_callback( &zombie_damage_override );
-}
-
-function on_player_connect()
-{
-	self LUINotifyEvent(&"perk_upgrade_reset", 0);
 }
 
 function on_player_spawned() 
@@ -202,7 +193,6 @@ function givePerkUpgrade(perkname)
 {
 	self endon("disconnect");
 
-	self LUINotifyEvent(&"set_perk_upgrade", 1, level.abbey_perk_indices[perkname]);
 	switch(perkname) {
 		case PERK_JUGGERNOG:
 			self.hasJug2 = true;
