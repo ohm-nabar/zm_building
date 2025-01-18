@@ -607,7 +607,6 @@ image,no_hud_1_1
 
 // Mystery Box
 scriptparsetree,scripts/zm/zm_abbey_box_map.gsc
-fx,light/fx_light_button_green_traincar_zod_zmb
 fx,custom/magic_box_og/fx_weapon_box_open_glow_og
 fx,custom/magic_box_og/fx_weapon_box_marker_og
 fx,custom/magic_box_og/fx_weapon_box_marker_fl_og
@@ -622,7 +621,7 @@ scriptparsetree,scripts/Sphynx/commands/_zm_commands.gsc
 scriptparsetree,scripts/Sphynx/commands/_zm_commands.csc
 scriptparsetree,scripts/Sphynx/commands/_zm_name_checker.gsc
 material,mc/hud_outline_model_z_red
-material,mc/hud_outline_model_blue
+material,mc/hud_outline_model_green
 
 // Teleporters
 scriptparsetree,scripts/zm/zm_abbey_teleporter.gsc
