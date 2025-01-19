@@ -77,6 +77,7 @@ scriptparsetree,scripts/zm/zm_tides.gsc
 scriptparsetree,scripts/zm/zm_juggernog_potions.gsc
 scriptparsetree,scripts/zm/zm_juggernog_potions.csc
 scriptparsetree,scripts/zm/zm_room_manager.gsc
+scriptparsetree,scripts/zm/zm_room_manager.csc
 scriptparsetree,scripts/zm/zm_abbey_quest.gsc
 scriptparsetree,scripts/zm/zm_trident.gsc
 scriptparsetree,scripts/zm/zm_trident.csc

@@ -17,16 +17,16 @@ function CoD.RoomManager.new(HudRef, InstanceRef)
 	RoomName:setTopBottom( true, true )
 
 	local function RoomDisplay(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "abbey_room") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
+		local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
             if CoD.Zombie.GetUIMapName() == "zm_building" then
-                RoomName:setText(Engine.Localize(RoomLookupBuilding[NotifyData[1] + 1]))
+                RoomName:setText(Engine.Localize(RoomLookupBuilding[NotifyData + 1]))
             else
-                RoomName:setText(Engine.Localize(RoomLookup[NotifyData[1] + 1]))
+                RoomName:setText(Engine.Localize(RoomLookup[NotifyData + 1]))
             end
         end
     end
-	RoomName:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", RoomDisplay)
+	RoomName:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "abbeyRoom"), RoomDisplay)
  
  	RoomManager:addElement(RoomName)
 

@@ -62,6 +62,7 @@
 #using scripts\zm\zm_flashlight;
 #using scripts\zm\zm_juggernog_potions;
 #using scripts\zm\zm_solo_revive;
+#using scripts\zm\zm_room_manager;
 
 // Sphynx's Console Commands
 #using scripts\Sphynx\commands\_zm_commands;
