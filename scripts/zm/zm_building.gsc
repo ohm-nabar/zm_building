@@ -164,7 +164,6 @@ function main()
 	level thread zm_pause::main();
 	level thread zm_high_round_health::main();
 	level thread zm_diedrich::main();
-	level thread zm_juggernog_potions::main();
 	level thread zm_room_manager::main();
 	level thread zm_variable_pricing::main();
 	//level thread zm_abbey_boss::main();

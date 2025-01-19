@@ -60,6 +60,7 @@
 #using scripts\zm\zm_blueprints;
 #using scripts\zm\zm_hud_gasweapon_handler;
 #using scripts\zm\zm_flashlight;
+#using scripts\zm\zm_juggernog_potions;
 
 // Sphynx's Console Commands
 #using scripts\Sphynx\commands\_zm_commands;
