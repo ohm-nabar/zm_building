@@ -161,7 +161,6 @@ function main()
 	level thread zm_healing_grenade::main();
 	level thread zm_starting_pistol_choose::main();
 	level thread zm_shadow_perks::main();
-	level thread zm_pause::main();
 	level thread zm_high_round_health::main();
 	level thread zm_diedrich::main();
 	level thread zm_variable_pricing::main();

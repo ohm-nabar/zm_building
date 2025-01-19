@@ -1,75 +1,30 @@
 #using scripts\codescripts\struct;
 
-#using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
-#using scripts\shared\compass;
-#using scripts\shared\exploder_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\laststand_shared;
-#using scripts\shared\math_shared;
-#using scripts\shared\scene_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\system_shared;
+#using scripts\shared\ai\zombie_utility;
 
 #insert scripts\shared\shared.gsh;
 #insert scripts\shared\version.gsh;
 
-#insert scripts\zm\_zm_utility.gsh;
-
-#using scripts\zm\_load;
-#using scripts\zm\_zm;
-#using scripts\zm\_zm_audio;
-#using scripts\zm\_zm_powerups;
-#using scripts\zm\_zm_utility;
-#using scripts\zm\_zm_weapons;
-#using scripts\zm\_zm_zonemgr;
-
-#using scripts\shared\ai\zombie_utility;
-
-//Perks
-#using scripts\zm\_zm_pack_a_punch;
-#using scripts\zm\_zm_pack_a_punch_util;
-#using scripts\zm\_zm_perk_additionalprimaryweapon;
-#using scripts\zm\_zm_perk_juggernaut;
-#using scripts\zm\_zm_perk_quick_revive;
-#using scripts\zm\_zm_perk_staminup;
-#using scripts\zm\_zm_perk_electric_cherry;
-
-//Powerups
-#using scripts\zm\_zm_powerup_double_points;
-#using scripts\zm\_zm_powerup_carpenter;
-#using scripts\zm\_zm_powerup_fire_sale;
-#using scripts\zm\_zm_powerup_free_perk;
-#using scripts\zm\_zm_powerup_full_ammo;
-#using scripts\zm\_zm_powerup_insta_kill;
-#using scripts\zm\_zm_powerup_nuke;
-//#using scripts\zm\_zm_powerup_weapon_minigun;
-
-//Traps
-#using scripts\zm\_zm_trap_electric;
-
-//Needed for damage override
-#using scripts\zm\zm_usermap;
-#using scripts\zm\_zm_bgb;
-#using scripts\zm\_zm_bgb_token;
-#using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_laststand;
-#using scripts\zm\_zm_bgb;
+#using scripts\zm\_zm_utility;
 #using scripts\zm\zm_abbey_inventory;
 #using scripts\zm\zm_ai_shadowpeople;
 
-#insert scripts\zm\_zm_perks.gsh;
-#insert scripts\shared\archetype_shared\archetype_shared.gsh;
+#namespace zm_pause;
 
-#precache( "material", "game_played" ); 
-#precache( "material", "game_paused" );
-#precache( "material", "pause_requesting_indicator" ); 
-#precache( "eventstring", "abbey_pause" );
-#precache( "eventstring", "abbey_pause_available" );
+REGISTER_SYSTEM( "zm_pause", &__init__, undefined )
 
-function main()
+function __init__()
 {
+	clientfield::register( "clientuimodel", "abbeyPause", VERSION_SHIP, 1, "int" );
+	clientfield::register( "clientuimodel", "abbeyPauseAvailable", VERSION_SHIP, 1, "int" );
+	
 	level._zombies_round_spawn_failsafe = &round_spawn_failsafe;
 	level.coop_pause_threshold = 0;
 	level.num_want_pause_change = 0;
@@ -199,22 +154,6 @@ function round_spawn_failsafe()
 }
 
 function on_player_connect() {
-	/*
-	self.pause_icon = NewClientHudElem(self);
-	self.pause_icon.alignX = "right";
-	self.pause_icon.alignY = "bottom";
-	self.pause_icon.horzAlign = "fullscreen";
-	self.pause_icon.vertAlign = "fullscreen";
-	self.pause_icon.x = 610;
-	self.pause_icon.y = 457;
-	self.pause_icon.alpha = 0;
-	self.pause_icon.foreground = true;
-	self.pause_icon.hidewheninmenu = true;
-	self.pause_icon SetShader("game_played", 20, 30);
-	*/
-
-	self LUINotifyEvent(&"abbey_pause", 1, 0);
-
 	self thread can_pause();
 	self thread can_revive();
 
@@ -224,8 +163,6 @@ function on_player_connect() {
 		self thread pause_notif();
 	}
 	
-	//self thread manage_personal_pause_indicator();
-	//self thread testeroo();
 }
 
 function can_revive()
@@ -304,8 +241,7 @@ function should_pause()
 				level flag::set( "spawn_zombies" );
 
 				foreach(player in level.players) {
-					//player.pause_icon SetShader("game_played", 20, 30);
-					player LUINotifyEvent(&"abbey_pause", 1, 0);
+					player clientfield::set_player_uimodel("abbeyPause", 0);
 				}
 
 				
@@ -339,8 +275,7 @@ function should_pause()
 				SetPauseWorld(1);
 
 				foreach(player in level.players) {
-					//player.pause_icon SetShader("game_paused", 20, 30);
-					player LUINotifyEvent(&"abbey_pause", 1, 1);
+					player clientfield::set_player_uimodel("abbeyPause", 1);
 				}
 				
 				wait(0.05);
@@ -356,31 +291,26 @@ function can_pause()
 {
 	self endon("disconnect");
 
-	while(! level flag::get("initial_blackscreen_passed"))
+	while(! (level flag::exists("initial_blackscreen_passed") && level flag::get("initial_blackscreen_passed")))
 	{
 		wait(0.05);
 	}
-	//self.pause_icon.alpha = 1;
-	can_pause = true;
-	self LUINotifyEvent(&"abbey_pause_available", 1, 0);
+
+	can_pause = false;
 	while(true) 
 	{
 		pause_condition = ( zm_utility::is_player_valid(self) && ! self.isInBloodMode && ! level.in_unpausable_ee_sequence ) || IsWorldPaused();
 		if( pause_condition && !can_pause ) 
 		{
-			//IPrintLn("can pause!");
-			//self.pause_icon.color = (0.65,0.91,1);
-			self LUINotifyEvent(&"abbey_pause_available", 1, 0);
+			self clientfield::set_player_uimodel("abbeyPauseAvailable", 1);
 			can_pause = true;
 		}
 		else if(! pause_condition && can_pause )
 		{
-			//IPrintLn("can't pause!");
-			//self.pause_icon.color = (0.5,0.5,0.5);
-			self LUINotifyEvent(&"abbey_pause_available", 1, 1);
+			self clientfield::set_player_uimodel("abbeyPauseAvailable", 0);
 			can_pause = false;
 		}
-		wait(0.05);
+		util::wait_network_frame();
 	}
 }
 

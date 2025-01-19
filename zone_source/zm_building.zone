@@ -69,6 +69,7 @@ scriptparsetree,scripts/zm/zm_challenges.csc
 scriptparsetree,scripts/zm/zm_abbey_inventory.gsc
 scriptparsetree,scripts/zm/zm_abbey_inventory.csc
 scriptparsetree,scripts/zm/zm_pause.gsc
+scriptparsetree,scripts/zm/zm_pause.csc
 scriptparsetree,scripts/zm/zm_high_round_health.gsc
 scriptparsetree,scripts/zm/zm_diedrich.gsc
 scriptparsetree,scripts/zm/zm_bgb_custom_util.gsc

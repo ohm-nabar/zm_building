@@ -371,17 +371,16 @@ CoD.ZmAmmo_Prop.new = function ( menu, controller )
 	self:addElement(DpadIconPause)
 
 	local function IconPauseDisplay(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "abbey_pause") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-
-            if NotifyData[1] == 0 then
+		local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            if NotifyData == 0 then
                 DpadIconPause:setImage( RegisterImage( "game_played" ) )
 			else
                 DpadIconPause:setImage( RegisterImage( "game_paused" ) )
             end
         end
     end
-    DpadIconPause:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", IconPauseDisplay)
+    DpadIconPause:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "abbeyPause"), IconPauseDisplay)
 
 	local DpadIconNoHud = LUI.UIImage.new()
 	DpadIconNoHud:setImage( RegisterImage ( "no_hud_0_0" ) )
@@ -425,17 +424,16 @@ CoD.ZmAmmo_Prop.new = function ( menu, controller )
     DpadIconMule:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", IconPauseDisplay)
 	
 	local function IconPauseAvailable(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "abbey_pause_available") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-
-            if NotifyData[1] == 0 then
-                DpadIconPause:setRGB(1, 1, 1)
-			else
+		local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            if NotifyData == 0 then
                 DpadIconPause:setRGB(0.5, 0.5, 0.5)
+			else
+                DpadIconPause:setRGB(1, 1, 1)
             end
         end
     end
-	DpadIconPause:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", IconPauseAvailable)
+	DpadIconPause:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "abbeyPauseAvailable"), IconPauseAvailable)
 	
 	local DpadIconShld = CoD.ZmAmmo_DpadIconShield.new( menu, controller )
 	DpadIconShld:setLeftRight( false, false, 166.31, 181.31 )
