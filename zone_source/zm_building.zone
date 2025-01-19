@@ -57,6 +57,7 @@ scriptparsetree,scripts/zm/zm_bloodgenerator.gsc
 scriptparsetree,scripts/zm/zm_perk_upgrades.gsc
 scriptparsetree,scripts/zm/zm_perk_upgrades.csc
 scriptparsetree,scripts/zm/zm_perk_upgrades_effects.gsc
+scriptparsetree,scripts/zm/zm_perk_upgrades_effects.csc
 scriptparsetree,scripts/zm/custom_gg_machine.gsc
 scriptparsetree,scripts/zm/custom_gg_machine.csc
 scriptparsetree,scripts/zm/zm_healing_grenade.gsc

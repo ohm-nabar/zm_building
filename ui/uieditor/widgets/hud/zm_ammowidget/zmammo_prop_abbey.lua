@@ -409,18 +409,17 @@ CoD.ZmAmmo_Prop.new = function ( menu, controller )
 	DpadIconMule:hide()
 	self:addElement(DpadIconMule)
 
-	local function IconPauseDisplay(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "mule_indicator") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-
-            if NotifyData[1] == 0 then
+	local function IconMuleDisplay(ModelRef)
+		local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            if NotifyData == 0 then
                 DpadIconMule:hide()
 			else
                 DpadIconMule:show()
             end
         end
     end
-    DpadIconMule:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", IconPauseDisplay)
+    DpadIconMule:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "muleIndicator"), IconMuleDisplay);
 	
 	local function IconPauseAvailable(ModelRef)
 		local NotifyData = Engine.GetModelValue(ModelRef)

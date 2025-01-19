@@ -157,7 +157,6 @@ function main()
 
 	level thread zm_abbey_audio::main();
 	level thread zm_klauser::main();
-	level thread zm_perk_upgrades_effects::main();
 	level thread zm_healing_grenade::main();
 	level thread zm_starting_pistol_choose::main();
 	level thread zm_shadow_perks::main();
