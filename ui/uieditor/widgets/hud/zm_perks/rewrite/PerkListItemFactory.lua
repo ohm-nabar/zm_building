@@ -67,6 +67,19 @@ function CoD.PerkListItemFactory.new(HudRef, arg1)
     perkUpgradeImage:setTopBottom(false, true, 2, -38)
 	perkUpgradeImage:setImage(RegisterImage("upgrade_perk"))
 	perkUpgradeImage:hide()
+
+	local function PoseidonRecharge(ModelRef)
+		local NotifyData = Engine.GetModelValue(ModelRef)
+		if NotifyData then
+			if NotifyData == 0 then
+				perkImage:setRGB(0.5, 0.5, 0.5)
+				perkUpgradeImage:setRGB(0.5, 0.5, 0.5)
+			else
+				perkImage:setRGB(1, 1, 1)
+				perkUpgradeImage:setRGB(1, 1, 1)
+			end
+		end
+	end
     
 	local function SetPerkImage(ModelRef)
 		local perk_key_value = Engine.GetModelValue(ModelRef)
@@ -87,24 +100,14 @@ function CoD.PerkListItemFactory.new(HudRef, arg1)
 				end
 			end
 			perkUpgradeImage:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), model_string), SetPerkUpgrade)
+
+			if perk_key_value == "specialty_poseidon_zombies" then
+				perkImage:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "poseidonCharge"), PoseidonRecharge)
+			end
 		end
 	end
 
     perkImage:linkToElementModel(Elem, "image", true, SetPerkImage)
-
-	local function PoseidonRecharge(ModelRef)
-		local NotifyData = Engine.GetModelValue(ModelRef)
-		if NotifyData then
-			if NotifyData == 0 then
-				perkImage:setRGB(0.5, 0.5, 0.5)
-				perkUpgradeImage:setRGB(0.5, 0.5, 0.5)
-			else
-				perkImage:setRGB(1, 1, 1)
-				perkUpgradeImage:setRGB(1, 1, 1)
-			end
-		end
-    end
-	perkImage:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "poseidonCharge"), PoseidonRecharge)
     
 	Elem:addElement(perkImage)
 	Elem:addElement(perkUpgradeImage)
