@@ -168,7 +168,6 @@ function main()
 	level thread zm_variable_pricing::main();
 	//level thread zm_abbey_boss::main();
 	level thread zm_revive_icon::main();
-	level thread zm_solo_revive::main();
 	level thread zm_no_hud::main();
 	level thread zm_antiverse::main();
 	level thread zm_abbey_quick_revive::main();

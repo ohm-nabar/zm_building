@@ -9,6 +9,7 @@
 #using scripts\shared\visionset_mgr_shared;
 #using scripts\shared\lui_shared;
 #using scripts\shared\music_shared;
+#using scripts\shared\system_shared;
 
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_audio;
@@ -29,15 +30,20 @@
 #insert scripts\zm\_zm_laststand.gsh;
 #insert scripts\zm\_zm_utility.gsh;
 
-#precache( "eventstring", "solo_lives_update" );
+#namespace zm_solo_revive;
 
-function main()
+REGISTER_SYSTEM( "zm_solo_revive", &__init__, undefined )
+
+function __init__()
 {
+	clientfield::register( "clientuimodel", "soloLivesUpdate", VERSION_SHIP, 2, "int" );
+	callback::on_connect( &on_player_connect );
+
 	level.override_use_solo_revive = &override_use_solo_revive;
+	level.player_out_of_playable_area_monitor_callback = &player_out_of_playable_area_monitor_callback;
+	level waittill("initial_blackscreen_passed");
 	level.playerlaststand_func = &player_laststand;
 	level.overridePlayerDamage = &player_damage_override;
-	level.player_out_of_playable_area_monitor_callback = &player_out_of_playable_area_monitor_callback;
-	callback::on_connect( &on_player_connect );
 }
 
 function on_player_connect()
@@ -52,7 +58,7 @@ function on_player_connect()
 
 function set_lives()
 {
-	while(! level flag::get("initial_blackscreen_passed"))
+	while(! (level flag::exists("initial_blackscreen_passed") && level flag::get("initial_blackscreen_passed")))
 	{
 		wait(0.05);
 	}
@@ -70,11 +76,11 @@ function manage_solo_lives()
 		{
 			if(level flag::get("solo_game"))
 			{
-				self LUINotifyEvent(&"solo_lives_update", 1, self.lives);
+				self clientfield::set_player_uimodel("soloLivesUpdate", self.lives);
 			}
 			else
 			{
-				self LUINotifyEvent(&"solo_lives_update", 1, 0);
+				self clientfield::set_player_uimodel("soloLivesUpdate", 0);
 			}
 			prev_solo_flag = level flag::get("solo_game");
 		}
@@ -544,7 +550,7 @@ function wait_and_revive()
 
 	self.waiting_to_revive = true;
 	self.lives--;
-	self LUINotifyEvent(&"solo_lives_update", 1, self.lives);
+	self clientfield::set_player_uimodel("soloLivesUpdate", self.lives);
 
 	if ( isdefined( level.exit_level_func ) )
 	{
@@ -573,7 +579,7 @@ function wait_and_revive()
 	{
 		self flag::clear( #"solo_healing_grenade" );
 		self.lives++;
-		self LUINotifyEvent(&"solo_lives_update", 1, self.lives);
+		self clientfield::set_player_uimodel("soloLivesUpdate", self.lives);
 		self.waiting_to_revive = false;
 		level flag::clear( "wait_and_revive" );
 		level.wait_and_revive = false;
