@@ -93,20 +93,18 @@ function CoD.PerkListItemFactory.new(HudRef, arg1)
     perkImage:linkToElementModel(Elem, "image", true, SetPerkImage)
 
 	local function PoseidonRecharge(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "poseidon_charge") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-			if Elem.perk_key_value == "specialty_poseidon_zombies" then
-				if NotifyData[1] == 0 then
-					perkImage:setRGB(0.5, 0.5, 0.5)
-					perkUpgradeImage:setRGB(0.5, 0.5, 0.5)
-				else
-					perkImage:setRGB(1, 1, 1)
-					perkUpgradeImage:setRGB(1, 1, 1)
-				end
+		local NotifyData = Engine.GetModelValue(ModelRef)
+		if NotifyData then
+			if NotifyData == 0 then
+				perkImage:setRGB(0.5, 0.5, 0.5)
+				perkUpgradeImage:setRGB(0.5, 0.5, 0.5)
+			else
+				perkImage:setRGB(1, 1, 1)
+				perkUpgradeImage:setRGB(1, 1, 1)
 			end
-        end
+		end
     end
-	perkImage:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", PoseidonRecharge)
+	perkImage:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "poseidonCharge"), PoseidonRecharge)
     
 	Elem:addElement(perkImage)
 	Elem:addElement(perkUpgradeImage)
