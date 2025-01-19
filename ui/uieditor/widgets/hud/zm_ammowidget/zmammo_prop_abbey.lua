@@ -389,19 +389,18 @@ CoD.ZmAmmo_Prop.new = function ( menu, controller )
 	self:addElement(DpadIconNoHud)
 
 	local function NoHudToggle(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "abbey_no_hud") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-
-            if NotifyData[1] == 0 then
+		local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            if NotifyData == 0 then
                 DpadIconNoHud:setImage( RegisterImage( "no_hud_0_0" ) )
-			elseif NotifyData[1] == 1 then
+			elseif NotifyData == 1 then
                 DpadIconNoHud:setImage( RegisterImage( "no_hud_0_1" ) )
             else
 				DpadIconNoHud:setImage( RegisterImage( "no_hud_1_1" ) )
 			end
         end
     end
-    DpadIconNoHud:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", NoHudToggle)
+    DpadIconNoHud:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "abbeyNoHUD"), NoHudToggle)
 
 	local DpadIconMule = LUI.UIImage.new()
 	DpadIconMule:setImage( RegisterImage ( "i_thirdguninfo" ) )

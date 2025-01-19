@@ -60,17 +60,19 @@
 #insert scripts\zm\_zm_perks.gsh;
 #insert scripts\shared\archetype_shared\archetype_shared.gsh;
 
-#precache( "eventstring", "abbey_no_hud" );
+#namespace zm_no_hud;
 
-function main()
+REGISTER_SYSTEM( "zm_no_hud", &__init__, undefined )
+
+function __init__()
 {
+	clientfield::register( "clientuimodel", "abbeyNoHUD", VERSION_SHIP, 2, "int" );
 	callback::on_connect( &on_player_connect );
 }
 
 function on_player_connect() {
 	self.abbey_no_hud = false;
 	self.abbey_no_waypoints = false;
-	self LUINotifyEvent(&"abbey_no_hud", 1, 0);
 	self thread check_no_hud();
 }
 
@@ -91,20 +93,20 @@ function check_no_hud()
 				self.abbey_no_waypoints = false;
 				self util::show_hud(true);
 				wait(0.5);
-				self LUINotifyEvent(&"abbey_no_hud", 1, 0);
+				self clientfield::set_player_uimodel("abbeyNoHUD", 0);
 			}
 			else if ( !self.abbey_no_hud && self.abbey_no_waypoints )
 			{
 				self.abbey_no_hud = true;
 				self.abbey_no_waypoints = true;
-				self LUINotifyEvent(&"abbey_no_hud", 1, 2);
+				self clientfield::set_player_uimodel("abbeyNoHUD", 2);
 				wait(0.5);
 				self util::show_hud(false);
 			}
 			else
 			{
 				self.abbey_no_waypoints = true;
-				self LUINotifyEvent(&"abbey_no_hud", 1, 1);
+				self clientfield::set_player_uimodel("abbeyNoHUD", 1);
 			}
 		}
 		wait(0.05);

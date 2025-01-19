@@ -601,6 +601,7 @@ fx,zombie/fx_trap_green_light_doa.efx
 
 // No HUD
 scriptparsetree,scripts/zm/zm_no_hud.gsc
+scriptparsetree,scripts/zm/zm_no_hud.csc
 image,no_hud_0_0
 image,no_hud_0_1
 image,no_hud_1_1

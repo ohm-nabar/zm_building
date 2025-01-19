@@ -64,6 +64,7 @@
 #using scripts\zm\zm_solo_revive;
 #using scripts\zm\zm_room_manager;
 #using scripts\zm\zm_pause;
+#using scripts\zm\zm_no_hud;
 
 // Sphynx's Console Commands
 #using scripts\Sphynx\commands\_zm_commands;
