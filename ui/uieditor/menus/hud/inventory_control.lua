@@ -55,7 +55,7 @@ function CoD.InventoryControl.new(HudRef, InstanceRef)
     local TrialIcon = LUI.UIImage.new()
     TrialIcon:setLeftRight(true, false, 245, 280)
     TrialIcon:setTopBottom(true, false, -40, -5)
-    TrialIcon:setImage(RegisterImage("divinium_trial"))
+    TrialIcon:setImage(RegisterImage("solo_trial_icon"))
 
     local TrialText = LUI.UIText.new()
     TrialText:setLeftRight(true, false, 285, 480)

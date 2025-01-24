@@ -90,7 +90,7 @@ REFERENCE           	JOURNAL_HEADER_CHALLENGE
 LANG_ENGLISH       "Perk Challenges"
 
 REFERENCE           	JOURNAL_HEADER_BGB
-LANG_ENGLISH       "Divinium Trials"
+LANG_ENGLISH       "Gargoyle Trials"
 
 REFERENCE           	JOURNAL_HEADER_PERKBP
 LANG_ENGLISH       "Perk Blueprints"
@@ -354,7 +354,7 @@ REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE5
 LANG_ENGLISH       ": “I wish you’d just die already.”"
 
 REFERENCE           	TRIAL_RANDOM_GUM
-LANG_ENGLISH       "Random GargoyleGum"
+LANG_ENGLISH       "Mystery GargoyleGum"
 
 REFERENCE           	TRIAL_ARAMIS_DESC
 LANG_ENGLISH       "Complete Rounds"
@@ -453,7 +453,7 @@ REFERENCE           	ROOM_MERVEILLE
 LANG_ENGLISH       	"Merveille de Verite"
 
 REFERENCE           	ROOM_GUARD_TOWER
-LANG_ENGLISH       	"GUARD_TOWER"
+LANG_ENGLISH       	"Guard Tower"
 
 REFERENCE           	ROOM_COURTYARD
 LANG_ENGLISH       	"Courtyard"

@@ -68,6 +68,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local DividerLeft = DividerStartX -- same here
     local DividerRight = DividerLeft + DividerWidth
 
+    local GargoyleIcons = {"trial_aramis", "trial_porthos", "trial_dart", "trial_athos"}
     local GargoyleNames = {"ZM_ABBEY_TRIAL_ARAMIS_NAME", "ZM_ABBEY_TRIAL_PORTHOS_NAME", "ZM_ABBEY_TRIAL_DART_NAME", "ZM_ABBEY_TRIAL_ATHOS_NAME"}
     local GargoyleDescs = {"ZM_ABBEY_TRIAL_ARAMIS_DESC", "ZM_ABBEY_TRIAL_PORTHOS_DESC", "ZM_ABBEY_TRIAL_DART_DESC", "ZM_ABBEY_TRIAL_ATHOS_DESC"}
 
@@ -99,7 +100,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
         local Icon = LUI.UIImage.new()
         Icon:setLeftRight(true, false, IconLeft, IconRight)
         Icon:setTopBottom(true, false, IconTop, IconBottom)
-        Icon:setImage(RegisterImage("solo_trial_icon"))
+        Icon:setImage(RegisterImage(GargoyleIcons[i]))
 
         local NameText = LUI.UIText.new()
         NameText:setLeftRight(true, false, NameTextLeft, NameTextRight)
@@ -201,7 +202,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     end
 
     for i=1,4 do
-        GumTable[i][5]:setImage(RegisterImage("t7_hud_zm_bgb_im_feelin_lucky"))
+        GumTable[i][5]:setImage(RegisterImage("mystery_gum"))
         TextTable[i][5]:setText(Engine.Localize("ZM_ABBEY_TRIAL_RANDOM_GUM"))
     end
 

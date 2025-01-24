@@ -132,7 +132,6 @@ scriptparsetree,scripts/zm/bgbs/_zm_bgb_aftertaste_blood.csc
 scriptparsetree,scripts/zm/bgbs/_zm_bgb_challenge_rejected.gsc
 scriptparsetree,scripts/zm/bgbs/_zm_bgb_challenge_rejected.csc
 
-image,t7_hud_zm_bgb_aftertaste
 image,t7_hud_zm_bgb_alchemical_antithesis
 image,t7_hud_zm_bgb_cache_back
 image,t7_hud_zm_bgb_crate_power
@@ -149,6 +148,9 @@ image,t7_hud_zm_bgb_unquenchable
 image,t7_hud_zm_bgb_wall_power
 image,t7_hud_zm_bgb_in_plain_sight
 image,t7_hud_zm_bgb_pop_shocks
+image,t7_hud_zm_bgb_head_drama
+image,t7_hud_zm_bgb_extra_credit
+image,t7_hud_zm_bgb_flavor_hexed
 image,t7_hud_zm_bgb_aftertaste_blood
 image,t7_hud_zm_bgb_challenge_rejected
 
@@ -181,3 +183,10 @@ material,mc/mtl_p7_zm_bgb_mega_purple
 
 rawfile,ui/uieditor/widgets/hud/item_inventory.lua
 image,abbey_bribe
+
+image,trial_aramis
+image,trial_porthos
+image,trial_dart
+image,trial_athos
+
+image,mystery_gum
