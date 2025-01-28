@@ -22,6 +22,8 @@
 //#using scripts\zm\zm_giant; temp
 
 #precache( "model", "collision_wall_128x128x10" );
+#precache( "model", "zm_abbey_teleporter_lights_off" );
+#precache( "model", "zm_abbey_teleporter_lights_on" );
 
 #precache( "string", "ZM_ABBEY_TELEPORTER_OFFLINE" );
 #precache( "string", "TELEPORTER_SYNCHRONIZE" );
@@ -94,6 +96,47 @@ function __main__()
 	level.teleport_ae_funcs[level.teleport_ae_funcs.size] = &zm_abbey_teleporter::teleport_aftereffect_red_vision;
 	level.teleport_ae_funcs[level.teleport_ae_funcs.size] = &zm_abbey_teleporter::teleport_aftereffect_flashy_vision;
 	level.teleport_ae_funcs[level.teleport_ae_funcs.size] = &zm_abbey_teleporter::teleport_aftereffect_flare_vision;
+
+	portals = GetEntArray("shadow_portal", "targetname");
+	lights = GetEntArray("shadow_portal_lights", "targetname");
+
+	level array::thread_all(portals, &portal_think);
+	level array::thread_all(lights, &lights_think);
+}
+
+function portal_think()
+{
+	self SetInvisibleToAll();
+	while(level.current_links < 4)
+	{
+		wait(0.05);
+	}
+	self SetVisibleToAll();
+}
+
+function lights_think()
+{
+	level waittill("initial_blackscreen_passed");
+
+	exploder_name = "shadow_portal_light" + self.script_int;
+	exploder_red_name = "shadow_portal_light_red" + self.script_int;
+	while(level.current_links < 4)
+	{
+		self SetModel("zm_abbey_teleporter_lights_off");
+		level exploder::exploder(exploder_red_name);
+		level exploder::stop_exploder(exploder_name);
+		while(! (isdefined(level.teleport[self.script_int]) && level.teleport[self.script_int] == "timer_on"))
+		{
+			wait(0.05);
+		}
+		self SetModel("zm_abbey_teleporter_lights_on");
+		level exploder::stop_exploder(exploder_red_name);
+		level exploder::exploder(exploder_name);
+		while(level.teleport[self.script_int] == "timer_on")
+		{
+			wait(0.05);
+		}
+	}
 }
 
 

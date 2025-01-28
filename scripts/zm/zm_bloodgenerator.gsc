@@ -100,6 +100,25 @@
 #precache( "string", "ZM_ABBEY_BLOODGUN_COOLDOWN" );
 #precache( "string", "ZM_ABBEY_BLOODGUN_ACTIVATE" );
 
+#precache( "model", "mainframe_comp_offline_s38" );
+#precache( "model", "mainframe_comp_online_s38" );
+#precache( "model", "mainframe_comp_online_s_s38" );
+#precache( "model", "mainframe_comp_online_ms_s38" );
+
+#precache( "model", "mainframe_comp_offline_s38_blank" );
+#precache( "model", "mainframe_comp_online_s38_blank" );
+#precache( "model", "mainframe_comp_online_ms_s38_blank" );
+#precache( "model", "mainframe_comp_online_s_s38_blank" );
+
+#precache( "model", "p7_zm_abbey_computer_bloodgen" );
+#precache( "model", "p7_zm_abbey_computer_bloodgen_online" );
+#precache( "model", "p7_zm_abbey_computer_bloodgen_online_s" );
+
+#precache( "model", "zm_abbey_bg_inactive" );
+#precache( "model", "zm_abbey_bg_kill" );
+#precache( "model", "zm_abbey_bg_cooldown" );
+#precache( "model", "zm_abbey_bg_shadow" );
+
 #define ELECTRIC_CHERRY_MACHINE_LIGHT_FX                    "electric_cherry_light" 
 
 // MAIN
@@ -152,9 +171,131 @@ function autoexec main()
 		bloodgenerator_trigs[i] thread generator_think();
 	}
 
+	blood_mainframes = GetEntArray("blood_mainframe", "targetname");
+	blood_mainframe2s = GetEntArray("blood_mainframe2", "targetname");
+	blood_computers = GetEntArray("blood_computer", "targetname");
+
+	bloodgun_stations = GetEntArray("bloodgun_station", "targetname");
+	bloodgun_screens = GetEntArray("bloodgun_screen", "targetname");
+
+	level array::thread_all(blood_mainframes, &blood_mainframe_think);
+	level array::thread_all(blood_mainframe2s, &blood_mainframe2_think);
+	level array::thread_all(blood_computers, &blood_computer_think);
+
+	level array::thread_all(bloodgun_stations, &bloodgun_station_think);
+	level array::thread_all(bloodgun_screens, &bloodgun_screen_think);
+
 	level thread blood_cool_down();
 	level thread acquire_waypoint_manage();
 	level thread perk_set_fx();
+}
+
+function blood_mainframe_think()
+{
+	self SetModel("mainframe_comp_offline_s38");
+	level waittill("power_on" + self.script_int);
+	while(true)
+	{
+		self SetModel("mainframe_comp_online_s38");
+		level waittill("generator" + self.script_int + "_attacked");
+		self SetModel("mainframe_comp_online_ms_s38");
+		event =  level util::waittill_any_return("generator" + self.script_int + "_shadowed", "generator" + self.script_int + "_saved", "last_ai_down");
+		if(event != "generator" + self.script_int + "_shadowed")
+		{
+			continue;
+		}
+		self SetModel("mainframe_comp_online_s_s38");
+		level waittill("last_ai_down");
+	}
+}
+
+function blood_mainframe2_think()
+{
+	self SetModel("mainframe_comp_offline_s38_blank");
+	level waittill("power_on" + self.script_int);
+
+	while(true)
+	{
+		self SetModel("mainframe_comp_online_s38_blank");
+		level waittill("generator" + self.script_int + "_attacked");
+		self SetModel("mainframe_comp_online_ms_s38_blank");
+		event =  level util::waittill_any_return("generator" + self.script_int + "_shadowed", "generator" + self.script_int + "_saved", "last_ai_down");
+		if(event != "generator" + self.script_int + "_shadowed")
+		{
+			continue;
+		}
+		self SetModel("mainframe_comp_online_s_s38_blank");
+		level waittill("last_ai_down");
+	}
+}
+
+function blood_computer_think()
+{
+	self SetModel("p7_zm_abbey_computer_bloodgen");
+	level waittill("power_on" + self.script_int);
+
+	while(true)
+	{
+		self SetModel("p7_zm_abbey_computer_bloodgen_online");
+		level waittill("generator" + self.script_int + "_attacked");
+		self SetModel("p7_zm_abbey_computer_bloodgen_online_ms");
+		event =  level util::waittill_any_return("generator" + self.script_int + "_shadowed", "generator" + self.script_int + "_saved", "last_ai_down");
+		if(event != "generator" + self.script_int + "_shadowed")
+		{
+			continue;
+		}
+		self SetModel("p7_zm_abbey_computer_bloodgen_online_s");
+		level waittill("last_ai_down");
+	}
+}
+
+function bloodgun_station_think()
+{
+	while(true)
+	{
+		self SetVisibleToAll();
+		while(! level.bloodgun_active)
+		{
+			wait(0.05);
+		}
+		self SetInvisibleToAll();
+		while(level.bloodgun_active)
+		{
+			wait(0.05);
+		}
+	}
+}
+
+function bloodgun_screen_think()
+{
+	while(! isdefined(level.shadow_vision_active))
+	{
+		wait(0.05);
+	}
+
+	while(true)
+	{
+		self SetModel("zm_abbey_bg_inactive");
+		while(! (level.bloodgun_active || level.shadow_vision_active))
+		{
+			wait(0.05);
+		}
+		self SetModel("zm_abbey_bg_shadow");
+		while(level.shadow_vision_active)
+		{
+			wait(0.05);
+		}
+		self SetModel("zm_abbey_bg_kill");
+		while(level.bloodgun_active)
+		{
+			wait(0.05);
+		}
+		self SetModel("zm_abbey_bg_cooldown");
+		while(level.blood_uses >= 2)
+		{
+			wait(0.05);
+		}
+	}
 }
 
 function perk_set_fx()
@@ -529,7 +670,7 @@ function blood_cool_down()
 {
 	while(true)
 	{
-		level waittill("end_of_round");
+		level waittill("start_of_round");
 		level.blood_uses = 0;
 		wait(0.05);
 	}

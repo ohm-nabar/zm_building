@@ -665,5 +665,30 @@ include,bgb_pack
 scriptparsetree,scripts/zm/_zm_powerup_fire_sale.gsc
 scriptparsetree,scripts/zm/_zm_powerup_fire_sale.csc
 
+// Blood Screens
+xmodel,mainframe_comp_offline_s38
+xmodel,mainframe_comp_online_s38
+xmodel,mainframe_comp_online_ms_s38
+xmodel,mainframe_comp_online_s_s38
+
+xmodel,mainframe_comp_offline_s38_blank
+xmodel,mainframe_comp_online_s38_blank
+xmodel,mainframe_comp_online_ms_s38_blank
+xmodel,mainframe_comp_online_s_s38_blank
+
+xmodel,p7_zm_abbey_computer_bloodgen
+xmodel,p7_zm_abbey_computer_bloodgen_online
+xmodel,p7_zm_abbey_computer_bloodgen_online_ms
+xmodel,p7_zm_abbey_computer_bloodgen_online_s
+
+xmodel,zm_abbey_bg_inactive
+xmodel,zm_abbey_bg_kill
+xmodel,zm_abbey_bg_cooldown
+xmodel,zm_abbey_bg_shadow
+
+// Teleporter Models
+xmodel,zm_abbey_teleporter_lights_off
+xmodel,zm_abbey_teleporter_lights_on
+
 // Localized Strings
 localize,zm_abbey

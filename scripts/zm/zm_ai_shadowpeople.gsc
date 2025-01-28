@@ -641,25 +641,19 @@ function cloak_spawn_sequence()
 			{
 				player thread zm_abbey_inventory::notifyText("splash_shadow_attack_" + generators[generator_index], undefined, level.abbey_alert_neutral);
 			}
+			level notify(generators[generator_index] + "_attacked");
 		}
 		
 		counter = 0;
-		should_continue = false;
 		while(counter < 10)
 		{
 			wait(0.05);
 			counter += 0.05;
 			if(level.num_cloaks != num_cloaks_prev)
 			{
-				should_continue = true;
+				level notify(generators[generator_index] + "_saved");
 				break;
 			}
-		}
-
-		if(should_continue)
-		{
-			//IPrintLn("continuing");
-			continue;
 		}
 
 		if(level.num_cloaks == num_cloaks_prev)
