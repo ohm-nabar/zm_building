@@ -690,5 +690,8 @@ xmodel,zm_abbey_bg_shadow
 xmodel,zm_abbey_teleporter_lights_off
 xmodel,zm_abbey_teleporter_lights_on
 
+// Mystery Box Triggers
+scriptparsetree,scripts/zm/_zm_magicbox.gsc
+
 // Localized Strings
 localize,zm_abbey

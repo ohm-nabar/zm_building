@@ -670,7 +670,7 @@ function blood_cool_down()
 {
 	while(true)
 	{
-		level waittill("start_of_round");
+		level waittill("end_of_round");
 		level.blood_uses = 0;
 		wait(0.05);
 	}
