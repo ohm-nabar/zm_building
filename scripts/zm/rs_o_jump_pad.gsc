@@ -1,6 +1,7 @@
 #using scripts\codescripts\struct;
 
 #using scripts\shared\callbacks_shared;
+#using scripts\shared\exploder_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\trigger_shared;
@@ -206,9 +207,20 @@ function jump_pad_think()
 {
 	self endon( "destroyed" );
 
-	self SetHintString(&"ZM_ABBEY_EMPTY");
+	self SetHintString(&"ZOMBIE_NEED_POWER");
 	self SetCursorHint("HINT_NOICON");
+	while(! (level flag::exists("power_on1") && level flag::get("power_on1")))
+	{
+		wait(0.05);
+	}
 
+	self SetHintString(&"ZM_ABBEY_EMPTY");
+	gates = GetEntArray("jump_pad_gate", "targetname");
+	foreach(gate in gates)
+	{
+		gate Delete();
+	}
+	level exploder::exploder("jump_pad_light");
 	while( isdefined( self ) )
 	{
 		wait .2;
