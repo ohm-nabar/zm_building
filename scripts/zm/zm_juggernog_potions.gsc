@@ -1,5 +1,6 @@
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
+#using scripts\shared\exploder_shared;
 #using scripts\shared\laststand_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\system_shared;
@@ -14,6 +15,7 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 
+#insert scripts\zm\_zm_audio.gsh;
 #insert scripts\zm\_zm_perks.gsh;
 #insert scripts\zm\_zm_perk_juggernaut.gsh;
 #insert scripts\zm\_zm_utility.gsh;
@@ -134,7 +136,8 @@ function activator_think()
 		wait(0.05);
 	}
 
-	self thread zm_audio::sndPerksJingles_Timer();
+	self.script_sound = "mus_perks_jugganog_jingle";
+	self.script_label = "mus_perks_jugganog_sting";
 	self thread hintstring_management();
 	
 	while(true)
@@ -163,7 +166,7 @@ function activator_think()
 		}
 		else if(player.jug_resistance_level < 250 && zm_perks::vending_trigger_can_player_use(player))
 		{
-			self PlaySoundToPlayer("mus_perks_jugganog_sting", player);
+			self thread sndPerksJingles_Player(PERKSACOLA_STINGER);
 			gun = player perk_give_bottle_begin( bottle_weapon );
 			level.jug_uses_left--;
 			if(level.jug_uses_left <= 0)
@@ -193,6 +196,7 @@ function hintstring_management()
 	prev_jug_uses_left = -1;
 	prev_hintstring_state = -1;
 	hintstring_state = -1;
+	jug_timer_set = false;
 
 	while(true)
 	{
@@ -215,17 +219,29 @@ function hintstring_management()
 			{
 				case 0:
 				{
+					if(! jug_timer_set)
+					{
+						jug_timer_set = true;
+						self thread sndPerksJingles_Timer();
+					}
+					level exploder::exploder("jug_light");
 					self SetHintString(&"ZM_ABBEY_FOUNTAIN_ACTIVATE", level.jug_uses_left);
 					break;
 				}
 				case 1:
 				{
+					jug_timer_set = false;
+					level exploder::stop_exploder("jug_light");
 					self SetHintString(&"ZM_ABBEY_FOUNTAIN_DEPOSIT");
+					self notify(#"jug_fountain_off");
 					break;
 				}
 				default:
 				{
+					jug_timer_set = false;
+					level exploder::stop_exploder("jug_light");
 					self SetHintString(&"ZM_ABBEY_GENERATOR_NO_BLOOD");
+					self notify(#"jug_fountain_off");
 					break;
 				}
 			}
@@ -235,6 +251,78 @@ function hintstring_management()
 		}
 		wait(0.05);
 	}
+}
+
+//Perksacola Jingle Stuff
+function sndPerksJingles_Timer()
+{
+	self endon( "death" );
+	self endon( #"jug_fountain_off" );
+	
+	self.sndJingleCooldown = false;
+	self.sndJingleActive = false;
+	IPrintLn("starting timer");
+	while(1)
+	{
+		wait(PERKSACOLA_WAIT_TIME);
+		
+		if( PERKSACOLA_PROBABILITY && !IS_TRUE(self.sndJingleCooldown) )
+		{
+			IPrintLn("playing jingle");
+			self thread sndPerksJingles_Player(PERKSACOLA_JINGLE);
+		}
+	}
+}
+function sndPerksJingles_Player(type)
+{
+	self endon( "death" );
+	self endon( #"jug_fountain_off" );
+	
+	if( !isdefined( self.sndJingleActive ) )
+	{
+		self.sndJingleActive = false;
+	}
+	
+	alias = self.script_sound;
+	
+	if( type == PERKSACOLA_STINGER )
+		alias = self.script_label;
+	
+	if( isdefined( level.musicSystem ) && level.musicSystem.currentPlaytype >= PLAYTYPE_SPECIAL )
+		return;
+	
+	self.str_jingle_alias = alias;
+	
+	if( !IS_TRUE( self.sndJingleActive ) )
+	{
+		IPrintLn("playing jingle (for real)");
+		self.sndJingleActive = true;
+		self playsoundwithnotify( alias, "sndDone" );
+		
+		playbacktime = soundgetplaybacktime( alias );
+		if( !isdefined( playbacktime ) || playbacktime <= 0 )
+			waittime = 1;
+		else
+			waittime = playbackTime * .001;
+	
+		wait(waittime);
+		
+		if( type == PERKSACOLA_JINGLE )
+		{
+			self.sndJingleCooldown = true;
+			self thread sndPerksJingles_Cooldown();
+		}
+		
+		self.sndJingleActive = false;
+	}
+}
+function sndPerksJingles_Cooldown()
+{
+	self endon( "death" );
+	self endon( #"jug_fountain_off" );
+	
+	wait(45);
+	self.sndJingleCooldown = false;
 }
 
 function fix_health_reset()
