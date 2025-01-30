@@ -1000,10 +1000,6 @@ function turn_generator_on(generator_name, after_shadow)
 
 			if(! isdefined(after_shadow) || ! after_shadow)
 			{
-				fx_loc = GetEnt("pp_fx_loc", "targetname");
-				ent = Spawn("script_model", fx_loc.origin);
-				ent SetModel("tag_origin");
-				//ent thread delayed_fx("custom/fx_poseidons_punch");
 				for(i = 0; i < level.boxcages_q2.size; i++)
 				{
 					level.boxcages_q2[i] Delete();
@@ -1042,10 +1038,6 @@ function turn_generator_on(generator_name, after_shadow)
 
 			if(! isdefined(after_shadow) || ! after_shadow)
 			{
-				fx_loc = GetEnt("phd_fx_loc", "targetname");
-				ent = Spawn("script_model", fx_loc.origin);
-				ent SetModel("tag_origin");
-				//ent thread delayed_fx("custom/fx_perk_phdflopper_light");
 				for(i = 0; i < level.boxcages_q4.size; i++)
 				{
 					level.boxcages_q4[i] Delete();
@@ -1061,12 +1053,6 @@ function turn_generator_on(generator_name, after_shadow)
 			}
 			break;
 	}
-}
-
-function delayed_fx(fx)
-{
-	wait(3);
-	PlayFXOnTag(fx, self, "tag_origin");
 }
 
 function turn_generator_off(generator_name)
