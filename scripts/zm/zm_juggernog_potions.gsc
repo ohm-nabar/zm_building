@@ -261,14 +261,12 @@ function sndPerksJingles_Timer()
 	
 	self.sndJingleCooldown = false;
 	self.sndJingleActive = false;
-	IPrintLn("starting timer");
 	while(1)
 	{
 		wait(PERKSACOLA_WAIT_TIME);
 		
 		if( PERKSACOLA_PROBABILITY && !IS_TRUE(self.sndJingleCooldown) )
 		{
-			IPrintLn("playing jingle");
 			self thread sndPerksJingles_Player(PERKSACOLA_JINGLE);
 		}
 	}
@@ -295,7 +293,6 @@ function sndPerksJingles_Player(type)
 	
 	if( !IS_TRUE( self.sndJingleActive ) )
 	{
-		IPrintLn("playing jingle (for real)");
 		self.sndJingleActive = true;
 		self playsoundwithnotify( alias, "sndDone" );
 		
