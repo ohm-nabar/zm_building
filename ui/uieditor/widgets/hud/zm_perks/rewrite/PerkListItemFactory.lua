@@ -38,17 +38,26 @@ function CoD.PerkListItemFactory.new(HudRef, arg1)
 	Elem:addElement(glowOblueOver0)
     Elem.GlowBlueOver0 = glowOblueOver0
 
-	local perkLookup = {
-		"specialty_giant_three_guns_zombies",
-		"specialty_giant_marathon_zombies",
-		"specialty_giant_quickrevive_zombies",
-		"specialty_blue_electric_cherry_zombies",
-		"specialty_phdlite_zombies",
-		"specialty_doubletap_zombies",
-		"specialty_poseidon_zombies",
-		"specialty_deadshot_zombies"
-	}
-    
+	local perkModelLookup = {}
+	perkModelLookup["specialty_giant_three_guns_zombies"] = "muleUpdate"
+	perkModelLookup["specialty_giant_marathon_zombies"] = "staminUpdate"
+	perkModelLookup["specialty_giant_quickrevive_zombies"] = "quickUpdate"
+	perkModelLookup["specialty_blue_electric_cherry_zombies"] = "cherryUpdate"
+	perkModelLookup["specialty_phdlite_zombies"] = "PHDUpdate"
+	perkModelLookup["specialty_doubletap_zombies"] = "doubleUpdate"
+	perkModelLookup["specialty_poseidon_zombies"] = "poseidonUpdate"
+	perkModelLookup["specialty_deadshot_zombies"] = "deadshotUpdate"
+
+	local perkGoalLookup = {}
+	perkGoalLookup["specialty_giant_three_guns_zombies"] = 10
+	perkGoalLookup["specialty_giant_marathon_zombies"] = 5
+	perkGoalLookup["specialty_giant_quickrevive_zombies"] = 4
+	perkGoalLookup["specialty_blue_electric_cherry_zombies"] = 10
+	perkGoalLookup["specialty_phdlite_zombies"] = 8
+	perkGoalLookup["specialty_doubletap_zombies"] = 3
+	perkGoalLookup["specialty_poseidon_zombies"] = 8
+	perkGoalLookup["specialty_deadshot_zombies"] = 10
+
 	local perkImage = LUI.UIImage.new()
 	perkImage:setLeftRight(true, false, 0.000000, 36.000000)
     perkImage:setTopBottom(false, true, 0, -36)
@@ -56,55 +65,49 @@ function CoD.PerkListItemFactory.new(HudRef, arg1)
 	local perkUpgradeImage = LUI.UIImage.new()
 	perkUpgradeImage:setLeftRight(true, false, -2, 38)
     perkUpgradeImage:setTopBottom(false, true, 2, -38)
+	perkUpgradeImage:setImage(RegisterImage("upgrade_perk"))
 	perkUpgradeImage:hide()
 
-	local function SetPerkUpgrade(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "set_perk_upgrade") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-			local perk = perkLookup[NotifyData[1] + 1]
-			if perk == Elem.perk_key_value then
-				EnableGlobals()
-				perkUpgradedLookup[perk] = true
-				DisableGlobals()
-				perkUpgradeImage:setImage(RegisterImage("upgrade_perk"))
-				perkUpgradeImage:show()
+	local function PoseidonRecharge(ModelRef)
+		local NotifyData = Engine.GetModelValue(ModelRef)
+		if NotifyData then
+			if NotifyData == 0 then
+				perkImage:setRGB(0.5, 0.5, 0.5)
+				perkUpgradeImage:setRGB(0.5, 0.5, 0.5)
+			else
+				perkImage:setRGB(1, 1, 1)
+				perkUpgradeImage:setRGB(1, 1, 1)
 			end
-        end
-    end
-	perkUpgradeImage:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", SetPerkUpgrade)
+		end
+	end
     
 	local function SetPerkImage(ModelRef)
 		local perk_key_value = Engine.GetModelValue(ModelRef)
 		if perk_key_value then
 			Elem.perk_key_value = perk_key_value
 			perkImage:setImage(RegisterImage(perk_key_value))
+			local model_string = perkModelLookup[perk_key_value]
+			local model = Engine.GetModel(Engine.GetModelForController(InstanceRef), model_string)
+			local model_value = Engine.GetModelValue(model)
+			local complete_val = perkGoalLookup[perk_key_value] + 4
 			
-			EnableGlobals()
-			if perkUpgradedLookup[perk_key_value] then
-				perkUpgradeImage:setImage(RegisterImage("upgrade_perk"))
-				perkUpgradeImage:show()
+			local function SetPerkUpgrade(ModelRef2)
+				local NotifyData = Engine.GetModelValue(ModelRef2)
+				if NotifyData then
+					if NotifyData == complete_val then
+						perkUpgradeImage:show()
+					end
+				end
 			end
-			DisableGlobals()
+			perkUpgradeImage:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), model_string), SetPerkUpgrade)
+
+			if perk_key_value == "specialty_poseidon_zombies" then
+				perkImage:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "poseidonCharge"), PoseidonRecharge)
+			end
 		end
 	end
 
     perkImage:linkToElementModel(Elem, "image", true, SetPerkImage)
-
-	local function PoseidonRecharge(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "poseidon_charge") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-			if Elem.perk_key_value == "specialty_poseidon_zombies" then
-				if NotifyData[1] == 0 then
-					perkImage:setRGB(0.5, 0.5, 0.5)
-					perkUpgradeImage:setRGB(0.5, 0.5, 0.5)
-				else
-					perkImage:setRGB(1, 1, 1)
-					perkUpgradeImage:setRGB(1, 1, 1)
-				end
-			end
-        end
-    end
-	perkImage:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", PoseidonRecharge)
     
 	Elem:addElement(perkImage)
 	Elem:addElement(perkUpgradeImage)

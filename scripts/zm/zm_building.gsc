@@ -157,20 +157,14 @@ function main()
 
 	level thread zm_abbey_audio::main();
 	level thread zm_klauser::main();
-	level thread zm_perk_upgrades_effects::main();
 	level thread zm_healing_grenade::main();
 	level thread zm_starting_pistol_choose::main();
 	level thread zm_shadow_perks::main();
-	level thread zm_pause::main();
 	level thread zm_high_round_health::main();
 	level thread zm_diedrich::main();
-	level thread zm_juggernog_potions::main();
-	level thread zm_room_manager::main();
 	level thread zm_variable_pricing::main();
 	//level thread zm_abbey_boss::main();
 	level thread zm_revive_icon::main();
-	level thread zm_solo_revive::main();
-	level thread zm_no_hud::main();
 	level thread zm_antiverse::main();
 	level thread zm_abbey_quick_revive::main();
 	level thread zm_abbey_box_map::main();

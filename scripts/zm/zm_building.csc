@@ -60,6 +60,12 @@
 #using scripts\zm\zm_blueprints;
 #using scripts\zm\zm_hud_gasweapon_handler;
 #using scripts\zm\zm_flashlight;
+#using scripts\zm\zm_juggernog_potions;
+#using scripts\zm\zm_solo_revive;
+#using scripts\zm\zm_room_manager;
+#using scripts\zm\zm_pause;
+#using scripts\zm\zm_no_hud;
+#using scripts\zm\zm_perk_upgrades_effects;
 
 // Sphynx's Console Commands
 #using scripts\Sphynx\commands\_zm_commands;

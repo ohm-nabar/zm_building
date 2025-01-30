@@ -46,8 +46,6 @@
 
 #precache( "fx", "water/fx_water_splash_xxxlg" );
 
-#precache( "eventstring", "poseidon_charge" );
-
 #precache( "string", "ZM_ABBEY_PERK_POSEIDON_PUNCH" );
 
 #namespace zm_perk_poseidonspunch;
@@ -61,6 +59,8 @@ REGISTER_SYSTEM( "poseidonspunch", &__init__, undefined )
 //-----------------------------------------------------------------------------------
 function __init__()
 {
+	clientfield::register( "clientuimodel", "poseidonCharge", VERSION_SHIP, 1, "int" );
+
 	level.poseidon_recharge_time = 10;
 	enable_custom_perk_for_level();
 	callback::on_connect( &on_player_connect );
@@ -72,7 +72,6 @@ function __init__()
 
 function on_player_connect()
 {
-	self LUINotifyEvent(&"poseidon_charge", 1, 0);
 	self.poseidon_zombie_deaths_until_drop = RandomIntRange(4, 15);
 	self.poseidon_ready = true;
 	self.is_poseidon_blessed = false;
@@ -166,7 +165,9 @@ function take_custom_perk( b_pause, str_perk, str_result )
 
 function checkCustomPerk()
 {
-	//self thread blessing_recharge_monitor();
+	self endon("disconnect");
+
+	self clientfield::set_player_uimodel("poseidonCharge", 1);
 }
 
 function poseidon_knockdown()
@@ -239,10 +240,10 @@ function poseidon_recharge_time()
 	self endon("disconnect");
 	//self PlaySoundToPlayer("pp_recharge", self);
 	self.poseidon_ready = false;
-	self LUINotifyEvent(&"poseidon_charge", 1, 0);
+	self clientfield::set_player_uimodel("poseidonCharge", 0);
 	wait(level.poseidon_recharge_time);
 	self.poseidon_ready = true;
-	self LUINotifyEvent(&"poseidon_charge", 1, 1);
+	self clientfield::set_player_uimodel("poseidonCharge", 1);
 	self PlaySoundToPlayer("pp_active", self);
 }
 

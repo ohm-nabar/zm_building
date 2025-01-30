@@ -371,17 +371,16 @@ CoD.ZmAmmo_Prop.new = function ( menu, controller )
 	self:addElement(DpadIconPause)
 
 	local function IconPauseDisplay(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "abbey_pause") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-
-            if NotifyData[1] == 0 then
+		local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            if NotifyData == 0 then
                 DpadIconPause:setImage( RegisterImage( "game_played" ) )
 			else
                 DpadIconPause:setImage( RegisterImage( "game_paused" ) )
             end
         end
     end
-    DpadIconPause:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", IconPauseDisplay)
+    DpadIconPause:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "abbeyPause"), IconPauseDisplay)
 
 	local DpadIconNoHud = LUI.UIImage.new()
 	DpadIconNoHud:setImage( RegisterImage ( "no_hud_0_0" ) )
@@ -390,19 +389,18 @@ CoD.ZmAmmo_Prop.new = function ( menu, controller )
 	self:addElement(DpadIconNoHud)
 
 	local function NoHudToggle(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "abbey_no_hud") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-
-            if NotifyData[1] == 0 then
+		local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            if NotifyData == 0 then
                 DpadIconNoHud:setImage( RegisterImage( "no_hud_0_0" ) )
-			elseif NotifyData[1] == 1 then
+			elseif NotifyData == 1 then
                 DpadIconNoHud:setImage( RegisterImage( "no_hud_0_1" ) )
             else
 				DpadIconNoHud:setImage( RegisterImage( "no_hud_1_1" ) )
 			end
         end
     end
-    DpadIconNoHud:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", NoHudToggle)
+    DpadIconNoHud:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "abbeyNoHUD"), NoHudToggle)
 
 	local DpadIconMule = LUI.UIImage.new()
 	DpadIconMule:setImage( RegisterImage ( "i_thirdguninfo" ) )
@@ -411,31 +409,29 @@ CoD.ZmAmmo_Prop.new = function ( menu, controller )
 	DpadIconMule:hide()
 	self:addElement(DpadIconMule)
 
-	local function IconPauseDisplay(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "mule_indicator") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-
-            if NotifyData[1] == 0 then
+	local function IconMuleDisplay(ModelRef)
+		local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            if NotifyData == 0 then
                 DpadIconMule:hide()
 			else
                 DpadIconMule:show()
             end
         end
     end
-    DpadIconMule:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", IconPauseDisplay)
+    DpadIconMule:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "muleIndicator"), IconMuleDisplay);
 	
 	local function IconPauseAvailable(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "abbey_pause_available") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-
-            if NotifyData[1] == 0 then
-                DpadIconPause:setRGB(1, 1, 1)
-			else
+		local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            if NotifyData == 0 then
                 DpadIconPause:setRGB(0.5, 0.5, 0.5)
+			else
+                DpadIconPause:setRGB(1, 1, 1)
             end
         end
     end
-	DpadIconPause:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", IconPauseAvailable)
+	DpadIconPause:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "abbeyPauseAvailable"), IconPauseAvailable)
 	
 	local DpadIconShld = CoD.ZmAmmo_DpadIconShield.new( menu, controller )
 	DpadIconShld:setLeftRight( false, false, 166.31, 181.31 )

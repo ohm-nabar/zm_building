@@ -14,13 +14,12 @@ function CoD.JugHearts.new(HudRef, InstanceRef)
     JugHeartsIcon:setTopBottom(true, true)
 
  	local function JugHeartsUpdate(ModelRef)
- 		if IsParamModelEqualToString(ModelRef, "jug_hearts_update") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-
-            JugHeartsIcon:setImage( RegisterImage( JugHeartsImages[NotifyData[1] + 1] ) )
+        local NotifyData = Engine.GetModelValue(ModelRef)
+ 		if NotifyData then
+            JugHeartsIcon:setImage( RegisterImage( JugHeartsImages[NotifyData + 1] ) )
         end
  	end
- 	JugHeartsIcon:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", JugHeartsUpdate)
+ 	JugHeartsIcon:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "jugHeartsUpdate"), JugHeartsUpdate)
 
  	JugHearts:addElement(JugHeartsIcon)
 

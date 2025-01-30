@@ -23,6 +23,8 @@ REGISTER_SYSTEM( "zm_perk_poseidonspunch", &__init__, undefined )
 	
 function __init__()
 {
+	clientfield::register( "clientuimodel", "poseidonCharge", VERSION_SHIP, 1, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+
 	enable_custom_perk_for_level();
 }
 

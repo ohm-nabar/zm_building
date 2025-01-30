@@ -15,17 +15,17 @@ function CoD.SoloLives.new(HudRef, InstanceRef)
     SoloLivesIcon:hide()
 
  	local function SoloLivesUpdate(ModelRef)
- 		if IsParamModelEqualToString(ModelRef, "solo_lives_update") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-            if NotifyData[1] == 0 then
+        local NotifyData = Engine.GetModelValue(ModelRef)
+ 		if NotifyData then
+            if NotifyData == 0 then
                 SoloLivesIcon:hide()
             else
-                SoloLivesIcon:setImage( RegisterImage( SoloLivesImages[NotifyData[1]] ) )
+                SoloLivesIcon:setImage( RegisterImage( SoloLivesImages[NotifyData] ) )
                 SoloLivesIcon:show()
             end
         end
  	end
- 	SoloLivesIcon:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", SoloLivesUpdate)
+ 	SoloLivesIcon:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "soloLivesUpdate"), SoloLivesUpdate)
 
  	SoloLives:addElement(SoloLivesIcon)
 

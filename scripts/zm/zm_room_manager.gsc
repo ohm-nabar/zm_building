@@ -16,11 +16,16 @@
 #using scripts\shared\laststand_shared;
 
 #insert scripts\shared\shared.gsh;
+#insert scripts\shared\version.gsh;
 
-#precache( "eventstring", "abbey_room" );
+#namespace zm_room_manager;
 
-function main() 
+REGISTER_SYSTEM( "zm_room_manager", &__init__, undefined )
+
+function __init__() 
 {
+	clientfield::register( "clientuimodel", "abbeyRoom", VERSION_SHIP, 5, "int" );
+
 	if(GetDvarString("ui_mapname") == "zm_building")
 	{
 		spawn_room_zones = []; spawn_room_zones[spawn_room_zones.size] = "start_zone";
@@ -186,36 +191,17 @@ function room_manager()
 	}
 
 	rooms = GetArrayKeys(level.abbey_rooms);
-
-	/*
-	room_display = NewClientHudElem(self);
-	room_display.alignX = "right";
-	room_display.alignY = "bottom";
-	room_display.horzAlign = "fullscreen";
-	room_display.vertAlign = "fullscreen";
-	room_display.x = 615;
-	room_display.y = 465;
-	room_display.fontscale = 1;
-	room_display.alpha = 1;
-	room_display.color = (1,1,1);
-	room_display.hidewheninmenu = true;
-	room_display.foreground = true;
-	room_display setText("");
-	*/
-
-	current_room = "";
 	while(true)
 	{
 		foreach(room in rooms)
 		{
-			if( self is_player_in_room(level.abbey_rooms[room]) && room != current_room )
+			if( self is_player_in_room(level.abbey_rooms[room]) )
 			{
-				self LUINotifyEvent( &"abbey_room", 1, level.abbey_rooms_indices[room] );
-				current_room = room;
-				//room_display setText(room);
+				self clientfield::set_player_uimodel("abbeyRoom", level.abbey_rooms_indices[room]);
+				break;
 			}
 		}
-		wait(0.05);
+		util::wait_network_frame();
 	}
 }
 

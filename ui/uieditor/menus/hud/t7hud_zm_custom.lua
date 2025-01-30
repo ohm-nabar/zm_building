@@ -161,37 +161,6 @@ function LUI.createMenu.T7Hud_zm_factory(InstanceRef)
     ScoreWidget:setLeftRight(true, false, 7, 141)
     ScoreWidget:setTopBottom(false, true, -350.000000, -478.000000)
     ScoreWidget:setYRot(0.000000)
-
-    EnableGlobals()
-    perkUpgradedLookup = {
-		["specialty_giant_three_guns_zombies"] = false,
-		["specialty_giant_marathon_zombies"] = false,
-		["specialty_giant_quickrevive_zombies"] = false,
-		["specialty_blue_electric_cherry_zombies"] = false,
-		["specialty_phdlite_zombies"] = false,
-		["specialty_doubletap_zombies"] = false,
-		["specialty_poseidon_zombies"] = false,
-        ["specialty_deadshot_zombies"] = false
-	}
-    DisableGlobals()
-
-    local function PerkUpgradeReset(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "perk_upgrade_reset") then
-			EnableGlobals()
-            perkUpgradedLookup = {
-                ["specialty_giant_three_guns_zombies"] = false,
-                ["specialty_giant_marathon_zombies"] = false,
-                ["specialty_giant_quickrevive_zombies"] = false,
-                ["specialty_blue_electric_cherry_zombies"] = false,
-                ["specialty_phdlite_zombies"] = false,
-                ["specialty_doubletap_zombies"] = false,
-                ["specialty_poseidon_zombies"] = false,
-                ["specialty_deadshot_zombies"] = false
-            }
-            DisableGlobals()
-        end
-    end
-    HudRef:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", PerkUpgradeReset)
     
     local function HudStartScore(Unk1, Unk2, Unk3)
         if IsModelValueTrue(InstanceRef, "hudItems.playerSpawned") and
