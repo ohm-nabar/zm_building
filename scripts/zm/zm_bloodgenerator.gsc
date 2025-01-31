@@ -85,7 +85,7 @@
 #precache( "fx", "zombie/fx_perk_stamin_up_factory_zmb" );
 #precache( "fx", "zombie/fx_perk_mule_kick_factory_zmb" );
 #precache( "fx", "custom/fx_poseidons_punch" );
-#precache( "fx", "custom/fx_perk_phdflopper_light");
+#precache( "fx", "_mikeyray/perks/phd/fx_perk_phd");
 
 #precache( "eventstring", "blood_vial_update" );
 #precache( "eventstring", "generator_activated" );
@@ -119,7 +119,7 @@
 #precache( "model", "zm_abbey_bg_cooldown" );
 #precache( "model", "zm_abbey_bg_shadow" );
 
-#define ELECTRIC_CHERRY_MACHINE_LIGHT_FX                    "electric_cherry_light" 
+#define ELECTRIC_CHERRY_MACHINE_LIGHT_FX                    "electric_cherry_light"
 
 // MAIN
 //*****************************************************************************
@@ -311,8 +311,8 @@ function perk_set_fx()
     level._effect[STAMINUP_MACHINE_LIGHT_FX]                    = "zombie/fx_perk_stamin_up_factory_zmb";
     level._effect[ADDITIONAL_PRIMARY_WEAPON_MACHINE_LIGHT_FX]   = "zombie/fx_perk_mule_kick_factory_zmb";
     level._effect[ELECTRIC_CHERRY_MACHINE_LIGHT_FX]             = "zombie/fx_perk_quick_revive_factory_zmb";
-	level._effect[PHD_LITE_MACHINE_LIGHT_FX]             = "custom/fx_perk_phdflopper_light";
-	level._effect[POSEIDON_PUNCH_MACHINE_LIGHT_FX]             = "custom/fx_poseidons_punch";
+	level._effect[PHD_LITE_MACHINE_LIGHT_FX]             		= "_mikeyray/perks/phd/fx_perk_phd";
+	level._effect[POSEIDON_PUNCH_MACHINE_LIGHT_FX]              = "custom/fx_poseidons_punch";
 }
 
 function game_over_check()

@@ -699,5 +699,11 @@ xmodel,zm_abbey_teleporter_lights_on
 // Mystery Box Triggers
 scriptparsetree,scripts/zm/_zm_magicbox.gsc
 
+// PhD Slider Assets
+xmodel,p7_zm_vending_phd
+xmodel,p7_zm_vending_phd_active
+weapon,zombie_perk_bottle_phd
+fx,_mikeyray/perks/phd/fx_perk_phd
+
 // Localized Strings
 localize,zm_abbey
