@@ -674,15 +674,6 @@ function pap_jingle()
 
 	pap_trigger = GetEnt("pack_a_punch", "script_noteworthy");
 	pap_trigger thread zm_audio::sndPerksJingles_Timer();
-	while(true)
-	{
-		level flag::wait_till("pack_machine_in_use");
-		pap_trigger thread zm_audio::sndPerksJingles_Player(PERKSACOLA_STINGER);
-		while(level flag::get("pack_machine_in_use"))
-		{
-			wait(0.05);
-		}
-	}
 }
 
 function blood_cool_down()
@@ -981,6 +972,11 @@ function generator_think()
 
 function turn_generator_on(generator_name, after_shadow)
 {
+	if(! IsString(generator_name))
+	{
+		return;
+	}
+
 	foreach(p in level.players)
 	{
 		if(level.blood_uses == 4)
