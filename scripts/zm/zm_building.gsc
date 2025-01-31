@@ -155,6 +155,8 @@ function main()
 	level.zombie_lethal_grenade_player_init = GetWeapon( "frag_grenade_potato_masher" );
 	level.player_stats_init = &player_stats_init;
 
+	level.weaponrevivetool = getweapon("legacy_syrette");
+
 	level thread zm_abbey_audio::main();
 	level thread zm_klauser::main();
 	level thread zm_healing_grenade::main();

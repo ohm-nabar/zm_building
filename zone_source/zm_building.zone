@@ -705,5 +705,8 @@ xmodel,p7_zm_vending_phd_active
 weapon,zombie_perk_bottle_phd
 fx,_mikeyray/perks/phd/fx_perk_phd
 
+// Revive
+weapon,legacy_syrette_zm
+
 // Localized Strings
 localize,zm_abbey
