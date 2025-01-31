@@ -169,6 +169,7 @@ function monitor_has_shadowed_perk(perkname)
 			self.shadowPerks[j][1] = true;
 		}
 	}
+	wait(0.05);
 }
 
 function generator1_shadow_monitor()
@@ -239,12 +240,18 @@ function generator3_shadow_monitor()
 	players = GetPlayers();
 	for(i = 0; i < players.size; i++)
 	{
-		doublearray = []; doublearray[doublearray.size] = PERK_DOUBLE_TAP; doublearray[doublearray.size] = players[i] HasPerk(PERK_DOUBLE_TAP);
+		mulearray = []; mulearray[mulearray.size] = PERK_ADDITIONAL_PRIMARY_WEAPON; mulearray[mulearray.size] = players[i] HasPerk(PERK_ADDITIONAL_PRIMARY_WEAPON);
 
-		players[i].shadowPerks[players[i].shadowPerks.size] = doublearray;
-		players[i] notify(PERK_DOUBLE_TAP + "_stop");
-		players[i] thread shadow_double_effects();
-		players[i] thread monitor_has_shadowed_perk(PERK_DOUBLE_TAP);
+		players[i].shadowPerks[players[i].shadowPerks.size] = mulearray;
+
+		players[i].shadowThirdGun = players[i] zm_perk_upgrades::return_additionalprimaryweapon();
+		players[i].shadowThirdGunClip = players[i] GetWeaponAmmoClip( players[i].shadowThirdGun );
+		players[i].shadowThirdGunStock = players[i] GetWeaponAmmoStock( players[i].shadowThirdGun );
+
+		players[i] TakeWeapon( players[i].shadowThirdGun );
+		players[i] notify(PERK_ADDITIONAL_PRIMARY_WEAPON + "_stop");
+		players[i] thread shadow_mule_effects();
+		players[i] thread monitor_has_shadowed_perk(PERK_ADDITIONAL_PRIMARY_WEAPON);
 
 		staminarray = []; staminarray[staminarray.size] = PERK_STAMINUP; staminarray[staminarray.size] = players[i] HasPerk(PERK_STAMINUP);
 		
@@ -267,18 +274,12 @@ function generator4_shadow_monitor()
 	players = GetPlayers();
 	for(i = 0; i < players.size; i++)
 	{
-		mulearray = []; mulearray[mulearray.size] = PERK_ADDITIONAL_PRIMARY_WEAPON; mulearray[mulearray.size] = players[i] HasPerk(PERK_ADDITIONAL_PRIMARY_WEAPON);
+		doublearray = []; doublearray[doublearray.size] = PERK_DOUBLE_TAP; doublearray[doublearray.size] = players[i] HasPerk(PERK_DOUBLE_TAP);
 
-		players[i].shadowPerks[players[i].shadowPerks.size] = mulearray;
-
-		players[i].shadowThirdGun = players[i] zm_perk_upgrades::return_additionalprimaryweapon();
-		players[i].shadowThirdGunClip = players[i] GetWeaponAmmoClip( players[i].shadowThirdGun );
-		players[i].shadowThirdGunStock = players[i] GetWeaponAmmoStock( players[i].shadowThirdGun );
-
-		players[i] TakeWeapon( players[i].shadowThirdGun );
-		players[i] notify(PERK_ADDITIONAL_PRIMARY_WEAPON + "_stop");
-		players[i] thread shadow_mule_effects();
-		players[i] thread monitor_has_shadowed_perk(PERK_ADDITIONAL_PRIMARY_WEAPON);
+		players[i].shadowPerks[players[i].shadowPerks.size] = doublearray;
+		players[i] notify(PERK_DOUBLE_TAP + "_stop");
+		players[i] thread shadow_double_effects();
+		players[i] thread monitor_has_shadowed_perk(PERK_DOUBLE_TAP);
 
 		phdarray = []; phdarray[phdarray.size] = PERK_PHD_LITE; phdarray[phdarray.size] = players[i] HasPerk(PERK_PHD_LITE);
 	

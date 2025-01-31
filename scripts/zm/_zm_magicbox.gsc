@@ -104,9 +104,9 @@ function __main__()
         level.abbey_box_generators["chest_4"] = 1; // Basilica
         level.abbey_box_generators["start_chest_1"] = 3; // Airfield
         level.abbey_box_generators["chest_5"] = 3; // Merveille de Verite
-        level.abbey_box_generators["chest_6"] = 2; // Courtyard
-        level.abbey_box_generators["chest_7"] = 4; // Lower Pilgrimage Stairs
-        level.abbey_box_generators["start_chest_2"] = 4; // URM Labs
+        level.abbey_box_generators["chest_6"] = 4; // Courtyard
+        level.abbey_box_generators["chest_7"] = 2; // Lower Pilgrimage Stairs
+        level.abbey_box_generators["start_chest_2"] = 2; // URM Labs
         level.abbey_box_generators["chest_8"] = 1; // No Man's Land
     }
 

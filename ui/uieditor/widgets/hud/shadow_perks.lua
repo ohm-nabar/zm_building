@@ -11,8 +11,8 @@ function CoD.ShadowPerks.new(HudRef, InstanceRef)
     local ShadowPerkLookup = { 
         {"shadow_quick", "shadow_cherry"}, 
         {"shadow_poseidon", "shadow_deadshot"}, 
-        {"shadow_double", "shadow_stamin"},
-        {"shadow_mule", "shadow_phd"}
+        {"shadow_stamin", "shadow_mule"},
+        {"shadow_double", "shadow_phd"}
 	}
 
     local LeftPos = 0
