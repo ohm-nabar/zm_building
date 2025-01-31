@@ -170,6 +170,8 @@ function __init__()
 
 		level.beach_rooms = [];
 		level.beach_rooms[level.beach_rooms.size] = "No Man's Land";
+
+		level thread monitor_beach_zones();
 	}
 
     callback::on_connect( &on_player_connect );
