@@ -65,6 +65,7 @@
 #using scripts\zm\zm_abbey_inventory;
 #using scripts\zm\zm_room_manager;
 
+#insert scripts\zm\_zm_audio.gsh;
 #insert scripts\zm\_zm_perks.gsh;
 #insert scripts\zm\_zm_perk_quick_revive.gsh;
 #insert scripts\zm\_zm_perk_staminup.gsh;
@@ -656,6 +657,7 @@ function set_bloodgun_ammo()
 
 function pap_think()
 {
+	level thread pap_jingle();
 	papReady = 0;
 	while(papReady < 4)
 	{
@@ -664,6 +666,23 @@ function pap_think()
 	}
 	level flag::set("power_on");
 	level notify( "Pack_A_Punch_on" );
+}
+
+function pap_jingle()
+{
+	level waittill( "Pack_A_Punch_on" );
+
+	pap_trigger = GetEnt("pack_a_punch", "script_noteworthy");
+	pap_trigger thread zm_audio::sndPerksJingles_Timer();
+	while(true)
+	{
+		level flag::wait_till("pack_machine_in_use");
+		pap_trigger thread zm_audio::sndPerksJingles_Player(PERKSACOLA_STINGER);
+		while(level flag::get("pack_machine_in_use"))
+		{
+			wait(0.05);
+		}
+	}
 }
 
 function blood_cool_down()
