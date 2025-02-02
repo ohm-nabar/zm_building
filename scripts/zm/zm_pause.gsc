@@ -10,6 +10,7 @@
 
 #insert scripts\shared\shared.gsh;
 #insert scripts\shared\version.gsh;
+#insert scripts\zm\zm_abbey_inventory.gsh;
 
 #using scripts\zm\_zm_laststand;
 #using scripts\zm\_zm_utility;
@@ -347,7 +348,7 @@ function pause_notif()
 	}
 
 	level waittill("start_of_round");
-	self zm_abbey_inventory::notifyText("splash_pause", level.pause_prompt, level.abbey_alert_neutral);
+	self zm_abbey_inventory::notifyText(NOTIF_GLOBAL_PAUSE, NOTIF_FLASH_DOWN, NOTIF_ALERT_NEUTRAL);
 }
 
 function testeroo() 

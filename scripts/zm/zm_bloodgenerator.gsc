@@ -74,6 +74,7 @@
 #insert scripts\zm\_zm_perk_poseidonspunch.gsh;
 #insert scripts\zm\_zm_perk_doubletaporiginal.gsh;
 #insert scripts\zm\_zm_perk_phdlite.gsh;
+#insert scripts\zm\zm_abbey_inventory.gsh;
 
 //Blood vial shaders
 #precache( "material", "acquire_waypoint" );
@@ -430,7 +431,7 @@ function acquire_waypoint_manage()
 
 	foreach(player in level.players)
 	{
-		player thread zm_abbey_inventory::notifyText("splash_hud_toggle", level.hud_toggle_prompt, level.abbey_alert_neutral);
+		player thread zm_abbey_inventory::notifyText(NOTIF_GLOBAL_HUD_TOGGLE, NOTIF_FLASH_LEFT, NOTIF_ALERT_NEUTRAL);
 	}
 
 	while(!level.bloodgun_active)
@@ -722,14 +723,17 @@ function blood_think()
 
 		start_kills = player.pers["kills"];
 		success = false; 
-		player thread zm_abbey_inventory::notifyText("splash_blood_user", undefined, level.abbey_alert_neutral);
+		player thread zm_abbey_inventory::notifyText(NOTIF_POWER_BG, undefined, NOTIF_ALERT_NEUTRAL, undefined, true);
 
 		foreach(p in level.players)
 		{
-			p thread show_blood_empty();
 			if(p != player)
 			{
-				p thread zm_abbey_inventory::notifyText("splash_blood_team", undefined, level.abbey_alert_neutral);
+				p thread zm_abbey_inventory::notifyText(NOTIF_POWER_TEAM, undefined, NOTIF_ALERT_NEUTRAL, undefined, true);
+			}
+			else
+			{
+				p thread show_blood_empty();
 			}
 		}
 
@@ -767,18 +771,13 @@ function blood_think()
 				//IPrintLn("Vial Filled!");
 				level zm_audio::sndMusicSystem_StopAndFlush();
 				
-				foreach(p in level.players)
-				{
-					p thread show_blood_full();
-					p thread zm_abbey_inventory::notifyText("splash_blood_obtained", undefined, level.abbey_alert_pos);
-				}
-
 				level.hasVial = true;
 				success = true;
 				if(isdefined(p.blood_vial_trial_fills))
 				{
 					p.blood_vial_trial_fills += 1;
 				}
+				player thread show_blood_full();
 			}
 
 			zombies = GetAISpeciesArray("axis", "all");
@@ -960,7 +959,7 @@ function generator_think()
 			player zm_audio::create_and_play_dialog( "general", "power_on" );
 			foreach(player in level.players)
 			{
-				player thread zm_abbey_inventory::notifyText("splash_blood_activated", undefined, undefined, true);
+				player zm_abbey_inventory::notifyGenerator();
 			}
 			wait(0.05);
 			break;
@@ -1172,11 +1171,7 @@ function set_bloodgun_hintstring()
 
 function show_blood_empty() 
 {
-	self endon("disconnect");
-
 	self LUINotifyEvent(&"blood_vial_update", 1, 1);
-	wait(2);
-	self LUINotifyEvent(&"blood_vial_update", 1, 0);
 }
 
 function show_blood_full() 
@@ -1184,7 +1179,10 @@ function show_blood_full()
 	self endon("disconnect");
 
 	self LUINotifyEvent(&"blood_vial_update", 1, 2);
-	wait(2);
+	while(level.hasVial)
+	{
+		wait(0.05);
+	}
 	self LUINotifyEvent(&"blood_vial_update", 1, 0);
 }
 

@@ -106,12 +106,12 @@ function CoD.BloodGenerator.new(HudRef, InstanceRef)
         DefaultState = {
             DefaultClip = function()
                 OverlaySkull:completeAnimation()
-                OverlaySkull:beginAnimation( "keyframe", 1000, false, false, CoD.TweenType.Linear )
+                OverlaySkull:beginAnimation( "keyframe", 2500, false, false, CoD.TweenType.Linear )
                 OverlaySkull:show()
             end,
             Hide = function()
                 OverlaySkull:completeAnimation()
-                OverlaySkull:beginAnimation( "keyframe", 1000, false, false, CoD.TweenType.Linear )
+                OverlaySkull:beginAnimation( "keyframe", 2500, false, false, CoD.TweenType.Linear )
                 OverlaySkull:hide()
             end
         }
@@ -121,7 +121,7 @@ function CoD.BloodGenerator.new(HudRef, InstanceRef)
         DefaultState = {
             DefaultClip = function()
                 OverlaySkullS:completeAnimation()
-                OverlaySkullS:beginAnimation( "keyframe", 1000, false, false, CoD.TweenType.Linear )
+                OverlaySkullS:beginAnimation( "keyframe", 2500, false, false, CoD.TweenType.Linear )
                 OverlaySkullS:show()
             end
         }
@@ -132,7 +132,7 @@ function CoD.BloodGenerator.new(HudRef, InstanceRef)
             DefaultState = {
                 DefaultClip = function()
                     OverlayTable[i]:completeAnimation()
-                    OverlayTable[i]:beginAnimation( "keyframe", 1000, false, false, CoD.TweenType.Linear )
+                    OverlayTable[i]:beginAnimation( "keyframe", 2500, false, false, CoD.TweenType.Linear )
                     OverlayTable[i]:show()
                 end
             }
@@ -142,7 +142,7 @@ function CoD.BloodGenerator.new(HudRef, InstanceRef)
             DefaultState = {
                 DefaultClip = function()
                     OverlayTableS[i]:completeAnimation()
-                    OverlayTableS[i]:beginAnimation( "keyframe", 1000, false, false, CoD.TweenType.Linear )
+                    OverlayTableS[i]:beginAnimation( "keyframe", 2500, false, false, CoD.TweenType.Linear )
                     OverlayTableS[i]:show()
                 end, 
                 Attacking = function ()

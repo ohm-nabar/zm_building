@@ -264,15 +264,3 @@ function poseidon_melee_iframes()
 		}
 	}
 }
-
-function testeroo()
-{
-	level waittill("all_players_connected");
-	players = GetPlayers();
-
-	while(true)
-	{
-		zm_abbey_inventory::notifyText(players[0].health);
-		wait(0.5);
-	}
-}

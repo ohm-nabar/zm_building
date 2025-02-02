@@ -18,7 +18,6 @@ require("ui.uieditor.widgets.Chat.inGame.IngameChatClientContainer")
 require("ui.uieditor.widgets.BubbleGumBuffs.BubbleGumPackInGame")
 require("ui.uieditor.widgets.HUD.abbey_notification")
 require("ui.uieditor.widgets.HUD.room_manager")
-require("ui.uieditor.widgets.HUD.blood_vial")
 require("ui.uieditor.widgets.HUD.shadow_perks")
 require("ui.uieditor.widgets.HUD.revive_bar")
 require("ui.uieditor.widgets.HUD.item_inventory")
@@ -110,9 +109,6 @@ function LUI.createMenu.T7Hud_zm_factory(InstanceRef)
     RoomManager:setTopBottom(true, false, 15, 43)
     HudRef:addElement(RoomManager)
 
-    local BloodVial = CoD.BloodVial.new(HudRef, InstanceRef)
-    HudRef:addElement(BloodVial)
-
     local ShadowPerksWidget = CoD.ShadowPerks.new(HudRef, InstanceRef)
     ShadowPerksWidget:setLeftRight(true, false, 12, 176)
     ShadowPerksWidget:setTopBottom(false, true, -178.5, -122.5)
@@ -131,8 +127,8 @@ function LUI.createMenu.T7Hud_zm_factory(InstanceRef)
     HudRef:addElement(ReviveBarWidget)
 
     local ItemInventory = CoD.ItemInventory.new(HudRef, InstanceRef)
-    ItemInventory:setLeftRight(false, true, -440, -290)
-    ItemInventory:setTopBottom(false, true, -75, 0)
+    ItemInventory:setLeftRight(false, true, -300, -150)
+    ItemInventory:setTopBottom(false, true, -54, 24w)
     HudRef:addElement(ItemInventory)
 
     --[[
@@ -155,6 +151,8 @@ function LUI.createMenu.T7Hud_zm_factory(InstanceRef)
 	HudRef:addElement(HudRef.Ammo)
 
     local NotificationWidget = CoD.AbbeyNotification.new(HudRef, InstanceRef)
+    NotificationWidget:setLeftRight(true, false, 1062, 1260)
+    NotificationWidget:setTopBottom(true, false, 0, 220)
     HudRef:addElement(NotificationWidget)
     
     local ScoreWidget = CoD.ZMScr.new(HudRef, InstanceRef)

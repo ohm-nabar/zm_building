@@ -636,10 +636,9 @@ function cloak_spawn_sequence()
 
 			PlayFXOnTag("shadow/cloak_shadowing", cloak, "tag_weapon_right");
 			cloak AnimScripted("cloak_conjuring", cloak.origin, cloak.angles, "cloak_conjuring");
-			//thread zm_abbey_inventory::notifyText(generator_name_translation[generators[generator_index]] + " is being attacked!");
 			foreach(player in level.players)
 			{
-				player thread zm_abbey_inventory::notifyText("splash_shadow_attack_" + generators[generator_index], undefined, level.abbey_alert_neutral);
+				player zm_abbey_inventory::notifyGenerator();
 			}
 			level notify(generators[generator_index] + "_attacked");
 		}
@@ -662,10 +661,9 @@ function cloak_spawn_sequence()
 			level.num_gens_shadowed++;
 			generators_shadowed[generators_shadowed.size] = generators[generator_index];
 			level notify(generators[generator_index] + "_shadowed");
-			//thread zm_abbey_inventory::notifyText(generator_name_translation[generators[generator_index]] + " has been shadowed!");
 			foreach(player in level.players)
 			{
-				player thread zm_abbey_inventory::notifyText("splash_shadow_complete_" + generators[generator_index], undefined, level.abbey_alert_neg);
+				player zm_abbey_inventory::notifyGenerator();
 			}
 		}
 	}

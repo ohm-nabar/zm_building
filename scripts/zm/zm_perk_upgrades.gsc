@@ -60,6 +60,7 @@
 #insert scripts\zm\_zm_perk_poseidonspunch.gsh;
 #insert scripts\zm\_zm_perk_doubletaporiginal.gsh;
 #insert scripts\zm\_zm_perk_phdlite.gsh;
+#insert scripts\zm\zm_abbey_inventory.gsh;
 
 #namespace zm_perk_upgrades;
 
@@ -126,7 +127,6 @@ function on_player_spawned()
 	self.deadshotChallengeActive = false;
 
 	self.cherry_kills = 0;
-	self.perkUpgradeTextActive = false;
 
 	self.jug_challenge_goal = 1;
 	self.jug_challenge_progress = 0;
@@ -323,7 +323,7 @@ function electric_cherry_upgrade()
 			{
 				if(firstTime)
 				{
-					self thread zm_abbey_inventory::notifyText("splash_perk_new_cherry", level.open_inventory_prompt, level.abbey_alert_neutral);
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_CHERRY, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);
 					firstTime = false;
 				}
 			
@@ -340,7 +340,6 @@ function electric_cherry_upgrade()
 			failedByTime = false;
 
 			//self IPrintLnBold("Electric Cherry Upgrade: Get 10 kills with Electric Cherry (Time limit: 2 rounds)");
-			//self zm_abbey_inventory::notifyText("Electric Cherry Upgrade Quest active: Obtain 10 kills with Electric Cherry (Time limit: 2 rounds)");
 			self.cherryChallengeActive = true;
 			currentRound = level.round_number;
 			current_cherry_kills = 0;
@@ -359,7 +358,6 @@ function electric_cherry_upgrade()
 				}
 				if(self.cherry_kills >= current_cherry_kills + self.cherry_challenge_goal)
 				{
-					self thread zm_abbey_inventory::notifyText("splash_perk_complete_cherry", undefined, level.abbey_alert_pos);
 					self givePerkUpgrade(PERK_ELECTRIC_CHERRY);
 					break;
 				}
@@ -372,7 +370,6 @@ function electric_cherry_upgrade()
 				self.cherryChallengeActive = false;
 				self.cherry_challenge_progress = 0;
 				//self IPrintLnBold("Electric Cherry Upgrade Failed!");
-				//self zm_abbey_inventory::notifyText("Electric Cherry Upgrade Quest failed!");
 				if(self HasPerk(PERK_ELECTRIC_CHERRY))
 				{
 					failedByTime = true;
@@ -419,7 +416,7 @@ function double_tap_upgrade()
 				//self IPrintLnBold("Gained Challenge: Double Tap Upgrade (Begins next round)");
 				if(firstTime)
 				{
-					self thread zm_abbey_inventory::notifyText("splash_perk_new_double", level.open_inventory_prompt, level.abbey_alert_neutral);
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_DOUBLE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);
 					firstTime = false;
 				}
 				hasDouble = self HasPerk(PERK_DOUBLE_TAP);
@@ -434,7 +431,6 @@ function double_tap_upgrade()
 			failedByTime = false;
 
 			//self IPrintLnBold("Double Tap Upgrade: Get 5 kills in rapid succession 5 times (Time limit: 2 rounds)");
-			//self zm_abbey_inventory::notifyText("Double Tap Upgrade Quest active: Obtain 5 kills in rapid succession 5 times (Time limit: 2 rounds)");
 			self.doubleChallengeActive = true;
 			currentRound = level.round_number;
 			self.pentakills = 0;
@@ -448,7 +444,6 @@ function double_tap_upgrade()
 				}
 				if(self.pentakills >= self.double_challenge_goal)
 				{
-					self thread zm_abbey_inventory::notifyText("splash_perk_complete_double", undefined, level.abbey_alert_pos);
 					self notify(#"doubleUpgradeSucceeded");
 					self givePerkUpgrade(PERK_DOUBLE_TAP);
 					break;
@@ -461,7 +456,6 @@ function double_tap_upgrade()
 				self.doubleChallengeActive = false;
 				self.double_challenge_progress = 0;
 				//self IPrintLnBold("Double Tap Upgrade Failed!");
-				//self zm_abbey_inventory::notifyText("Double Tap Upgrade Quest failed!");
 				self notify(#"doubleUpgradeFailed");
 				if(self HasPerk(PERK_DOUBLE_TAP))
 				{
@@ -509,7 +503,7 @@ function phd_lite_upgrade()
 				//self IPrintLnBold("Gained Challenge: Double Tap Upgrade (Begins next round)");
 				if(firstTime)
 				{
-					self thread zm_abbey_inventory::notifyText("splash_perk_new_phd", level.open_inventory_prompt, level.abbey_alert_neutral);
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_PHD, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);
 					firstTime = false;
 				}
 
@@ -525,7 +519,6 @@ function phd_lite_upgrade()
 			failedByTime = false;
 
 			//self IPrintLnBold("Double Tap Upgrade: Get 5 kills in rapid succession 5 times (Time limit: 2 rounds)");
-			//self zm_abbey_inventory::notifyText("Poseidon's Punch Upgrade Quest active: Obtain 5 kills while sliding (Time limit: 2 rounds)");
 			self.PHDChallengeActive = true;
 			currentRound = level.round_number;
 			self.slidekills = 0;
@@ -538,7 +531,6 @@ function phd_lite_upgrade()
 				}
 				if(self.slidekills >= self.PHD_challenge_goal)
 				{
-					self thread zm_abbey_inventory::notifyText("splash_perk_complete_phd", undefined, level.abbey_alert_pos);
 					self notify(#"PHDUpgradeSucceeded");
 					self givePerkUpgrade(PERK_PHD_LITE);
 					break;
@@ -551,7 +543,6 @@ function phd_lite_upgrade()
 				self.PHDChallengeActive = false;
 				self.PHD_challenge_progress = 0;
 				//self IPrintLnBold("Double Tap Upgrade Failed!");
-				//self zm_abbey_inventory::notifyText("Poseidon's Punch Upgrade Quest failed!");
 				self notify(#"PHDUpgradeFailed");
 				if(self HasPerk(PERK_PHD_LITE))
 				{
@@ -598,8 +589,7 @@ function poseidon_punch_upgrade()
 				//self IPrintLnBold("Gained Challenge: Double Tap Upgrade (Begins next round)");
 				if(firstTime)
 				{
-					self thread zm_abbey_inventory::notifyText("splash_perk_new_poseidon", level.open_inventory_prompt, level.abbey_alert_neutral);
-					firstTime = false;
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_POSEIDON, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);					firstTime = false;
 				}
 				
 				hasPoseidon = self HasPerk(PERK_POSEIDON_PUNCH);
@@ -613,7 +603,6 @@ function poseidon_punch_upgrade()
 			}
 			failedByTime = false;
 			//self IPrintLnBold("Double Tap Upgrade: Get 5 kills in rapid succession 5 times (Time limit: 2 rounds)");
-			//self zm_abbey_inventory::notifyText("Poseidon's Punch Upgrade Quest active: Obtain 5 kills while sliding (Time limit: 2 rounds)");
 			self.poseidonChallengeActive = true;
 			currentRound = level.round_number;
 			self.blessedkills = 0;
@@ -627,7 +616,6 @@ function poseidon_punch_upgrade()
 				if(self.blessedkills >= self.poseidon_challenge_goal)
 				{
 					//self IPrintLnBold("Double Tap Upgraded! (Effects: Increased damage)");
-					self thread zm_abbey_inventory::notifyText("splash_perk_complete_poseidon", undefined, level.abbey_alert_pos);
 					self notify(#"poseidonUpgradeSucceeded");
 					self givePerkUpgrade(PERK_POSEIDON_PUNCH);
 					break;
@@ -640,7 +628,6 @@ function poseidon_punch_upgrade()
 				self.poseidonChallengeActive = false;
 				self.poseidon_challenge_progress = 0;
 				//self IPrintLnBold("Double Tap Upgrade Failed!");
-				//self zm_abbey_inventory::notifyText("Poseidon's Punch Upgrade Quest failed!");
 				self notify(#"poseidonUpgradeFailed");
 				if(self HasPerk(PERK_POSEIDON_PUNCH))
 				{
@@ -687,7 +674,7 @@ function stamin_up_upgrade()
 				//self IPrintLnBold("Gained Challenge: Double Tap Upgrade (Begins next round)");
 				if(firstTime)
 				{
-					self thread zm_abbey_inventory::notifyText("splash_perk_new_stamin", level.open_inventory_prompt, level.abbey_alert_neutral);
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_STAMIN, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);					firstTime = false;
 					firstTime = false;
 				}
 				hasStamin = self HasPerk(PERK_STAMINUP);
@@ -701,7 +688,6 @@ function stamin_up_upgrade()
 			}
 			failedByTime = false;
 			//self IPrintLnBold("Double Tap Upgrade: Get 5 kills in rapid succession 5 times (Time limit: 2 rounds)");
-			//self zm_abbey_inventory::notifyText("Poseidon's Punch Upgrade Quest active: Obtain 5 kills while sliding (Time limit: 2 rounds)");
 			self.staminChallengeActive = true;
 			currentRound = level.round_number;
 			self.sprintKills = 0;
@@ -716,7 +702,6 @@ function stamin_up_upgrade()
 				if(self.sprintKills >= self.stamin_challenge_goal)
 				{
 					//self IPrintLnBold("Double Tap Upgraded! (Effects: Increased damage)");
-					self thread zm_abbey_inventory::notifyText("splash_perk_complete_stamin", undefined, level.abbey_alert_pos);
 					self notify(#"staminUpgradeSucceeded");
 					self givePerkUpgrade(PERK_STAMINUP);
 					break;
@@ -729,7 +714,6 @@ function stamin_up_upgrade()
 				self.staminChallengeActive = false;
 				self.stamin_challenge_progress = 0;
 				//self IPrintLnBold("Double Tap Upgrade Failed!");
-				//self zm_abbey_inventory::notifyText("Poseidon's Punch Upgrade Quest failed!");
 				self notify(#"staminUpgradeFailed");
 				if(self HasPerk(PERK_STAMINUP))
 				{
@@ -777,7 +761,7 @@ function mule_kick_upgrade()
 				//self IPrintLnBold("Gained Challenge: Double Tap Upgrade (Begins next round)");
 				if(firstTime)
 				{
-					self thread zm_abbey_inventory::notifyText("splash_perk_new_mule", level.open_inventory_prompt, level.abbey_alert_neutral);
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_MULE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);					firstTime = false;
 					firstTime = false;
 				}
 				hasMule = self HasPerk(PERK_ADDITIONAL_PRIMARY_WEAPON);
@@ -792,7 +776,6 @@ function mule_kick_upgrade()
 			failedByTime = false;
 
 			//self IPrintLnBold("Double Tap Upgrade: Get 5 kills in rapid succession 5 times (Time limit: 2 rounds)");
-			//self zm_abbey_inventory::notifyText("Mule Kick Upgrade Quest active: Obtain 5 kills with your third weapon (Time limit: 2 rounds)");
 			self.muleChallengeActive = true;
 			currentRound = level.round_number;
 			self.thirdgunkills = 0;
@@ -807,7 +790,6 @@ function mule_kick_upgrade()
 				if(self.thirdgunkills >= self.mule_challenge_goal)
 				{
 					//self IPrintLnBold("Double Tap Upgraded! (Effects: Increased damage)");
-					self thread zm_abbey_inventory::notifyText("splash_perk_complete_mule", undefined, level.abbey_alert_pos);
 					self notify(#"muleUpgradeSucceeded");
 					self givePerkUpgrade(PERK_ADDITIONAL_PRIMARY_WEAPON);
 					break;
@@ -820,7 +802,6 @@ function mule_kick_upgrade()
 				self.muleChallengeActive = false;
 				self.mule_challenge_progress = 0;
 				//self IPrintLnBold("Double Tap Upgrade Failed!");
-				//self zm_abbey_inventory::notifyText("Mule Kick Upgrade Quest failed!");
 				self notify(#"muleUpgradeFailed");
 				if(self HasPerk(PERK_ADDITIONAL_PRIMARY_WEAPON))
 				{
@@ -867,7 +848,7 @@ function quick_revive_upgrade()
 			{
 				if(firstTime)
 				{
-					self thread zm_abbey_inventory::notifyText("splash_perk_new_quick", level.open_inventory_prompt, level.abbey_alert_neutral);
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_REVIVE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);					firstTime = false;
 					firstTime = false;
 				}
 				
@@ -883,7 +864,6 @@ function quick_revive_upgrade()
 			failedByTime = false;
 			//IPrintLn(self.isUpgradingQuick);
 			//self IPrintLnBold("Quick Revive Upgrade: Survive without downing (Time limit: 2 rounds)");
-			//self zm_abbey_inventory::notifyText("Quick Revive Upgrade Quest active: Survive without downing (Time limit: 2 rounds)");
 			self.quickChallengeActive = true;
 			currentRound = level.round_number;
 			self.lowHealthKills = 0;
@@ -897,7 +877,6 @@ function quick_revive_upgrade()
 				}
 				if(self.lowHealthKills >= self.quick_challenge_goal)
 				{
-					self thread zm_abbey_inventory::notifyText("splash_perk_complete_quick", undefined, level.abbey_alert_pos);
 					self notify(#"quickUpgradeSucceeded");
 					self givePerkUpgrade(PERK_QUICK_REVIVE);
 					break;
@@ -956,7 +935,7 @@ function deadshot_upgrade()
 			{
 				if(firstTime)
 				{
-					self thread zm_abbey_inventory::notifyText("splash_perk_new_deadshot", level.open_inventory_prompt, level.abbey_alert_neutral);
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_DEADSHOT, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);					firstTime = false;
 					firstTime = false;
 				}
 				
@@ -972,7 +951,6 @@ function deadshot_upgrade()
 			failedByTime = false;
 			//IPrintLn(self.isUpgradingQuick);
 			//self IPrintLnBold("Quick Revive Upgrade: Survive without downing (Time limit: 2 rounds)");
-			//self zm_abbey_inventory::notifyText("Quick Revive Upgrade Quest active: Survive without downing (Time limit: 2 rounds)");
 			self.deadshotChallengeActive = true;
 			currentRound = level.round_number;
 			self.deadshotMindBlownKills = 0;
@@ -985,7 +963,6 @@ function deadshot_upgrade()
 				}
 				if(self.deadshotMindBlownKills >= self.deadshot_challenge_goal)
 				{
-					self thread zm_abbey_inventory::notifyText("splash_perk_complete_deadshot", undefined, level.abbey_alert_pos);
 					self notify(#"deadshotUpgradeSucceeded");
 					self givePerkUpgrade(PERK_DEAD_SHOT);
 					break;
@@ -1004,77 +981,6 @@ function deadshot_upgrade()
 				}
 			}
 
-		}
-		wait(0.05);
-	}
-}
-
-function juggernog_upgrade() 
-{
-	self endon("disconnect");
-	self endon("bled_out");
-
-	firstTime = true;
-
-	while(! self.jugUpgradeQuestDone) 
-	{
-		//IPrintLn("Looping");
-		if(self HasPerk(PERK_JUGGERNOG) && ! self.isUpgradingJug)
-		{
-			self.isUpgradingJug = true;
-			//self IPrintLnBold("Gained Challenge: Juggernog Upgrade (Begins next round)");
-			if(firstTime)
-			{
-				self zm_abbey_inventory::notifyText("Gained Challenge: Juggernog Upgrade Quest (Press ^3[{+actionslot 4}]^7 for more details)");
-				firstTime = false;
-			}
-			currentRound = level.round_number;
-			while(level.round_number <= currentRound)
-			{
-				if(! self HasPerk(PERK_JUGGERNOG))
-				{
-					self.isUpgradingJug = false;
-					//self IPrintLnBold("Juggernog Upgrade Failed!");
-					//self zm_abbey_inventory::notifyText("Juggernog Upgrade Quest failed!");
-					break;
-				}
-				wait(0.05);
-			}
-			if(self HasPerk(PERK_JUGGERNOG))
-			{
-				//self IPrintLnBold("Juggernog Upgrade: Survive without taking damage (Time limit: 2 rounds)");
-				//self zm_abbey_inventory::notifyText("Juggernog Upgrade Quest active: Survive without taking damage (Time limit: 2 rounds)");
-				self.jugChallengeActive = true;
-				self.jug_challenge_progress = 0;
-				currentRound = level.round_number;
-				hasTakenDamage = false;
-				while(level.round_number < currentRound + 1)
-				{
-					self.jug_challenge_progress = level.round_number - currentRound;
-					if(! self HasPerk(PERK_JUGGERNOG) || self.health < self.maxHealth)
-					{
-						hasTakenDamage = true;
-						break;
-					}
-					wait(0.05);
-				}
-				if(hasTakenDamage)
-				{
-					self.isUpgradingJug = false;
-					self.jugChallengeActive = false;
-					//self IPrintLnBold("Juggernog Upgrade Failed!");
-					//self zm_abbey_inventory::notifyText("Juggernog Upgrade Quest failed!");
-				}
-				else
-				{
-					self.jugUpgradeQuestDone = true;
-					self.isUpgradingJug = false;
-					self.jugChallengeActive = false;
-					//self IPrintLnBold("Juggernog Upgraded! (Effects: 33% less damage taken from special enemies)");
-					self zm_abbey_inventory::notifyText("Juggernog Upgrade Quest complete!");
-				}
-
-			}
 		}
 		wait(0.05);
 	}

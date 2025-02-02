@@ -17,6 +17,8 @@
 #using scripts\zm\zm_abbey_inventory;
 #using scripts\zm\zm_room_manager;
 
+#insert scripts\zm\zm_abbey_inventory.gsh;
+
 #precache( "material", "defend_waypoint");
 #precache( "material", "buy_waypoint");
 #precache( "material", "splash_trial_new");
@@ -356,7 +358,10 @@ function gargoyle_progress_check(garg_num, progress)
 			self.gg_quantities[gum] += 1;
 			self.gargoyle_indices[garg_num] += 1;
 		}
-		self zm_abbey_inventory::notifyText(level.gargoyle_notifs[garg_num], level.open_inventory_prompt, level.abbey_alert_garg);
+
+		notif_cf = NOTIF_GUM_OFFSET + garg_num;
+		gum_cf = level.gg_notifs[gum];
+		self zm_abbey_inventory::notifyText(notif_cf, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG, gum_cf);
 	}
 	else if(progress > 0)
 	{

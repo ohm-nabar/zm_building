@@ -93,15 +93,6 @@ CoD.ZmNotifBGB_ContainerFactory.new = function (HudRef, InstanceRef)
 	Widget:setTopBottom(true, false, 0, 32)
 	Widget.anyChildUsesUpdateState = true
 
-	local function AbbeyNotificationVisibility(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "notification_image_show") then
-			Widget:hide()
-        elseif IsParamModelEqualToString(ModelRef, "notification_hide") then
-			Widget:show()
-		end
-    end
-	Widget:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", AbbeyNotificationVisibility)
-
 	local function InventoryControlVisibility(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
         if NotifyData then

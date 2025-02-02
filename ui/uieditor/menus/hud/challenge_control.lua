@@ -443,7 +443,7 @@ function CoD.ChallengeControl.new(HudRef, InstanceRef)
             ProgressText:setRGB(0, 1, 0)
             ProgressText:setAlpha(0.9)
             BackgroundCircle:setAlpha(1)
-            ProgressCircle:setShaderVector(0, 0, 1, 1, 1)
+            ProgressCircle:setShaderVector(0, 1, 1, 1, 1)
             ProgressCircle:setAlpha(1)
         end
     end

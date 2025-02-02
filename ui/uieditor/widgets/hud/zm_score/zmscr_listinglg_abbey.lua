@@ -60,6 +60,30 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 	Elem:addElement(livesWidget)
 	Elem.LivesWidget = livesWidget
 
+	local bloodVial = LUI.UIImage.new()
+	bloodVial:setLeftRight(true, false, 82, 112)
+    bloodVial:setTopBottom(true, false, 12, 42)
+	bloodVial:setImage(RegisterImage("i_bloodvialempty"))
+	Elem:addElement(bloodVial)
+	Elem.BloodVial = bloodVial
+
+	local function BloodVialShow(ModelRef)
+        if IsParamModelEqualToString(ModelRef, "blood_vial_update") then
+			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
+
+            if NotifyData[1] == 0 then
+                bloodVial:hide()
+            elseif NotifyData[1] == 1 then
+                bloodVial:setImage(RegisterImage("i_bloodvialempty"))
+                bloodVial:show()
+            else
+                bloodVial:setImage(RegisterImage("i_bloodvialfull"))
+                bloodVial:show()
+            end
+        end
+    end
+	bloodVial:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", BloodVialShow)
+
 	local function ScoreSetColor(ModelRef)
 		local ModelValue = Engine.GetModelValue(ModelRef)
 		if ModelValue then
@@ -107,6 +131,9 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 			if charNum then
 				local nameStr = nameLookup[charNum]
 				name:setText(nameStr)
+				local x = 45 + name:getTextWidth() - 5
+				local x2 = x + 30
+				bloodVial:setLeftRight(true, false, x, x2)
 			end
 		end
 	end
@@ -200,6 +227,8 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 		Elem.clipFinished(healthWidget, {})
 		Elem.LivesWidget:setAlpha(0)
 		Elem.clipFinished(livesWidget, {})
+		Elem.BloodVial:setAlpha(0)
+		Elem.clipFinished(bloodVial, {})
 	end
 
 	local function DSVisible()
@@ -322,6 +351,23 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 		Elem.LivesWidget:setAlpha(0.000000)
 		
 		LivesWidget_DSVisible_1(livesWidget, {})
+
+		local function BloodVial_DSVisible_1(Element, Event)
+			if not Event.interrupted then
+				Element:beginAnimation("keyframe", 300.000000, false, false, CoD.TweenType.Bounce)
+			end
+			Element:setAlpha(1.000000)
+			if Event.interrupted then
+				Elem.clipFinished(Element, Event)
+			else
+				Element:registerEventHandler("transition_complete_keyframe", Elem.clipFinished)
+			end
+		end
+		
+		bloodVial:completeAnimation()
+		Elem.BloodVial:setAlpha(0.000000)
+		
+		BloodVial_DSVisible_1(bloodVial, {})
 	end
 
 	local function DSVisibleTomb()
@@ -403,6 +449,8 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 		Elem.clipFinished(healthWidget, {})
 		Elem.LivesWidget:setAlpha(1)
 		Elem.clipFinished(livesWidget, {})
+		Elem.BloodVial:setAlpha(1)
+		Elem.clipFinished(bloodVial, {})
 	end
 
 	local function VTDefaultState()
@@ -476,6 +524,8 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 		Elem.clipFinished(name, {})
 		Elem.LivesWidget:setAlpha(1)
 		Elem.clipFinished(livesWidget, {})
+		Elem.BloodVial:setAlpha(1)
+		Elem.clipFinished(bloodVial, {})
 	end
 
 	local function VDefaultState()
@@ -598,6 +648,23 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 		Elem.LivesWidget:setAlpha(1.000000)
 
 		LivesWidget_VDefaultState_1(livesWidget, {})
+
+		local function BloodVial_VDefaultState_1(Element, Event)
+			if not Event.interrupted then
+				Element:beginAnimation("keyframe", 200.000000, false, false, CoD.TweenType.Linear)
+			end
+			Element:setAlpha(0.000000)
+			if Event.interrupted then
+				Elem.clipFinished(Element, Event)
+			else
+				Element:registerEventHandler("transition_complete_keyframe", Elem.clipFinished)
+			end
+		end
+		
+		bloodVial:completeAnimation()
+		Elem.BloodVial:setAlpha(1.000000)
+
+		BloodVial_VDefaultState_1(bloodVial, {})
 	end
 
 	Elem.clipsPerState = 
@@ -651,6 +718,7 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 		SenderObj.Blood:close()
 		SenderObj.HealthWidget:close()
 		SenderObj.LivesWidget:close()
+		SenderObj.BloodVial:close()
 	end
 
 	LUI.OverrideFunction_CallOriginalSecond(Elem, "close", CloseEvent)

@@ -61,6 +61,7 @@
 #insert scripts\zm\_zm_perks.gsh;
 #insert scripts\zm\_zm_perk_poseidonspunch.gsh;
 #insert scripts\zm\_zm_perk_phdlite.gsh;
+#insert scripts\zm\zm_abbey_inventory.gsh;
 
 #precache( "material", "splash_blueprints_healing" );
 #precache( "material", "splash_blueprints_diedrich" );
@@ -128,7 +129,7 @@ function check_healing()
 
 	self.got_healing_blueprint = 1;
 	self clientfield::set_player_uimodel("weaponBPUpdate", self weapon_blueprints_code());
-	self zm_abbey_inventory::notifyText("splash_blueprints_healing", level.open_inventory_prompt, level.abbey_alert_pos);
+	self zm_abbey_inventory::notifyText(NOTIF_BLUEPRINT_WEAP_HEALING, NOTIF_FLASH_RIGHT, NOTIF_ALERT_POS);
 }
 
 function check_trident()
@@ -141,7 +142,7 @@ function check_trident()
 
 	self.got_trident_blueprint = 1;
 	self clientfield::set_player_uimodel("weaponBPUpdate", self weapon_blueprints_code());
-	self zm_abbey_inventory::notifyText("splash_blueprints_trident", level.open_inventory_prompt, level.abbey_alert_pos);
+	self zm_abbey_inventory::notifyText(NOTIF_BLUEPRINT_WEAP_TRIDENT, NOTIF_FLASH_RIGHT, NOTIF_ALERT_POS);
 }
 
 function check_diedrich()
@@ -154,7 +155,7 @@ function check_diedrich()
 
 	self.got_diedrich_blueprint = 1;
 	self clientfield::set_player_uimodel("weaponBPUpdate", self weapon_blueprints_code());
-	self zm_abbey_inventory::notifyText("splash_blueprints_diedrich", level.open_inventory_prompt, level.abbey_alert_pos);
+	self zm_abbey_inventory::notifyText(NOTIF_BLUEPRINT_WEAP_DIEDRICH, NOTIF_FLASH_RIGHT, NOTIF_ALERT_POS);
 }
 
 function check_phd()
@@ -166,7 +167,7 @@ function check_phd()
 	}
 	self.got_phd_blueprint = 1;
 	self clientfield::set_player_uimodel("perkBPUpdate", self perk_blueprints_code());
-	self zm_abbey_inventory::notifyText("splash_blueprints_phd", level.open_inventory_prompt, level.abbey_alert_pos);
+	self zm_abbey_inventory::notifyText(NOTIF_BLUEPRINT_PERK_PHD, NOTIF_FLASH_RIGHT, NOTIF_ALERT_POS);
 }
 
 function check_poseidon()
@@ -178,7 +179,7 @@ function check_poseidon()
 	}
 	self.got_poseidon_blueprint = 1;
 	self clientfield::set_player_uimodel("perkBPUpdate", self perk_blueprints_code());
-	self zm_abbey_inventory::notifyText("splash_blueprints_poseidon", level.open_inventory_prompt, level.abbey_alert_pos);
+	self zm_abbey_inventory::notifyText(NOTIF_BLUEPRINT_PERK_POSEIDON, NOTIF_FLASH_RIGHT, NOTIF_ALERT_POS);
 }
 
 function check_deadshot()
@@ -190,5 +191,5 @@ function check_deadshot()
 	}
 	self.got_deadshot_blueprint = 1;
 	self clientfield::set_player_uimodel("perkBPUpdate", self perk_blueprints_code());
-	self zm_abbey_inventory::notifyText("splash_blueprints_deadshot", level.open_inventory_prompt, level.abbey_alert_pos);
+	self zm_abbey_inventory::notifyText(NOTIF_BLUEPRINT_PERK_DEADSHOT, NOTIF_FLASH_RIGHT, NOTIF_ALERT_POS);
 }

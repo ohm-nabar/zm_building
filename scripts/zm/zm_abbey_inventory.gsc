@@ -54,9 +54,7 @@
 
 #using scripts\shared\system_shared;
 
-#precache("material", "inventory_parchment");
-#precache("material", "scroll_active");
-#precache("material", "scroll_inactive");
+#insert scripts\zm\zm_abbey_inventory.gsh;
 
 #namespace zm_abbey_inventory;
 
@@ -70,9 +68,11 @@
 #define TAB_PERKBP 2
 #define TAB_WEAPONBP 3
 
-#precache( "eventstring", "notification_image_show" );
-#precache( "eventstring", "notification_text_show" );
+#precache( "eventstring", "notification_show" );
+#precache( "eventstring", "notification_flash" );
+#precache( "eventstring", "notification_gargoyle" );
 #precache( "eventstring", "notification_hide" );
+#precache( "eventstring", "generator_visible" );
 
 REGISTER_SYSTEM( "zm_abbey_inventory", &__init__, undefined )
 
@@ -88,67 +88,6 @@ function __init__()
 	clientfield::register( "clientuimodel", "quickUpdate", VERSION_SHIP, 4, "int" );
 	clientfield::register( "clientuimodel", "PHDUpdate", VERSION_SHIP, 4, "int" );
 	clientfield::register( "clientuimodel", "deadshotUpdate", VERSION_SHIP, 4, "int" );
-	
-	level.challenge_fontscale = 1;
-	level.notify_fontscale = 2.2;
-	level.left_challenge_x = 115;
-	level.right_challenge_x = 345;
-
-	level.open_inventory_prompt = 0;
-	level.hud_toggle_prompt = 1;
-	level.pause_prompt = 2;
-
-	level.abbey_alert_neutral = "notification_neut";
-	level.abbey_alert_pos = "notification_pos";
-	level.abbey_alert_neg = "notification_neg";
-	level.abbey_alert_garg = "gobble_activate";
-
-	level.abbey_alert_indices = [];
-	level.abbey_alert_indices["splash_blood_obtained"] = 0;
-	level.abbey_alert_indices["splash_blood_team"] = 1;
-	level.abbey_alert_indices["splash_blood_user"] = 2;
-	level.abbey_alert_indices["splash_blueprints_diedrich"] = 3;
-	level.abbey_alert_indices["splash_blueprints_healing"] = 4;
-	level.abbey_alert_indices["splash_blueprints_phd"] = 5;
-	level.abbey_alert_indices["splash_blueprints_poseidon"] = 6;
-	level.abbey_alert_indices["splash_blueprints_trident"] = 7;
-	level.abbey_alert_indices["splash_blueprints_deadshot"] = 8;
-	level.abbey_alert_indices["splash_perk_complete_cherry"] = 9;
-	level.abbey_alert_indices["splash_perk_complete_double"] = 10;
-	level.abbey_alert_indices["splash_perk_complete_mule"] = 11;
-	level.abbey_alert_indices["splash_perk_complete_phd"] = 12;
-	level.abbey_alert_indices["splash_perk_complete_poseidon"] = 13;
-	level.abbey_alert_indices["splash_perk_complete_quick"] = 14;
-	level.abbey_alert_indices["splash_perk_complete_stamin"] = 15;
-	level.abbey_alert_indices["splash_perk_complete_deadshot"] = 16;
-	level.abbey_alert_indices["splash_perk_new_cherry"] = 17;
-	level.abbey_alert_indices["splash_perk_new_double"] = 18;
-	level.abbey_alert_indices["splash_perk_new_mule"]= 19;
-	level.abbey_alert_indices["splash_perk_new_phd"] = 20;
-	level.abbey_alert_indices["splash_perk_new_poseidon"] = 21;
-	level.abbey_alert_indices["splash_perk_new_quick"] = 22;
-	level.abbey_alert_indices["splash_perk_new_stamin"] = 23;
-	level.abbey_alert_indices["splash_perk_new_deadshot"] = 24;
-	level.abbey_alert_indices["splash_shadow_attack_generator1"] = 25;
-	level.abbey_alert_indices["splash_shadow_attack_generator2"] = 26;
-	level.abbey_alert_indices["splash_shadow_attack_generator3"] = 27;
-	level.abbey_alert_indices["splash_shadow_attack_generator4"] = 28;
-	level.abbey_alert_indices["splash_shadow_complete_generator1"] = 29;
-	level.abbey_alert_indices["splash_shadow_complete_generator2"] = 30;
-	level.abbey_alert_indices["splash_shadow_complete_generator3"] = 31;
-	level.abbey_alert_indices["splash_shadow_complete_generator4"] = 32;
-	level.abbey_alert_indices["splash_trial_aramis"] = 33;
-	level.abbey_alert_indices["splash_trial_porthos"] = 34;
-	level.abbey_alert_indices["splash_trial_dart"] = 35;
-	level.abbey_alert_indices["splash_trial_athos"] = 36;
-	level.abbey_alert_indices["splash_trial_mystery_box"] = 37;
-	level.abbey_alert_indices["splash_trial_wallbuy"] = 38;
-	level.abbey_alert_indices["splash_trial_weapon_class"] = 39;
-	level.abbey_alert_indices["splash_trial_headshot"] = 40;
-	level.abbey_alert_indices["splash_hud_toggle"] = 41;
-	level.abbey_alert_indices["splash_pause"] = 42;
-	level.abbey_alert_indices["splash_blood_activated"] = 43;
-	level.abbey_alert_indices["splash_shadow_over"] = 44;
 
 	callback::on_connect( &on_player_connect );
 	callback::on_spawned( &on_player_spawned );
@@ -156,7 +95,9 @@ function __init__()
 
 function on_player_connect()
 {
+	self.abbey_notif_active = false;
 	self LUINotifyEvent(&"notification_hide", 0);
+	self LUINotifyEvent(&"generator_visible", 1, 0);
 }
 
 function on_player_spawned()
@@ -186,34 +127,6 @@ function scroll_icon_hud()
 	{
 		wait(0.05);
 	}
-
-	/*
-	scroll_icon = NewClientHudElem(self);
-	scroll_icon.alignX = "right";
-	scroll_icon.alignY = "bottom";
-	scroll_icon.horzAlign = "fullscreen";
-	scroll_icon.vertAlign = "fullscreen";
-	scroll_icon.x = 630;
-	scroll_icon.y = 430;
-	scroll_icon.foreground = true;
-	scroll_icon.hidewheninmenu = true;
-	scroll_icon SetShader("scroll_inactive", 20, 30);
-
-	while(true)
-	{
-		if( self.abbey_inventory_active )
-		{
-			scroll_icon SetShader("scroll_active", 20, 30);
-
-			while( self.abbey_inventory_active )
-			{
-				wait(0.05);
-			}
-		}
-		scroll_icon SetShader("scroll_inactive", 20, 30);
-		wait(0.05);
-	}
-	*/
 }
 
 function inventory_check()
@@ -596,7 +509,7 @@ function quick_reward_text()
 	}
 }
 
-function notifyText(text, additionalPrompt, notificationSound, override=false)
+function notifyText(notif, flash, notif_sound, gum, override=false)
 {
 	self endon("disconnect");
 
@@ -604,77 +517,46 @@ function notifyText(text, additionalPrompt, notificationSound, override=false)
 	{
 		self notify(#"message_override");
 	}
-	notifyTextBody(text, additionalPrompt, notificationSound, override);
+	notifyTextBody(notif, flash, notif_sound, gum, override);
 }
 
-function notifyTextBody(text, additionalPrompt, notificationSound, override=false)
+function notifyTextBody(notif, flash, notif_sound, gum, override=false)
 {
 	self endon("disconnect");
 	self endon(#"message_override");
 
-	while(self.perkUpgradeTextActive)
+	while(self.abbey_notif_active)
 	{
 		wait(0.05);
 	}
 
-	if(text == "")
-	{
-		self additionalPrompt(additionalPrompt);
-		return;
-	}
-
-	if(isdefined(notificationSound))
+	if(isdefined(notif_sound))
 	{	
-		self PlaySoundToPlayer(notificationSound, self);
+		self PlaySoundToPlayer(notif_sound, self);
 	}
 
-	self.perkUpgradeTextActive = true;
-	self LUINotifyEvent(&"notification_image_show", 1, level.abbey_alert_indices[text]);
-	/*
-	message = NewHudElem();
-	message.alignX = "center";
-	meesage.alignY = "top";
-	message.horzAlign = "center";
-	message.vertAlign = "top";
-	message.y = -100;
-	message.alpha = 1;
-	message.foreground = true;
-	message.hidewheninmenu = true;
-	message setShader(text, 300, 300);
-	*/
-	if(isdefined(additionalPrompt))
+	self.abbey_notif_active = true;
+
+	notif_cf = notif;
+	self LUINotifyEvent(&"notification_show", 1, notif);
+
+	if(isdefined(flash))
 	{
-		self thread additionalPrompt(additionalPrompt);
+		self LUINotifyEvent(&"notification_flash", 1, flash);
 	}
+
+	if(isdefined(gum))
+	{
+		self LUINotifyEvent(&"notification_gargoyle", 1, gum);
+	}
+
 	self thread destroy_on_override();
 	
 	wait(5);
-	//message Destroy();
+	
 	self LUINotifyEvent(&"notification_hide", 0);
 	self notify(#"message_finished");
-	self.perkUpgradeTextActive = false;
-}
-
-function additionalPrompt(text)
-{
-	self endon("disconnect");
-
-	/*
-	message = NewClientHudElem(self);
-	message.alignX = "center";
-	meesage.alignY = "top";
-	message.horzAlign = "fullscreen";
-	message.vertAlign = "fullscreen";
-	message.x = 320;
-	message.y = 25;
-	message.fontscale = level.notify_fontscale;
-	message.alpha = 1;
-	message.color = (1,1,1);
-	message.foreground = true;
-	message.hidewheninmenu = true;
-	message setText(text);
-	*/
-	self LUINotifyEvent(&"notification_text_show", 1, text);
+	self.abbey_notif_active = false;
 }
 
 function destroy_on_override()
@@ -684,18 +566,16 @@ function destroy_on_override()
 
 	self waittill(#"message_override");
 	self LUINotifyEvent(&"notification_hide", 0);
-	self.perkUpgradeTextActive = false;
-	//message Destroy();
+	self.abbey_notif_active = false;
 }
 
-function testeroo() 
+function notifyGenerator()
 {
-	while(true)
-	{
-		if(self.abbey_inventory_active)
-		{
-			IPrintLn("inventory active");
-		}
-		wait(0.05);
-	}
+	self endon("disconnect");
+
+	self LUINotifyEvent(&"generator_visible", 1, 1);
+	
+	wait(5);
+	
+	self LUINotifyEvent(&"generator_visible", 1, 0);
 }

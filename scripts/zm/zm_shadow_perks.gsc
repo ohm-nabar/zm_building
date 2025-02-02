@@ -21,6 +21,7 @@
 #insert scripts\zm\_zm_perk_poseidonspunch.gsh;
 #insert scripts\zm\_zm_perk_doubletaporiginal.gsh;
 #insert scripts\zm\_zm_perk_phdlite.gsh;
+#insert scripts\zm\zm_abbey_inventory.gsh;
 
 #precache( "eventstring", "generator_shadowed" );
 #precache( "eventstring", "shadow_perk_remove" );
@@ -84,7 +85,7 @@ function shadow_round_base_logic()
 				players[i] LUINotifyEvent(&"shadow_perk_remove", 0);
 				if(level.num_gens_shadowed > 0)
 				{
-					players[i] thread zm_abbey_inventory::notifyText("splash_shadow_over", undefined, undefined, true);
+					players[i] zm_abbey_inventory::notifyGenerator();
 				}
 				players[i] thread giveBackShadowPerks();
 			}
@@ -295,73 +296,9 @@ function shadow_poseidon_effects()
 {
 	self endon("disconnect");
 
-	//self thread custom_perk_shader::add_custom_perk_shader_shadow("shadow_poseidon");
-
-	self thread melee_curse();
-}
-
-function points_curse()
-{
-	self endon("disconnect");
-
-	self thread zm_abbey_inventory::notifyText("You have been cursed by Poseidon. You will receive no points for the duration of the Shadow Breach");
-	self thread poseidon_curse_hud("poseidon_shadow_double");
-
-	self.no_shadow_points = true;
-	level waittill("last_ai_down");
-	self.no_shadow_points = false;
-}
-
-function melee_curse()
-{
-	self endon("disconnect");
-
 	self AllowMelee(false);
 	level waittill("last_ai_down");
 	self AllowMelee(true);
-}
-
-function speed_curse()
-{
-	self endon("disconnect");
-
-	self thread zm_abbey_inventory::notifyText("You have been cursed by Poseidon. Your speed will be decreased for the duration of the Shadow Breach");
-	self thread poseidon_curse_hud("poseidon_shadow_speed");
-
-	self SetMoveSpeedScale(0.8);
-	level waittill("last_ai_down");
-	self SetMoveSpeedScale(1);
-}
-
-function poseidon_curse_hud(shader)
-{
-	self endon("disconnect");
-
-	index = -1;
-
-	for(i = 0; i < self.shadowPerks.size; i++)
-	{
-		if(self.shadowPerks[i][0] == PERK_POSEIDON_PUNCH)
-		{
-			index = i;
-			break;
-		}
-	}
-
-	curseShader = NewClientHudElem( self ); 
-	curseShader.alignX = "center"; 
-	curseShader.alignY = "middle";
-	curseShader.horzAlign = "fullscreen"; 
-	curseShader.vertAlign = "fullscreen"; 
-	curseShader.foreground = true;
-	curseShader.hidewheninmenu = true;
-	curseShader setShader( shader, 36, 48 );
-	curseShader.y = level.shadow_perk_shadery;
-	curseShader.x = 74 + ( index * 19 );
-
-	level waittill("last_ai_down");
-
-	curseShader Destroy();
 }
 
 function shadow_cherry_effects()
