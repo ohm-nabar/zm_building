@@ -337,11 +337,16 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 function on_player_connect()
 {
 	self.isInBloodMode = false;
-	self LUINotifyEvent(&"blood_vial_update", 1, 0);
 	self LUINotifyEvent(&"generator_reset", 0);
 	self thread deposit_waypoint_manage();
 	self thread game_over_check();
 	self thread set_bloodgun_ammo();
+
+	while( ! (level flag::exists("initial_blackscreen_passed") && level flag::get("initial_blackscreen_passed")))
+	{
+		wait(0.05);
+	}
+	self LUINotifyEvent(&"blood_vial_update", 1, 0);
 }
 
 function on_laststand()
@@ -731,10 +736,7 @@ function blood_think()
 			{
 				p thread zm_abbey_inventory::notifyText(NOTIF_POWER_TEAM, undefined, NOTIF_ALERT_NEUTRAL, undefined, true);
 			}
-			else
-			{
-				p thread show_blood_empty();
-			}
+			p thread show_blood_empty(player);
 		}
 
 		level zm_audio::sndMusicSystem_StopAndFlush();
@@ -777,7 +779,6 @@ function blood_think()
 				{
 					p.blood_vial_trial_fills += 1;
 				}
-				player thread show_blood_full();
 			}
 
 			zombies = GetAISpeciesArray("axis", "all");
@@ -835,6 +836,7 @@ function blood_think()
 			{
 				level.players[i].ignoreme = false;
 			}
+			level.players[i] thread show_blood_full(player);
 		}
 
 		player AllowMelee(true);
@@ -1169,21 +1171,21 @@ function set_bloodgun_hintstring()
 	}
 }
 
-function show_blood_empty() 
+function show_blood_empty(player) 
 {
-	self LUINotifyEvent(&"blood_vial_update", 1, 1);
+	self LUINotifyEvent(&"blood_vial_update", 2, 1, player.characterIndex);
 }
 
-function show_blood_full() 
+function show_blood_full(player) 
 {
 	self endon("disconnect");
 
-	self LUINotifyEvent(&"blood_vial_update", 1, 2);
+	self LUINotifyEvent(&"blood_vial_update", 2, 2, player.characterIndex);
 	while(level.hasVial)
 	{
 		wait(0.05);
 	}
-	self LUINotifyEvent(&"blood_vial_update", 1, 0);
+	self LUINotifyEvent(&"blood_vial_update", 2, 0, player.characterIndex);
 }
 
 function getVendingMachineNotify(perkName)

@@ -128,7 +128,7 @@ function LUI.createMenu.T7Hud_zm_factory(InstanceRef)
 
     local ItemInventory = CoD.ItemInventory.new(HudRef, InstanceRef)
     ItemInventory:setLeftRight(false, true, -300, -150)
-    ItemInventory:setTopBottom(false, true, -54, 24w)
+    ItemInventory:setTopBottom(false, true, -54, 24)
     HudRef:addElement(ItemInventory)
 
     --[[

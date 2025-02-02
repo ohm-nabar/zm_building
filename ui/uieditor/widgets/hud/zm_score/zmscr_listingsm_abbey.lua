@@ -45,6 +45,13 @@ function CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 	Elem:addElement(name)
 	Elem.Name = name
 
+	local bloodVial = LUI.UIImage.new()
+	bloodVial:setLeftRight(true, false, 82, 112)
+    bloodVial:setTopBottom(true, false, 12, 42)
+	bloodVial:setImage(RegisterImage("i_bloodvialempty"))
+	Elem:addElement(bloodVial)
+	Elem.BloodVial = bloodVial
+
 	local function ScoreSetColor(ModelRef)
 		local ModelValue = Engine.GetModelValue(ModelRef)
 		if ModelValue then
@@ -81,6 +88,7 @@ function CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 
 	PortraitIcon:linkToElementModel(Elem, nil, false, PortraitIconLinkModel)
 
+	local CharNumLookupTable = {3, 1, 4, 2}
 	local function PortraitIconChange(ModelRef)
 		local ModelValue = Engine.GetModelValue(ModelRef)
 		if ModelValue then
@@ -92,6 +100,31 @@ function CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 			if charNum then
 				local nameStr = nameLookup[charNum]
 				name:setText(nameStr)
+				local x = 45 + name:getTextWidth() - 5
+				local x2 = x + 30
+				bloodVial:setLeftRight(true, false, x, x2)
+
+				local function BloodVialShow(ModelRef)
+					if IsParamModelEqualToString(ModelRef, "blood_vial_update") then
+						local NotifyData = CoD.GetScriptNotifyData(ModelRef)
+						if NotifyData[1] == 0 then
+							bloodVial:hide()
+						else
+							local BloodCharNumIndex = NotifyData[2] + 1
+							local BloodCharNum = CharNumLookupTable[BloodCharNumIndex]
+							if charNum == BloodCharNum then
+								if NotifyData[1] == 1 then
+									bloodVial:setImage(RegisterImage("i_bloodvialempty"))
+									bloodVial:show()
+								else
+									bloodVial:setImage(RegisterImage("i_bloodvialfull"))
+									bloodVial:show()
+								end
+							end
+						end
+					end
+				end
+				bloodVial:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", BloodVialShow)
 			end
 		end
 	end
@@ -181,6 +214,8 @@ function CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 		Elem.clipFinished(blood, {})
 		Elem.Name:setAlpha(0.000000)
 		Elem.clipFinished(name, {})
+		Elem.BloodVial:setAlpha(0.000000)
+		Elem.clipFinished(bloodVial, {})
 	end
 
 	local function DSVisible()
@@ -269,6 +304,23 @@ function CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 		Elem.Name:setAlpha(0.000000)
 		
 		Name_DSVisible_1(name, {})
+
+		local function BloodVial_DSVisible_1(Element, Event)
+			if not Event.interrupted then
+				Element:beginAnimation("keyframe", 300.000000, false, false, CoD.TweenType.Bounce)
+			end
+			Element:setAlpha(1.000000)
+			if Event.interrupted then
+				Elem.clipFinished(Element, Event)
+			else
+				Element:registerEventHandler("transition_complete_keyframe", Elem.clipFinished)
+			end
+		end
+		
+		bloodVial:completeAnimation()
+		Elem.BloodVial:setAlpha(0.000000)
+		
+		BloodVial_DSVisible_1(bloodVial, {})
 	end
 
 	local function DSVisibleTomb()
@@ -346,6 +398,8 @@ function CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 		Elem.clipFinished(blood, {})
 		Elem.Name:setAlpha(1)
 		Elem.clipFinished(name, {})
+		Elem.BloodVial:setAlpha(1)
+		Elem.clipFinished(bloodVial, {})
 	end
 
 	local function VTDefaultState()
@@ -417,6 +471,8 @@ function CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 		Elem.clipFinished(blood, {})
 		Elem.Name:setAlpha(1)
 		Elem.clipFinished(name, {})
+		Elem.BloodVial:setAlpha(1)
+		Elem.clipFinished(bloodVial, {})
 	end
 
 	local function VDefaultState()
@@ -505,6 +561,23 @@ function CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 		Elem.Name:setAlpha(1.000000)
 
 		Name_VDefaultState_1(name, {})
+
+		local function BloodVial_VDefaultState_1(Element, Event)
+			if not Event.interrupted then
+				Element:beginAnimation("keyframe", 200.000000, false, false, CoD.TweenType.Linear)
+			end
+			Element:setAlpha(0.000000)
+			if Event.interrupted then
+				Elem.clipFinished(Element, Event)
+			else
+				Element:registerEventHandler("transition_complete_keyframe", Elem.clipFinished)
+			end
+		end
+
+		bloodVial:completeAnimation()
+		Elem.BloodVial:setAlpha(1.000000)
+
+		BloodVial_VDefaultState_1(bloodVial, {})
 	end
 
 	Elem.clipsPerState = 
@@ -556,6 +629,7 @@ function CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 		SenderObj.Image0:close()
 		SenderObj.Name:close()
 		SenderObj.Blood:close()
+		SenderObj.BloodVial:close()
 	end
 
 	LUI.OverrideFunction_CallOriginalSecond(Elem, "close", CloseEvent)

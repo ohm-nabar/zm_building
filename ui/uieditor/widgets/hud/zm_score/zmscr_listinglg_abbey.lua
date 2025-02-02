@@ -67,23 +67,6 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 	Elem:addElement(bloodVial)
 	Elem.BloodVial = bloodVial
 
-	local function BloodVialShow(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "blood_vial_update") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-
-            if NotifyData[1] == 0 then
-                bloodVial:hide()
-            elseif NotifyData[1] == 1 then
-                bloodVial:setImage(RegisterImage("i_bloodvialempty"))
-                bloodVial:show()
-            else
-                bloodVial:setImage(RegisterImage("i_bloodvialfull"))
-                bloodVial:show()
-            end
-        end
-    end
-	bloodVial:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", BloodVialShow)
-
 	local function ScoreSetColor(ModelRef)
 		local ModelValue = Engine.GetModelValue(ModelRef)
 		if ModelValue then
@@ -120,6 +103,7 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 
 	PortraitIcon:linkToElementModel(Elem, nil, false, PortraitIconLinkModel)
 
+	local CharNumLookupTable = {3, 1, 4, 2}
 	local function PortraitIconChange(ModelRef)
 		local ModelValue = Engine.GetModelValue(ModelRef)
 		if ModelValue then
@@ -134,6 +118,28 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 				local x = 45 + name:getTextWidth() - 5
 				local x2 = x + 30
 				bloodVial:setLeftRight(true, false, x, x2)
+
+				local function BloodVialShow(ModelRef)
+					if IsParamModelEqualToString(ModelRef, "blood_vial_update") then
+						local NotifyData = CoD.GetScriptNotifyData(ModelRef)
+						if NotifyData[1] == 0 then
+							bloodVial:hide()
+						else
+							local BloodCharNumIndex = NotifyData[2] + 1
+							local BloodCharNum = CharNumLookupTable[BloodCharNumIndex]
+							if charNum == BloodCharNum then
+								if NotifyData[1] == 1 then
+									bloodVial:setImage(RegisterImage("i_bloodvialempty"))
+									bloodVial:show()
+								else
+									bloodVial:setImage(RegisterImage("i_bloodvialfull"))
+									bloodVial:show()
+								end
+							end
+						end
+					end
+				end
+				bloodVial:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", BloodVialShow)
 			end
 		end
 	end
