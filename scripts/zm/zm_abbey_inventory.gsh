@@ -8,9 +8,9 @@
 #define NOTIF_GLOBAL_HUD_TOGGLE 6
 #define NOTIF_GLOBAL_PAUSE 7
 #define NOTIF_GUM_ARAMIS 8
-#define NOTIF_GUM_ATHOS 9
+#define NOTIF_GUM_PORTHOS 9
 #define NOTIF_GUM_DART 10
-#define NOTIF_GUM_PORTHOS 11
+#define NOTIF_GUM_ATHOS 11
 #define NOTIF_PERK_UP_CHERRY 12
 #define NOTIF_PERK_UP_DEADSHOT 13
 #define NOTIF_PERK_UP_DOUBLE 14
@@ -32,7 +32,10 @@
 #define GEN_NOTIF_HIDE 0
 #define GEN_NOTIF_SHOW 1
 
+#define NOTIF_ALERT_BLUEPRINT "notification_blueprint"
+#define NOTIF_ALERT_GARG "notification_garg"
 #define NOTIF_ALERT_NEUTRAL "notification_neut"
-#define NOTIF_ALERT_POS "notification_pos"
-#define NOTIF_ALERT_NEG "notification_neg"
-#define NOTIF_ALERT_GARG "gobble_activate"
+#define NOTIF_ALERT_PERK "notification_perk"
+#define NOTIF_ALERT_PERK_UP "notification_perk_up"
+#define NOTIF_ALERT_POWER "notification_power"
+#define NOTIF_ALERT_SP "notification_sp"

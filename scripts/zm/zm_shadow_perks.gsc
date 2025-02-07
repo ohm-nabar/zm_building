@@ -1,3 +1,4 @@
+#using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\flag_shared;
 
@@ -30,16 +31,28 @@ function main()
 {
 	callback::on_connect( &on_player_connect );
 	
-	/*
-	level._custom_perks = []; 
-	level._custom_perks[level._custom_perks.size] = PERK_JUGGERNOG;
-	level._custom_perks[level._custom_perks.size] = PERK_STAMINUP;
-	level._custom_perks[level._custom_perks.size] = PERK_QUICK_REVIVE;
-	level._custom_perks[level._custom_perks.size] = PERK_DOUBLE_TAP;
-	level._custom_perks[level._custom_perks.size] = PERK_ELECTRIC_CHERRY;
-	level._custom_perks[level._custom_perks.size] = PERK_PHD_LITE;
-	level._custom_perks[level._custom_perks.size] = PERK_ADDITIONAL_PRIMARY_WEAPON;
-	*/
+	vending_triggers = GetEntArray( "zombie_vending", "targetname" );
+	level.generator_vending_triggers = array(array(), array(), array(), array());
+	foreach(trigger in vending_triggers)
+	{
+		if(trigger.script_noteworthy == "specialty_quickrevive" || trigger.script_noteworthy == "specialty_electriccherry")
+		{
+			array::add(level.generator_vending_triggers[0], trigger);
+		}
+		else if(trigger.script_noteworthy == "specialty_holdbreath" || trigger.script_noteworthy == "specialty_deadshot")
+		{
+			array::add(level.generator_vending_triggers[1], trigger);
+		}
+		else if(trigger.script_noteworthy == "specialty_staminup" || trigger.script_noteworthy == "specialty_additionalprimaryweapon")
+		{
+			array::add(level.generator_vending_triggers[2], trigger);
+		}
+		else if(trigger.script_noteworthy == "specialty_jetpack" || trigger.script_noteworthy == "specialty_disarmexplosive")
+		{
+			array::add(level.generator_vending_triggers[3], trigger);
+		}
+	}
+
 	thread shadow_round_base_logic();
 }
 
@@ -52,30 +65,34 @@ function on_player_connect()
 	self LUINotifyEvent(&"shadow_perk_remove", 0);
 }
 
+function disable_machines(gen_num)
+{
+	foreach(trigger in level.generator_vending_triggers[gen_num])
+	{
+		trigger TriggerEnable(false);
+	}
+}
+
+function enable_machines(gen_num)
+{
+	vending_triggers = GetEntArray( "zombie_vending", "targetname" );
+
+	foreach(trigger in vending_triggers)
+	{
+		trigger TriggerEnable(true);
+	}
+}
+
 function shadow_round_base_logic()
 {
 	while(true)
 	{
 		if(level flag::get( "dog_round" ))
 		{
-			/*
-			for(i = 0; i < level.active_generators.size; i++)
-			{
-				zm_bloodgenerator::turn_generator_off(level.active_generators[i]);
-			}
-			*/
-
-			vending_triggers = GetEntArray( "zombie_vending", "targetname" );
-
-			for(i = 0; i < vending_triggers.size; i++)
-			{
-				vending_triggers[i] TriggerEnable(false);
- 			}
-
-			thread generator1_shadow_monitor();
-			thread generator2_shadow_monitor();
-			thread generator3_shadow_monitor();
-			thread generator4_shadow_monitor();
+			level thread generator1_shadow_monitor();
+			level thread generator2_shadow_monitor();
+			level thread generator3_shadow_monitor();
+			level thread generator4_shadow_monitor();
 
 			level waittill("last_ai_down");
 
@@ -85,35 +102,12 @@ function shadow_round_base_logic()
 				players[i] LUINotifyEvent(&"shadow_perk_remove", 0);
 				if(level.num_gens_shadowed > 0)
 				{
-					players[i] zm_abbey_inventory::notifyGenerator();
+					players[i] thread zm_abbey_inventory::notifyGenerator();
 				}
 				players[i] thread giveBackShadowPerks();
 			}
 
-			/*
-			reward_pos_1 = struct::get("reward_pos_1", "targetname");
-			reward_pos_2 = struct::get("reward_pos_2", "targetname");
-			IPrintLn("Reward at: ");
-			IPrintLn(reward_pos_1.origin);
-			zm_powerups::specific_powerup_drop( "full_ammo", reward_pos_1.origin);
-			if(level.num_gens_shadowed == 0 || level.num_gens_shadowed == 4)
-			{
-				zm_powerups::specific_powerup_drop("free_perk", reward_pos_2.origin);
-			}
-			*/
-
-			/*
-			for(i = 0; i < level.active_generators.size; i++)
-			{
-				thread zm_bloodgenerator::turn_generator_on(level.active_generators[i], true);
-			}
-			*/
-
-			players = GetPlayers();
-			for(i = 0; i < vending_triggers.size; i++)
-			{
-				vending_triggers[i] TriggerEnable(true);
- 			}
+			level thread enable_machines();
 
 			level waittill("dog_round_ending");
 			
@@ -157,20 +151,23 @@ function monitor_has_shadowed_perk(perkname)
 	self endon("disconnect");
 	level endon("last_ai_down");
 
-	while(! self HasPerk(perkname))
+	while(true)
 	{
+		while(! self HasPerk(perkname))
+		{
+			wait(0.05);
+		}
+
+		self notify(perkname + "_stop");
+		for(j = 0; j < self.shadowPerks.size; j++)
+		{
+			if (self.shadowPerks[j][0] == perkname)
+			{
+				self.shadowPerks[j][1] = true;
+			}
+		}
 		wait(0.05);
 	}
-
-	self notify(perkname + "_stop");
-	for(j = 0; j < self.shadowPerks.size; j++)
-	{
-		if (self.shadowPerks[j][0] == perkname)
-		{
-			self.shadowPerks[j][1] = true;
-		}
-	}
-	wait(0.05);
 }
 
 function generator1_shadow_monitor()
@@ -179,7 +176,7 @@ function generator1_shadow_monitor()
 
 	level waittill("generator1_shadowed");
 
-	//zm_bloodgenerator::turn_generator_off("generator1");
+	level thread disable_machines(0);
 
 	players = GetPlayers();
 	for(i = 0; i < players.size; i++)
@@ -206,7 +203,7 @@ function generator2_shadow_monitor()
 
 	level waittill("generator2_shadowed");
 
-	//zm_bloodgenerator::turn_generator_off("generator2");
+	level thread disable_machines(1);
 
 	players = GetPlayers();
 	for(i = 0; i < players.size; i++)
@@ -236,7 +233,7 @@ function generator3_shadow_monitor()
 
 	level waittill("generator3_shadowed");
 
-	//zm_bloodgenerator::turn_generator_off("generator3");
+	level thread disable_machines(2);
 
 	players = GetPlayers();
 	for(i = 0; i < players.size; i++)
@@ -270,7 +267,7 @@ function generator4_shadow_monitor()
 
 	level waittill("generator4_shadowed");
 
-	//zm_bloodgenerator::turn_generator_off("generator4");
+	level thread disable_machines(3);
 
 	players = GetPlayers();
 	for(i = 0; i < players.size; i++)

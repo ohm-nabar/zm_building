@@ -100,6 +100,7 @@ function phd_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfD
 			case "MOD_GRENADE":
 			case "MOD_GRENADE_SPLASH":
 			case "MOD_IMPACT":
+			case "MOD_SUICIDE":
 				return (IS_TRUE(self.shadowPHD) ? iDamage * 1.5 : 0);
 
 			default:

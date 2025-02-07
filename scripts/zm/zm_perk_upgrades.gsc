@@ -305,6 +305,12 @@ function electric_cherry_upgrade()
 			self.isUpgradingCherry = true;
 			self.cherryChallengeActive = true;
 
+			if(firstTime)
+			{
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_CHERRY, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
+				firstTime = false;
+			}
+
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)
 			{
 				while(self HasPerk(PERK_ELECTRIC_CHERRY) && ! level.shadow_vision_active)
@@ -321,12 +327,6 @@ function electric_cherry_upgrade()
 
 			if(! failedByTime)
 			{
-				if(firstTime)
-				{
-					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_CHERRY, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);
-					firstTime = false;
-				}
-			
 				hasCherry = self HasPerk(PERK_ELECTRIC_CHERRY);
 
 				if(isdefined(hasCherry) && !hasCherry)
@@ -358,6 +358,7 @@ function electric_cherry_upgrade()
 				}
 				if(self.cherry_kills >= current_cherry_kills + self.cherry_challenge_goal)
 				{
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_CHERRY, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK_UP);
 					self givePerkUpgrade(PERK_ELECTRIC_CHERRY);
 					break;
 				}
@@ -397,6 +398,12 @@ function double_tap_upgrade()
 			self.isUpgradingDouble = true;
 			self.doubleChallengeActive = true;
 
+			if(firstTime)
+			{
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_DOUBLE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
+				firstTime = false;
+			}
+
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)
 			{
 				while(self HasPerk(PERK_DOUBLE_TAP) && ! level.shadow_vision_active)
@@ -414,11 +421,6 @@ function double_tap_upgrade()
 			if(! failedByTime)
 			{
 				//self IPrintLnBold("Gained Challenge: Double Tap Upgrade (Begins next round)");
-				if(firstTime)
-				{
-					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_DOUBLE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);
-					firstTime = false;
-				}
 				hasDouble = self HasPerk(PERK_DOUBLE_TAP);
 
 				if(isdefined(hasDouble) && !hasDouble)
@@ -444,6 +446,7 @@ function double_tap_upgrade()
 				}
 				if(self.pentakills >= self.double_challenge_goal)
 				{
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_DOUBLE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK_UP);
 					self notify(#"doubleUpgradeSucceeded");
 					self givePerkUpgrade(PERK_DOUBLE_TAP);
 					break;
@@ -484,6 +487,12 @@ function phd_lite_upgrade()
 			self.isUpgradingPHD = true;
 			self.PHDChallengeActive = true;
 
+			if(firstTime)
+			{
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_PHD, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
+				firstTime = false;
+			}
+
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)
 			{
 				while(self HasPerk(PERK_PHD_LITE) && ! level.shadow_vision_active)
@@ -501,12 +510,6 @@ function phd_lite_upgrade()
 			if(! failedByTime)
 			{
 				//self IPrintLnBold("Gained Challenge: Double Tap Upgrade (Begins next round)");
-				if(firstTime)
-				{
-					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_PHD, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);
-					firstTime = false;
-				}
-
 				hasPHD = self HasPerk(PERK_PHD_LITE);
 
 				if(isdefined(hasPHD) && !hasPHD)
@@ -531,6 +534,7 @@ function phd_lite_upgrade()
 				}
 				if(self.slidekills >= self.PHD_challenge_goal)
 				{
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_PHD, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK_UP);
 					self notify(#"PHDUpgradeSucceeded");
 					self givePerkUpgrade(PERK_PHD_LITE);
 					break;
@@ -570,6 +574,12 @@ function poseidon_punch_upgrade()
 			self.isUpgradingPoseidon = true;
 			self.poseidonChallengeActive = true;
 
+			if(firstTime)
+			{
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_POSEIDON, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
+				firstTime = false;
+			}
+
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)
 			{
 				while(self HasPerk(PERK_POSEIDON_PUNCH) && ! level.shadow_vision_active)
@@ -586,12 +596,6 @@ function poseidon_punch_upgrade()
 
 			if(! failedByTime)
 			{
-				//self IPrintLnBold("Gained Challenge: Double Tap Upgrade (Begins next round)");
-				if(firstTime)
-				{
-					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_POSEIDON, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);					firstTime = false;
-				}
-				
 				hasPoseidon = self HasPerk(PERK_POSEIDON_PUNCH);
 
 				if(isdefined(hasPoseidon) && !hasPoseidon)
@@ -616,6 +620,7 @@ function poseidon_punch_upgrade()
 				if(self.blessedkills >= self.poseidon_challenge_goal)
 				{
 					//self IPrintLnBold("Double Tap Upgraded! (Effects: Increased damage)");
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_POSEIDON, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK_UP);
 					self notify(#"poseidonUpgradeSucceeded");
 					self givePerkUpgrade(PERK_POSEIDON_PUNCH);
 					break;
@@ -655,6 +660,12 @@ function stamin_up_upgrade()
 			self.isUpgradingStamin = true;
 			self.staminChallengeActive = true;
 
+			if(firstTime)
+			{
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_STAMIN, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
+				firstTime = false;
+			}
+
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)
 			{
 				while(self HasPerk(PERK_STAMINUP) && ! level.shadow_vision_active)
@@ -672,11 +683,6 @@ function stamin_up_upgrade()
 			if(! failedByTime)
 			{
 				//self IPrintLnBold("Gained Challenge: Double Tap Upgrade (Begins next round)");
-				if(firstTime)
-				{
-					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_STAMIN, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);					firstTime = false;
-					firstTime = false;
-				}
 				hasStamin = self HasPerk(PERK_STAMINUP);
 
 				if(isdefined(hasStamin) && !hasStamin)
@@ -702,6 +708,7 @@ function stamin_up_upgrade()
 				if(self.sprintKills >= self.stamin_challenge_goal)
 				{
 					//self IPrintLnBold("Double Tap Upgraded! (Effects: Increased damage)");
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_STAMIN, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK_UP);
 					self notify(#"staminUpgradeSucceeded");
 					self givePerkUpgrade(PERK_STAMINUP);
 					break;
@@ -742,6 +749,12 @@ function mule_kick_upgrade()
 			self.isUpgradingMule = true;
 			self.muleChallengeActive = true;
 
+			if(firstTime)
+			{
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_MULE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
+				firstTime = false;
+			}
+
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)
 			{
 				while(self HasPerk(PERK_ADDITIONAL_PRIMARY_WEAPON) && ! level.shadow_vision_active)
@@ -759,11 +772,6 @@ function mule_kick_upgrade()
 			if(! failedByTime)
 			{
 				//self IPrintLnBold("Gained Challenge: Double Tap Upgrade (Begins next round)");
-				if(firstTime)
-				{
-					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_MULE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);					firstTime = false;
-					firstTime = false;
-				}
 				hasMule = self HasPerk(PERK_ADDITIONAL_PRIMARY_WEAPON);
 
 				if(isdefined(hasMule) && !hasMule)
@@ -790,6 +798,7 @@ function mule_kick_upgrade()
 				if(self.thirdgunkills >= self.mule_challenge_goal)
 				{
 					//self IPrintLnBold("Double Tap Upgraded! (Effects: Increased damage)");
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_MULE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK_UP);
 					self notify(#"muleUpgradeSucceeded");
 					self givePerkUpgrade(PERK_ADDITIONAL_PRIMARY_WEAPON);
 					break;
@@ -829,6 +838,12 @@ function quick_revive_upgrade()
 			self.isUpgradingQuick = true;
 			self.quickChallengeActive = true;
 
+			if(firstTime)
+			{
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_REVIVE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
+				firstTime = false;
+			}
+
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)
 			{
 				while(self HasPerk(PERK_QUICK_REVIVE) && ! level.shadow_vision_active)
@@ -846,12 +861,6 @@ function quick_revive_upgrade()
 			//self IPrintLnBold("Gained Challenge: Quick Revive Upgrade (Begins next round)");
 			if(! failedByTime)
 			{
-				if(firstTime)
-				{
-					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_REVIVE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);					firstTime = false;
-					firstTime = false;
-				}
-				
 				hasQuick = self HasPerk(PERK_QUICK_REVIVE);
 
 				if(isdefined(hasQuick) && !hasQuick)
@@ -877,6 +886,7 @@ function quick_revive_upgrade()
 				}
 				if(self.lowHealthKills >= self.quick_challenge_goal)
 				{
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_REVIVE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK_UP);
 					self notify(#"quickUpgradeSucceeded");
 					self givePerkUpgrade(PERK_QUICK_REVIVE);
 					break;
@@ -916,6 +926,12 @@ function deadshot_upgrade()
 			self.isUpgradingDeadshot = true;
 			self.deadshotChallengeActive = true;
 
+			if(firstTime)
+			{
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_DEADSHOT, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
+				firstTime = false;
+			}
+
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)
 			{
 				while(self HasPerk(PERK_DEAD_SHOT) && ! level.shadow_vision_active)
@@ -933,12 +949,6 @@ function deadshot_upgrade()
 			//self IPrintLnBold("Gained Challenge: Quick Revive Upgrade (Begins next round)");
 			if(! failedByTime)
 			{
-				if(firstTime)
-				{
-					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_DEADSHOT, NOTIF_FLASH_RIGHT, NOTIF_ALERT_NEUTRAL);					firstTime = false;
-					firstTime = false;
-				}
-				
 				hasDeadshot = self HasPerk(PERK_DEAD_SHOT);
 
 				if(isdefined(hasDeadshot) && !hasDeadshot)
@@ -963,8 +973,10 @@ function deadshot_upgrade()
 				}
 				if(self.deadshotMindBlownKills >= self.deadshot_challenge_goal)
 				{
+					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_DEADSHOT, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK_UP);
 					self notify(#"deadshotUpgradeSucceeded");
 					self givePerkUpgrade(PERK_DEAD_SHOT);
+					self.deadshotMindBlownKills = undefined;
 					break;
 				}
 				wait(0.05);
@@ -1135,13 +1147,13 @@ function checkForSprintKills()
 				{
 					break;
 				}
+
 				self.sprintKills = self.sprintKills + self.pers["kills"] - player_kills;
 				player_kills = self.pers["kills"];
 				//IPrintLn(self.sprintKills);
 				wait(0.05);
 			}
 		}
-
 		wait(0.05);
 	}
 }

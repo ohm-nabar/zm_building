@@ -180,6 +180,9 @@ function autoexec main()
 	bloodgun_stations = GetEntArray("bloodgun_station", "targetname");
 	bloodgun_screens = GetEntArray("bloodgun_screen", "targetname");
 
+	blood_wires_off = GetEntArray("blood_wire_off", "targetname");
+	blood_wires_on = GetEntArray("blood_wire_on", "targetname");
+
 	level array::thread_all(blood_mainframes, &blood_mainframe_think);
 	level array::thread_all(blood_mainframe2s, &blood_mainframe2_think);
 	level array::thread_all(blood_computers, &blood_computer_think);
@@ -187,9 +190,35 @@ function autoexec main()
 	level array::thread_all(bloodgun_stations, &bloodgun_station_think);
 	level array::thread_all(bloodgun_screens, &bloodgun_screen_think);
 
+	level array::thread_all(blood_wires_off, &blood_wire_off_think);
+	level array::thread_all(blood_wires_on, &blood_wire_on_think);
+
 	level thread blood_cool_down();
 	level thread acquire_waypoint_manage();
 	level thread perk_set_fx();
+
+	zm::register_zombie_damage_override_callback( &zombie_damage_override );
+}
+
+function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
+{
+	if ( isPlayer( attacker ) && willBeKilled && isdefined(attacker.bloodgun_kills) && isdefined(weapon) && weapon == GetWeapon("bloodgun") && meansofdeath == "MOD_RIFLE_BULLET" )
+	{
+		attacker.bloodgun_kills += 1;
+	}
+}
+
+function blood_wire_off_think()
+{
+	level waittill("power_on" + self.script_int);
+	self Delete();
+}
+
+function blood_wire_on_think()
+{
+	self Hide();
+	level waittill("power_on" + self.script_int);
+	self Show();
 }
 
 function blood_mainframe_think()
@@ -726,22 +755,23 @@ function blood_think()
 		visionset_mgr::activate("visionset", "zm_bgb_in_plain_sight", player, 0.5, 9999, 0.5);
 		visionset_mgr::activate("overlay", "zm_bgb_in_plain_sight", player);
 
-		start_kills = player.pers["kills"];
+		player.bloodgun_kills = 0;
+		start_kills = player.bloodgun_kills;
 		success = false; 
-		player thread zm_abbey_inventory::notifyText(NOTIF_POWER_BG, undefined, NOTIF_ALERT_NEUTRAL, undefined, true);
+		player thread zm_abbey_inventory::notifyText(NOTIF_POWER_BG, undefined, NOTIF_ALERT_POWER, undefined, true);
 
 		foreach(p in level.players)
 		{
 			if(p != player)
 			{
-				p thread zm_abbey_inventory::notifyText(NOTIF_POWER_TEAM, undefined, NOTIF_ALERT_NEUTRAL, undefined, true);
+				p thread zm_abbey_inventory::notifyText(NOTIF_POWER_TEAM, undefined, NOTIF_ALERT_POWER, undefined, true);
 			}
 			p thread show_blood_empty(player);
 		}
 
 		level zm_audio::sndMusicSystem_StopAndFlush();
 		level thread zm_audio::sndMusicSystem_PlayState("blood_gene" + level.blood_uses + "_mx");
-
+		
 		while(!success) 
 		{
 			for(i = 0; i < level.players.size; i++)
@@ -791,16 +821,15 @@ function blood_think()
 				}
 			}
 
-			killsGained = player.pers["kills"] - start_kills;
+			killsGained = player.bloodgun_kills - start_kills;
 			level.vialFilled += killsGained;
 			//IPrintLn("start_kills" + start_kills);
 			//IPrintLn("added " + killsGained + " kills");
-			start_kills = player.pers["kills"];
+			start_kills = player.bloodgun_kills;
 			wait(0.05);
 		}
 
 		player notify(#"bloodgun_complete");
-
 		level notify(#"blood_finished");
 
 		visionset_mgr::deactivate( "overlay", "zm_bgb_in_plain_sight", player );
@@ -808,6 +837,8 @@ function blood_think()
 
 		level zm_audio::sndMusicSystem_StopAndFlush();
 		music::setmusicstate("none");
+
+		player.bloodgun_kills = undefined;
 
 		for(i = 0; i < zombies.size; i++)
 		{
@@ -961,7 +992,7 @@ function generator_think()
 			player zm_audio::create_and_play_dialog( "general", "power_on" );
 			foreach(player in level.players)
 			{
-				player zm_abbey_inventory::notifyGenerator();
+				player thread zm_abbey_inventory::notifyGenerator();
 			}
 			wait(0.05);
 			break;

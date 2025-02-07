@@ -16,9 +16,9 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
         "notif_global_hud_toggle",
         "notif_global_pause",
         "notif_gum_aramis",
-        "notif_gum_athos",
-        "notif_gum_dart",
         "notif_gum_porthos",
+        "notif_gum_dart",
+        "notif_gum_athos",
         "notif_perk_up_cherry",
         "notif_perk_up_deadshot",
         "notif_perk_up_double",
@@ -175,6 +175,9 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
             local NotifyData = CoD.GetScriptNotifyData(ModelRef)
 
             if NotifyData[1] == 0 then
+                for i=1,4 do
+                    BloodGenerator.OverlayTableS[i]:completeAnimation()
+                end
 			    BloodGenerator:setAlpha(0)
             else
                 PlayClip(BloodGenerator, "DefaultClip", InstanceRef)

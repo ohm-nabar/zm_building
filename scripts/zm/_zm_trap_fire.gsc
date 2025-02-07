@@ -120,7 +120,7 @@ function player_damage()
 			
 		self notify("burned");
 
-		if(!self HasPerk( PERK_JUGGERNOG ) || self.health - 100 < 1)
+		if(self.jug_resistance_level <= 100 || self.health - 100 < 1)
 		{
 			RadiusDamage(self.origin,10,self.health + 100,self.health + 100);
 			self.is_burning = undefined;

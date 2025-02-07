@@ -119,7 +119,58 @@ function  player_damage()
 {
 	if( !IS_TRUE(self.b_no_trap_damage) )
 	{
-		self thread zm_traps::player_elec_damage();
+		if( !isdefined(level.elec_loop) )
+		{
+			level.elec_loop = 0;
+		}	
+		
+		if( !IS_TRUE( self.is_burning ) && zm_utility::is_player_valid( self ) )
+		{
+			self.is_burning = 1;
+			
+			if (IS_TRUE(level.trap_electric_visionset_registered))
+			{
+				visionset_mgr::activate( "overlay", "zm_trap_electric", self, ZM_TRAP_ELECTRIC_MAX, ZM_TRAP_ELECTRIC_MAX );
+			}
+			else
+			{
+				self setelectrified(1.25);
+			}
+			shocktime = 2.5;
+			if ( isdefined( level.str_elec_damage_shellshock_override ) )
+			{
+				str_elec_shellshock = level.str_elec_damage_shellshock_override;
+			}
+			else
+			{
+				str_elec_shellshock = "electrocution";
+			}
+
+			//Changed Shellshock to Electrocution so we can have different bus volumes.
+			self shellshock(str_elec_shellshock, shocktime);
+			
+			self PlayRumbleOnEntity( "damage_heavy" ); // PORTIZ 6/12/16: Adding rumble when damaged
+			
+			if(level.elec_loop == 0)
+			{	
+				elec_loop = 1;
+				//self playloopsound ("electrocution");
+				self playsound("wpn_zmb_electrap_zap");
+			}
+			if(self.jug_resistance_level <= 100 || self.health - 100 < 1)
+			{
+				self DoDamage( self.health + 100, self.origin );
+				self.is_burning = undefined;
+
+			}
+			else
+			{
+				self DoDamage( 50, self.origin );
+				wait 0.1;
+				//self playsound("wpn_zmb_electrap_zap");
+				self.is_burning = undefined;
+			}
+		}
 	}
 }
 

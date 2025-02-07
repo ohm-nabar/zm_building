@@ -38,7 +38,7 @@ function __init__()
 
     level.abbey_pitchfork = GetWeapon("zm_pitchfork");
 
-    level.trident_statue_radius = 350;
+    level.trident_statue_radius = 450;
     level.trident_charge_radius = 65;
     level.trident_pulse_radius = 100;
 

@@ -517,7 +517,7 @@ function notifyText(notif, flash, notif_sound, gum, override=false)
 	{
 		self notify(#"message_override");
 	}
-	notifyTextBody(notif, flash, notif_sound, gum, override);
+	self notifyTextBody(notif, flash, notif_sound, gum, override);
 }
 
 function notifyTextBody(notif, flash, notif_sound, gum, override=false)
@@ -569,13 +569,30 @@ function destroy_on_override()
 	self.abbey_notif_active = false;
 }
 
-function notifyGenerator()
+function notifyGenerator(generator_shadowed=false)
 {
 	self endon("disconnect");
+	self endon(#"generator_override");
 
+	if(generator_shadowed)
+	{
+		self PlaySoundToPlayer(NOTIF_ALERT_SP, self);
+	}
 	self LUINotifyEvent(&"generator_visible", 1, 1);
+
+	self thread generator_destroy_on_override();
 	
 	wait(5);
 	
+	self LUINotifyEvent(&"generator_visible", 1, 0);
+	self notify(#"generator_finished");
+}
+
+function generator_destroy_on_override()
+{
+	self endon("disconnect");
+	self endon(#"generator_finished");
+
+	self waittill(#"generator_override");
 	self LUINotifyEvent(&"generator_visible", 1, 0);
 }

@@ -40,17 +40,10 @@
 #precache( "fx", "shadow/fx_zmb_smokey_death" );
 #precache( "fx", "shadow/shadow_zombie_cloak_eyes" );
 #precache( "fx", "shadow/cloak_shadowing" );
+
 #precache( "material", "shadow_kill_indicator" ); 
 
-#precache( "material", "splash_shadow_attack_generator1" ); 
-#precache( "material", "splash_shadow_attack_generator2" ); 
-#precache( "material", "splash_shadow_attack_generator3" ); 
-#precache( "material", "splash_shadow_attack_generator4" ); 
-#precache( "material", "splash_shadow_complete_generator1" ); 
-#precache( "material", "splash_shadow_complete_generator2" ); 
-#precache( "material", "splash_shadow_complete_generator3" ); 
-#precache( "material", "splash_shadow_complete_generator4" ); 
-
+#precache( "eventstring", "generator_attacked" ); 
 
 #namespace zm_ai_shadowpeople;
 
@@ -572,11 +565,11 @@ function cloak_spawn_sequence()
 	generators = array::randomize( level.active_generators );
 	generators_shadowed = [];
 
-	generator_name_translation = [];
-	generator_name_translation["generator1"] = "Gen. 1 (Electric Cherry and Quick Revive)";
-	generator_name_translation["generator2"] = "Gen. 2 (Poseidon's Punch)";
-	generator_name_translation["generator3"] = "Gen. 3 (Double Tap and Stamin-Up)";
-	generator_name_translation["generator4"] = "Gen. 4 (Mule Kick and PhD Lite)";
+	gen_num_translation = [];
+	gen_num_translation["generator1"] = 0;
+	gen_num_translation["generator2"] = 1;
+	gen_num_translation["generator3"] = 2;
+	gen_num_translation["generator4"] = 3;
 
 	level.num_gens_shadowed = 0;
 	for(i = 0; i < cloaks_to_spawn; i++)
@@ -636,9 +629,11 @@ function cloak_spawn_sequence()
 
 			PlayFXOnTag("shadow/cloak_shadowing", cloak, "tag_weapon_right");
 			cloak AnimScripted("cloak_conjuring", cloak.origin, cloak.angles, "cloak_conjuring");
+			gen_num = gen_num_translation[generators[generator_index]];
 			foreach(player in level.players)
 			{
-				player zm_abbey_inventory::notifyGenerator();
+				player thread zm_abbey_inventory::notifyGenerator();
+				player LUINotifyEvent(&"generator_attacked", 1, gen_num);
 			}
 			level notify(generators[generator_index] + "_attacked");
 		}
@@ -651,6 +646,10 @@ function cloak_spawn_sequence()
 			if(level.num_cloaks != num_cloaks_prev)
 			{
 				level notify(generators[generator_index] + "_saved");
+				foreach(player in level.players)
+				{
+					player notify(#"generator_override");
+				}
 				break;
 			}
 		}
@@ -663,7 +662,7 @@ function cloak_spawn_sequence()
 			level notify(generators[generator_index] + "_shadowed");
 			foreach(player in level.players)
 			{
-				player zm_abbey_inventory::notifyGenerator();
+				player thread zm_abbey_inventory::notifyGenerator(true);
 			}
 		}
 	}

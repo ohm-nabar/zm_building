@@ -102,6 +102,8 @@ function CoD.BloodGenerator.new(HudRef, InstanceRef)
     local GeneratorsActive = 0
     local GeneratorsShadowed = 0
 
+    BloodGenerator.OverlayTableS = OverlayTableS
+
     OverlaySkull.clipsPerState = {
         DefaultState = {
             DefaultClip = function()
@@ -285,11 +287,10 @@ function CoD.BloodGenerator.new(HudRef, InstanceRef)
 	BloodGenerator:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", ShadowRoundEnded)
 
     local function GeneratorAttacked(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "notification_image_show") then
+        if IsParamModelEqualToString(ModelRef, "generator_attacked") then
             local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-            local Index = NotifyData[1] - 24
-
-            if Index >= 1 and Index <= 4 and BloodGenerator.shouldFlash then
+            local Index = NotifyData[1] + 1
+            if BloodGenerator.shouldFlash then
                 PlayClip(OverlayTableS[Index], "Attacking", InstanceRef)
             end
         end
