@@ -109,26 +109,6 @@ function private on_player_spawned()
 	}
 	self function_52dbea8c();
 	self thread bgb_player_init();
-	self thread request_bgb();
-}
-
-function request_bgb()
-{
-	self endon("death");
-	self endon("disconnect");
-
-	while(true)
-	{
-		if(self ActionSlotOneButtonPressed())
-		{
-			while(self ActionSlotOneButtonPressed())
-			{
-				wait(0.05);
-			}
-			self notify("bgb_activation_request");
-		}
-		wait(0.05);
-	}
 }
 
 /*
@@ -535,7 +515,7 @@ function bgb_gumball_anim(bgb, activating)
 		{
 			if(isdefined(level.bgb[bgb].var_7ea552f4) && level.bgb[bgb].var_7ea552f4 || self function_b616fe7a(1))
 			{
-				self notify("hash_83da9d01", bgb);
+				self notify(#"hash_83da9d01", bgb);
 				self activation_start();
 				self thread run_activation_func(bgb);
 			}
@@ -1145,7 +1125,7 @@ function private function_f9fad8b3(var_eeab9300, percent)
 */
 function private bgb_set_timer_clientfield(percent)
 {
-	self notify("hash_f9fad8b3");
+	self notify(#"hash_f9fad8b3");
 	var_eeab9300 = self clientfield::get_player_uimodel("bgb_timer");
 	if(percent < var_eeab9300 && 0.1 <= (var_eeab9300 - percent))
 	{

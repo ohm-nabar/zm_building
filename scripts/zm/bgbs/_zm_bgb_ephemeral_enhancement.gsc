@@ -110,7 +110,7 @@ function activation()
 	self takeweapon(var_1d94ca2b, 1);
 	self thread function_79585675(var_19dc14f6);
 	self bgb::run_timer(60);
-	self notify("hash_5cefcc84");
+	self notify(#"hash_5cefcc84");
 	if(self laststand::player_is_in_laststand())
 	{
 		self waittill("player_revived");

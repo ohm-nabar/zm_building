@@ -90,7 +90,7 @@ function disable()
 */
 function function_127dc5ca(player)
 {
-	self notify("hash_127dc5ca");
+	self notify(#"hash_127dc5ca");
 	self endon("hash_127dc5ca");
 	self endon("kill_trigger");
 	self endon("hash_a09e2c64");

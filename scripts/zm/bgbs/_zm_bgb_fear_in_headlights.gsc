@@ -75,7 +75,7 @@ function private function_b13c2f15()
 */
 function private function_b8eb33c5(ai)
 {
-	ai notify("hash_4e7f43fc");
+	ai notify(#"hash_4e7f43fc");
 	ai thread function_b13c2f15();
 	ai setentitypaused(1);
 	ai.var_70a58794 = ai.b_ignore_cleanup;
@@ -95,7 +95,7 @@ function private function_b8eb33c5(ai)
 */
 function private function_31a2964e(ai)
 {
-	ai notify("hash_4e7f43fc");
+	ai notify(#"hash_4e7f43fc");
 	ai setentitypaused(0);
 	if(isdefined(ai.var_7f7a0b19))
 	{

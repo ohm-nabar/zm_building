@@ -125,7 +125,7 @@ function actor_death_override(e_attacker)
 	if(e_attacker laststand::player_is_in_laststand() && (!(isdefined(e_attacker.var_df0decf1) && e_attacker.var_df0decf1)))
 	{
 		e_attacker thread bgb::bgb_revive_watcher();
-		e_attacker notify("hash_935cc366");
+		e_attacker notify(#"hash_935cc366");
 	}
 }
 
@@ -144,7 +144,7 @@ function function_cfc2c8d5()
 	self endon("bgb_update");
 	while(true)
 	{
-		self waittill("hash_935cc366");
+		self waittill(#"hash_935cc366");
 		while(self getcurrentweapon() !== self.laststandpistol)
 		{
 			wait(0.05);

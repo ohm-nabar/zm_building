@@ -113,7 +113,7 @@ function activation()
 	}
 	visionset_mgr::deactivate("overlay", "zm_bgb_idle_eyes", self);
 	self.bgb_idle_eyes_active = undefined;
-	self notify("hash_16ab3604");
+	self notify(#"hash_16ab3604");
 	deactivate(var_7092e170);
 }
 

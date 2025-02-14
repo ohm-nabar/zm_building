@@ -235,6 +235,6 @@ function function_3b5b1f1e()
 function function_67d0cc9f()
 {
 	self clientfield::set("eye_candy_active", 0);
-	self notify("hash_67d0cc9f");
+	self notify(#"hash_67d0cc9f");
 }
 

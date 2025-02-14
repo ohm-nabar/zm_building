@@ -86,7 +86,7 @@ function disable()
 {
 	if(isdefined(self))
 	{
-		self notify("hash_7e8cbf8f");
+		self notify(#"hash_7e8cbf8f");
 	}
 	foreach(player in level.players)
 	{
