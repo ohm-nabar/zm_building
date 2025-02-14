@@ -33,6 +33,7 @@
 #using scripts\zm\_zm_behavior;
 #using scripts\zm\_zm_behavior_utility;
 #using scripts\zm\_zm_blockers;
+#using scripts\zm\zm_bloodgenerator;
 #using scripts\zm\_zm_bgb;
 #using scripts\zm\_zm_equipment;
 #using scripts\zm\_zm_laststand;
@@ -136,6 +137,9 @@ function __init__()
     thread _get_coords_command_response(); //Get the origin and angles of where the player is standing
     thread _teleport_zombies_command_response(); //Teleports zombies to player
     thread _give_bgb_command_response(); //gives the player BGB!
+    thread _activate_generator(); // Activates a Blood Generator
+    thread _set_next_shadow_breach(); // Sets next shadow breach (cannot be done during a Shadow Breach or before a generator is activated)
+    thread _skip_shadow_breach(); // Skips Shadow Breach
 
     if( ToLower( GetDvarString( "mapname" ) ) != "zm_castle" ){
         thread _debug_keyline_command_response(); //Add keylines around a specific model to look for it easier
@@ -395,6 +399,68 @@ function private _give_bgb_command_response(command_args)
             {
                 print_subtitle(undefined, "^5Dev: bgb " + gum_name + " not found");
             }
+        }
+    }
+}
+
+function private _activate_generator(command_args)
+{
+    ModVar("gen_activate", "");
+
+    valid_values = array("1", "2", "3", "4");
+
+    for(;;)
+    {
+        WAIT_SERVER_FRAME
+
+        dvar_value = ToLower(GetDvarString("gen_activate", ""));
+
+        if(isdefined(dvar_value) && array::contains(valid_values, dvar_value))
+        {
+            zm_bloodgenerator::turn_generator_on("generator" + dvar_value);
+            SetDvar("gen_activate", 0);
+        }
+    }
+}
+
+function private _set_next_shadow_breach(command_args)
+{
+    ModVar("shadow_round", "");
+
+    for(;;)
+    {
+        WAIT_SERVER_FRAME
+
+        dvar_value = ToLower(GetDvarString("shadow_round", ""));
+
+        if(isdefined(dvar_value) && StrIsInt(dvar_value) && isdefined(level.active_generators) && level.active_generators.size > 0)
+        {
+            level.next_dog_round = Int(dvar_value);
+            cur_dvar_value = dvar_value;
+            while(isdefined(dvar_value) && dvar_value == cur_dvar_value)
+            {
+                dvar_value = ToLower(GetDvarString("shadow_round", ""));
+                wait(0.05);
+            }
+        }
+    }
+}
+
+function private _skip_shadow_breach(command_args)
+{
+    ModVar("shadow_skip", "");
+
+    for(;;)
+    {
+        WAIT_SERVER_FRAME
+
+        dvar_value = ToLower(GetDvarString("shadow_skip", ""));
+
+        if(isdefined(dvar_value) && dvar_value == "1")
+        {
+            level notify(#"skip_round");
+            dvar_value = ToLower(GetDvarString("shadow_skip", ""));
+            SetDvar("shadow_skip", 0);
         }
     }
 }

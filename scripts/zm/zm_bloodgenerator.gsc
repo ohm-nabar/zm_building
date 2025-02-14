@@ -61,7 +61,6 @@
 
 #using scripts\zm\_zm_magicbox;
 
-#using scripts\zm\zm_perk_upgrades;
 #using scripts\zm\zm_abbey_inventory;
 #using scripts\zm\zm_room_manager;
 
@@ -987,13 +986,9 @@ function generator_think()
 		{
 			//IPrintLn(generator_name + " was successfully activated, and the blood vial was taken.");
 			level.hasVial = false;
-			turn_generator_on(generator_name);
+			level turn_generator_on(generator_name);
 			self notify(#"generator_online");
 			player zm_audio::create_and_play_dialog( "general", "power_on" );
-			foreach(player in level.players)
-			{
-				player thread zm_abbey_inventory::notifyGenerator();
-			}
 			wait(0.05);
 			break;
 		}
@@ -1099,6 +1094,11 @@ function turn_generator_on(generator_name, after_shadow)
 				level notify(#"generator_activated");
 			}
 			break;
+	}
+
+	foreach(player in level.players)
+	{
+		player thread zm_abbey_inventory::notifyGenerator();
 	}
 }
 
