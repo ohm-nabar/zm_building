@@ -125,14 +125,14 @@ function lights_think()
 		self SetModel("zm_abbey_teleporter_lights_off");
 		level exploder::exploder(exploder_red_name);
 		level exploder::stop_exploder(exploder_name);
-		while(! (isdefined(level.teleport[self.script_int]) && level.teleport[self.script_int] == "timer_on"))
+		while( (! (isdefined(level.teleport[self.script_int]) && level.teleport[self.script_int] == "timer_on")) && level.current_links < 4 )
 		{
 			wait(0.05);
 		}
 		self SetModel("zm_abbey_teleporter_lights_on");
 		level exploder::stop_exploder(exploder_red_name);
 		level exploder::exploder(exploder_name);
-		while(level.teleport[self.script_int] == "timer_on")
+		while(level.teleport[self.script_int] == "timer_on" && level.current_links < 4)
 		{
 			wait(0.05);
 		}
@@ -248,9 +248,6 @@ function teleport_pad_think( index )
 			trigger thread teleport_pad_countdown( index, level.link_time );
 			teleporter_vo( "countdown", trigger );
 
-			//IPrintLn("Link started! Current links: " + level.current_links);
-
-
 			current_links_old = level.current_links;
 			// wait for the countdown
 			
@@ -258,8 +255,6 @@ function teleport_pad_think( index )
 			{
 				wait( 0.05 );
 			}
-
-			//IPrintLn("Linking ended! Current links: " + level.current_links);
 
 			// core was activated in time
 			if ( level.current_links == 4 )
@@ -281,7 +276,6 @@ function teleport_pad_think( index )
 			}
 			else
 			{
-				//IPrintLn("Restarting link process");
 				level.teleport[index] = "waiting";
 			}
 			wait( .05 );
@@ -298,8 +292,6 @@ function teleport_pad_countdown( index, time )
 {
 	self endon( "stop_countdown" );
 
-//	iprintlnbold( &"WAW_ZOMBIE_START_TPAD" );
-
 	if ( level.active_timer < 0 )
 	{
 		level.active_timer = index;
@@ -309,7 +301,6 @@ function teleport_pad_countdown( index, time )
 
 	if(level.current_links == 1)
 	{
-		//IPrintLn("starting music");
 		self thread sndCountdown();
 	}
 	level util::clientNotify( "TRf" );	// Teleporter receiver map light flash
@@ -348,8 +339,7 @@ function teleport_pad_countdown( index, time )
 		}
 		level util::clientNotify( "TRs" );	// Stop flashing the receiver map light
 	}
-//	iprintlnbold( "out of time" );
-
+	
 	level.countdown--;
 }
 
@@ -477,8 +467,6 @@ function teleport_pad_active_think( index )
 	self.teleport_active = true;
 
 	user = undefined;
-
-	//IPrintLn("Teleporter " + index + " is active!");
 
 	while ( 1 )
 	{
