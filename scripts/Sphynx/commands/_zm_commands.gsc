@@ -433,7 +433,7 @@ function private _set_next_shadow_breach(command_args)
 
         dvar_value = ToLower(GetDvarString("shadow_round", ""));
 
-        if(isdefined(dvar_value) && StrIsInt(dvar_value) && isdefined(level.active_generators) && level.active_generators.size > 0)
+        if(isdefined(dvar_value) && StrIsInt(dvar_value) && Int(dvar_value) > 0 && isdefined(level.active_generators) && level.active_generators.size > 0)
         {
             level.next_dog_round = Int(dvar_value);
             cur_dvar_value = dvar_value;
