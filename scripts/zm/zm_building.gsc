@@ -125,9 +125,13 @@
 
 // Mystery Box Map
 #using scripts\zm\zm_abbey_box_map;
+
 // Stats
 #using scripts\zm\gametypes\_globallogic;
 #using scripts\zm\gametypes\_globallogic_score;
+
+// Cleanup Manager
+#using scripts\zm\zm_giant_cleanup_mgr;
 
 #insert scripts\zm\_zm_perks.gsh;
 
@@ -173,6 +177,9 @@ function main()
 	
 	level thread zm_castle_vox();
 	level._zombie_custom_add_weapons =&custom_add_weapons;
+
+	// Cleanup
+	level.no_target_override = &no_target_override;
 	
 	//Setup the levels Zombie Zone Volumes
 	level.zones = [];
@@ -363,6 +370,94 @@ function custom_add_weapons()
 function zm_castle_vox()
 {
 	zm_audio::loadPlayerVoiceCategories("gamedata/audio/zm/zm_castle_vox.csv");
+}
+
+function validate_and_set_no_target_position( position )
+{
+	if( IsDefined( position ) )
+	{
+		goal_point = GetClosestPointOnNavMesh( position.origin, 100 );
+		if( IsDefined( goal_point ) )
+		{
+			self SetGoal( goal_point );
+			self.has_exit_point = 1;
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+function no_target_override( zombie )
+{
+	if( isdefined( zombie.has_exit_point ) || level flag::get("dog_round") )
+	{
+		return;
+	}
+	
+	players = level.players;
+	
+	dist_zombie = 0;
+	dist_player = 0;
+	dest = 0;
+
+	if ( isdefined( level.zm_loc_types[ "dog_location" ] ) )
+	{
+		locs = array::randomize( level.zm_loc_types[ "dog_location" ] );
+		
+		for ( i = 0; i < locs.size; i++ )
+		{
+			found_point = false;
+			foreach( player in players )
+			{
+				if( player laststand::player_is_in_laststand() )
+				{
+					continue;
+				}
+				
+				away = VectorNormalize( self.origin - player.origin );
+				endPos = self.origin + VectorScale( away, 600 );
+				dist_zombie = DistanceSquared( locs[i].origin, endPos );
+				dist_player = DistanceSquared( locs[i].origin, player.origin );
+		
+				if ( dist_zombie < dist_player )
+				{
+					dest = i;
+					found_point= true;
+				}
+				else
+				{
+					found_point = false;
+				}
+			}
+			if( found_point )
+			{
+				if( zombie validate_and_set_no_target_position( locs[i] ) )
+				{
+					return;
+				}
+			}
+		}
+	}
+	
+	
+	escape_position = zombie giant_cleanup::get_escape_position_in_current_zone();
+			
+	if( zombie validate_and_set_no_target_position( escape_position ) )
+	{
+		return;
+	}
+	
+	escape_position = zombie giant_cleanup::get_escape_position();
+	
+	if( zombie validate_and_set_no_target_position( escape_position ) )
+	{
+		return;
+	}
+	
+	zombie.has_exit_point = 1;
+	
+	zombie SetGoal( zombie.origin );
 }
 
 function player_stats_init()

@@ -684,3 +684,6 @@ weapon,legacy_syrette_zm
 
 // Localized Strings
 localize,zm_abbey
+
+// Cleanup Manager
+scriptparsetree,scripts/zm/zm_giant_cleanup_mgr.gsc
