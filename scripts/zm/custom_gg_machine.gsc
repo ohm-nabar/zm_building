@@ -159,14 +159,15 @@ function __init__()
 		level array::thread_all(models, &judge_model_think, i);
 	}
 
+	level.gargoyle_bribes_active = [];
+	level.gargoyle_first_bribe_taken = false;
+
 	level.gargoyle_judges = GetEntArray("gargoyle_judge", "targetname");
 	level array::thread_all(level.gargoyle_judges, &judge_think);
 
 	level.gargoyle_bribes = GetEntArray("abbey_bribe", "targetname");
 	level array::thread_all(level.gargoyle_bribes, &bribe_think);
 
-	level.gargoyle_bribes_active = [];
-	level.gargoyle_first_bribe_taken = false;
 	level thread bribe_manager();
 
 	level callback::on_connect( &on_player_connect );
@@ -306,10 +307,10 @@ function judge_hintstring_think(player)
 			prev_quantity = quantity;
 			prev_bribe_count = bribe_count;
 			bribe_cost = zm_bgb_custom_util::gg_bribe_cost(gum);
-			hintstring = MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_START") + gum_struct.displayName + MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_VALUE") + quantity + "]" + MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_NEXT") + dialogue;
+			hintstring = MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_START") + gum_struct.displayName + MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_VALUE") + quantity + "]" + MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_NEXT");
 			if(quantity == 0 && bribe_count >= bribe_cost)
 			{
-				hintstring = MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_START") + gum_struct.displayName + MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_VALUE") + bribe_cost + "]" + MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_NEXT") + dialogue;
+				hintstring = MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_START") + gum_struct.displayName + MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_VALUE") + bribe_cost + "]" + MakeLocalizedString(&"ZM_ABBEY_TRIAL_HINTSTRING_NEXT");
 			}
 			
 			self SetHintStringForPlayer(player, hintstring);
@@ -431,7 +432,7 @@ function bribe_hintstring_think(player)
 
 	while(true)
 	{
-		bribe_active = level array::contains(level.gargoyle_bribes_active, self);
+		bribe_active = level array::contains(level.gargoyle_bribes_active, self) || (! level.gargoyle_first_bribe_taken && self.target == "bribe1_model");
 		max_bribes = player.bribe_count >= 3;
 
 		if(bribe_active != prev_bribe_active || max_bribes != prev_max_bribes)
@@ -464,7 +465,7 @@ function bribe_think()
 
 	while(true)
 	{
-		if(level array::contains(level.gargoyle_bribes_active, self))
+		if(level array::contains(level.gargoyle_bribes_active, self) || (! level.gargoyle_first_bribe_taken && self.target == "bribe1_model"))
 		{ 
 			active = true;
 			model SetVisibleToAll();
@@ -477,11 +478,14 @@ function bribe_think()
 			{
 				self waittill("trigger", player);
 			}
+			if(level.gargoyle_first_bribe_taken)
+			{
+				ArrayRemoveValue(level.gargoyle_bribes_active, self);
+			}
 			level.gargoyle_first_bribe_taken = true;
 			player PlaySound("zmb_buildable_pickup");
 			player.bribe_count += 1;
 			player clientfield::set_player_uimodel("bribeCount", player.bribe_count);
-			ArrayRemoveValue(level.gargoyle_bribes_active, self);
 		}
 		else if(active)
 		{
@@ -495,20 +499,22 @@ function bribe_think()
 
 function bribe_manager()
 {
+	while(! level.gargoyle_first_bribe_taken)
+	{
+		wait(0.05);
+	}
+
 	while(true)
 	{
+		for(i = 0; i < BRIBE_WAIT; i++)
+		{
+			level waittill("start_of_round");
+		}
+
 		if(level.gargoyle_bribes_active.size < BRIBE_MAX)
 		{
 			available_bribes = level array::filter(level.gargoyle_bribes, false, &bribe_filter);
 			level array::add(level.gargoyle_bribes_active, level array::random(available_bribes));
-		}
-		while(! level.gargoyle_first_bribe_taken)
-		{
-			wait(0.05);
-		}
-		for(i = 0; i < BRIBE_WAIT; i++)
-		{
-			level waittill("start_of_round");
 		}
 	}
 }
