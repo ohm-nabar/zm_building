@@ -140,14 +140,23 @@ function monitor_trident_melee_used()
 
 function pitchfork_statue_check(weapon)
 {
-	if(isdefined(weapon) && weapon == level.abbey_pitchfork && level.pitchfork_upgrading)
+	if(isdefined(weapon) && weapon == level.abbey_pitchfork)
 	{
-		return 1;
+		if(level.pitchfork_upgrading)
+		{
+			return 1;
+		}
+
+		foreach(player in level.players)
+		{
+			if(player HasWeapon(level.abbey_trident))
+			{
+				return 1;
+			}
+		}
 	}
-	else
-	{
-		return 0;
-	}
+	
+	return 0;
 }
 
 function pitchfork_pack_block(player)
