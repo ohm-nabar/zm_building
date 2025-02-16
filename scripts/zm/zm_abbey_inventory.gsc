@@ -142,15 +142,18 @@ function inventory_check()
 			
 			if (self.abbey_inventory_active)
 			{
-				self PlaySoundToPlayer("journal_close", self);
+				self PlaySoundToPlayer("journal_open", self);
 				self clientfield::set_player_uimodel("inventoryVisible", 1);
 				self DisableWeapons();
 			}
-			if(! self.abbey_inventory_active && ! level.is_coop_paused)
+			if(! self.abbey_inventory_active)
 			{
-				self PlaySoundToPlayer("journal_open", self);
+				self PlaySoundToPlayer("journal_close", self);
 				self clientfield::set_player_uimodel("inventoryVisible", 0);
-				self EnableWeapons();
+				if(! level.is_coop_paused)
+				{
+					self EnableWeapons();
+				}
 			}
 
 			while( self ActionSlotFourButtonPressed() )
