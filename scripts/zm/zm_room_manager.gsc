@@ -280,7 +280,19 @@ function is_player_in_room(zoneset)
 {
 	for(i = 0; i < zoneset.size; i++)
 	{
-		if( self zm_zonemgr::entity_in_zone(zoneset[i], true) )
+		if( self zm_zonemgr::entity_in_zone(zoneset[i]) )
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+function is_any_player_in_room(zoneset)
+{
+	for(i = 0; i < zoneset.size; i++)
+	{
+		if( level zm_zonemgr::any_player_in_zone(zoneset[i]) )
 		{
 			return true;
 		}
