@@ -138,6 +138,7 @@ function __init__()
     thread _teleport_zombies_command_response(); //Teleports zombies to player
     thread _give_bgb_command_response(); //gives the player BGB!
     thread _activate_generator(); // Activates a Blood Generator
+    thread _refill_jug_potions(); // Refills Juggernog Potions (at least 2 generators must be activated)
     thread _set_next_shadow_breach(); // Sets next shadow breach (cannot be done during a Shadow Breach or before a generator is activated)
     thread _skip_shadow_breach(); // Skips Shadow Breach
 
@@ -423,6 +424,31 @@ function private _activate_generator(command_args)
     }
 }
 
+function private _refill_jug_potions(command_args)
+{
+    ModVar("jug_refill", "");
+
+    for(;;)
+    {
+        WAIT_SERVER_FRAME
+
+        dvar_value = ToLower(GetDvarString("jug_refill", ""));
+
+        if(isdefined(dvar_value) && dvar_value == "1" && isdefined(level.active_generators) && level.active_generators.size >= 2)
+        {
+            if(level.players.size > 2)
+            {
+                level.jug_uses_left = 4;
+            }
+            else
+            {
+                level.jug_uses_left = 2;
+            }
+            SetDvar("jug_refill", 0);
+        }
+    }
+}
+
 function private _set_next_shadow_breach(command_args)
 {
     ModVar("shadow_round", "");
@@ -433,15 +459,10 @@ function private _set_next_shadow_breach(command_args)
 
         dvar_value = ToLower(GetDvarString("shadow_round", ""));
 
-        if(isdefined(dvar_value) && StrIsInt(dvar_value) && Int(dvar_value) > 0 && isdefined(level.active_generators) && level.active_generators.size > 0)
+        if(isdefined(dvar_value) && StrIsInt(dvar_value) && Int(dvar_value) > 0 && Int(dvar_value) < 256 && isdefined(level.active_generators) && level.active_generators.size > 0)
         {
             level.next_dog_round = Int(dvar_value);
-            cur_dvar_value = dvar_value;
-            while(isdefined(dvar_value) && dvar_value == cur_dvar_value)
-            {
-                dvar_value = ToLower(GetDvarString("shadow_round", ""));
-                wait(0.05);
-            }
+            SetDvar("shadow_round", 0);
         }
     }
 }
@@ -1376,18 +1397,19 @@ function private open_sesame_now()
 {
     SetDvar("zombie_unlock_all",1);
     
-    //turn on the power first
-    level flag::set( "power_on" );
-    level clientfield::set( "zombie_power_on", 0 );
-    //DCS: this will set all zone controlling power switch flags.
-    power_trigs = GetEntArray( "use_elec_switch", "targetname" );
-    foreach(trig in power_trigs)
+    for(i = 1; i <= 4; i++)
     {
-        if(IsDefined(trig.script_int))
-        {
-            level flag::set("power_on" + trig.script_int);
-            level clientfield::set( "zombie_power_on", trig.script_int );
-        }
+        level zm_bloodgenerator::turn_generator_on("generator" + i);
+        wait(0.05);
+    }
+
+    if(level.players.size > 2)
+    {
+        level.jug_uses_left = 4;
+    }
+    else
+    {
+        level.jug_uses_left = 2;
     }
     
     //get all the door triggers and trigger them
@@ -1423,6 +1445,11 @@ function private open_sesame_now()
         if (isdefined(zombie_debris[i]))
             zombie_debris[i] notify("trigger",level.players[0]); 
         wait(.05);
+    }
+
+    if(GetDvarString("ui_mapname") != "zm_building")
+    {
+        level flag::set("enter_mid_pilgrimage_zone");
     }
 
     // BUILDABLES ---------------------------------------------------------------------------- //
