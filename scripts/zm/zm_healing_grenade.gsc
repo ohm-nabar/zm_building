@@ -141,9 +141,10 @@ function spawn_aura(grenade, reviver)
 	PlayFXOnTag("custom/healing_grenade", fx_pos, "tag_origin");
 	PlaySoundAtPosition("healing_aura", grenade.origin);
 
+	grenade.zombies_turned = 0;
+
 	while( isdefined(grenade) && isdefined(reviver) )
 	{
-		//IPrintLn("Checking...");
 		players = GetPlayers();
 		for( i = 0; i < players.size; i++ )
 		{
@@ -151,11 +152,10 @@ function spawn_aura(grenade, reviver)
 		}
 
 		zombies = GetAISpeciesArray("axis", "all");
-		for(i = 0; i < zombies.size; i++)
+		for(i = 0; i < zombies.size && grenade.zombies_turned < 10; i++)
 		{
-			zombies[i] thread zombie_check(grenade, reviver);
+			zombies[i] zombie_check(grenade, reviver);
 		}
-
 		wait(0.05);
 	}
 	
@@ -176,6 +176,10 @@ function players_check(grenade, reviver)
 		if(level flag::get("solo_game"))
 		{
 			self flag::set(#"solo_healing_grenade");
+		}
+		else if(self == reviver)
+		{
+			return;
 		}
 		self thread zm_laststand::remote_revive( reviver );
 		self zm_juggernog_potions::maintain_jug_resistance_level();
@@ -201,9 +205,20 @@ function zombie_check(grenade, player)
 		is_shadow_person = true;
 	}
 
-	if(IS_TRUE(self.completed_emerging_into_playable_area) && ! IS_TRUE(self.healingElectric) && ! is_shadow_person && DistanceSquared(grenade.origin, self.origin) <= 90000)
+	if(DistanceSquared(grenade.origin, self.origin) <= 90000 && self zm_aat_turned::turned_zombie_validation() && ! is_shadow_person)
 	{
+		zombies = GetAISpeciesArray("axis", "all");
+		ArrayRemoveValue(zombies, self);
+		foreach(zombie in zombies)
+		{
+			if(DistanceSquared(self.origin, zombie.origin) <= 50)
+			{
+				zombie DoDamage(zombie.health + 666, grenade.origin, player, player);
+			}
+		}
+
 		self zm_aat_turned::result("death", player, "MOD_UNKNOWN", level.healingGrenade);
+		grenade.zombies_turned += 1;
 	}
 }
 

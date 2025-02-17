@@ -578,7 +578,6 @@ function wait_and_revive()
 	if ( self flag::get( #"solo_healing_grenade" ) )
 	{
 		self flag::clear( #"solo_healing_grenade" );
-		self.lives++;
 		self clientfield::set_player_uimodel("soloLivesUpdate", self.lives);
 		self.waiting_to_revive = false;
 		level flag::clear( "wait_and_revive" );
