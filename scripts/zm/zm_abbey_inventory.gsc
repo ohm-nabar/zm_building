@@ -91,6 +91,7 @@ function __init__()
 
 	callback::on_connect( &on_player_connect );
 	callback::on_spawned( &on_player_spawned );
+	callback::on_laststand( &on_laststand );
 }
 
 function on_player_connect()
@@ -116,6 +117,22 @@ function on_player_spawned()
 	self thread PHD_challenge_hud();
 	self thread poseidon_challenge_hud();
 	self thread deadshot_challenge_hud();
+}
+
+function on_laststand()
+{
+	self endon("disconnect");
+
+	if(self.abbey_inventory_active)
+	{
+		self PlaySoundToPlayer("journal_close", self);
+		self clientfield::set_player_uimodel("inventoryVisible", 0);
+		if(! level.is_coop_paused)
+		{
+			self EnableWeapons();
+		}
+		self.abbey_inventory_active = false;
+	}
 }
 
 function scroll_icon_hud()
