@@ -80,11 +80,11 @@ function __init__()
 	level.abbey_perk_indices[PERK_POSEIDON_PUNCH] = 6;
 	level.abbey_perk_indices[PERK_DEAD_SHOT] = 7;
 
-	callback::on_spawned( &on_player_spawned );
+	callback::on_connect( &on_player_connect );
 	zm::register_zombie_damage_override_callback( &zombie_damage_override );
 }
 
-function on_player_spawned() 
+function on_player_connect() 
 {
 	self.hasJug2 = false;
 	self.hasElectric2 = false;
@@ -293,7 +293,6 @@ function IsPerkUpgradeActive(perkname)
 function electric_cherry_upgrade() 
 {
 	self endon("disconnect");
-	self endon("bled_out");
 
 	failedByTime = false;
 	firstTime = true;
@@ -385,7 +384,6 @@ function electric_cherry_upgrade()
 function double_tap_upgrade() 
 {
 	self endon("disconnect");
-	self endon("bled_out");
 
 	failedByTime = false;
 	firstTime = true;
@@ -474,7 +472,6 @@ function double_tap_upgrade()
 function phd_lite_upgrade()
 {
 	self endon("disconnect");
-	self endon("bled_out");
 
 	failedByTime = false;
 	firstTime = true;
@@ -561,7 +558,6 @@ function phd_lite_upgrade()
 function poseidon_punch_upgrade()
 {
 	self endon("disconnect");
-	self endon("bled_out");
 
 	failedByTime = false;
 	firstTime = true;
@@ -647,7 +643,6 @@ function poseidon_punch_upgrade()
 function stamin_up_upgrade()
 {
 	self endon("disconnect");
-	self endon("bled_out");
 
 	failedByTime = false;
 	firstTime = true;
@@ -736,7 +731,6 @@ function stamin_up_upgrade()
 function mule_kick_upgrade() 
 {
 	self endon("disconnect");
-	self endon("bled_out");
 
 	failedByTime = false;
 	firstTime = true;
@@ -825,7 +819,6 @@ function mule_kick_upgrade()
 function quick_revive_upgrade() 
 {
 	self endon("disconnect");
-	self endon("bled_out");
 
 	failedByTime = false;
 	firstTime = true;
@@ -913,7 +906,6 @@ function quick_revive_upgrade()
 function deadshot_upgrade() 
 {
 	self endon("disconnect");
-	self endon("bled_out");
 
 	failedByTime = false;
 	firstTime = true;
@@ -1043,7 +1035,6 @@ function checkForPentas()
 	self endon("disconnect");
 	self endon(#"doubleUpgradeFailed");
 	self endon(#"doubleUpgradeSucceeded");
-	self endon("bled_out");
 	
 	while(self.isUpgradingDouble && self.pentakills < self.double_challenge_goal)
 	{
@@ -1087,7 +1078,6 @@ function checkForThirdGunKills()
 	self endon("disconnect");
 	self endon(#"muleUpgradeFailed");
 	self endon(#"muleUpgradeSucceeded");
-	self endon("bled_out");
 
 	while(self.isUpgradingMule && self.thirdgunkills < self.mule_challenge_goal)
 	{
@@ -1105,7 +1095,6 @@ function checkForLowHealthKills()
 	self endon("disconnect");
 	self endon(#"quickUpgradeFailed");
 	self endon(#"quickUpgradeSucceeded");
-	self endon("bled_out");
 
 	while(self.isUpgradingQuick && self.lowHealthKills < self.quick_challenge_goal)
 	{
@@ -1122,7 +1111,6 @@ function checkForSprintKills()
 	self endon("disconnect");
 	self endon(#"staminUpgradeFailed");
 	self endon(#"staminUpgradeSucceeded");
-	self endon("bled_out");
 
 	wasSprinting = false;
 	while(self.isUpgradingStamin && self.sprintKills < self.stamin_challenge_goal)
