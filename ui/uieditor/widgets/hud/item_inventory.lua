@@ -80,18 +80,6 @@ function CoD.ItemInventory.new(HudRef, InstanceRef)
 	ItemInventory:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_IN_REMOTE_KILLSTREAK_STATIC), UpdateVisibility)
 	
 	ItemInventory:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_EMP_ACTIVE), UpdateVisibility)
-	
-	local function JournalVisibility(ModelRef)
-        local NotifyData = Engine.GetModelValue(ModelRef)
-        if NotifyData then
-            if NotifyData == 0 then
-                UpdateVisibility(ModelRef)
-            else
-                ItemInventory:hide()
-            end
-        end
-    end
-    ItemInventory:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "inventoryVisible"), JournalVisibility)
 
     return ItemInventory
 end
