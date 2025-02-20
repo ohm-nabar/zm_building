@@ -57,6 +57,7 @@
 #using scripts\shared\system_shared;
 
 #using scripts\zm\zm_bgb_custom_util;
+#using scripts\zm\zm_challenges;
 
 #define BRIBE_MAX 3
 #define BRIBE_MAX_PLAYER 3
@@ -103,7 +104,6 @@ REGISTER_SYSTEM( "custom_gg_machine", &__init__, undefined )
 
 function __init__() 
 {
-	clientfield::register( "clientuimodel", "gumEaten", VERSION_SHIP, 5, "int" );
 	clientfield::register( "clientuimodel", "bribeCount", VERSION_SHIP, 2, "int" );
 
 	level.gg_all = array("zm_bgb_stock_option", "zm_bgb_sword_flay", "zm_bgb_temporal_gift", "zm_bgb_in_plain_sight", "zm_bgb_im_feelin_lucky", "zm_bgb_immolation_liquidation", "zm_bgb_phoenix_up", "zm_bgb_pop_shocks", "zm_bgb_challenge_rejected", "zm_bgb_on_the_house", "zm_bgb_profit_sharing", "zm_bgb_flavor_hexed", "zm_bgb_crate_power", "zm_bgb_unquenchable", "zm_bgb_alchemical_antithesis", "zm_bgb_extra_credit", "zm_bgb_head_drama", "zm_bgb_aftertaste_blood", "zm_bgb_perkaholic");
@@ -197,7 +197,6 @@ function on_player_connect()
 	}
 
 	self.bribe_count = 0;
-	self.lua_decrement_quantity_queue_pos = 0;
 
 	level array::thread_all(level.gargoyle_judges, &judge_hintstring_think, self);
 	level array::thread_all(level.gargoyle_bribes, &bribe_hintstring_think, self);
@@ -347,8 +346,12 @@ function judge_think()
 		{	
 			player.gg_quantities[gum] -= 1;
 
-			cf_val = (garg_num * 4) + index + 1;
-			player thread lua_decrement_quantity(cf_val);
+			if(player.gg_quantities[gum] == 0)
+			{
+				rand_cf = level.gargoyle_cfs[garg_num] + "Random";
+				cf_val = index + 5;
+				player thread zm_challenges::lua_toggle_gum_vis(rand_cf, cf_val);
+			}
 		}
 		else
 		{
@@ -359,33 +362,6 @@ function judge_think()
 
 		wait(0.05);
 	}
-}
-
-function lua_decrement_quantity(cf_val)
-{
-	self endon("disconnect");
-
-	queue_pos = self.lua_decrement_quantity_queue_pos;
-	self.lua_decrement_quantity_queue_pos += 1;
-	while(queue_pos > 0)
-	{
-		self waittill(#"lua_decrement_quantity_queue_pop");
-		queue_pos -= 1;
-	}
-
-	while(self clientfield::get_player_uimodel("gumEaten") != cf_val)
-	{
-		self clientfield::set_player_uimodel("gumEaten", cf_val);
-		util::wait_network_frame();
-	}
-	while(self clientfield::get_player_uimodel("gumEaten") != EATEN_CF_NEUTRAL)
-	{
-		self clientfield::set_player_uimodel("gumEaten", EATEN_CF_NEUTRAL);
-		util::wait_network_frame();
-	}
-
-	self notify(#"lua_decrement_quantity_queue_pop");
-	self.lua_decrement_quantity_queue_pos -= 1;
 }
 
 function lua_decrement_bribe_count()

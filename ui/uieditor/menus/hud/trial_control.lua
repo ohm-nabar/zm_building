@@ -13,7 +13,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local TrialTextWidth = 550
     local PBWidth = 125
     local GumWidth = 50
-    local QuantityWidth = 20
     local TextWidth = 150
     local DividerWidth = 962
 
@@ -22,7 +21,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local TrialTextStartX = 206
     local PBStartX = IconStartX + IconWidth - 5
     local GumStartX = PBStartX + PBWidth - 4
-    local QuantityStartX = GumStartX + GumWidth - 7 -- (0.42 * getTextWidth) - 13.68
     local TextStartX = GumStartX + (GumWidth / 2) - (TextWidth / 2)
     local XOffset = PBWidth + GumWidth - 6
     local DividerStartX = 0
@@ -32,7 +30,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local TrialTextHeight = NameTextHeight
     local PBHeight = 5
     local GumHeight = GumWidth
-    local QuantityHeight = 18
     local TextHeight = 17
     local DividerHeight = 1
 
@@ -41,7 +38,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local TrialTextStartY = NameTextStartY
     local PBStartY = IconStartY + (IconHeight / 3)
     local GumStartY = PBStartY + (PBHeight / 2) - (GumHeight / 2)
-    local QuantityStartY = GumStartY - 5
     local TextStartY = GumStartY + GumHeight + 1
     local DividerStartY = TextStartY + TextHeight + 1
     local YOffset = 95
@@ -52,7 +48,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local PBBTable = {}
     local PBTable = {}
     local GumTable = {}
-    local QuantityTable = {}
     local TextTable = {}
     local DividerTable = {}
 
@@ -87,9 +82,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
 
         local GumTop = GumStartY + (YOffset * (i - 1))
         local GumBottom = GumTop + GumHeight
-
-        local QuantityTop = QuantityStartY + (YOffset * (i - 1))
-        local QuantityBottom = QuantityTop + QuantityHeight
 
         local TextTop = TextStartY + (YOffset * (i - 1))
         local TextBottom = TextTop + TextHeight
@@ -127,7 +119,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
         PBBTable[i] = {}
         PBTable[i] = {}
         GumTable[i] = {}
-        QuantityTable[i] = {}
         TextTable[i] = {}
         DividerTable[i] = Divider
 
@@ -182,22 +173,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             TrialControl:addElement(PBTable[i][j])
             TrialControl:addElement(GumTable[i][j])
             TrialControl:addElement(TextTable[i][j])
-
-            if j < 5 then
-                local QuantityLeft = QuantityStartX + (XOffset * (j - 1))
-                local QuantityRight = QuantityLeft + QuantityWidth
-
-                local Quantity = LUI.UIText.new()
-                Quantity:setAlignment(Enum.LUIAlignment.LUI_ALIGNMENT_CENTER)
-                Quantity:setLeftRight(true, false, QuantityLeft, QuantityRight)
-                Quantity:setTopBottom(true, false, QuantityTop, QuantityBottom)
-                Quantity:setRGB(1, 1, 1)
-                Quantity:setText("99")
-                
-                QuantityTable[i][j] = Quantity
-
-                TrialControl:addElement(QuantityTable[i][j])
-            end
         end
     end
 
@@ -233,40 +208,19 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local Tier3Text = { TextTable[2][4], TextTable[3][4], TextTable[4][3], TextTable[4][4] }
     local TierText = {Tier1Text, Tier2Text, Tier3Text}
 
-    local Tier1Quantity = { QuantityTable[1][1], QuantityTable[1][2], QuantityTable[1][3], QuantityTable[2][1], QuantityTable[3][1] }
-    local Tier2Quantity = { QuantityTable[1][4], QuantityTable[2][2], QuantityTable[2][3], QuantityTable[3][2], QuantityTable[3][3], QuantityTable[4][1], QuantityTable[4][2] }
-    local Tier3Quantity = { QuantityTable[2][4], QuantityTable[3][4], QuantityTable[4][3], QuantityTable[4][4] }
-    local TierQuantity = {Tier1Quantity, Tier2Quantity, Tier3Quantity}
-
     local CurrentIndices = {1, 1, 1, 1}
 
     local ExtraCreditIndex = 1
     local HeadDramaIndex = 1
-    
-    local function SetQuantityLR(i, j)
-        local QuantityLeft = GumStartX + GumWidth + (0.42 * QuantityTable[i][j]:getTextWidth()) - 13.68 + (XOffset * (j - 1))
-        local QuantityRight = QuantityLeft + QuantityWidth
-        QuantityTable[i][j]:setLeftRight(true, false, QuantityLeft, QuantityRight)
-    end
-    
-    local function ResetQuantity(i, j)
-        QuantityTable[i][j]:setText("0")
-        QuantityTable[i][j]:setRGB(1, 0, 0)
-        SetQuantityLR(i, j)
+
+    local function ShowGum(i, j)
+        GumTable[i][j]:setAlpha(1)
+        TextTable[i][j]:setAlpha(1)
     end
 
-    local function IncrementQuantity(i, j)
-        QuantityTable[i][j]:setText(QuantityTable[i][j]:getText() + 1)
-        QuantityTable[i][j]:setRGB(1, 1, 1)
-        SetQuantityLR(i, j)
-    end
-
-    local function DecrementQuantity(i, j)
-        QuantityTable[i][j]:setText(QuantityTable[i][j]:getText() - 1)
-        if tonumber(QuantityTable[i][j]:getText()) == 0 then
-            QuantityTable[i][j]:setRGB(1, 0, 0)
-        end
-        SetQuantityLR(i, j)
+    local function HideGum(i, j)
+        GumTable[i][j]:setAlpha(0.5)
+        TextTable[i][j]:setAlpha(0.5)
     end
 
     local function SetGum(Factoradic, Tier)
@@ -299,8 +253,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             end
             TierGum[Tier][i]:setImage(TierGumLookup[Tier][TableVal])
             TierText[Tier][i]:setText(TierTextLookup[Tier][TableVal])
-            TierQuantity[Tier][i]:setText("0")
-            TierQuantity[Tier][i]:setRGB(1, 0, 0)
         end
     end
     
@@ -353,10 +305,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             for i=1,#PBTable[GargNum] do
                 PBTable[GargNum][i]:setShaderVector(0, 0, 0, 0, 0)
             end
-
-            for i=1,#QuantityTable[GargNum] do
-                ResetQuantity(GargNum, i)
-            end
             
             if GargNum == 4 then
                 AthosPrompt:setAlpha(0)
@@ -371,7 +319,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
                 PBTable[GargNum][CurrentIndex]:setShaderVector(0, 0, 0, 0, 0)
             else
                 PBTable[GargNum][CurrentIndex]:setShaderVector(0, 1, 0, 0, 0)
-                IncrementQuantity(GargNum, CurrentIndex)
+                ShowGum(GargNum, CurrentIndex)
                 CurrentIndices[GargNum] = CurrentIndices[GargNum] + 1
             end
         else
@@ -414,46 +362,51 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
 
     local function AramisRandom(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
-        if NotifyData and NotifyData >= 1 and NotifyData <= 4 then
-            IncrementQuantity(1, NotifyData)
+        if NotifyData then
+            if NotifyData >= 1 and NotifyData <= 4 then
+                ShowGum(1, NotifyData)
+            elseif NotifyData >= 5 and NotifyData <= 8 then
+                HideGum(1, NotifyData - 4)
+            end
         end
     end
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.aramisRandom"), AramisRandom)
 
     local function PorthosRandom(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
-        if NotifyData and NotifyData >= 1 and NotifyData <= 4 then
-            IncrementQuantity(2, NotifyData)
+        if NotifyData then
+            if NotifyData >= 1 and NotifyData <= 4 then
+                ShowGum(2, NotifyData)
+            elseif NotifyData >= 5 and NotifyData <= 8 then
+                HideGum(2, NotifyData - 4)
+            end
         end
     end
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.porthosRandom"), PorthosRandom)
 
     local function DartRandom(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
-        if NotifyData and NotifyData >= 1 and NotifyData <= 4 then
-            IncrementQuantity(3, NotifyData)
+        if NotifyData then
+            if NotifyData >= 1 and NotifyData <= 4 then
+                ShowGum(3, NotifyData)
+            elseif NotifyData >= 5 and NotifyData <= 8 then
+                HideGum(3, NotifyData - 4)
+            end
         end
     end
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.dartRandom"), DartRandom)
 
     local function AthosRandom(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
-        if NotifyData and NotifyData >= 1 and NotifyData <= 4 then
-            IncrementQuantity(4, NotifyData)
+        if NotifyData then
+            if NotifyData >= 1 and NotifyData <= 4 then
+                ShowGum(4, NotifyData)
+            elseif NotifyData >= 5 and NotifyData <= 8 then
+                HideGum(4, NotifyData - 4)
+            end
         end
     end
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "trials.athosRandom"), AthosRandom)
-    
-    local function GumEaten(ModelRef)
-        local NotifyData = Engine.GetModelValue(ModelRef)
-        if NotifyData and NotifyData > 0  then
-            local Val = NotifyData - 1
-            local GargNum = math.floor(Val / 4) + 1
-            local Index = (Val % 4) + 1
-            DecrementQuantity(GargNum, Index)
-        end
-    end
-    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "gumEaten"), GumEaten)
 
     local function AthosTrialUpdate(ModelRef)
         local NotifyData = Engine.GetModelValue(ModelRef)
@@ -466,7 +419,9 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
                     AthosRoundsString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_NEW_TRIAL") .. AthosRounds .. Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_NEW_TRIAL_SING_END")
                 end
             else
-                AthosRounds = 3
+                if AthosRounds == 1 then
+                    AthosRounds = 3
+                end
                 AthosRoundsString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_NEW_TRIAL") .. AthosRounds .. Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_NEW_TRIAL_END")
                 AthosPrompt:setAlpha(0)
                 if NotifyData >= 2 and NotifyData <= 14 then
@@ -509,9 +464,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
                         PBBTable[i][j]:setAlpha(1)
                         PBTable[i][j]:setAlpha(1)
                         GumTable[i][j]:setAlpha(1)
-                        if j < 5 then
-                            QuantityTable[i][j]:setAlpha(1)
-                        end
                         TextTable[i][j]:setAlpha(1)
                     end
                 end
@@ -526,9 +478,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
                         PBBTable[i][j]:setAlpha(0.5)
                         PBTable[i][j]:setAlpha(0.5)
                         GumTable[i][j]:setAlpha(0.5)
-                        if j < 5 then
-                            QuantityTable[i][j]:setAlpha(0.5)
-                        end
                         TextTable[i][j]:setAlpha(0.5)
                     end
                 end

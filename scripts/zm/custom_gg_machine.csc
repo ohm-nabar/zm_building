@@ -14,6 +14,5 @@ REGISTER_SYSTEM( "custom_gg_machine", &__init__, undefined )
 	
 function __init__()
 {
-	clientfield::register( "clientuimodel", "gumEaten", VERSION_SHIP, 5, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 	clientfield::register( "clientuimodel", "bribeCount", VERSION_SHIP, 2, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 }
