@@ -88,8 +88,16 @@ function on_player_connect()
 
 function on_laststand()
 {
+	self endon("disconnect");
+
 	self.prev_jug_resistance_level = self.jug_resistance_level;
 	self change_jug_resistance_level(false, 1);
+
+	result = self util::waittill_any_return("player_revived", "bled_out");
+	if(result == "bled_out")
+	{
+		self change_jug_resistance_level(false, 3);
+	}
 }
 
 function change_jug_resistance_level(increment, amount)
