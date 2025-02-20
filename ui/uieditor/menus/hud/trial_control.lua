@@ -11,18 +11,18 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local IconWidth = 69
     local NameTextWidth = 100
     local TrialTextWidth = 550
-    local PBWidth = 125
+    local PBWidth = 121
     local GumWidth = 50
     local TextWidth = 150
     local DividerWidth = 962
 
     local IconStartX = 16
-    local NameTextStartX = 14
+    local NameTextStartX = IconStartX - 2
     local TrialTextStartX = 206
-    local PBStartX = IconStartX + IconWidth - 5
-    local GumStartX = PBStartX + PBWidth - 4
+    local PBStartX = IconStartX + IconWidth - 4.5
+    local GumStartX = PBStartX + PBWidth - 1.5
     local TextStartX = GumStartX + (GumWidth / 2) - (TextWidth / 2)
-    local XOffset = PBWidth + GumWidth - 6
+    local XOffset = PBWidth + GumWidth - 2.5
     local DividerStartX = 0
 
     local IconHeight = 60
@@ -168,6 +168,11 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             PBTable[i][j] = ProgressBar
             GumTable[i][j] = Gum
             TextTable[i][j] = Text
+            
+            if j < 5 then
+                GumTable[i][j]:setAlpha(0.5)
+                TextTable[i][j]:setAlpha(0.5)
+            end
 
             TrialControl:addElement(PBBTable[i][j])
             TrialControl:addElement(PBTable[i][j])
