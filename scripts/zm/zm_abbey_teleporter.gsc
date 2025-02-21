@@ -422,20 +422,15 @@ function sndCountdown()
 }
 function clock_timer()
 {
-	//self playloopsound ("evt_clock_tick_1sec");
-	timer_max = 600;
-	timer = timer_max;
+	timer = 0;
+	level thread zm_audio::sndMusicSystem_PlayState("abbey_timer");
 	while(level.current_links > 0 && level.current_links < 4)
 	{
-		if( timer >= timer_max || ! isdefined( level.musicSystem.currentState ) || level.musicSystem.currentState == "none" )
+		if( ! isdefined( level.musicSystem.currentState ) || level.musicSystem.currentState == "none" || IsSubStr(level.musicSystem.currentState, "blood_gene") || IsSubStr(level.musicSystem.currentState, "cue_") )
 		{
-			timer = 0;
-			if( isdefined( level.musicSystem.currentState ) && level.musicSystem.currentState == "timer" )
-			{
-				level thread zm_audio::sndMusicSystem_StopAndFlush();
-				music::setmusicstate("none");
-			}
-			level util::delay( 0, undefined, &zm_audio::sndMusicSystem_PlayState, "timer" );
+			level thread zm_audio::sndMusicSystem_StopAndFlush();
+			level music::setmusicstate("none");
+			level thread zm_audio::sndMusicSystem_PlayState("abbey_timer");
 		}
 
 		if(timer % 20 == 0)
@@ -447,10 +442,10 @@ function clock_timer()
 		wait(0.05);
 	}
 
-	if( isdefined( level.musicSystem.currentState ) && level.musicSystem.currentState == "timer" )
+	if( isdefined( level.musicSystem.currentState ) && level.musicSystem.currentState == "abbey_timer" )
 	{
 		level thread zm_audio::sndMusicSystem_StopAndFlush();
-		music::setmusicstate("none");
+		level music::setmusicstate("none");
 	}
 	
 	//self stoploopsound(0);
