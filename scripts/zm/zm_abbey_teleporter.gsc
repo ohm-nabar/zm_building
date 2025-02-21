@@ -736,7 +736,7 @@ function teleport_players(dest_index)
 		}
 
 		visionset_mgr::deactivate( "overlay", "zm_factory_teleport", player ); // turn off the mid-teleport stargate effects
-		if(players[i].isInBloodMode)
+		if(player.isInBloodMode)
 		{
 			visionset_mgr::activate("visionset", "zm_bgb_in_plain_sight", player, 0.5, 9999, 0.5);
 			visionset_mgr::activate("overlay", "zm_bgb_in_plain_sight", player);
