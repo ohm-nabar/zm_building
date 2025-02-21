@@ -468,8 +468,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
                     for j=1,5 do
                         PBBTable[i][j]:setAlpha(1)
                         PBTable[i][j]:setAlpha(1)
-                        GumTable[i][j]:setAlpha(1)
-                        TextTable[i][j]:setAlpha(1)
                     end
                 end
             else
@@ -482,8 +480,6 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
                     for j=1,5 do
                         PBBTable[i][j]:setAlpha(0.5)
                         PBTable[i][j]:setAlpha(0.5)
-                        GumTable[i][j]:setAlpha(0.5)
-                        TextTable[i][j]:setAlpha(0.5)
                     end
                 end
             end
