@@ -769,6 +769,10 @@ function blood_think()
 		}
 
 		music_index = level.active_generators.size + 1;
+		if(level.active_generators.size >= 4)
+		{
+			music_index = RandomIntRange(1, 5);
+		}
 		level thread zm_audio::sndMusicSystem_PlayState("blood_gene" + music_index + "_mx");
 		
 		while(!success) 
