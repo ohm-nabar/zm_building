@@ -136,6 +136,11 @@ function phd_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfD
 			case "tesla_gun_upgraded":
 			case "zm_diedrich":
 			case "zm_diedrich_upgraded":
+			case "s4_1911_rdw_up":
+			case "s4_1911_ldw_up":
+			case "s4_klauser_up":
+			case "s4_m1bazooka":
+			case "s4_m1bazooka_up":
 				return (IS_TRUE(self.shadowPHD) ? iDamage * 1.5 : 0);
 
 			default:

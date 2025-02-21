@@ -1,20 +1,6 @@
-#using scripts\codescripts\struct;
-#using scripts\shared\clientfield_shared;
-#using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-#using scripts\shared\flag_shared;
-#using scripts\shared\array_shared;
-#using scripts\shared\math_shared;
-#using scripts\shared\ai\zombie_utility;
-#using scripts\zm\_zm_utility;
 #using scripts\shared\callbacks_shared;
 #using scripts\zm\_zm;
-#using scripts\shared\ai\systems\gib;
-#using scripts\shared\scene_shared;
-#using scripts\zm\_zm_spawner;
-#using scripts\shared\ai\zombie_utility;
-#using scripts\zm\_zm_weapons;
-#using scripts\zm\_zm_perk_electric_cherry;
 
 #insert scripts\shared\version.gsh;
 #insert scripts\shared\shared.gsh;
@@ -38,23 +24,35 @@ function player_damage_adjustment(eInflictor, eAttacker, iDamage, iDFlags, sMean
 {
 	if(self.just_revived_no_splash)
 	{
-		if(! isdefined(weapon))
+		switch(sMeansOfDeath)
 		{
-			return -1;
-		}
-
-		switch(weapon.name)
-		{
-			case "s4_klauser_up":
-			case "s4_1911_rdw_up":
-			case "s4_1911_ldw_up":
-			case "zm_diedrich":
-			case "zm_diedrich_upgraded":
-				iDamage = 0;
+			case "MOD_BURNED":
+			case "MOD_ELECTOCUTED":
+			case "MOD_EXPLOSIVE":
+			case "MOD_EXPLOSIVE_SPLASH":
+			case "MOD_FALLING":
+			case "MOD_GRENADE":
+			case "MOD_GRENADE_SPLASH":
+			case "MOD_IMPACT":
+			case "MOD_SUICIDE":
 				return 0;
-
 			default:
 				break;
+		}
+
+		if(isdefined(weapon))
+		{
+			switch(weapon.name)
+			{
+				case "s4_klauser_up":
+				case "s4_1911_rdw_up":
+				case "s4_1911_ldw_up":
+				case "zm_diedrich":
+				case "zm_diedrich_upgraded":
+					return 0;
+				default:
+					break;
+			}
 		}
 	}
 
