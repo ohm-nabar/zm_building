@@ -768,11 +768,16 @@ function blood_think()
 			p thread show_blood_empty(player);
 		}
 
-		level zm_audio::sndMusicSystem_StopAndFlush();
-		level thread zm_audio::sndMusicSystem_PlayState("blood_gene" + level.blood_uses + "_mx");
+		music_index = level.active_generators.size + 1;
+		level thread zm_audio::sndMusicSystem_PlayState("blood_gene" + music_index + "_mx");
 		
 		while(!success) 
 		{
+			if(! isdefined( level.musicSystem.currentState ) || level.musicSystem.currentState == "none")
+			{
+				level thread zm_audio::sndMusicSystem_PlayState("blood_gene" + music_index + "_mx");
+			}
+
 			for(i = 0; i < level.players.size; i++)
 			{
 				if(level.players[i] != player)
@@ -799,9 +804,7 @@ function blood_think()
 			{
 				//player zm_score::add_to_player_score(level.bloodgun_cost/2);
 
-				//IPrintLn("Vial Filled!");
-				level zm_audio::sndMusicSystem_StopAndFlush();
-				
+				//IPrintLn("Vial Filled!");				
 				level.hasVial = true;
 				success = true;
 				if(isdefined(p.blood_vial_trial_fills))
@@ -834,8 +837,11 @@ function blood_think()
 		visionset_mgr::deactivate( "overlay", "zm_bgb_in_plain_sight", player );
 		visionset_mgr::deactivate( "visionset", "zm_bgb_in_plain_sight", player );
 
-		level zm_audio::sndMusicSystem_StopAndFlush();
-		music::setmusicstate("none");
+		if(isdefined(level.musicSystem.currentState) && IsSubStr(level.musicSystem.currentState, "blood_gene"))
+		{
+			level zm_audio::sndMusicSystem_StopAndFlush();
+			level music::setmusicstate("none");
+		}
 
 		player.bloodgun_kills = undefined;
 
