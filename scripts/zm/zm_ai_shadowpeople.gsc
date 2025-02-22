@@ -74,10 +74,21 @@ function __init__()
 	//clientfield::register( "actor", "shadow_choker_fx", VERSION_SHIP, 1, "int" );
 	//clientfield::register( "actor", "shadow_wizard_fx", VERSION_SHIP, 1, "int" );
 
+	zm::register_actor_damage_callback( &damage_adjustment );
 	zm::register_zombie_damage_override_callback( &zombie_damage_override );
 	visionset_mgr::register_info("visionset", "abbey_shadow", VERSION_SHIP, 61, 1, true);
 	//thread choker_spawn();
 	thread testeroo();
+}
+
+function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType  )
+{
+    if(isdefined(attacker) && isdefined(attacker.activated_by_player) && isdefined(self.targetname) && (self.targetname == "zombie_cloak" || self.targetname == "zombie_escargot"))
+	{
+		return 0;
+	}
+
+	return -1;
 }
 
 function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
