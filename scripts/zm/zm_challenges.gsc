@@ -56,8 +56,7 @@
 #define TRAP_OFFSET 30
 #define BLOOD_VIAL_OFFSET 31
 
-#define CROUCH_MULTIPLIER 1.5
-#define	ELEVATION_MULTIPLIER 3
+#define	ELEVATION_MULTIPLIER 2.25
 #define BLOOD_VIAL_MULTIPLIER 7.5
 
 #define ELEVATION_THRESHOLD 30
@@ -75,7 +74,7 @@ function __init__()
 	clientfield::register( "toplayer", "trials.tier2", VERSION_SHIP, 13, "int" );
 	clientfield::register( "toplayer", "trials.tier3", VERSION_SHIP, 5, "int" );
 
-	clientfield::register( "toplayer", "trials.aramis", VERSION_SHIP, 4, "float" );
+	clientfield::register( "toplayer", "trials.aramis", VERSION_SHIP, 5, "float" );
 	clientfield::register( "toplayer", "trials.porthos", VERSION_SHIP, 10, "float" );
 	clientfield::register( "toplayer", "trials.dart", VERSION_SHIP, 10, "float" );
 	clientfield::register( "toplayer", "trials.athos", VERSION_SHIP, 10, "float" );
@@ -97,7 +96,7 @@ function __init__()
 	aramis_goals = array(2, 3, 4, 5, 5);
 	porthos_goals = array(20, 25, 30, 40, 75);
 	dart_goals = array(15, 25, 25, 35, 50);
-	athos_goals = array(24, 30, 35, 40, 60);
+	athos_goals = array(25, 35, 40, 45, 75);
 	level.gargoyle_goals = array(aramis_goals, porthos_goals, dart_goals, athos_goals);
 
 	level.gargoyle_cfs = array("trials.aramis", "trials.porthos", "trials.dart", "trials.athos");
@@ -828,7 +827,6 @@ function crouch_trial(athos_stage)
 		if(self.crouch_trial_kills > prev_crouch_trial_kills)
 		{
 			progress = trial_progress_scale(ATHOS_INDEX, self.crouch_trial_kills - prev_crouch_trial_kills);
-			progress *= CROUCH_MULTIPLIER;
 			self gargoyle_progress_check(ATHOS_INDEX, progress);
 			prev_crouch_trial_kills = self.crouch_trial_kills;
 		}
