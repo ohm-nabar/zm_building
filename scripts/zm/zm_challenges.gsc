@@ -571,6 +571,7 @@ function athos_trial()
 		{
 			trial_index = RandomIntRange(0, trial_index);
 		}
+		prev_trial_index = trial_index;
 		trial = level.athos_trials[trial_index];
 		self thread [[trial]](athos_stage);
 
