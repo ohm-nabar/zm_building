@@ -141,6 +141,7 @@ function __init__()
     thread _refill_jug_potions(); // Refills Juggernog Potions (at least 2 generators must be activated)
     thread _set_next_shadow_breach(); // Sets next shadow breach (cannot be done during a Shadow Breach or before a generator is activated)
     thread _skip_shadow_breach(); // Skips Shadow Breach
+    thread _set_bgb_quantities(); // Sets BGB quantities
 
     if( ToLower( GetDvarString( "mapname" ) ) != "zm_castle" ){
         thread _debug_keyline_command_response(); //Add keylines around a specific model to look for it easier
@@ -482,6 +483,31 @@ function private _skip_shadow_breach(command_args)
             level notify(#"skip_round");
             dvar_value = ToLower(GetDvarString("shadow_skip", ""));
             SetDvar("shadow_skip", 0);
+        }
+    }
+}
+
+function private _set_bgb_quantities(command_args)
+{
+    ModVar("set_bgb_qs", "");
+
+    for(;;)
+    {
+        WAIT_SERVER_FRAME
+
+        dvar_value = ToLower(GetDvarString("set_bgb_qs", ""));
+
+        if(isdefined(dvar_value) && StrIsInt(dvar_value) && Int(dvar_value) > 0)
+        {
+            foreach(player in level.players)
+            {
+                foreach(gum in level.gg_all)
+                {
+                    player.gg_quantities[gum] = Int(dvar_value);
+                }
+            }
+            dvar_value = ToLower(GetDvarString("set_bgb_qs", ""));
+            SetDvar("set_bgb_qs", 0);
         }
     }
 }
