@@ -76,37 +76,34 @@ function CoD.ShadowPerks.new(HudRef, InstanceRef)
     local CurrentIndex = 1
 
  	local function AddShadowPerks(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "generator_shadowed") then
-			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-            local ImageNames = ShadowPerkLookup[NotifyData[1] + 1]
-            for i=1,2 do
-                local PerkImage = PerkImages[CurrentIndex]
-                PerkImage:setImage(RegisterImage(ImageNames[i]))
-                PerkImage:show()
-                PlayClip(PerkImage, "DefaultClip", InstanceRef)
-                CurrentIndex = CurrentIndex + 1
-            end
-        end
-    end
-	ShadowPerks:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", AddShadowPerks)
-
-    local function RemoveShadowPerks(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "shadow_perk_remove") then
-            for i=1,8 do
-                local PerkImage = PerkImages[i]
-                PerkImage:hide()
-                if i % 2 == 0 then
-                    PerkImage:setLeftRight(true, false, 630.5, 666.5)
-                    PerkImage:setTopBottom(true, false, -356, -320)
-                else
-                    PerkImage:setLeftRight(true, false, 592.5, 628.5)
-                    PerkImage:setTopBottom(true, false, -356, -320)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            if NotifyData == 0 then
+                for i=1,8 do
+                    local PerkImage = PerkImages[i]
+                    PerkImage:hide()
+                    if i % 2 == 0 then
+                        PerkImage:setLeftRight(true, false, 630.5, 666.5)
+                        PerkImage:setTopBottom(true, false, -356, -320)
+                    else
+                        PerkImage:setLeftRight(true, false, 592.5, 628.5)
+                        PerkImage:setTopBottom(true, false, -356, -320)
+                    end
+                end
+                CurrentIndex = 1
+            else
+                local ImageNames = ShadowPerkLookup[NotifyData]
+                for i=1,2 do
+                    local PerkImage = PerkImages[CurrentIndex]
+                    PerkImage:setImage(RegisterImage(ImageNames[i]))
+                    PerkImage:show()
+                    PlayClip(PerkImage, "DefaultClip", InstanceRef)
+                    CurrentIndex = CurrentIndex + 1
                 end
             end
-            CurrentIndex = 1
         end
     end
-	ShadowPerks:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", RemoveShadowPerks)
+	ShadowPerks:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "shadowPerks"), AddShadowPerks)
 
     local function UpdateVisibility(ModelRef)
         if Engine.IsVisibilityBitSet(InstanceRef, Enum.UIVisibilityBit.BIT_HUD_VISIBLE) and Engine.IsVisibilityBitSet(InstanceRef, Enum.UIVisibilityBit.BIT_WEAPON_HUD_VISIBLE) then

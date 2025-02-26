@@ -2,6 +2,7 @@
 
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
+#using scripts\shared\clientfield_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\spawner_shared;
 #using scripts\shared\util_shared;
@@ -51,6 +52,8 @@ REGISTER_SYSTEM( "zm_ai_shadowpeople", &__init__, undefined )
 	
 function __init__()
 {
+	clientfield::register( "clientuimodel", "shadowPerks", VERSION_SHIP, 3, "int");
+
 	level.in_shadow_spawn_sequence = false;
 	
 	level.choker_spawn_points = GetEntArray("choker_spawn_point", "targetname");

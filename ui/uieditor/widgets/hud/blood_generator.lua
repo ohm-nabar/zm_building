@@ -272,7 +272,7 @@ function CoD.BloodGenerator.new(HudRef, InstanceRef)
     BloodGenerator:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", GeneratorShadowed)
 
     local function ShadowRoundEnded(ModelRef)
-        if IsParamModelEqualToString(ModelRef, "shadow_perk_remove") then
+        if IsParamModelEqualToString(ModelRef, "generator_unshadowed") then
             for i=1,4 do
                 OverlayTableS[i]:hide()
             end

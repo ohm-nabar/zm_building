@@ -1,5 +1,6 @@
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
+#using scripts\shared\clientfield_shared;
 #using scripts\shared\flag_shared;
 
 #using scripts\zm\_load;
@@ -25,7 +26,7 @@
 #insert scripts\zm\zm_abbey_inventory.gsh;
 
 #precache( "eventstring", "generator_shadowed" );
-#precache( "eventstring", "shadow_perk_remove" );
+#precache( "eventstring", "generator_unshadowed" );
 
 function main()
 {
@@ -62,7 +63,7 @@ function on_player_connect()
 	self.shadowQuick = false;
 	self.shadowDouble = false;
 	self.shadowPHD = false;
-	self LUINotifyEvent(&"shadow_perk_remove", 0);
+	self LUINotifyEvent(&"generator_unshadowed", 0);
 }
 
 function disable_machines(gen_num)
@@ -99,7 +100,8 @@ function shadow_round_base_logic()
 			players = GetPlayers();
 			for(i = 0; i < players.size; i++)
 			{
-				players[i] LUINotifyEvent(&"shadow_perk_remove", 0);
+				players[i] LUINotifyEvent(&"generator_unshadowed", 0);
+				players[i] clientfield::set_player_uimodel("shadowPerks", 0);
 				if(level.num_gens_shadowed > 0)
 				{
 					players[i] thread zm_abbey_inventory::notifyGenerator();
@@ -193,6 +195,7 @@ function generator1_shadow_monitor()
 		players[i] thread shadow_cherry_effects();
 		players[i] thread monitor_has_shadowed_perk(PERK_ELECTRIC_CHERRY);
 		players[i] LUINotifyEvent(&"generator_shadowed", 1, 0);
+		players[i] clientfield::set_player_uimodel("shadowPerks", 1);
 	}
 }
 
@@ -223,7 +226,7 @@ function generator2_shadow_monitor()
 		players[i] thread shadow_deadshot_effects();
 		players[i] thread monitor_has_shadowed_perk(PERK_DEAD_SHOT);
 		players[i] LUINotifyEvent(&"generator_shadowed", 1, 1);
-		//players[i] thread shadow_juggernog_effects();
+		players[i] clientfield::set_player_uimodel("shadowPerks", 2);
 	}
 }
 
@@ -258,6 +261,7 @@ function generator3_shadow_monitor()
 		players[i] thread shadow_stamin_effects();
 		players[i] thread monitor_has_shadowed_perk(PERK_STAMINUP);
 		players[i] LUINotifyEvent(&"generator_shadowed", 1, 2);
+		players[i] clientfield::set_player_uimodel("shadowPerks", 3);
 	}
 }
 
@@ -286,6 +290,7 @@ function generator4_shadow_monitor()
 		players[i] thread shadow_PHD_effects();
 		players[i] thread monitor_has_shadowed_perk(PERK_PHD_LITE);
 		players[i] LUINotifyEvent(&"generator_shadowed", 1, 3);
+		players[i] clientfield::set_player_uimodel("shadowPerks", 4);
 	}
 }
 
