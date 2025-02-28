@@ -54,6 +54,7 @@ scriptparsetree,scripts/zm/zm_building.csc
 scriptparsetree,scripts/zm/zm_usermap.gsc
 scriptparsetree,scripts/zm/zm_usermap.csc
 scriptparsetree,scripts/zm/zm_bloodgenerator.gsc
+scriptparsetree,scripts/zm/zm_bloodgenerator.csc
 scriptparsetree,scripts/zm/zm_perk_upgrades.gsc
 scriptparsetree,scripts/zm/zm_perk_upgrades.csc
 scriptparsetree,scripts/zm/zm_perk_upgrades_effects.gsc

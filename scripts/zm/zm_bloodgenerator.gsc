@@ -4,10 +4,12 @@
 #using scripts\shared\flag_shared;
 #using scripts\shared\laststand_shared;
 #using scripts\shared\music_shared;
+#using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
 
 #insert scripts\shared\shared.gsh;
+#insert scripts\shared\version.gsh;
 
 #using scripts\shared\ai\zombie_utility;
 
@@ -44,7 +46,6 @@
 #precache( "fx", "custom/fx_poseidons_punch" );
 #precache( "fx", "_mikeyray/perks/phd/fx_perk_phd");
 
-#precache( "eventstring", "blood_vial_update" );
 #precache( "eventstring", "generator_activated" );
 #precache( "eventstring", "generator_hide" );
 #precache( "eventstring", "generator_reset" );
@@ -78,8 +79,14 @@
 
 #define ELECTRIC_CHERRY_MACHINE_LIGHT_FX                    "electric_cherry_light"
 
-function autoexec main()
+#namespace zm_bloodgenerator;
+
+REGISTER_SYSTEM( "zm_bloodgenerator", &__init__, undefined )
+
+function __init__()
 {
+	clientfield::register( "clientuimodel", "bloodVial", VERSION_SHIP, 4, "int" );
+
 	level flag::init("power_on1");
 	level flag::init("power_on2");
 	level flag::init("power_on3");
@@ -322,12 +329,14 @@ function on_player_connect()
 	self thread deposit_waypoint_manage();
 	self thread game_over_check();
 	self thread set_bloodgun_ammo();
+	self clientfield::set_player_uimodel("bloodVial", 1);
 
 	while( ! (level flag::exists("initial_blackscreen_passed") && level flag::get("initial_blackscreen_passed")))
 	{
 		wait(0.05);
 	}
-	self LUINotifyEvent(&"blood_vial_update", 1, 0);
+
+	self clientfield::set_player_uimodel("bloodVial", 0);
 }
 
 function on_laststand()
@@ -1167,19 +1176,19 @@ function set_bloodgun_hintstring()
 
 function show_blood_empty(player) 
 {
-	self LUINotifyEvent(&"blood_vial_update", 2, 1, player.characterIndex);
+	self clientfield::set_player_uimodel("bloodVial", player.characterIndex + 1);
 }
 
 function show_blood_full(player) 
 {
 	self endon("disconnect");
 
-	self LUINotifyEvent(&"blood_vial_update", 2, 2, player.characterIndex);
+	self clientfield::set_player_uimodel("bloodVial", player.characterIndex + 5);
 	while(level.hasVial)
 	{
 		wait(0.05);
 	}
-	self LUINotifyEvent(&"blood_vial_update", 2, 0, player.characterIndex);
+	self clientfield::set_player_uimodel("bloodVial", 0);
 }
 
 function getVendingMachineNotify(perkName)

@@ -120,26 +120,28 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 				bloodVial:setLeftRight(true, false, x, x2)
 
 				local function BloodVialShow(ModelRef)
-					if IsParamModelEqualToString(ModelRef, "blood_vial_update") then
-						local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-						if NotifyData[1] == 0 then
+					local NotifyData = Engine.GetModelValue(ModelRef)
+					if NotifyData then
+						if NotifyData == 0 then
 							bloodVial:hide()
-						else
-							local BloodCharNumIndex = NotifyData[2] + 1
+						elseif NotifyData <= 4 then
+							local BloodCharNumIndex = NotifyData
 							local BloodCharNum = CharNumLookupTable[BloodCharNumIndex]
 							if charNum == BloodCharNum then
-								if NotifyData[1] == 1 then
-									bloodVial:setImage(RegisterImage("i_bloodvialempty"))
-									bloodVial:show()
-								else
-									bloodVial:setImage(RegisterImage("i_bloodvialfull"))
-									bloodVial:show()
-								end
+								bloodVial:setImage(RegisterImage("i_bloodvialempty"))
+								bloodVial:show()
+							end
+						else
+							local BloodCharNumIndex = NotifyData - 4
+							local BloodCharNum = CharNumLookupTable[BloodCharNumIndex]
+							if charNum == BloodCharNum then
+								bloodVial:setImage(RegisterImage("i_bloodvialfull"))
+								bloodVial:show()
 							end
 						end
 					end
 				end
-				bloodVial:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", BloodVialShow)
+				bloodVial:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "bloodVial"), BloodVialShow)
 			end
 		end
 	end
