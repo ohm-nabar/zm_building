@@ -148,13 +148,19 @@ function CoD.InventoryControl.new(HudRef, InstanceRef)
     NavigationInfo:setRGB(1, 1, 1)
 
     local AthosPromptX = NavigationInfo:getTextWidth() + 21
-        TrialControl.AthosPrompt:setLeftRight(true, false, AthosPromptX, AthosPromptX + 100)
+    TrialControl.AthosPrompt:setLeftRight(true, false, AthosPromptX, AthosPromptX + 100)
+
+    local AthosPromptOnX = AthosPromptX + TrialControl.AthosPrompt:getTextWidth() + 5
+    TrialControl.AthosPromptOn:setLeftRight(true, false, AthosPromptOnX)
 
     local function NavigationInfoUpdate(Element, Event)
         NavigationInfo:setText(Engine.Localize("ZM_ABBEY_JOURNAL_NAVIGATION_INFO"))
 
         AthosPromptX = NavigationInfo:getTextWidth() + 21
         TrialControl.AthosPrompt:setLeftRight(true, false, AthosPromptX, AthosPromptX + 100)
+
+        AthosPromptOnX = AthosPromptX + TrialControl.AthosPrompt:getTextWidth() + 5
+        TrialControl.AthosPromptOn:setLeftRight(true, false, AthosPromptOnX)
     end
     InventoryControl:registerEventHandler( "input_source_changed", NavigationInfoUpdate)
 

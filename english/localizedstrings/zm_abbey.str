@@ -377,6 +377,15 @@ LANG_ENGLISH       " Rounds)"
 REFERENCE           	TRIAL_ATHOS_NEW_TRIAL_SING_END
 LANG_ENGLISH       " Round)"
 
+REFERENCE           	TRIAL_ATHOS_WAYPOINTS
+LANG_ENGLISH       "^3[{+activate}]^7 Toggle Athos Waypoints"
+
+REFERENCE           	TRIAL_ATHOS_WAYPOINTS_ON
+LANG_ENGLISH       "ON"
+
+REFERENCE           	TRIAL_ATHOS_WAYPOINTS_OFF
+LANG_ENGLISH       "OFF"
+
 REFERENCE           	TRIAL_ATHOS_DESC_WALLBUY
 LANG_ENGLISH       "Obtain Kills with the "
 

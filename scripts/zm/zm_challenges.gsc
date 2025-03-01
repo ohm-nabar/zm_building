@@ -85,6 +85,7 @@ function __init__()
 	clientfield::register( "toplayer", "trials.athosRandom", VERSION_SHIP, 4, "int" );
 
 	clientfield::register( "clientuimodel", "athosTrial", VERSION_SHIP, 5, "int" );
+	clientfield::register( "clientuimodel", "athosWaypoints", VERSION_SHIP, 1, "int" );
 	clientfield::register( "clientuimodel", "shadowTrial", VERSION_SHIP, 1, "int" );
 
 	clientfield::register( "toplayer", "trials.playerCountChange", VERSION_SHIP, 1, "int" );
@@ -244,6 +245,10 @@ function on_player_spawned()
 	if(isdefined(self.athos_cf_val))
 	{
 		self thread set_athos_trial();
+	}
+	if(IS_TRUE(self.athos_indicators_active))
+	{
+		self clientfield::set_player_uimodel("athosWaypoints", 1);
 	}
 }
 
@@ -1097,6 +1102,7 @@ function athos_indicators_monitor()
 				wait(0.05);
 			}
 			self.athos_indicators_active = ! self.athos_indicators_active;
+			self clientfield::set_player_uimodel("athosWaypoints", Int(self.athos_indicators_active));
 		}
 		wait(0.05);
 	}

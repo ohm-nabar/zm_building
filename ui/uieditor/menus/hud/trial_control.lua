@@ -291,7 +291,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     local AthosTrialString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_DESC")
 
     local AthosPrompt = LUI.UIText.new()
-    AthosPrompt:setText(Engine.Localize("^3[{+activate}]^7 Toggle Athos Waypoint"))
+    AthosPrompt:setText(Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_WAYPOINTS"))
     AthosPrompt:setLeftRight(true, false, 350, 450)
     AthosPrompt:setTopBottom(true, false, 395, 415)
     AthosPrompt:setAlpha(0.9)
@@ -299,6 +299,30 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
 
     TrialControl:addElement(AthosPrompt)
     TrialControl.AthosPrompt = AthosPrompt
+
+    local AthosPromptOn = LUI.UIText.new()
+    AthosPromptOn:setText(Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_WAYPOINTS_OFF"))
+    AthosPromptOn:setLeftRight(true, false, 350, 450)
+    AthosPromptOn:setTopBottom(true, false, 395, 415)
+    AthosPromptOn:setAlpha(0.9)
+    AthosPromptOn:setRGB(1, 0, 0)
+    
+    TrialControl:addElement(AthosPromptOn)
+    TrialControl.AthosPromptOn = AthosPromptOn
+
+    local function AthosWaypointsUpdate(ModelRef)
+        local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            if NotifyData == 0 then
+                AthosPromptOn:setText(Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_WAYPOINTS_OFF"))
+                AthosPromptOn:setRGB(1, 0, 0)
+            else
+                AthosPromptOn:setText(Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_WAYPOINTS_ON"))
+                AthosPromptOn:setRGB(0, 1, 0)
+            end
+        end
+    end
+    TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "athosWaypoints"), AthosWaypointsUpdate)
 
     local WallbuyTable = {"Kar98k", "Gewehr 43", "M1 Garand", "Trench Gun", "MP40", "Double Barreled Shotgun", "Sten Mk. IV", "MAS-38", "Thompson M1A1", "StG-44", "SVT-40", "BAR", "Type 11"}
     local RoomTable = {"ZM_ABBEY_ROOM_CRASH_SITE", "ZM_ABBEY_ROOM_BELL_TOWER", "ZM_ABBEY_ROOM_RED_ROOM", "ZM_ABBEY_ROOM_BASILICA", "ZM_ABBEY_ROOM_AIRFIELD", "ZM_ABBEY_ROOM_UPPER_PILGRIMAGE", "ZM_ABBEY_ROOM_MERVEILLE_DE_VERITE", "ZM_ABBEY_ROOM_KNIGHTS_HALL", "ZM_ABBEY_ROOM_URM_LABORATORY", "ZM_ABBEY_ROOM_VERITE_LIBRARY", "ZM_ABBEY_ROOM_COURTYARD", "ZM_ABBEY_ROOM_NO_MANS_LAND"}
@@ -313,6 +337,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
             
             if GargNum == 4 then
                 AthosPrompt:setAlpha(0)
+                AthosPromptOn:setAlpha(0)
             end
 
             if CoD.Zombie.GetUIMapName() == "zm_building" then
@@ -429,12 +454,15 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
                 end
                 AthosRoundsString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_NEW_TRIAL") .. AthosRounds .. Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_NEW_TRIAL_END")
                 AthosPrompt:setAlpha(0)
+                AthosPromptOn:setAlpha(0)
                 if NotifyData >= 2 and NotifyData <= 14 then
                     AthosTrialString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_DESC_WALLBUY") .. WallbuyTable[NotifyData - 1]
                     AthosPrompt:setAlpha(0.9)
+                    AthosPromptOn:setAlpha(0.9)
                 elseif NotifyData >= 15 and NotifyData <= 26 then
                     AthosTrialString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_DESC_AASSAULT") .. Engine.Localize(RoomTable[NotifyData - 14])
                     AthosPrompt:setAlpha(0.9)
+                    AthosPromptOn:setAlpha(0.9)
                 elseif NotifyData == 27 then
                     AthosTrialString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_DESC_CROUCH")
                 elseif NotifyData == 28 then
@@ -442,12 +470,15 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
                 elseif NotifyData == 29 then
                     AthosTrialString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_DESC_BOX")
                     AthosPrompt:setAlpha(0.9)
+                    AthosPromptOn:setAlpha(0.9)
                 elseif NotifyData == 30 then
                     AthosTrialString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_DESC_TRAP")
                     AthosPrompt:setAlpha(0.9)
+                    AthosPromptOn:setAlpha(0.9)
                 elseif NotifyData == 31 then
                     AthosTrialString = Engine.Localize("ZM_ABBEY_TRIAL_ATHOS_DESC_BLOOD_VIAL")
                     AthosPrompt:setAlpha(0.9)
+                    AthosPromptOn:setAlpha(0.9)
                 end
             end
             TrialTextTable[4]:setText(AthosTrialString .. AthosRoundsString)
