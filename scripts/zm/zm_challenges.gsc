@@ -103,7 +103,11 @@ function __init__()
 
 	level.gargoyle_notifs = array("splash_trial_aramis", "splash_trial_porthos", "splash_trial_dart", "splash_trial_athos");
 
-	level.athos_trials = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial, &blood_vial_trial, &trap_trial, &box_trial);
+	athos_trials_0 = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial);
+	athos_trials_1 = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial, &blood_vial_trial, &box_trial);
+	athos_trials_2 = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial, &blood_vial_trial, &trap_trial, &box_trial);
+	athos_trials_3 = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial, &trap_trial, &box_trial);
+	level.athos_trials = array(athos_trials_0, athos_trials_1, athos_trials_2, athos_trials_3);
 
 	level.airfield_name = "Airfield";
 	level.pilgrimage_name ="Upper Pilgrimage Stairs";
@@ -513,7 +517,7 @@ function athos_trial()
 	self thread athos_indicators_monitor();
 
 	level waittill("start_of_round");
-	prev_trial_index = -1;
+	prev_trial = undefined;
 	while(true)
 	{
 		self.in_athos_indicator_trial = false;
@@ -531,48 +535,34 @@ function athos_trial()
 			athos_stage = 2;
 		}
 
-		end_index = 7;
-		switch(athos_stage)
+		athos_trials = level.athos_trials[athos_stage];
+		if(athos_stage == 2)
 		{
-			case 0:
-				end_index = 4;
-				break;
-			case 1:
-				end_index = 6;
-				break;
-			case 2:
-				end_index = 6;
+			airfield_path_active = level zm_room_manager::is_room_active(level.airfield_name);
+			pilgrimage_path_active = level zm_room_manager::is_room_active(level.pilgrimage_name);
+			
+			both_paths_active = airfield_path_active && pilgrimage_path_active;
+			neither_path_active = ! (airfield_path_active || pilgrimage_path_active);
 
-				airfield_path_active = level zm_room_manager::is_room_active(level.airfield_name);
-				pilgrimage_path_active = level zm_room_manager::is_room_active(level.pilgrimage_name);
-				
-				both_paths_active = airfield_path_active && pilgrimage_path_active;
-				neither_path_active = ! (airfield_path_active || pilgrimage_path_active);
+			cur_chest = level.chests[level.chest_index];
+			box_index = level.abbey_box_location_indices[cur_chest.script_noteworthy];
 
-				cur_chest = level.chests[level.chest_index];
-        		box_index = level.abbey_box_location_indices[cur_chest.script_noteworthy];
-
-				airfield_box_active = airfield_path_active && array::contains(level.airfield_box_indices, box_index);
-				pilgrimage_box_active = pilgrimage_path_active && array::contains(level.pilgrimage_box_indices, box_index);
-				
-				if(both_paths_active || neither_path_active || airfield_box_active || pilgrimage_box_active)
-				{
-					end_index += 1;
-				}
-				break;
+			airfield_box_active = airfield_path_active && level array::contains(level.airfield_box_indices, box_index);
+			pilgrimage_box_active = pilgrimage_path_active && level array::contains(level.pilgrimage_box_indices, box_index);
+			
+			if(! (both_paths_active || neither_path_active || airfield_box_active || pilgrimage_box_active))
+			{
+				ArrayRemoveValue(athos_trials, &box_trial);
+			}
 		}
-		// temporary shenanigans until unlimited blood vial deposits are implemented
-		trial_index = RandomIntRange(0, end_index);
-		if((trial_index == prev_trial_index || (trial_index == 4 && athos_stage == 3)) && trial_index + 1 < end_index)
+
+		if(isdefined(prev_trial))
 		{
-			trial_index = RandomIntRange(trial_index + 1, end_index);
+			ArrayRemoveValue(athos_trials, prev_trial);
 		}
-		else if(trial_index == prev_trial_index || (trial_index == 4 && athos_stage == 3))
-		{
-			trial_index = RandomIntRange(0, trial_index);
-		}
-		prev_trial_index = trial_index;
-		trial = level.athos_trials[trial_index];
+
+		trial = level array::random(athos_trials);
+		prev_trial = trial;
 		self thread [[trial]](athos_stage);
 
 		for(i = 0; i < 3; i++)
