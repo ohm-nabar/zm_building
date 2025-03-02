@@ -588,6 +588,7 @@ image,no_hud_1_1
 
 // Mystery Box
 scriptparsetree,scripts/zm/zm_abbey_box_map.gsc
+scriptparsetree,scripts/zm/zm_abbey_box_map.csc
 fx,custom/magic_box_og/fx_weapon_box_open_glow_og
 fx,custom/magic_box_og/fx_weapon_box_marker_og
 fx,custom/magic_box_og/fx_weapon_box_marker_fl_og

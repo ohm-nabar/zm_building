@@ -67,6 +67,7 @@
 #using scripts\zm\zm_no_hud;
 #using scripts\zm\zm_perk_upgrades_effects;
 #using scripts\zm\zm_bloodgenerator;
+#using scripts\zm\zm_abbey_box_map;
 
 // Sphynx's Console Commands
 #using scripts\Sphynx\commands\_zm_commands;

@@ -173,8 +173,7 @@ function main()
 	level thread zm_revive_icon::main();
 	level thread zm_antiverse::main();
 	level thread zm_abbey_quick_revive::main();
-	level thread zm_abbey_box_map::main();
-	
+		
 	level thread zm_castle_vox();
 	level._zombie_custom_add_weapons =&custom_add_weapons;
 

@@ -1,12 +1,32 @@
 #using scripts\shared\array_shared;
-#using scripts\shared\exploder_shared;
+#using scripts\shared\clientfield_shared;
 #using scripts\shared\flag_shared;
+#using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 
 #using scripts\zm\zm_room_manager;
 
-function main()
+#insert scripts\shared\shared.gsh;
+#insert scripts\shared\version.gsh;
+
+#namespace zm_abbey_box_map;
+
+REGISTER_SYSTEM_EX( "zm_abbey_box_map", &__init__, &__main__, undefined )
+
+function __init__()
 {
+    clientfield::register( "world", "boxLightToggle1", VERSION_SHIP, 4, "int" );
+	clientfield::register( "world", "boxLightFlashToggle1", VERSION_SHIP, 2, "int" );
+	
+	clientfield::register( "world", "boxLightToggle2", VERSION_SHIP, 4, "int" );
+	clientfield::register( "world", "boxLightFlashToggle2", VERSION_SHIP, 2, "int" );
+	
+	clientfield::register( "world", "boxLightToggle3", VERSION_SHIP, 4, "int" );
+	clientfield::register( "world", "boxLightFlashToggle3", VERSION_SHIP, 2, "int" );
+	
+	clientfield::register( "world", "boxLightToggle4", VERSION_SHIP, 4, "int" );
+	clientfield::register( "world", "boxLightFlashToggle4", VERSION_SHIP, 2, "int" );
+
     level.abbey_box_location_indices = [];
 
     if(GetDvarString("ui_mapname") == "zm_building")
@@ -29,90 +49,62 @@ function main()
         level.abbey_box_location_indices["start_chest_2"] = 8; // URM Labs
         level.abbey_box_location_indices["chest_8"] = 9; // No Man's Land
     }
-    
-    box_maps = GetEntArray("abbey_box_map", "targetname");
-    level array::thread_all(box_maps, &box_map_think);
 }
 
-function box_map_think()
+function __main__()
 {
-    level flag::wait_till("power_on" + self.script_int);
+    for(i = 1; i <= 4; i++)
+    {
+        level thread box_map_think(i);
+    }
+}
 
-    self thread fire_sale_monitor();
+function box_map_think(gen_num)
+{
+    level flag::wait_till("power_on" + gen_num);
+
+    level thread fire_sale_monitor(gen_num);
 
     while(true)
     {
         cur_chest = level.chests[level.chest_index];
         index = level.abbey_box_location_indices[cur_chest.script_noteworthy];
 
-        level exploder::exploder("abbey_box_map_light" + self.script_int + "" + index);
+        level clientfield::set("boxLightToggle" + gen_num, index);
 
         level flag::wait_till("moving_chest_now");
 
-        self thread bulb_flash(0.25);
+        level clientfield::set("boxLightFlashToggle" + gen_num, 1);
 
         while(level flag::get("moving_chest_now") || level.zombie_vars["zombie_powerup_fire_sale_on"])
         {
             wait(0.05);
         }
 
-        self notify(#"bulb_flash_stop");
-        for(i = 0; i < 10; i++)
-        {
-            level exploder::stop_exploder("abbey_box_map_light" + self.script_int + "" + i);
-        }
+        level clientfield::set("boxLightFlashToggle" + gen_num, 0);
     }
 }
 
-function fire_sale_monitor()
+function fire_sale_monitor(gen_num)
 {
     while(true)
     {
         if(level.zombie_vars["zombie_powerup_fire_sale_on"])
         {
-            self thread bulb_flash(0.3);
+            level clientfield::set("boxLightToggle" + gen_num, 10);
+            level clientfield::set("boxLightFlashToggle" + gen_num, 2);
             while(level.zombie_vars["zombie_powerup_fire_sale_on"])
             {
                 wait(0.05);
             }
             if(! level flag::get("moving_chest_now"))
             {
-                self notify(#"bulb_flash_stop");
                 cur_chest = level.chests[level.chest_index];
                 index = level.abbey_box_location_indices[cur_chest.script_noteworthy];
-                for(i = 0; i < 10; i++)
-                {
-                    if(i == index)
-                    {
-                        level exploder::exploder("abbey_box_map_light" + self.script_int + "" + i);
-                    }
-                    else
-                    {
-                        level exploder::stop_exploder("abbey_box_map_light" + self.script_int + "" + i);
-                    }
-                }
+                level clientfield::set("boxLightFlashToggle" + gen_num, 0);
+                level clientfield::set("boxLightToggle" + gen_num, index);
             }
         }
         wait(0.05);
-    }
-}
-
-function bulb_flash(interval)
-{
-    self notify(#"bulb_flash_stop");
-    self endon(#"bulb_flash_stop");
-
-    while(true)
-    {
-        for(i = 0; i < 10; i++)
-        {
-            level exploder::exploder("abbey_box_map_light" + self.script_int + "" + i);
-        }
-        wait(interval);
-        for(i = 0; i < 10; i++)
-        {
-            level exploder::stop_exploder("abbey_box_map_light" + self.script_int + "" + i);
-        }
-        wait(interval);
     }
 }
