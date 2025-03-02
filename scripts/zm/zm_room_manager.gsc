@@ -86,7 +86,7 @@ function __init__()
 		merveille_zones = []; merveille_zones[merveille_zones.size] = "merveille_zone";
 		spiral_zones = []; spiral_zones[spiral_zones.size] = "spiral_zone";
 		forum_zones = []; forum_zones[forum_zones.size] = "forum_zone";
-		bridge2_zones = []; bridge2_zones[bridge2_zones.size] = "bridge2_zone";
+		bridge2_zones = []; bridge2_zones[bridge2_zones.size] = "bridge21_zone"; bridge2_zones[bridge2_zones.size] = "bridge22_zone";
 		nml_zones = []; nml_zones[nml_zones.size] = "nml_zone";
 
 		level.abbey_rooms = [];
