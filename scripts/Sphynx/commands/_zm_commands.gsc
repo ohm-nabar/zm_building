@@ -489,13 +489,13 @@ function private _skip_shadow_breach(command_args)
 
 function private _set_bgb_quantities(command_args)
 {
-    ModVar("set_bgb_qs", "");
+    ModVar("bgb_set_qs", "");
 
     for(;;)
     {
         WAIT_SERVER_FRAME
 
-        dvar_value = ToLower(GetDvarString("set_bgb_qs", ""));
+        dvar_value = ToLower(GetDvarString("bgb_set_qs", ""));
 
         if(isdefined(dvar_value) && StrIsInt(dvar_value) && Int(dvar_value) > 0)
         {
@@ -506,8 +506,8 @@ function private _set_bgb_quantities(command_args)
                     player.gg_quantities[gum] = Int(dvar_value);
                 }
             }
-            dvar_value = ToLower(GetDvarString("set_bgb_qs", ""));
-            SetDvar("set_bgb_qs", 0);
+            dvar_value = ToLower(GetDvarString("bgb_set_qs", ""));
+            SetDvar("bgb_set_qs", 0);
         }
     }
 }
