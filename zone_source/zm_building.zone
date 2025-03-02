@@ -689,3 +689,12 @@ localize,zm_abbey
 
 // Cleanup Manager
 scriptparsetree,scripts/zm/zm_giant_cleanup_mgr.gsc
+
+// Athos Notifs
+image,notif_athos_area_assault
+image,notif_athos_blood_vial
+image,notif_athos_box
+image,notif_athos_crouch
+image,notif_athos_elevation
+image,notif_athos_trap
+image,notif_athos_wallbuy

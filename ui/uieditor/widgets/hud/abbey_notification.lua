@@ -28,7 +28,14 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
         "notif_perk_up_revive",
         "notif_perk_up_stamin",
         "notif_power_bg",
-        "notif_power_team"
+        "notif_power_team",
+        "notif_athos_area_assault",
+        "notif_athos_blood_vial",
+        "notif_athos_box",
+        "notif_athos_crouch",
+        "notif_athos_elevation",
+        "notif_athos_trap",
+        "notif_athos_wallbuy"
     }
 
     local GargoyleLookup = {

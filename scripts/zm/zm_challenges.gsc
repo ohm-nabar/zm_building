@@ -434,7 +434,7 @@ function gargoyle_progress_check(garg_num, progress)
 
 		notif_cf = NOTIF_GUM_OFFSET + garg_num;
 		gum_cf = level.gg_notifs[gum];
-		self zm_abbey_inventory::notifyText(notif_cf, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG, gum_cf);
+		self thread zm_abbey_inventory::notifyText(notif_cf, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG, gum_cf);
 	}
 	else if(progress > 0)
 	{
@@ -601,6 +601,8 @@ function wallbuy_trial(athos_stage)
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
 
+	self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_WALLBUY, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG);
+
 	self.in_athos_indicator_trial = true;
 
 	start_index = level.wallbuy_trial_start_indices[athos_stage];
@@ -725,6 +727,8 @@ function area_assault_trial(athos_stage)
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
 
+	self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_AREA_ASSAULT, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG);
+
 	self.in_athos_indicator_trial = true;
 
 	start_index = level.area_assault_trial_start_indices[athos_stage];
@@ -808,6 +812,8 @@ function crouch_trial(athos_stage)
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
 
+	self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_CROUCH, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG);
+
 	self.crouch_trial_kills = 0;
 
 	self.athos_cf_val = CROUCH_OFFSET;
@@ -834,6 +840,8 @@ function elevation_trial(athos_stage)
 {
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
+
+	self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_ELEVATION, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG);
 
 	self.elevation_trial_kills = 0;
 
@@ -862,6 +870,8 @@ function box_trial(athos_stage)
 {
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
+
+	self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_BOX, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG);
 
 	self.in_athos_indicator_trial = true;
 
@@ -985,6 +995,8 @@ function trap_trial(athos_stage)
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
 
+	self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_TRAP, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG);
+
 	self.in_athos_indicator_trial = true;
 	self.trap_trial_kills = 0;
 
@@ -1061,6 +1073,8 @@ function blood_vial_trial(athos_stage)
 {
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
+
+	self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_BLOOD_VIAL, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG);
 
 	self.in_athos_indicator_trial = true;
 	
