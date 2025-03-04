@@ -94,5 +94,11 @@
  	"Filename" : "trap_sounds.csv",
  	"Specs" : [ ] 
 },
+{
+ "Type" : "ALIAS",
+ "Name" : "uptowns_amb_aliases",
+ "Filename" : "uptowns_amb_aliases.csv",
+ "Specs" : [ ] 
+},
 ]
 }

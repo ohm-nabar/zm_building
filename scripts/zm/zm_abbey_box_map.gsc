@@ -63,6 +63,15 @@ function box_map_think(gen_num)
 {
     level flag::wait_till("power_on" + gen_num);
 
+    box_maps = GetEntArray("abbey_box_map", "targetname");
+    foreach(box_map in box_maps)
+    {
+        if(box_map.script_int == gen_num)
+        {
+            box_map PlayLoopSound("ambient_redmap_screen_hum_01");
+        }
+    }
+
     level thread fire_sale_monitor(gen_num);
 
     while(true)
