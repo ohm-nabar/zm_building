@@ -599,7 +599,9 @@ function wait_and_revive()
 		level.sndVoxOverride = true;
 		self util::show_hud(false);
 		self.prev_abbey_no_waypoints = self.abbey_no_waypoints;
+		self.prev_athos_indicators_active = self.athos_indicators_active;
 		self.abbey_no_waypoints = true;
+		self.athos_indicators_active = false;
 		self lui::screen_fade_out( 5, "black" );
 		self EnableInvulnerability();
 		self zm_laststand::auto_revive( self );

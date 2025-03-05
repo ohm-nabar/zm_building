@@ -209,6 +209,7 @@ function player_finish_monitor()
 	self lui::screen_fade_in( 0.75, "black" );
 	wait(0.75);
 	self.abbey_no_waypoints = self.prev_abbey_no_waypoints;
+	self.athos_indicators_active = self.prev_athos_indicators_active;
 	if(! self.abbey_no_hud)
 	{
 		self util::show_hud(true);

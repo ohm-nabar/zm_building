@@ -104,7 +104,7 @@ function __init__()
 
 	level.gargoyle_notifs = array("splash_trial_aramis", "splash_trial_porthos", "splash_trial_dart", "splash_trial_athos");
 
-	athos_trials_0 = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial);
+	athos_trials_0 = array(&wallbuy_trial);
 	athos_trials_1 = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial, &blood_vial_trial, &box_trial);
 	athos_trials_2 = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial, &blood_vial_trial, &trap_trial, &box_trial);
 	athos_trials_3 = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial, &trap_trial, &box_trial);
@@ -354,8 +354,6 @@ function setup_trials()
 		array::add(self.gargoyle_progress, 0.0);
 	}
 
-	self.athos_indicators_active = false;
-
 	self thread aramis_trial();
 	self thread porthos_trial();
 	self thread dart_trial();
@@ -519,6 +517,8 @@ function athos_trial()
 {
 	self endon("disconnect");
 
+	self.first_athos_trial = true;
+	self.athos_indicators_active = false;
 	self thread athos_indicators_monitor();
 
 	level waittill("start_of_round");
@@ -601,7 +601,14 @@ function wallbuy_trial(athos_stage)
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
 
-	self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_WALLBUY, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG);
+	if(self.first_athos_trial)
+	{
+		self.first_athos_trial = false;
+	}
+	else
+	{
+		self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_WALLBUY, NOTIF_FLASH_RIGHT, NOTIF_ALERT_ATHOS);
+	}
 
 	self.in_athos_indicator_trial = true;
 
@@ -727,7 +734,14 @@ function area_assault_trial(athos_stage)
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
 
-	self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_AREA_ASSAULT, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG);
+	if(self.first_athos_trial)
+	{
+		self.first_athos_trial = false;
+	}
+	else
+	{
+		self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_AREA_ASSAULT, NOTIF_FLASH_RIGHT, NOTIF_ALERT_ATHOS);
+	}
 
 	self.in_athos_indicator_trial = true;
 
@@ -812,7 +826,14 @@ function crouch_trial(athos_stage)
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
 
-	self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_CROUCH, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG);
+	if(self.first_athos_trial)
+	{
+		self.first_athos_trial = false;
+	}
+	else
+	{
+		self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_CROUCH, NOTIF_FLASH_RIGHT, NOTIF_ALERT_ATHOS);
+	}
 
 	self.crouch_trial_kills = 0;
 
@@ -841,7 +862,14 @@ function elevation_trial(athos_stage)
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
 
-	self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_ELEVATION, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG);
+	if(self.first_athos_trial)
+	{
+		self.first_athos_trial = false;
+	}
+	else
+	{
+		self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_ELEVATION, NOTIF_FLASH_RIGHT, NOTIF_ALERT_ATHOS);
+	}
 
 	self.elevation_trial_kills = 0;
 
@@ -871,7 +899,14 @@ function box_trial(athos_stage)
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
 
-	self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_BOX, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG);
+	if(self.first_athos_trial)
+	{
+		self.first_athos_trial = false;
+	}
+	else
+	{
+		self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_BOX, NOTIF_FLASH_RIGHT, NOTIF_ALERT_ATHOS);
+	}
 
 	self.in_athos_indicator_trial = true;
 
@@ -995,7 +1030,14 @@ function trap_trial(athos_stage)
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
 
-	self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_TRAP, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG);
+	if(self.first_athos_trial)
+	{
+		self.first_athos_trial = false;
+	}
+	else
+	{
+		self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_TRAP, NOTIF_FLASH_RIGHT, NOTIF_ALERT_ATHOS);
+	}
 
 	self.in_athos_indicator_trial = true;
 	self.trap_trial_kills = 0;
@@ -1074,7 +1116,14 @@ function blood_vial_trial(athos_stage)
 	self endon("disconnect");
 	self endon(#"athos_trial_end");
 
-	self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_BLOOD_VIAL, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG);
+	if(self.first_athos_trial)
+	{
+		self.first_athos_trial = false;
+	}
+	else
+	{
+		self thread zm_abbey_inventory::notifyText(NOTIF_ATHOS_BLOOD_VIAL, NOTIF_FLASH_RIGHT, NOTIF_ALERT_ATHOS);
+	}
 
 	self.in_athos_indicator_trial = true;
 	

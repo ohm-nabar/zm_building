@@ -39,6 +39,7 @@
 #define GEN_NOTIF_HIDE 0
 #define GEN_NOTIF_SHOW 1
 
+#define NOTIF_ALERT_ATHOS "notification_athos"
 #define NOTIF_ALERT_BLUEPRINT "notification_blueprint"
 #define NOTIF_ALERT_GARG "notification_garg"
 #define NOTIF_ALERT_NEUTRAL "notification_neut"
