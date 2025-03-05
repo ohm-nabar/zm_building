@@ -187,8 +187,11 @@ function escargot_spawn(player, trident_spawn)
 	//escargot clientfield::set( "shadow_fx", 1 );
 
 	escargot thread ai_waypoint_manage(75);
-
 	escargot thread escargot_death_notify();
+
+	wait(0.25);
+	escargot PlaySound("shadow_escargot_spawn");
+
 
 	//escargot clientfield::set( "shadow_choker_fx", 1 );
 	//escargot thread ai_testeroo();
@@ -646,7 +649,8 @@ function cloak_spawn_sequence()
 			cloak.ignoreall = false; 
 			cloak.v_zombie_custom_goal_pos = undefined;
 			//cloak SetGoal(undefined);
-
+			trigger.being_shadowed = true;
+			cloak PlayLoopSound("shadow_ritual");
 			PlayFXOnTag("shadow/cloak_shadowing", cloak, "tag_weapon_right");
 			cloak AnimScripted("cloak_conjuring", cloak.origin, cloak.angles, "cloak_conjuring");
 			gen_num = gen_num_translation[generators[generator_index]];
@@ -666,6 +670,7 @@ function cloak_spawn_sequence()
 			if(level.num_cloaks != num_cloaks_prev)
 			{
 				level notify(generators[generator_index] + "_saved");
+				trigger.being_shadowed = false;
 				foreach(player in level.players)
 				{
 					player notify(#"generator_override");
@@ -674,12 +679,18 @@ function cloak_spawn_sequence()
 			}
 		}
 
+		if(isdefined(cloak))
+		{
+			cloak StopLoopSound();
+		}
+
 		if(level.num_cloaks == num_cloaks_prev)
 		{	
 			cloak DoDamage(cloak.maxhealth + 666, cloak.origin);
 			level.num_gens_shadowed++;
 			generators_shadowed[generators_shadowed.size] = generators[generator_index];
 			level notify(generators[generator_index] + "_shadowed");
+			trigger.being_shadowed = false;
 			foreach(player in level.players)
 			{
 				player thread zm_abbey_inventory::notifyGenerator(true);
@@ -1170,6 +1181,118 @@ function escargot_spawn_init()
 	self notify( "zombie_init_done" );
 }
 
+/*
+	Name: function_dc28c71b
+	Namespace: namespace_36e5bc12
+	Checksum: 0x6D15B00F
+	Offset: 0xFC8
+	Size: 0x17C
+	Parameters: 3
+	Flags: Linked
+*/
+function function_dc28c71b(zombie, type, override)
+{
+	zombie endon("death");
+	if(!isdefined(zombie))
+	{
+		return;
+	}
+	if(!isdefined(zombie.voiceprefix))
+	{
+		return;
+	}
+	alias = (("zmb_vocals_" + zombie.voiceprefix) + "_") + type + RandomIntRange(1, 4);
+	if(zm_audio::sndIsNetworkSafe())
+	{
+		if(isdefined(override) && override)
+		{
+			if(type == "death")
+			{
+				zombie playsound(alias);
+			}
+			else
+			{
+				zombie playsoundontag(alias, "j_neck");
+			}
+		}
+		else if(!(isdefined(zombie.talking) && zombie.talking))
+		{
+			zombie.talking = 1;
+			zombie playsoundwithnotify(alias, "sounddone", "j_neck");
+			zombie waittill("sounddone");
+			zombie.talking = 0;
+		}
+	}
+}
+
+/*
+	Name: function_f93398c4
+	Namespace: namespace_36e5bc12
+	Checksum: 0x3C6935D4
+	Offset: 0x1150
+	Size: 0x118
+	Parameters: 0
+	Flags: Linked
+*/
+function function_f93398c4()
+{
+	self endon("death");
+	wait(randomfloatrange(1, 3));
+	while(true)
+	{
+		type = "sprint";
+		self notify("bhtn_action_notify", type);
+		wait(randomfloatrange(1, 4));
+	}
+}
+
+/*
+	Name: function_b7efd00a
+	Namespace: namespace_36e5bc12
+	Checksum: 0xA8609CA9
+	Offset: 0xE68
+	Size: 0x152
+	Parameters: 0
+	Flags: Linked
+*/
+function function_b7efd00a()
+{
+	self endon("death");
+	while(true)
+	{
+		self waittill("bhtn_action_notify", notify_string);
+		if(isdefined(level.bzm_worldpaused) && level.bzm_worldpaused)
+		{
+			continue;
+		}
+		if(self isinscriptedstate())
+		{
+			continue;
+		}
+		switch(notify_string)
+		{
+			case "attack_melee":
+			case "behind":
+			case "close":
+			case "death":
+			case "electrocute":
+			{
+				level thread function_dc28c71b(self, notify_string, 1);
+				break;
+			}
+			case "ambient":
+			case "crawler":
+			case "sprint":
+			case "taunt":
+			case "teardown":
+			{
+				level thread function_dc28c71b(self, notify_string, 0);
+				break;
+			}
+		}
+	}
+}
+
 function choker_spawn_init()
 {
 	self.targetname = "zombie_choker";
@@ -1190,11 +1313,9 @@ function choker_spawn_init()
 		self [[zm_utility::get_gamemode_var("pre_init_zombie_spawn_func")]]();
 	}
 
-	/*
-	self thread zm_spawner::play_ambient_zombie_vocals();
-	self thread zm_audio::zmbAIVox_NotifyConvert();
-	self.zmb_vocals_attack = "zmb_vocals_zombie_attack";
-	*/
+	self.voiceprefix = "choker";
+	self thread function_f93398c4();
+	self thread function_b7efd00a();
 	 
 	self.ignoreme = false;
 	self.allowdeath = true; 			// allows death during animscripted calls
@@ -1360,9 +1481,8 @@ function escargot_death_notify()
 {
 	self waittill("death");
 	level.num_escargots--;
-	
-	alias_name = "shadow_kill" + RandomIntRange(1, 4);
-	PlaySoundAtPosition(alias_name, self.origin);
+
+	PlaySoundAtPosition("shadow_escargot_kill", self.origin);
 	PlayFX("shadow/fx_zmb_smokey_death", self.origin + (0, 0, 40));
 
 	level notify("escargot_killed", self.origin);

@@ -104,7 +104,7 @@ function __init__()
 
 	level.gargoyle_notifs = array("splash_trial_aramis", "splash_trial_porthos", "splash_trial_dart", "splash_trial_athos");
 
-	athos_trials_0 = array(&wallbuy_trial);
+	athos_trials_0 = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial);
 	athos_trials_1 = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial, &blood_vial_trial, &box_trial);
 	athos_trials_2 = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial, &blood_vial_trial, &trap_trial, &box_trial);
 	athos_trials_3 = array(&wallbuy_trial, &area_assault_trial, &crouch_trial, &elevation_trial, &trap_trial, &box_trial);

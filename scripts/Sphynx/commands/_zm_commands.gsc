@@ -437,14 +437,7 @@ function private _refill_jug_potions(command_args)
 
         if(isdefined(dvar_value) && dvar_value == "1" && isdefined(level.active_generators) && level.active_generators.size >= 2)
         {
-            if(level.players.size > 2)
-            {
-                level.jug_uses_left = 4;
-            }
-            else
-            {
-                level.jug_uses_left = 2;
-            }
+            level.jug_uses_left = level.players.size;
             SetDvar("jug_refill", 0);
         }
     }

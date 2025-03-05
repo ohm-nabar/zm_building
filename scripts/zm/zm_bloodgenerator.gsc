@@ -78,6 +78,7 @@
 #precache( "model", "zm_abbey_bg_shadow" );
 
 #define ELECTRIC_CHERRY_MACHINE_LIGHT_FX                    "electric_cherry_light"
+#define BLOODGUN_KILLS_MAX 38
 
 #namespace zm_bloodgenerator;
 
@@ -105,8 +106,10 @@ function __init__()
 	level.bloodgun_active = false;
 	level.bloodgun_cost = 2000;
 	level.bloodgun_kills = 10;
+	level.bloodgun_kill_increment = 1;
 	level.blood_cooling_down = false;
 	level.blood_uses = 0;
+	level.blood_used_once = false;
 	level.active_generators = [];
 	level.bloodgun = GetWeapon("bloodgun");
 
@@ -718,16 +721,20 @@ function blood_think()
 
 		player.bloodgun_kills = 0;
 		start_kills = player.bloodgun_kills;
-		success = false; 
-		player thread zm_abbey_inventory::notifyText(NOTIF_POWER_BG, undefined, NOTIF_ALERT_POWER, undefined, true);
-
-		foreach(p in level.players)
+		success = false;
+		if(! level.blood_used_once)
 		{
-			if(p != player)
+			level.blood_used_once = true;
+			player thread zm_abbey_inventory::notifyText(NOTIF_POWER_BG, undefined, NOTIF_ALERT_POWER, undefined, true);
+
+			foreach(p in level.players)
 			{
-				p thread zm_abbey_inventory::notifyText(NOTIF_POWER_TEAM, undefined, NOTIF_ALERT_POWER, undefined, true);
+				if(p != player)
+				{
+					p thread zm_abbey_inventory::notifyText(NOTIF_POWER_TEAM, undefined, NOTIF_ALERT_POWER, undefined, true);
+				}
+				p thread show_blood_empty(player);
 			}
-			p thread show_blood_empty(player);
 		}
 
 		music_index = level.active_generators.size + 1;
@@ -776,6 +783,11 @@ function blood_think()
 				if(isdefined(p.blood_vial_trial_fills))
 				{
 					p.blood_vial_trial_fills += 1;
+				}
+				if(level.bloodgun_kills < BLOODGUN_KILLS_MAX)
+				{
+					level.bloodgun_kills += level.bloodgun_kill_increment;
+					level.bloodgun_kill_increment += 1;
 				}
 			}
 

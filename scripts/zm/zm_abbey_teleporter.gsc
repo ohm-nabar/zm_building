@@ -137,6 +137,7 @@ function lights_think()
 			wait(0.05);
 		}
 	}
+	self PlaySound("teleport_link_all");
 }
 
 
@@ -230,6 +231,10 @@ function teleport_pad_think( index )
 			//trigger teleport_trigger_invisible(true);
 			level.current_links += 1;
 			level.teleport[index] = "timer_on";
+			if(level.current_links < 4)
+			{
+				trigger PlaySound("teleport_link_sting");
+			}
 
 			for(i = 0; i < 4; i++)
 			{
@@ -634,8 +639,7 @@ function teleport_players(dest_index)
 					visionset_mgr::activate( "overlay", "zm_factory_teleport", players[i] ); // turn on the mid-teleport stargate effects
 					players[i] disableOffhandWeapons();
 					players[i] disableweapons();
-					self PlaySoundToPlayer("teleport_2d_fnt", players[i]);
-					self PlaySoundToPlayer("teleport_2d_rear", players[i]);
+					self PlaySoundToPlayer("teleport_2d", players[i]);
 					if( players[i] getstance() == "prone" )
 					{
 						desired_origin = image_room[i].origin + prone_offset;

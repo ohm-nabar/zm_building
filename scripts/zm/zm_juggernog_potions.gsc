@@ -35,8 +35,6 @@ function __init__()
 	callback::on_connect( &on_player_connect );
 	callback::on_laststand( &on_laststand );
 
-	players = GetPlayers();
-	level.juggernog_uses = (players.size <= 2 ? 2 : 4);
 	level.jug_uses_left = 0;
 
 	jug_activates = GetEntArray("jug_activate", "targetname");
@@ -53,29 +51,7 @@ function __init__()
 		jug_activates[i] thread activator_think();
 	}
 
-	thread player_count_think();
 }
-
-function player_count_think()
-{
-	players = GetPlayers();
-	prev_player_count = players.size;
-	while(true)
-	{
-		players = GetPlayers();
-		if(prev_player_count <= 2 && players.size > 2)
-		{
-			level.juggernog_uses = 4;
-		}
-		else if(prev_player_count > 2 && players.size <= 2)
-		{
-			level.juggernog_uses = 2;
-		}
-		prev_player_count = players.size;
-		wait(0.05);
-	}
-}
-
 
 function on_player_connect()
 {
@@ -147,7 +123,7 @@ function activator_think()
 	self.script_sound = "mus_perks_jugganog_jingle";
 	self.script_label = "mus_perks_jugganog_sting";
 	self thread hintstring_management();
-	
+
 	while(true)
 	{
 		self waittill("trigger", player);
@@ -156,16 +132,8 @@ function activator_think()
 			if(level.hasVial && player zm_magicbox::can_buy_weapon())
 			{
 				level.hasVial = false;
-				
-				if(level.players.size > 2)
-				{
-					level.jug_uses_left = 4;
-				}
-				else
-				{
-					level.jug_uses_left = 2;
-				}
-
+				self PlaySound("jug_fountain_activate");
+				level.jug_uses_left = level.players.size;
 				for(i = 0; i < level.jug_bottles.size; i++)
 				{
 					level.jug_bottles[i] SetVisibleToAll();
@@ -183,6 +151,7 @@ function activator_think()
 				{
 					level.jug_bottles[i] SetInvisibleToAll();
 				}
+				self StopLoopSound();
 			}
 
 			player util::waittill_any( "fake_death", "death", "player_downed", "weapon_change_complete", "perk_abort_drinking");
@@ -205,6 +174,9 @@ function hintstring_management()
 	prev_hintstring_state = -1;
 	hintstring_state = -1;
 	jug_timer_set = false;
+
+	sound_origin = Spawn("script_model", self.origin);
+	sound_origin SetModel("tag_origin");
 
 	while(true)
 	{
@@ -231,6 +203,7 @@ function hintstring_management()
 					{
 						jug_timer_set = true;
 						self thread sndPerksJingles_Timer();
+						sound_origin PlayLoopSound("jug_fountain_idle");
 					}
 					level exploder::exploder("jug_light");
 					self SetHintString(&"ZM_ABBEY_FOUNTAIN_ACTIVATE", level.jug_uses_left);
@@ -238,7 +211,11 @@ function hintstring_management()
 				}
 				case 1:
 				{
-					jug_timer_set = false;
+					if(jug_timer_set)
+					{
+						jug_timer_set = false;
+						sound_origin StopLoopSound();
+					}
 					level exploder::stop_exploder("jug_light");
 					self SetHintString(&"ZM_ABBEY_FOUNTAIN_DEPOSIT");
 					self notify(#"jug_fountain_off");
@@ -246,7 +223,11 @@ function hintstring_management()
 				}
 				default:
 				{
-					jug_timer_set = false;
+					if(jug_timer_set)
+					{
+						jug_timer_set = false;
+						sound_origin StopLoopSound();
+					}
 					level exploder::stop_exploder("jug_light");
 					self SetHintString(&"ZM_ABBEY_GENERATOR_NO_BLOOD");
 					self notify(#"jug_fountain_off");
