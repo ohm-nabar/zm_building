@@ -79,6 +79,7 @@ function __init__()
 		library_zones = []; library_zones[library_zones.size] = "library_zone";
 		lower_pilgrimage_zones = []; lower_pilgrimage_zones[lower_pilgrimage_zones.size] = "lower_pilgrimage_zone";
 		courtroom_zones = []; courtroom_zones[courtroom_zones.size] = "courtroom_zone";
+		alleyway_zones = []; alleyway_zones[alleyway_zones.size] = "alleyway_zone";
 		courtyard_zones = []; courtyard_zones[courtyard_zones.size] = "courtyard_zone";
 		airfield_zones = []; airfield_zones[airfield_zones.size] = "airfield_zone";
 		dormitory_zones = []; dormitory_zones[dormitory_zones.size] = "dormitory_zone";
@@ -104,6 +105,7 @@ function __init__()
 		level.abbey_rooms["Merveille de Verite"] = merveille_zones;
 		level.abbey_rooms["Guard Tower"] = spiral_zones;
 		level.abbey_rooms["Courtyard"] = courtyard_zones;
+		level.abbey_rooms["Alleyway"] = alleyway_zones;
 		level.abbey_rooms["Courtroom"] = courtroom_zones;
 		level.abbey_rooms["Verite Library"] = library_zones;
 		level.abbey_rooms["Lower Pilgrimage Stairs"] = lower_pilgrimage_zones;
@@ -142,6 +144,7 @@ function __init__()
 		level.abbey_rooms_indices["Bridge v2"] = 22;
 		level.abbey_rooms_indices["Knight's Hall"] = 23;
 		level.abbey_rooms_indices["No Man's Land"] = 24;
+		level.abbey_rooms_indices["Alleyway"] = 25;
 
 		level.above_rooms = [];
 		level.above_rooms[level.above_rooms.size] = "Crash Site";
@@ -167,6 +170,7 @@ function __init__()
 		level.above_rooms[level.above_rooms.size] = "Bridge v2";
 		level.above_rooms[level.above_rooms.size] = "Knight's Hall";
 		level.above_rooms[level.above_rooms.size] = "Guard Tower";
+		level.above_rooms[level.above_rooms.size] = "Alleyway";
 
 		level.beach_rooms = [];
 		level.beach_rooms[level.beach_rooms.size] = "No Man's Land";
