@@ -2,6 +2,7 @@ scriptparsetree,scripts/zm/zm_flashlight.gsc
 scriptparsetree,scripts/zm/zm_flashlight.csc
 
 fx,custom/flashlight/flashlight_loop
+fx,custom/flashlight/flashlight_loop_75
 fx,custom/flashlight/flashlight_loop_50
 fx,custom/flashlight/flashlight_loop_25
 fx,custom/flashlight/flashlight_loop_world

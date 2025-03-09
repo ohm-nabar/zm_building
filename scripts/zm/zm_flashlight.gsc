@@ -33,7 +33,7 @@ function on_player_connect()
 
 function clientfield_init()
 {
-	clientfield::register("toplayer", "flashlight_fx_view", VERSION_SHIP, 2, "int");
+	clientfield::register("toplayer", "flashlight_fx_view", VERSION_SHIP, 3, "int");
 	clientfield::register("allplayers", "flashlight_fx_world", VERSION_SHIP, 2, "int");
 }
 
@@ -87,5 +87,12 @@ function flashlight_state(state)
 		//self clientfield::set("flashlight_fx_world", 1);
 		self PlaySound("1_flashlight_click");
 		self.flashlight_state = 3;
+	}
+	else if(state == 4)
+	{
+		self clientfield::set_to_player("flashlight_fx_view", 4);
+		//self clientfield::set("flashlight_fx_world", 1);
+		self PlaySound("1_flashlight_click");
+		self.flashlight_state = 4;
 	}
 }

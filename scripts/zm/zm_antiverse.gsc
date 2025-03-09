@@ -162,6 +162,7 @@ function player_maze_setup(origin, angles)
 function player_finish_monitor()
 {
 	timer = 0;
+	flashlight_75 = false;
 	flashlight_50 = false;
 	flashlight_25 = false;
 	while (DistanceSquared(self.origin, level.antiverse_end.origin) > 40000 && timer <= 1200)
@@ -169,11 +170,16 @@ function player_finish_monitor()
 		if(timer > 900 && ! flashlight_25)
 		{
 			flashlight_25 = true;
-			self zm_flashlight::flashlight_state(3);
+			self zm_flashlight::flashlight_state(4);
 		}
 		else if(timer > 600 && ! flashlight_50)
 		{
 			flashlight_50 = true;
+			self zm_flashlight::flashlight_state(3);
+		}
+		else if(timer > 300 && ! flashlight_75)
+		{
+			flashlight_75 = true;
 			self zm_flashlight::flashlight_state(2);
 		}
 

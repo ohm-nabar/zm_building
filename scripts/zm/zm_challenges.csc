@@ -18,7 +18,7 @@ function __init__()
 	clientfield::register( "toplayer", "trials.tier2", VERSION_SHIP, 13, "int", &trial_tier2, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 	clientfield::register( "toplayer", "trials.tier3", VERSION_SHIP, 5, "int", &trial_tier3, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 	
-	clientfield::register( "toplayer", "trials.aramis", VERSION_SHIP, 5, "float", &trial_aramis, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	clientfield::register( "toplayer", "trials.aramis", VERSION_SHIP, 4, "float", &trial_aramis, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 	clientfield::register( "toplayer", "trials.porthos", VERSION_SHIP, 10, "float", &trial_porthos, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 	clientfield::register( "toplayer", "trials.dart", VERSION_SHIP, 10, "float", &trial_dart, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 	clientfield::register( "toplayer", "trials.athos", VERSION_SHIP, 10, "float", &trial_athos, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );

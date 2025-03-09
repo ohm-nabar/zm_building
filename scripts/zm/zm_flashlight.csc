@@ -15,6 +15,7 @@
 #insert scripts\zm\zm_flashlight.gsh;
 
 #precache("client_fx", "custom/flashlight/flashlight_loop");
+#precache("client_fx", "custom/flashlight/flashlight_loop_75");
 #precache("client_fx", "custom/flashlight/flashlight_loop_50");
 #precache("client_fx", "custom/flashlight/flashlight_loop_25");
 #precache("client_fx", "custom/flashlight/flashlight_loop_world");
@@ -35,6 +36,7 @@ function __init__()
 function fx_init()
 {
 	level._effect["flashlight_fx_loop_view"] = "custom/flashlight/flashlight_loop";
+	level._effect["flashlight_fx_loop_view_75"] = "custom/flashlight/flashlight_loop_75";
 	level._effect["flashlight_fx_loop_view_50"] = "custom/flashlight/flashlight_loop_50";
 	level._effect["flashlight_fx_loop_view_25"] = "custom/flashlight/flashlight_loop_25";
 	level._effect["flashlight_fx_loop_view_moths"] = "custom/flashlight/flashlight_loop_view_moths";
@@ -45,7 +47,7 @@ function fx_init()
 
 function clientfield_init()
 {
-	clientfield::register("toplayer", "flashlight_fx_view", VERSION_SHIP, 2, "int", &flashlight_fx_view, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT);
+	clientfield::register("toplayer", "flashlight_fx_view", VERSION_SHIP, 3, "int", &flashlight_fx_view, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT);
 	clientfield::register("allplayers", "flashlight_fx_world", VERSION_SHIP, 2, "int", &flashlight_fx_world, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT);
 }
 
@@ -99,7 +101,7 @@ function flashlight_fx_view(localClientNum, oldVal, newVal, bNewEnt, bInitialSna
 			KillFx(localClientNum, self.fx_flashlight_moth);
 		}
 
-		flash_fx_view = level._effect["flashlight_fx_loop_view_50"];
+		flash_fx_view = level._effect["flashlight_fx_loop_view_75"];
 		self.fx_flashlight_view = PlayViewmodelFx(localclientnum, flash_fx_view, FLASHLIGHT_VIEW_FX_TAG);
 
 		flash_fx_moth = level._effect["flashlight_fx_loop_view_moths"];
@@ -108,6 +110,26 @@ function flashlight_fx_view(localClientNum, oldVal, newVal, bNewEnt, bInitialSna
 		PlaySound(localClientNum, "1_flashlight_click", self.origin);
 	}
 	else if(newVal == 3)
+	{
+		if(IsDefined(self.fx_flashlight_view))
+		{
+			KillFx(localClientNum, self.fx_flashlight_view);
+		}
+
+		if(IsDefined(self.fx_flashlight_moth))
+		{
+			KillFx(localClientNum, self.fx_flashlight_moth);
+		}
+
+		flash_fx_view = level._effect["flashlight_fx_loop_view_50"];
+		self.fx_flashlight_view = PlayViewmodelFx(localclientnum, flash_fx_view, FLASHLIGHT_VIEW_FX_TAG);
+
+		flash_fx_moth = level._effect["flashlight_fx_loop_view_moths"];
+		self.fx_flashlight_moth = PlayFxOnTag(localClientNum, flash_fx_moth, self, "j_spine4");
+
+		PlaySound(localClientNum, "1_flashlight_click", self.origin);
+	}
+	else if(newVal == 4)
 	{
 		if(IsDefined(self.fx_flashlight_view))
 		{
