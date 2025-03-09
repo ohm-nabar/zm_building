@@ -142,6 +142,7 @@ function __init__()
     thread _set_next_shadow_breach(); // Sets next shadow breach (cannot be done during a Shadow Breach or before a generator is activated)
     thread _skip_shadow_breach(); // Skips Shadow Breach
     thread _set_bgb_quantities(); // Sets BGB quantities
+    thread _set_bg_kills(); // Sets kills required to complete a Blood Gun sequence
 
     if( ToLower( GetDvarString( "mapname" ) ) != "zm_castle" ){
         thread _debug_keyline_command_response(); //Add keylines around a specific model to look for it easier
@@ -501,6 +502,24 @@ function private _set_bgb_quantities(command_args)
             }
             dvar_value = ToLower(GetDvarString("bgb_set_qs", ""));
             SetDvar("bgb_set_qs", 0);
+        }
+    }
+}
+
+function private _set_bg_kills(command_args)
+{
+    ModVar("bg_set_kills", "");
+
+    for(;;)
+    {
+        WAIT_SERVER_FRAME
+
+        dvar_value = ToLower(GetDvarString("bg_set_kills", ""));
+
+        if(isdefined(dvar_value) && StrIsInt(dvar_value) && Int(dvar_value) > 0)
+        {
+            level.bloodgun_kills = Int(dvar_value);
+            SetDvar("bg_set_kills", 0);
         }
     }
 }
@@ -1422,14 +1441,7 @@ function private open_sesame_now()
         wait(0.05);
     }
 
-    if(level.players.size > 2)
-    {
-        level.jug_uses_left = 4;
-    }
-    else
-    {
-        level.jug_uses_left = 2;
-    }
+    level.jug_uses_left = level.players.size;
     
     //get all the door triggers and trigger them
     // DOORS ----------------------------------------------------------------------------- //
