@@ -46,6 +46,29 @@ function __init__()
 		return;
 	}
 	bgb::register("zm_bgb_aftertaste_blood", "rounds", 3, &event, undefined, undefined, undefined);
+	bgb::register_lost_perk_override("zm_bgb_aftertaste_blood", &lost_perk_override, 0);
+}
+
+/*
+	Name: lost_perk_override
+	Namespace: zm_bgb_aftertaste
+	Checksum: 0x259233DE
+	Offset: 0x2A0
+	Size: 0x9A
+	Parameters: 3
+	Flags: Linked
+*/
+function lost_perk_override(perk, var_2488e46a = undefined, var_24df4040 = undefined)
+{
+	if(zm_perks::use_solo_revive() && perk == "specialty_quickrevive")
+	{
+		return false;
+	}
+	if(isdefined(var_2488e46a) && isdefined(var_24df4040) && var_2488e46a == var_24df4040)
+	{
+		return true;
+	}
+	return false;
 }
 
 /*
@@ -63,47 +86,11 @@ function event()
 	self endon("bled_out");
 	self endon("bgb_update");
 
-	self thread watch_death_machine();
 	while(true)
 	{
 		self waittill("player_downed");
 		self bgb::do_one_shot_use(1);
 		self zm_juggernog_potions::maintain_jug_resistance_level();
-	}
-}
-
-function watch_death_machine()
-{
-	self endon("disconnect");
-	self endon("bled_out");
-	self endon("bgb_update");
-
-	dm_kills = 0;
-	prev_kills = self.pers["kills"];
-	prev_health = self.health;
-	while(true)
-	{
-		if(self.health < prev_health)
-		{
-			dm_kills = 0;
-		}
-
-		dm_kills += (self.pers["kills"] - prev_kills);
-
-		if(dm_kills >= 15)
-		{
-			dm_kills = 0;
-			while(! zm_utility::is_player_valid(self) || ! self zm_magicbox::can_buy_weapon())
-			{
-				wait(0.05);
-			}
-			level thread zm_powerup_weapon_minigun::grab_minigun(self);
-			self util::waittill_any("minigun_time_over", "player_downed");
-		}
-
-		prev_kills = self.pers["kills"];
-		prev_health = self.health;
-		wait(0.05);
 	}
 }
 
