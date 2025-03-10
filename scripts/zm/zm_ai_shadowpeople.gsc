@@ -204,11 +204,13 @@ function cloak_spawn(target)
 	spawn_point = dog_spawn_factory_logic(target, true);
 	if(isdefined(spawn_point))
 	{
-		/# PrintLn(spawn_point.origin); #/
+		debug_str = "" + spawn_point.origin;
+		/# PrintLn(debug_str); #/
 	}
 	else
 	{
-		/# PrintLn("undefined"); #/
+		debug_str = "undefined";
+		/# PrintLn(debug_str); #/
 	}
 	dog_spawn_fx( spawn_point );
 	cloak = zombie_utility::spawn_zombie(level.cloak_spawner);
@@ -502,10 +504,12 @@ function dog_round_spawning()
 
 	level.in_shadow_spawn_sequence = true;
 
-	/# PrintLn("in shadow spawn sequence"); #/
+	debug_str1 = "in shadow spawn sequence";
+	debug_str2 = "cloak spawned!";
+	/# PrintLn(debug_str1); #/
 	level thread cloak_spawn_sequence();
 	level waittill(#"cloak_spawned");
-	/# PrintLn("cloak spawned!"); #/
+	/# PrintLn(debug_str2); #/
 
 	while(level.num_cloaks > 0)
 	{
