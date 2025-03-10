@@ -176,7 +176,7 @@ function register(name, limit_type)
 		assert("" != name, ("" + "") + "");
 	#/
 	/#
-		assert(!isdefined(level.bgb[name]), ("" + name) + "");
+		assert(! (isdefined(level.bgb) && isdefined(level.bgb[name])), ("" + name) + "");
 	#/
 	/#
 		assert(isdefined(limit_type), ("" + name) + "");
