@@ -155,6 +155,9 @@ function on_player_connect()
 	self.deadshot_challenge_goal = 10;
 	self.deadshot_challenge_progress = 0;
 
+	self.perk_notif_sent = false;
+	self.perk_notif2_sent = false;
+
 	self thread electric_cherry_upgrade();
 	self thread stamin_up_upgrade();
 	self thread double_tap_upgrade();
@@ -290,12 +293,16 @@ function IsPerkUpgradeActive(perkname)
 	return false;
 }
 
+function has_no_perk_upgrades()
+{
+	return ! (self.hasElectric2 || self.hasQuick2 || self.hasMule2 || self.hasStamin2 || self.hasPHD2 || self.hasPoseidon2 || self.hasDouble2 || self.hasDeadshot2);
+}
+
 function electric_cherry_upgrade() 
 {
 	self endon("disconnect");
 
 	failedByTime = false;
-	firstTime = true;
 	while(! self.cherryUpgradeQuestDone) 
 	{
 		//IPrintLn("Looping");
@@ -304,10 +311,14 @@ function electric_cherry_upgrade()
 			self.isUpgradingCherry = true;
 			self.cherryChallengeActive = true;
 
-			if(firstTime)
+			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
 			{
-				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_CHERRY, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
-				firstTime = false;
+				self.perk_notif_sent = true;
+				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
+				{
+					self.perk_notif2_sent = true;
+				}
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_QUEST, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
 			}
 
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)
@@ -386,8 +397,6 @@ function double_tap_upgrade()
 	self endon("disconnect");
 
 	failedByTime = false;
-	firstTime = true;
-
 	while(! self.doubleUpgradeQuestDone) 
 	{
 		//IPrintLn("Looping");
@@ -396,10 +405,14 @@ function double_tap_upgrade()
 			self.isUpgradingDouble = true;
 			self.doubleChallengeActive = true;
 
-			if(firstTime)
+			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
 			{
-				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_DOUBLE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
-				firstTime = false;
+				self.perk_notif_sent = true;
+				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
+				{
+					self.perk_notif2_sent = true;
+				}
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_QUEST, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
 			}
 
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)
@@ -473,9 +486,7 @@ function phd_lite_upgrade()
 {
 	self endon("disconnect");
 
-	failedByTime = false;
-	firstTime = true;
-	
+	failedByTime = false;	
 	while(! self.PHDUpgradeQuestDone) 
 	{
 		//IPrintLn("Looping");
@@ -484,10 +495,14 @@ function phd_lite_upgrade()
 			self.isUpgradingPHD = true;
 			self.PHDChallengeActive = true;
 
-			if(firstTime)
+			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
 			{
-				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_PHD, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
-				firstTime = false;
+				self.perk_notif_sent = true;
+				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
+				{
+					self.perk_notif2_sent = true;
+				}
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_QUEST, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
 			}
 
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)
@@ -560,8 +575,6 @@ function poseidon_punch_upgrade()
 	self endon("disconnect");
 
 	failedByTime = false;
-	firstTime = true;
-	
 	while(! self.poseidonUpgradeQuestDone) 
 	{
 		//IPrintLn("Looping");
@@ -570,10 +583,14 @@ function poseidon_punch_upgrade()
 			self.isUpgradingPoseidon = true;
 			self.poseidonChallengeActive = true;
 
-			if(firstTime)
+			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
 			{
-				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_POSEIDON, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
-				firstTime = false;
+				self.perk_notif_sent = true;
+				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
+				{
+					self.perk_notif2_sent = true;
+				}
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_QUEST, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
 			}
 
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)
@@ -645,8 +662,6 @@ function stamin_up_upgrade()
 	self endon("disconnect");
 
 	failedByTime = false;
-	firstTime = true;
-	
 	while(! self.staminUpgradeQuestDone) 
 	{
 		//IPrintLn("Looping");
@@ -655,10 +670,14 @@ function stamin_up_upgrade()
 			self.isUpgradingStamin = true;
 			self.staminChallengeActive = true;
 
-			if(firstTime)
+			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
 			{
-				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_STAMIN, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
-				firstTime = false;
+				self.perk_notif_sent = true;
+				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
+				{
+					self.perk_notif2_sent = true;
+				}
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_QUEST, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
 			}
 
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)
@@ -733,8 +752,6 @@ function mule_kick_upgrade()
 	self endon("disconnect");
 
 	failedByTime = false;
-	firstTime = true;
-	
 	while(! self.muleUpgradeQuestDone) 
 	{
 		//IPrintLn("Looping");
@@ -743,10 +760,14 @@ function mule_kick_upgrade()
 			self.isUpgradingMule = true;
 			self.muleChallengeActive = true;
 
-			if(firstTime)
+			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
 			{
-				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_MULE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
-				firstTime = false;
+				self.perk_notif_sent = true;
+				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
+				{
+					self.perk_notif2_sent = true;
+				}
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_QUEST, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
 			}
 
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)
@@ -821,8 +842,6 @@ function quick_revive_upgrade()
 	self endon("disconnect");
 
 	failedByTime = false;
-	firstTime = true;
-
 	while(! self.quickUpgradeQuestDone) 
 	{
 		//IPrintLn("Looping");
@@ -831,10 +850,14 @@ function quick_revive_upgrade()
 			self.isUpgradingQuick = true;
 			self.quickChallengeActive = true;
 
-			if(firstTime)
+			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
 			{
-				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_REVIVE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
-				firstTime = false;
+				self.perk_notif_sent = true;
+				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
+				{
+					self.perk_notif2_sent = true;
+				}
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_QUEST, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
 			}
 
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)
@@ -908,8 +931,6 @@ function deadshot_upgrade()
 	self endon("disconnect");
 
 	failedByTime = false;
-	firstTime = true;
-
 	while(! self.deadshotUpgradeQuestDone) 
 	{
 		//IPrintLn("Looping");
@@ -918,10 +939,14 @@ function deadshot_upgrade()
 			self.isUpgradingDeadshot = true;
 			self.deadshotChallengeActive = true;
 
-			if(firstTime)
+			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
 			{
-				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_DEADSHOT, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
-				firstTime = false;
+				self.perk_notif_sent = true;
+				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
+				{
+					self.perk_notif2_sent = true;
+				}
+				self thread zm_abbey_inventory::notifyText(NOTIF_PERK_QUEST, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK);
 			}
 
 			if(isdefined(level.next_dog_round) && level.round_number == level.next_dog_round)

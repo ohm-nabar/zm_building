@@ -161,6 +161,7 @@ image,notif_gum_aramis
 image,notif_gum_athos
 image,notif_gum_dart
 image,notif_gum_porthos
+image,notif_perk_quest
 image,notif_perk_up_cherry
 image,notif_perk_up_deadshot
 image,notif_perk_up_double
@@ -171,6 +172,11 @@ image,notif_perk_up_revive
 image,notif_perk_up_stamin
 image,notif_power_bg
 image,notif_power_team
+
+image,notif_aramis
+image,notif_porthos
+image,notif_dart
+image,notif_athos
 
 image,notif_garg_stock_option
 image,notif_garg_sword_flay

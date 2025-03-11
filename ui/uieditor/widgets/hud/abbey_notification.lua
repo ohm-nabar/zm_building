@@ -35,10 +35,11 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
         "notif_athos_crouch",
         "notif_athos_elevation",
         "notif_athos_trap",
-        "notif_athos_wallbuy"
+        "notif_athos_wallbuy",
+        "notif_perk_quest"
     }
 
-    local GargoyleLookup = {
+    local GargoyleGumLookup = {
         "notif_garg_stock_option",
         "notif_garg_sword_flay",
         "notif_garg_temporal_gift",
@@ -78,6 +79,12 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
     BloodNotif:setAlpha(0)
     AbbeyNotification:addElement(BloodNotif)
 
+    local GargoyleGum = LUI.UIImage.new()
+    GargoyleGum:setLeftRight(true, false, -65, 245)
+    GargoyleGum:setTopBottom(true, false, 145, 224)
+    GargoyleGum:setAlpha(0)
+    AbbeyNotification:addElement(GargoyleGum)
+
     local Gargoyle = LUI.UIImage.new()
     Gargoyle:setLeftRight(true, false, -65, 245)
     Gargoyle:setTopBottom(true, false, 145, 224)
@@ -95,6 +102,20 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
                 BloodNotif:beginAnimation("keyframe", FadeInTime, false, false, CoD.TweenType.Linear)
                 
                 BloodNotif:setAlpha(1)
+            end
+        }
+    }
+
+    GargoyleGum.clipsPerState = {
+        DefaultState = { --DefaultState is the element state if no other condition is met.
+            DefaultClip = function() --This is the default clip to play for this specified state.
+                GargoyleGum:setupElementClipCounter(1) --This function tells the clip handler to expect 1 calls of clipFinished() before it can say that the clip has ended.
+
+                GargoyleGum:completeAnimation() --Finishes any animation transition currently occuring on the element. If the animation has been tied to an event, it will pass interrupted onto the Event object (Covered later).
+
+                GargoyleGum:beginAnimation("keyframe", FadeInTime, false, false, CoD.TweenType.Linear)
+                
+                GargoyleGum:setAlpha(1)
             end
         }
     }
@@ -135,6 +156,20 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
 
             BloodNotif:setImage(BloodNotifVal)
             PlayClip(BloodNotif, "DefaultClip", InstanceRef)
+
+            if BloodNotifLookup[BloodNotifIndex] == "notif_gum_aramis" then
+                Gargoyle:setImage(RegisterImage("notif_aramis"))
+                PlayClip(Gargoyle, "DefaultClip", InstanceRef)
+            elseif BloodNotifLookup[BloodNotifIndex] == "notif_gum_porthos" then
+                Gargoyle:setImage(RegisterImage("notif_porthos"))
+                PlayClip(Gargoyle, "DefaultClip", InstanceRef)
+            elseif BloodNotifLookup[BloodNotifIndex] == "notif_gum_dart" then
+                Gargoyle:setImage(RegisterImage("notif_dart"))
+                PlayClip(Gargoyle, "DefaultClip", InstanceRef)
+            elseif BloodNotifLookup[BloodNotifIndex] == "notif_gum_athos" then
+                Gargoyle:setImage(RegisterImage("notif_athos"))
+                PlayClip(Gargoyle, "DefaultClip", InstanceRef)
+            end
         end
     end
 	BloodNotif:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", NotificationShow)
@@ -160,11 +195,11 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
     local function NotificationGargoyle(ModelRef)
         if IsParamModelEqualToString(ModelRef, "notification_gargoyle") then
 			local NotifyData = CoD.GetScriptNotifyData(ModelRef)
-			local GargoyleIndex = NotifyData[1] + 1
-            local GargoyleVal = RegisterImage(GargoyleLookup[GargoyleIndex])
+			local GargoyleGumIndex = NotifyData[1] + 1
+            local GargoyleGumVal = RegisterImage(GargoyleGumLookup[GargoyleGumIndex])
 
-            Gargoyle:setImage(GargoyleVal)
-            PlayClip(Gargoyle, "DefaultClip", InstanceRef)
+            GargoyleGum:setImage(GargoyleGumVal)
+            PlayClip(GargoyleGum, "DefaultClip", InstanceRef)
         end
     end
 	BloodNotif:subscribeToGlobalModel(InstanceRef, "PerController", "scriptNotify", NotificationGargoyle)
@@ -172,6 +207,7 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
 	local function NotificationHide(ModelRef)
         if IsParamModelEqualToString(ModelRef, "notification_hide") then
             BloodNotif:setAlpha(0)
+            GargoyleGum:setAlpha(0)
             Gargoyle:setAlpha(0)
         end
     end
