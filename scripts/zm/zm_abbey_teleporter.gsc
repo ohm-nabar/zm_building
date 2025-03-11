@@ -25,10 +25,14 @@
 #precache( "model", "zm_abbey_teleporter_lights_off" );
 #precache( "model", "zm_abbey_teleporter_lights_on" );
 
-#precache( "string", "ZM_ABBEY_TELEPORTER_OFFLINE" );
-#precache( "string", "TELEPORTER_SYNCHRONIZE" );
-#precache( "string", "TELEPORTER_SYNCHRONIZING" );
-#precache( "string", "TELEPORTER_ACTIVATE" );
+#precache( "triggerstring", "ZM_ABBEY_TELEPORTER_OFFLINE" );
+#precache( "triggerstring", "ZM_ABBEY_TELEPORTER_ACTIVATE" );
+#precache( "triggerstring", "ZM_ABBEY_TELEPORTER_SYNCHRONIZE", "1" );
+#precache( "triggerstring", "ZM_ABBEY_TELEPORTER_SYNCHRONIZE", "2" );
+#precache( "triggerstring", "ZM_ABBEY_TELEPORTER_SYNCHRONIZE", "3" );
+#precache( "triggerstring", "ZM_ABBEY_TELEPORTER_SYNCHRONIZING", "1" );
+#precache( "triggerstring", "ZM_ABBEY_TELEPORTER_SYNCHRONIZING", "2" );
+#precache( "triggerstring", "ZM_ABBEY_TELEPORTER_SYNCHRONIZING", "3" );
 
 REGISTER_SYSTEM_EX( "zm_abbey_teleporter", &__init__, &__main__, undefined )
 
@@ -155,7 +159,7 @@ function pad_manager()
 		}
 		else
 		{
-			level.teleporter_pad_trig[i] sethintstring( &"ZM_ABBEY_TELEPORTER_SYNCHRONIZE" );
+			level.teleporter_pad_trig[i] sethintstring( &"ZM_ABBEY_TELEPORTER_SYNCHRONIZE", level.current_links );
 		}
 		level.teleporter_pad_trig[i] teleport_trigger_invisible( false );
 	}
@@ -234,19 +238,17 @@ function teleport_pad_think( index )
 			if(level.current_links < 4)
 			{
 				trigger PlaySound("teleport_link_sting");
-			}
-
-			for(i = 0; i < 4; i++)
-			{
-				if(level.teleport[i] == "waiting")
+				for(i = 0; i < 4; i++)
 				{
-					level.teleporter_pad_trig[i] SetHintString(&"ZM_ABBEY_TELEPORTER_SYNCHRONIZE", level.current_links);
+					if(level.teleport[i] == "waiting")
+					{
+						level.teleporter_pad_trig[i] SetHintString(&"ZM_ABBEY_TELEPORTER_SYNCHRONIZE", level.current_links);
+					}
+					else
+					{
+						level.teleporter_pad_trig[i] SetHintString(&"ZM_ABBEY_TELEPORTER_SYNCHRONIZING", level.current_links);
+					}
 				}
-				else
-				{
-					level.teleporter_pad_trig[i] SetHintString(&"ZM_ABBEY_TELEPORTER_SYNCHRONIZING", level.current_links);
-				}
-				
 			}
 			
 			// start the countdown back to the core
@@ -797,7 +799,7 @@ function teleport_core_hint_update()
 		}
 		else
 		{
-			self sethintstring( "" );
+			self SetHintString(&"ZM_ABBEY_EMPTY");
 		}
 
 		wait( .05 );

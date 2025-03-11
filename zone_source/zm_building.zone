@@ -77,7 +77,6 @@ scriptparsetree,scripts/zm/zm_high_round_health.gsc
 scriptparsetree,scripts/zm/zm_diedrich.gsc
 scriptparsetree,scripts/zm/zm_bgb_custom_util.gsc
 scriptparsetree,scripts/zm/zm_abbey_dialogue.gsc
-scriptparsetree,scripts/zm/zm_tides.gsc
 scriptparsetree,scripts/zm/zm_juggernog_potions.gsc
 scriptparsetree,scripts/zm/zm_juggernog_potions.csc
 scriptparsetree,scripts/zm/zm_room_manager.gsc

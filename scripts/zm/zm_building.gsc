@@ -86,7 +86,6 @@
 #using scripts\zm\zm_high_round_health;
 #using scripts\zm\zm_diedrich;
 #using scripts\zm\zm_abbey_dialogue;
-#using scripts\zm\zm_tides;
 #using scripts\zm\zm_juggernog_potions;
 #using scripts\zm\zm_room_manager;
 #using scripts\zm\zm_abbey_quest;
@@ -173,7 +172,7 @@ function main()
 	level thread zm_revive_icon::main();
 	level thread zm_antiverse::main();
 	level thread zm_abbey_quick_revive::main();
-		
+
 	level thread zm_castle_vox();
 	level._zombie_custom_add_weapons =&custom_add_weapons;
 

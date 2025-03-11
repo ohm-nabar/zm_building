@@ -844,7 +844,7 @@ function revive_trigger_spawn()
 	{
 		radius = GetDvarint( "revive_trigger_radius" );
 		self.revivetrigger = spawn( "trigger_radius", (0.0,0.0,0.0), 0, radius, radius );
-		self.revivetrigger setHintString( "" ); // only show the hint string if the triggerer is facing me
+		self.revivetrigger SetHintString(&"ZM_ABBEY_EMPTY"); // only show the hint string if the triggerer is facing me
 		self.revivetrigger setCursorHint( "HINT_NOICON" );
 		self.revivetrigger SetMovingPlatformEnabled( true );
 		self.revivetrigger EnableLinkTo();
@@ -883,7 +883,7 @@ function revive_trigger_think( t_secondary )
 			t_revive = self.revivetrigger;
 		}		
 		
-		t_revive setHintString( "" );
+		t_revive SetHintString(&"ZM_ABBEY_EMPTY");
 
 		for ( i = 0; i < level.players.size; i++ )
 		{
@@ -1182,7 +1182,7 @@ function revive_do_revive( e_revivee, w_reviver, w_revive_tool, t_secondary )
 	e_revivee.revive_hud setText( &"ZOMBIE_PLAYER_IS_REVIVING_YOU", name );
 	e_revivee laststand::revive_hud_show_n_fade( 3.0 );
 	
-	e_revivee.revivetrigger setHintString( "" );
+	e_revivee.revivetrigger SetHintString(&"ZM_ABBEY_EMPTY");
 	
 	if ( IsPlayer( e_revivee ) )
 	{

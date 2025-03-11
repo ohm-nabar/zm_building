@@ -204,7 +204,7 @@ function give_custom_perk()
 	//self thread custom_perk_shader::add_custom_perk_shader( self, "specialty_phdlite_zombies" ); // CHANGE THIS TO YOUR PERK SHADER
 
 	trigger = GetEnt(PERK_PHD_LITE, "script_noteworthy"); // CHANGE THIS TO YOUR PERK MACHINE NAME
-	trigger SetHintStringForPlayer(self, "");
+	trigger SetHintStringForPlayer(self, &"ZM_ABBEY_EMPTY");
 	
 }
 

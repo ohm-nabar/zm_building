@@ -20,9 +20,12 @@
 #insert scripts\zm\_zm_perk_juggernaut.gsh;
 #insert scripts\zm\_zm_utility.gsh;
 
-#precache("string", "ZM_ABBEY_FOUNTAIN_OFFLINE");
-#precache("string", "ZM_ABBEY_FOUNTAIN_DEPOSIT");
-#precache("string", "ZM_ABBEY_FOUNTAIN_ACTIVATE");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_OFFLINE");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_DEPOSIT");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "1");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "2");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "3");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "4");
 
 #namespace zm_juggernog_potions;
 

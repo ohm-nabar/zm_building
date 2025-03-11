@@ -25,6 +25,12 @@
 
 #precache( "model", "vm_trident" );
 
+#precache( "triggerstring", "ZM_ABBEY_TRIDENT_SEEK" );
+#precache( "triggerstring", "ZM_ABBEY_TRIDENT_REJECT" );
+#precache( "triggerstring", "ZM_ABBEY_TRIDENT_CHARGE" );
+#precache( "triggerstring", "ZM_ABBEY_TAKE_WEAPON", "Atlantean Artifact 001" );
+#precache( "triggerstring", "ZM_ABBEY_TAKE_WEAPON", "Pride of Atlantis" );
+
 #namespace zm_trident;
 
 REGISTER_SYSTEM( "zm_trident", &__init__, undefined )

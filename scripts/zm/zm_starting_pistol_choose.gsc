@@ -57,7 +57,10 @@
 
 #precache( "fx", "custom/pistol_glint" );
 
-#precache( "string", "ZM_ABBEY_TAKE_WEAPON" );
+#precache( "triggerstring", "ZM_ABBEY_TAKE_WEAPON", "Colt M1911" );
+#precache( "triggerstring", "ZM_ABBEY_TAKE_WEAPON", "Luger P-08" );
+#precache( "triggerstring", "ZM_ABBEY_TAKE_WEAPON", "Webley Mk VI" );
+#precache( "triggerstring", "ZM_ABBEY_TAKE_WEAPON", "M712 Schnellfeuer" );
 
 //*****************************************************************************
 // MAIN
@@ -93,7 +96,6 @@ function main()
 		{
 			weapon = cz;
 		}
-
 		pistol_pickup_trigs[i] SetHintString(&"ZM_ABBEY_TAKE_WEAPON", weapon.displayName);
 		pistol_pickup_trigs[i] thread pistol_pickup_think(weapon);
 	}

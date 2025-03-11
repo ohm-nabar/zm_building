@@ -39,7 +39,8 @@
 #precache( "fx", "redspace/fx_launchpad_blue" );
 #precache( "fx", "redspace/fx_launchpad_red" );
 
-#precache( "string", "ZM_ABBEY_PAD_COOLDOWN" );
+#precache( "triggerstring", "ZM_ABBEY_PAD_COOLDOWN" );
+#precache( "triggerstring", "ZM_ABBEY_EMPTY" );
 
 // todo add ability for one jump pad to deactivate another (or multiple) for a certain amount of time
 // todo add customizable notifies for launch start and launch end

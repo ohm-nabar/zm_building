@@ -50,13 +50,22 @@
 #precache( "eventstring", "generator_hide" );
 #precache( "eventstring", "generator_reset" );
 
-#precache( "string", "ZM_ABBEY_SHADOW_DISABLED" );
-#precache( "string", "ZM_ABBEY_GENERATOR_DEPOSIT" );
-#precache( "string", "ZM_ABBEY_GENERATOR_NO_BLOOD" );
-#precache( "string", "ZM_ABBEY_BLOODGUN_IN_USE" );
-#precache( "string", "ZM_ABBEY_BLOODGUN_HAS_VIAL" );
-#precache( "string", "ZM_ABBEY_BLOODGUN_COOLDOWN" );
-#precache( "string", "ZM_ABBEY_BLOODGUN_ACTIVATE" );
+#precache( "triggerstring", "ZM_ABBEY_SHADOW_DISABLED" );
+#precache( "triggerstring", "ZM_ABBEY_GENERATOR_DEPOSIT" );
+#precache( "triggerstring", "ZM_ABBEY_GENERATOR_NO_BLOOD" );
+#precache( "triggerstring", "ZM_ABBEY_BLOODGUN_IN_USE" );
+#precache( "triggerstring", "ZM_ABBEY_BLOODGUN_HAS_VIAL" );
+#precache( "triggerstring", "ZM_ABBEY_BLOODGUN_COOLDOWN" );
+#precache( "triggerstring", "ZM_ABBEY_BLOODGUN_ACTIVATE" );
+
+#precache( "triggerstring", "ZOMBIE_PERK_QUICKREVIVE", "1500" );
+#precache( "triggerstring", "ZOMBIE_PERK_MARATHON", "2000" );
+#precache( "triggerstring", "ZOMBIE_PERK_ADDITIONALPRIMARYWEAPON", "2500" );
+#precache( "triggerstring", "ZM_ABBEY_PERK_PHD_LITE", "2000" );
+#precache( "triggerstring", "ZM_ABBEY_PERK_POSEIDON_PUNCH", "2500" );
+#precache( "triggerstring", "ZM_ABBEY_PERK_DEADSHOT_DOUBLE", "1500" );
+#precache( "triggerstring", "ZM_ABBEY_PERK_ELECTRIC_CHERRY_RED", "2000" );
+#precache( "triggerstring", "ZM_ABBEY_PERK_DOUBLETAP_ORIGINAL", "2000" );
 
 #precache( "model", "mainframe_comp_offline_s38" );
 #precache( "model", "mainframe_comp_online_s38" );
