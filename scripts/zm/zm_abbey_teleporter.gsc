@@ -27,6 +27,7 @@
 
 #precache( "triggerstring", "ZM_ABBEY_TELEPORTER_OFFLINE" );
 #precache( "triggerstring", "ZM_ABBEY_TELEPORTER_ACTIVATE" );
+#precache( "triggerstring", "ZM_ABBEY_TELEPORTER_SYNCHRONIZE", "0" );
 #precache( "triggerstring", "ZM_ABBEY_TELEPORTER_SYNCHRONIZE", "1" );
 #precache( "triggerstring", "ZM_ABBEY_TELEPORTER_SYNCHRONIZE", "2" );
 #precache( "triggerstring", "ZM_ABBEY_TELEPORTER_SYNCHRONIZE", "3" );
@@ -63,7 +64,7 @@ function __init__()
 	level flag::init( "teleporter_pad_link_3" );
 	level flag::init( "teleporter_pad_link_4" );
 
-	visionset_mgr::register_info( "overlay", "zm_factory_teleport", VERSION_SHIP, 61, 1, true );
+	visionset_mgr::register_info( "overlay", "zm_castle_teleport", VERSION_SHIP, 61, 1, true );
 }
 
 
@@ -638,7 +639,7 @@ function teleport_players(dest_index)
 						visionset_mgr::deactivate( "overlay", "zm_bgb_in_plain_sight", players[i] );
 						visionset_mgr::deactivate( "visionset", "zm_bgb_in_plain_sight", players[i] );
 					}
-					visionset_mgr::activate( "overlay", "zm_factory_teleport", players[i] ); // turn on the mid-teleport stargate effects
+					visionset_mgr::activate( "overlay", "zm_castle_teleport", players[i] ); // turn on the mid-teleport stargate effects
 					players[i] disableOffhandWeapons();
 					players[i] disableweapons();
 					self PlaySoundToPlayer("teleport_2d", players[i]);
@@ -736,7 +737,7 @@ function teleport_players(dest_index)
 			player.teleport_origin = undefined;
 		}
 
-		visionset_mgr::deactivate( "overlay", "zm_factory_teleport", player ); // turn off the mid-teleport stargate effects
+		visionset_mgr::deactivate( "overlay", "zm_castle_teleport", player ); // turn off the mid-teleport stargate effects
 		if(player.isInBloodMode)
 		{
 			visionset_mgr::activate("visionset", "zm_bgb_in_plain_sight", player, 0.5, 9999, 0.5);

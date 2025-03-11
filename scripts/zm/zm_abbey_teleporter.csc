@@ -18,7 +18,7 @@ REGISTER_SYSTEM( "zm_abbey_teleporter", &__init__, undefined )
 
 function __init__()
 {
-	visionset_mgr::register_overlay_info_style_postfx_bundle( "zm_factory_teleport", VERSION_SHIP, 1, "pstfx_zm_der_teleport" );
+	visionset_mgr::register_overlay_info_style_postfx_bundle( "zm_castle_teleport", VERSION_SHIP, 1, "pstfx_zm_castle_teleport" );
 	
 	level thread setup_teleport_aftereffects();
 	level thread wait_for_black_box();

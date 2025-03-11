@@ -607,6 +607,7 @@ material,mc/hud_outline_model_green
 // Teleporters
 scriptparsetree,scripts/zm/zm_abbey_teleporter.gsc
 scriptparsetree,scripts/zm/zm_abbey_teleporter.csc
+postfxbundle,pstfx_zm_castle_teleport
 
 // Blood Gen Notifs
 image,generator_bg
