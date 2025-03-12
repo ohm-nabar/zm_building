@@ -32,7 +32,7 @@
 
 #namespace zm_solo_revive;
 
-REGISTER_SYSTEM( "zm_solo_revive", &__init__, undefined )
+REGISTER_SYSTEM_EX( "zm_solo_revive", &__init__, &__main__, undefined )
 
 function __init__()
 {
@@ -41,7 +41,10 @@ function __init__()
 
 	level.override_use_solo_revive = &override_use_solo_revive;
 	level.player_out_of_playable_area_monitor_callback = &player_out_of_playable_area_monitor_callback;
-	level waittill("initial_blackscreen_passed");
+}
+
+function __main__()
+{
 	level.playerlaststand_func = &player_laststand;
 	level.overridePlayerDamage = &player_damage_override;
 }
@@ -597,12 +600,13 @@ function wait_and_revive()
 		level zm_audio::sndMusicSystem_StopAndFlush();
 		music::setmusicstate("none");
 		level.sndVoxOverride = true;
+		level.in_antiverse = true;
 		self util::show_hud(false);
 		self.prev_abbey_no_waypoints = self.abbey_no_waypoints;
 		self.prev_athos_indicators_active = self.athos_indicators_active;
 		self.abbey_no_waypoints = true;
 		self.athos_indicators_active = false;
-		self lui::screen_fade_out( 5, "black" );
+		level lui::screen_fade_out( 5, "black" );
 		self EnableInvulnerability();
 		self zm_laststand::auto_revive( self );
 		self.waiting_to_revive = false;
@@ -610,6 +614,7 @@ function wait_and_revive()
 		level.wait_and_revive = false;
 		self thread zm_antiverse::send_to_antiverse();
 		wait(2);
+		level.sending_to_antiverse = false;
 		self DisableInvulnerability();
 	}
 }

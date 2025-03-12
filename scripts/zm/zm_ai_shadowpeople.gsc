@@ -68,6 +68,7 @@ function __init__()
 	level.cloak_spawner thread spawner::add_spawn_function(&cloak_spawn_init);
 
 	level.shadow_ai_limit = 40;
+	level.shadow_transition_active = false;
 	level.shadow_vision_active = false;
 	level.shadow_round_paused = false;
 
@@ -473,20 +474,49 @@ function dog_round_spawning()
 			}
 		}
 	}
-	wait(1);
-	//level thread zm_audio::sndAnnouncerPlayVox("dogstart");
-	level zm_audio::sndMusicSystem_StopAndFlush();
-	level thread zm_audio::sndMusicSystem_PlayState("shadow_breach");
-	wait(2.5);
-	level lui::screen_fade_out( 1, "black" );
+	wait(1.1);
+	level.shadow_transition_active = true;
+	foreach(player in level.players)
+	{
+		player util::show_hud(false);
+	}
+	level thread lui::screen_fade_out( 2, "black" );
+	for(i = 0; i < 2 && ! level.in_antiverse; i += 0.05)
+	{
+		wait(0.05);
+	}
+	while(level.in_antiverse)
+	{
+		wait(0.05);
+	}
 	level util::set_lighting_state( 1 );
-	level lui::screen_fade_in( 1, "black" );
 	foreach(player in level.players)
 	{
 		visionset_mgr::activate("visionset", "abbey_shadow", player, 0.5, 9999, 0.5);
 	}
 	level.shadow_vision_active = true;
-	wait(1);
+	level thread lui::screen_fade_in( 4.9, "black" );
+	for(i = 0; i < 4.9 && ! level.in_antiverse; i += 0.05)
+	{
+		wait(0.05);
+	}
+
+	while(level.in_antiverse)
+	{
+		wait(0.05);
+	}
+	
+	//level thread zm_audio::sndAnnouncerPlayVox("dogstart");
+	level zm_audio::sndMusicSystem_StopAndFlush();
+	level thread zm_audio::sndMusicSystem_PlayState("shadow_breach");
+	foreach(player in level.players)
+	{
+		if(! player.abbey_no_hud)
+		{
+			player util::show_hud(true);
+		}
+	}
+	level.shadow_transition_active = false;
 
 	level.cloak_health = calculate_cloak_health();
 	level.choker_health = calculate_choker_health();

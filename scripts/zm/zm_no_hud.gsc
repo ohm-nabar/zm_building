@@ -79,14 +79,15 @@ function on_player_connect() {
 function check_no_hud() 
 {
 	self endon("disconnect");
+
+	while(! isdefined(level.shadow_transition_active))
+	{
+		wait(0.05);
+	}
 	while( true ) 
 	{		
-		if( self ActionSlotThreeButtonPressed() ) 
+		if( self ActionSlotThreeButtonPressed() && ! level.shadow_transition_active ) 
 		{
-			while(self ActionSlotThreeButtonPressed())
-			{
-				wait(0.05);
-			}
 			if( self.abbey_no_hud && self.abbey_no_waypoints ) 
 			{
 				self.abbey_no_hud = false;

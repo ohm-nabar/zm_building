@@ -31,6 +31,7 @@
 
 function main()
 {
+	level.in_antiverse = false;
 	level.maze_step_count = 0;
 	level.broken_walls = [];
 
@@ -193,18 +194,18 @@ function player_finish_monitor()
 		self FreezeControls(true);
 		self zm_flashlight::flashlight_state(0);
 		wait(0.75);
-		self lui::screen_fade_out( 0.75, "black" );
+		level lui::screen_fade_out( 0.75, "black" );
 		self visionset_mgr::deactivate("visionset", "abbey_shadow", self);
 		self Kill();
 		wait(8);
-		self lui::screen_fade_in( 0.1, "black" );
+		level lui::screen_fade_in( 0.1, "black" );
 		return;
 	}
 
 	level thread antiverse_reset();
 	level zm_audio::sndMusicSystem_StopAndFlush();
 	music::setmusicstate("none");
-	self lui::screen_fade_out( 0.75, "black" );
+	level lui::screen_fade_out( 0.75, "black" );
 	if(! level.shadow_vision_active)
 	{
 		self visionset_mgr::deactivate("visionset", "abbey_shadow", self);
@@ -212,7 +213,7 @@ function player_finish_monitor()
 	wait(0.75);
 	self zm_sphynx_util::give_player_loadout(self.antiverse_loadout, 1, 0, 0, 1);
 	self zm_flashlight::flashlight_state(0);
-	self lui::screen_fade_in( 0.75, "black" );
+	level lui::screen_fade_in( 0.75, "black" );
 	wait(0.75);
 	self.abbey_no_waypoints = self.prev_abbey_no_waypoints;
 	self.athos_indicators_active = self.prev_athos_indicators_active;
@@ -220,6 +221,7 @@ function player_finish_monitor()
 	{
 		self util::show_hud(true);
 	}
+	level.in_antiverse = false;
 	self EnableWeaponCycling();
 	level.sndVoxOverride = false;
 }
