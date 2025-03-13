@@ -3,507 +3,513 @@ CONFIG					"C:\projects\cod\t7\bin\StringEd.cfg"
 FILENOTES				""
 
 REFERENCE           	EMPTY
-LANG_ENGLISH_ARABIC       	""
+LANG_ENGLISHARABIC       	""
 
 REFERENCE           	PERK_DOUBLETAP_ORIGINAL
-LANG_ENGLISH_ARABIC       	"Hold ^3[{+activate}]^7 for Double Tap Root Beer [Cost: &&1]"
+LANG_ENGLISHARABIC       	"Hold ^3[{+activate}]^7 for Double Tap Root Beer [Cost: &&1]"
 
 REFERENCE           	PERK_ELECTRIC_CHERRY_RED
-LANG_ENGLISH_ARABIC       	"Hold ^3[{+activate}]^7 for Electric Cherry [Cost: &&1]"
+LANG_ENGLISHARABIC       	"Hold ^3[{+activate}]^7 for Electric Cherry [Cost: &&1]"
 
 REFERENCE           	PERK_PHD_LITE
-LANG_ENGLISH_ARABIC       	"Hold ^3[{+activate}]^7 for PhD Slider [Cost: &&1]"
+LANG_ENGLISHARABIC       	"Hold ^3[{+activate}]^7 for PhD Slider [Cost: &&1]"
 
 REFERENCE           	PERK_POSEIDON_PUNCH
-LANG_ENGLISH_ARABIC       	"Hold ^3[{+activate}]^7 for Poseidon's Punch [Cost: &&1]"
+LANG_ENGLISHARABIC       	"Hold ^3[{+activate}]^7 for Poseidon's Punch [Cost: &&1]"
 
 REFERENCE           	PERK_DEADSHOT_DOUBLE
-LANG_ENGLISH_ARABIC       	"Hold ^3[{+activate}]^7 for Deadshot Daiquiri Double [Cost: &&1]"
+LANG_ENGLISHARABIC       	"Hold ^3[{+activate}]^7 for Deadshot Daiquiri Double [Cost: &&1]"
 
 REFERENCE           	PAD_COOLDOWN
-LANG_ENGLISH_ARABIC       	"Cooling down..."
+LANG_ENGLISHARABIC       	"Cooling down..."
 
 REFERENCE           	TELEPORTER_OFFLINE
-LANG_ENGLISH_ARABIC       	"Mainframe offline"
+LANG_ENGLISHARABIC       	"Mainframe offline"
 
 REFERENCE           	TELEPORTER_SYNCHRONIZE
-LANG_ENGLISH_ARABIC       	"Hold ^3[{+activate}]^7 to synchronize teleportation network [&&1/4]"
+LANG_ENGLISHARABIC       	"Hold ^3[{+activate}]^7 to synchronize teleportation network [&&1/4]"
 
 REFERENCE           	TELEPORTER_SYNCHRONIZING
-LANG_ENGLISH_ARABIC       	"Synchronizing... [&&1/4]"
+LANG_ENGLISHARABIC       	"Synchronizing... [&&1/4]"
 
 REFERENCE           	TELEPORTER_ACTIVATE
-LANG_ENGLISH_ARABIC       	"Press ^3[{+activate}]^7 to teleport"
+LANG_ENGLISHARABIC       	"Press ^3[{+activate}]^7 to teleport"
 
 REFERENCE           	SHADOW_DISABLED
-LANG_ENGLISH_ARABIC       	"Cannot perform this action during a Shadow Breach"
+LANG_ENGLISHARABIC       	"Cannot perform this action during a Shadow Breach"
 
 REFERENCE           	GENERATOR_DEPOSIT
-LANG_ENGLISH_ARABIC       	"Press and hold ^3[{+activate}]^7 to deposit a Blood Vial into the generator"
+LANG_ENGLISHARABIC       	"Press and hold ^3[{+activate}]^7 to deposit a Blood Vial into the generator"
 
 REFERENCE           	GENERATOR_NO_BLOOD
-LANG_ENGLISH_ARABIC       	"Security Protocol 38: Blood Vial required"
+LANG_ENGLISHARABIC       	"Security Protocol 38: Blood Vial required"
 
 REFERENCE           	BLOODGUN_IN_USE
-LANG_ENGLISH_ARABIC       	"L'Arme Ensanglante in use"
+LANG_ENGLISHARABIC       	"L'Arme Ensanglante in use"
 
 REFERENCE           	BLOODGUN_HAS_VIAL
-LANG_ENGLISH_ARABIC       	"Already have Blood Vial"
+LANG_ENGLISHARABIC       	"Already have Blood Vial"
 
 REFERENCE           	BLOODGUN_COOLDOWN
-LANG_ENGLISH_ARABIC       	"Cooling down... Please wait a round"
+LANG_ENGLISHARABIC       	"Cooling down... Please wait a round"
 
 REFERENCE           	BLOODGUN_ACTIVATE
-LANG_ENGLISH_ARABIC       	"Press and hold ^3[{+activate}]^7 to acuire L'Arme Ensanglante
+LANG_ENGLISHARABIC       	"Press and hold ^3[{+activate}]^7 to acuire L'Arme Ensanglante
 
 REFERENCE           	TRIAL_ACTIVATE
-LANG_ENGLISH_ARABIC       	"Press ^3[{+activate}]^7 to accept a Divinium Trial [Cost: &&1]"
+LANG_ENGLISHARABIC       	"Press ^3[{+activate}]^7 to accept a Divinium Trial [Cost: &&1]"
 
 REFERENCE           	TRIAL_IN_PROGRESS
-LANG_ENGLISH_ARABIC       	"Divinium Trial in progress"
+LANG_ENGLISHARABIC       	"Divinium Trial in progress"
 
 REFERENCE           	TRIAL_REWARD
-LANG_ENGLISH_ARABIC       	"Press ^3[{+activate}]^7 for &&1"
+LANG_ENGLISHARABIC       	"Press ^3[{+activate}]^7 for &&1"
 
 REFERENCE           	FOUNTAIN_OFFLINE
-LANG_ENGLISH_ARABIC       	"Juggernog Station Offline - At least 2 Blood Generators must be powered on"
+LANG_ENGLISHARABIC       	"Juggernog Station Offline - At least 2 Blood Generators must be powered on"
 
 REFERENCE           	FOUNTAIN_DEPOSIT
-LANG_ENGLISH_ARABIC       "Press and hold ^3[{+activate}]^7 to insert a Blood Vial into the Juggernog Station"
+LANG_ENGLISHARABIC       "Press and hold ^3[{+activate}]^7 to insert a Blood Vial into the Juggernog Station"
 
 REFERENCE           	FOUNTAIN_ACTIVATE
-LANG_ENGLISH_ARABIC       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [&&1 use(s) left]"
+LANG_ENGLISHARABIC       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [&&1 use(s) left]"
 
 REFERENCE           	TAKE_WEAPON
-LANG_ENGLISH_ARABIC       "Press ^3[{+activate}]^7 to take &&1"
+LANG_ENGLISHARABIC       "Press ^3[{+activate}]^7 to take &&1"
 
 REFERENCE           	TRIDENT_SEEK
-LANG_ENGLISH_ARABIC       "I seem to have misplaced my weapon. Can you help me find it?"
+LANG_ENGLISHARABIC       "I seem to have misplaced my weapon. Can you help me find it?"
 
 REFERENCE           	TRIDENT_REJECT
-LANG_ENGLISH_ARABIC       "You do not posess the weapon I seek"
+LANG_ENGLISHARABIC       "You do not posess the weapon I seek"
 
 REFERENCE           	TRIDENT_CHARGE
-LANG_ENGLISH_ARABIC       "Charging weapon..."
+LANG_ENGLISHARABIC       "Charging weapon..."
 
 REFERENCE           	JOURNAL_HEADER_CHALLENGE
-LANG_ENGLISH_ARABIC       "Perk Challenges"
+LANG_ENGLISHARABIC       "Perk Challenges"
 
 REFERENCE           	JOURNAL_HEADER_BGB
-LANG_ENGLISH_ARABIC       "Divinium Trials"
+LANG_ENGLISHARABIC       "Gargoyle Trials"
 
 REFERENCE           	JOURNAL_HEADER_PERKBP
-LANG_ENGLISH_ARABIC       "Perk Blueprints"
+LANG_ENGLISHARABIC       "Perk Blueprints"
 
 REFERENCE           	JOURNAL_HEADER_WEAPONBP
-LANG_ENGLISH_ARABIC       "Weapon Blueprints"
+LANG_ENGLISHARABIC       "Weapon Blueprints"
 
 REFERENCE           	JOURNAL_NAVIGATION_INFO
-LANG_ENGLISH_ARABIC       "^3[{+speed_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"
+LANG_ENGLISHARABIC       "^3[{+speed_throw}]^7 Previous tab ^3[{+attack}]^7 Next tab"
 
 REFERENCE           	CHALLENGE_CHERRY
-LANG_ENGLISH_ARABIC       "Obtain kills with Electric Cherry reloads"
+LANG_ENGLISHARABIC       "Obtain kills with Electric Cherry reloads"
 
 REFERENCE           	CHALLENGE_CHERRY_REWARD
-LANG_ENGLISH_ARABIC       "Reward: 50% faster reload speed"
+LANG_ENGLISHARABIC       "Reward: 50% faster reload speed"
 
 REFERENCE           	CHALLENGE_STAMIN
-LANG_ENGLISH_ARABIC       "Obtain kills after 2+ second sprints"
+LANG_ENGLISHARABIC       "Obtain kills after 2+ second sprints"
 
 REFERENCE           	CHALLENGE_STAMIN_REWARD
-LANG_ENGLISH_ARABIC       "Reward: Unlimited sprint duration"
+LANG_ENGLISHARABIC       "Reward: Unlimited sprint duration"
 
 REFERENCE           	CHALLENGE_DOUBLE
-LANG_ENGLISH_ARABIC       "Obtain pentakills"
+LANG_ENGLISHARABIC       "Obtain pentakills"
 
 REFERENCE           	CHALLENGE_DOUBLE_REWARD
-LANG_ENGLISH_ARABIC       "Reward: Bullets double upon being fired"
+LANG_ENGLISHARABIC       "Reward: Bullets double upon being fired"
 
 REFERENCE           	CHALLENGE_MULE
-LANG_ENGLISH_ARABIC       "Obtain kills with third weapon"
+LANG_ENGLISHARABIC       "Obtain kills with third weapon"
 
 REFERENCE           	CHALLENGE_MULE_REWARD
-LANG_ENGLISH_ARABIC       "Reward: Lost third weapons are saved"
+LANG_ENGLISHARABIC       "Reward: Lost third weapons are saved"
 
 REFERENCE           	CHALLENGE_POSEIDON
-LANG_ENGLISH_ARABIC       "Obtain kills on fallen zombies"
+LANG_ENGLISHARABIC       "Obtain kills on fallen zombies"
 
 REFERENCE           	CHALLENGE_POSEIDON_REWARD
-LANG_ENGLISH_ARABIC       "Reward: +15 health per fallen zombie"
+LANG_ENGLISHARABIC       "Reward: +15 health per fallen zombie"
 
 REFERENCE           	CHALLENGE_QUICK
-LANG_ENGLISH_ARABIC       "Obtain kills while on low health"
+LANG_ENGLISHARABIC       "Obtain kills while on low health"
 
 REFERENCE           	CHALLENGE_QUICK_REWARD
-LANG_ENGLISH_ARABIC       "Reward: Speed boost upon revive or regen"
+LANG_ENGLISHARABIC       "Reward: Speed boost upon revive or regen"
 
 REFERENCE           	CHALLENGE_PHD
-LANG_ENGLISH_ARABIC       "Obtain kills using PhD slides"
+LANG_ENGLISHARABIC       "Obtain kills using PhD slides"
 
 REFERENCE           	CHALLENGE_PHD_REWARD
-LANG_ENGLISH_ARABIC       "Reward: Immunity to splash damage"
+LANG_ENGLISHARABIC       "Reward: Immunity to splash damage"
 
 REFERENCE           	CHALLENGE_DEADSHOT
-LANG_ENGLISH_ARABIC       "Blow zombie minds"
+LANG_ENGLISHARABIC       "Blow zombie minds"
 
 REFERENCE           	CHALLENGE_DEADSHOT_REWARD
-LANG_ENGLISH_ARABIC       "Reward: Blow up to 16 minds at a time"
+LANG_ENGLISHARABIC       "Reward: Blow up to 16 minds at a time"
 
 REFERENCE           	CHALLENGE_INACTIVE
-LANG_ENGLISH_ARABIC       "Inactive"
+LANG_ENGLISHARABIC       "Inactive"
 
 REFERENCE           	CHALLENGE_COMPLETE
-LANG_ENGLISH_ARABIC       "Complete"
+LANG_ENGLISHARABIC       "Complete"
 
 REFERENCE           	CHALLENGE_INACTIVE_SHADOW
-LANG_ENGLISH_ARABIC       "Inactive during Shadow Breach"
+LANG_ENGLISHARABIC       "Inactive during Shadow Breach"
 
 REFERENCE           	CHALLENGE_ACTIVE
-LANG_ENGLISH_ARABIC       "Active: Progress resets next round"
+LANG_ENGLISHARABIC       "Active: Progress resets next round"
 
 REFERENCE           	TRIAL_ARAMIS_NAME
-LANG_ENGLISH_ARABIC       	"Judge Aramis"
-
-REFERENCE           	TRIAL_ARAMIS_NAME_SHORT
-LANG_ENGLISH_ARABIC       	"Aramis"
+LANG_ENGLISHARABIC       	"Judge Aramis"
 
 REFERENCE           	TRIAL_PORTHOS_NAME
-LANG_ENGLISH_ARABIC       "Judge Porthos"
+LANG_ENGLISHARABIC       "Judge Porthos"
 
 REFERENCE           	TRIAL_DART_NAME
-LANG_ENGLISH_ARABIC       "Judge D'Artagnan"
+LANG_ENGLISHARABIC       "Judge D'Artagnan"
 
 REFERENCE           	TRIAL_ATHOS_NAME
-LANG_ENGLISH_ARABIC       "Judge Athos"
+LANG_ENGLISHARABIC       "Judge Athos"
 
-REFERENCE           	TRIAL_HINTSTRING_START
-LANG_ENGLISH_ARABIC       "Press ^3[{+activate}]^7 for "
+REFERENCE           	TRIAL_HINTSTRING
+LANG_ENGLISHARABIC       "Press ^3[{+activate}]^7 for &&1\nMelee for next GargoyleGum"
 
-REFERENCE           	TRIAL_HINTSTRING_BRIBE_START
-LANG_ENGLISH_ARABIC       "Press ^3[{+activate}]^7 to Bribe for "
+REFERENCE           	TRIAL_HINTSTRING_UNAVAILABLE
+LANG_ENGLISHARABIC       "&&1 unavailable\nCheck Journal to view Gargoyle Trial progress\nMelee for next GargoyleGum"
 
-REFERENCE           	TRIAL_HINTSTRING_VALUE
-LANG_ENGLISH_ARABIC       " [Quantity: "
-
-REFERENCE           	TRIAL_HINTSTRING_BRIBE_VALUE
-LANG_ENGLISH_ARABIC       " [Cost: "
+REFERENCE           	TRIAL_HINTSTRING_BRIBE
+LANG_ENGLISHARABIC       "Press ^3[{+activate}]^7 to Bribe for &&1 [Cost: &&2]\nMelee for next GargoyleGum"
 
 REFERENCE           	TRIAL_HINTSTRING_NEXT
-LANG_ENGLISH_ARABIC       "\nMelee for next GargoyleGum\n"
+LANG_ENGLISHARABIC       "\nMelee for next GargoyleGum"
 
 REFERENCE           	TRIAL_BRIBE_PICKUP
-LANG_ENGLISH_ARABIC       "Press ^3[{+activate}]^7 for Bribe"
+LANG_ENGLISHARABIC       "Press ^3[{+activate}]^7 for Bribe"
 
 REFERENCE           	TRIAL_BRIBE_PICKUP_MAX
-LANG_ENGLISH_ARABIC       "Cannot hold more Bribes"
+LANG_ENGLISHARABIC       "Cannot hold more Bribes"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS0
-LANG_ENGLISH_ARABIC       ": “Hi, I’m Judge Aramis, but you can just call me Aramis!\nI see a lot of potential in you!”"
+LANG_ENGLISHARABIC       "Judge Aramis: “Hi, I’m Judge Aramis, but you can just call me Aramis!\nI see a lot of potential in you!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS1
-LANG_ENGLISH_ARABIC       ": “You’re already off to a hot start!”"
+LANG_ENGLISHARABIC       "Aramis: “You’re already off to a hot start!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS2
-LANG_ENGLISH_ARABIC       ": “Nice work!”"
+LANG_ENGLISHARABIC       "Aramis: “Nice work!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS3
-LANG_ENGLISH_ARABIC       ": “Yo! Champ in the making! Sorry, I hope that wasn’t weird...”"
+LANG_ENGLISHARABIC       "Aramis: “Yo! Champ in the making! Sorry, I hope that wasn’t weird...”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS4
-LANG_ENGLISH_ARABIC       ": “Wowzers!! I knew you were something special!”"
+LANG_ENGLISHARABIC       "Aramis: “Wowzers!! I knew you were something special!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS10
-LANG_ENGLISH_ARABIC       ": “I can’t believe what I’m watching!\nThis is like a top class motion picture!”"
+LANG_ENGLISHARABIC       "Aramis: “I can’t believe what I’m watching!\nThis is like a top class motion picture!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS15
-LANG_ENGLISH_ARABIC       ": “I’m going to write an ode to your greatness!”"
+LANG_ENGLISHARABIC       "Aramis: “I’m going to write an ode to your greatness!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS25
-LANG_ENGLISH_ARABIC       ": “Oh my, you made it to Round 115!! That’s my favorite number!”"
+LANG_ENGLISHARABIC       "Aramis: “Oh my, you made it to Round 115!! That’s my favorite number!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE1
-LANG_ENGLISH_ARABIC       ": “Thanks for the gold! Hope you enjoy what I gave you!”"
+LANG_ENGLISHARABIC       "Aramis: “Thanks for the gold! Hope you enjoy what I gave you!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE2
-LANG_ENGLISH_ARABIC       ": “More gold, nice!”"
+LANG_ENGLISHARABIC       "Aramis: “More gold, nice!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE3
-LANG_ENGLISH_ARABIC       ": “Aww, aren’t you sweet?”"
+LANG_ENGLISHARABIC       "Aramis: “Aww, aren’t you sweet?”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE4
-LANG_ENGLISH_ARABIC       ": “You shouldn’t have...”"
+LANG_ENGLISHARABIC       "Aramis: “You shouldn’t have...”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE5
-LANG_ENGLISH_ARABIC       ": “What a generous soul you are!”"
+LANG_ENGLISHARABIC       "Aramis: “What a generous soul you are!”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS0
-LANG_ENGLISH_ARABIC       ": “Are you willing to do what it takes to be a true marksman?”"
+LANG_ENGLISHARABIC       "Judge Porthos: “Are you willing to do what it takes to be a true marksman?”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS1
-LANG_ENGLISH_ARABIC       ": “This is just the beginning.\nYou have yet much ground to travel on your sharpshooting journey.”"
+LANG_ENGLISHARABIC       "Judge Porthos: “This is just the beginning.\nYou have yet much ground to travel on your sharpshooting journey.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS2
-LANG_ENGLISH_ARABIC       ": “If you are to proceed along the path of a deadshot,\ndaiquiri doubles as an effective aiming partner.”"
+LANG_ENGLISHARABIC       "Judge Porthos: “If you are to proceed along the path of a deadshot,\ndaiquiri doubles as an effective aiming partner.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS3
-LANG_ENGLISH_ARABIC       ": “It seems you have taken well to the craft of precision.”"
+LANG_ENGLISHARABIC       "Judge Porthos: “It seems you have taken well to the craft of precision.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS4
-LANG_ENGLISH_ARABIC       ": “At last, you have attained the rank of a true marksman!”"
+LANG_ENGLISHARABIC       "Judge Porthos: “At last, you have attained the rank of a true marksman!”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS10
-LANG_ENGLISH_ARABIC       ": “Wonderful work!\nI’ll be extending you an invite to my rifle club shortly.”"
+LANG_ENGLISHARABIC       "Judge Porthos: “Wonderful work!\nI’ll be extending you an invite to my rifle club shortly.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS15
-LANG_ENGLISH_ARABIC       ": “You’re cementing your place in the history books!”"
+LANG_ENGLISHARABIC       "Judge Porthos: “You’re cementing your place in the history books!”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS25
-LANG_ENGLISH_ARABIC       ": “It is my pleasure to crown you as\nthe greatest marksman of all time!”"
+LANG_ENGLISHARABIC       "Judge Porthos: “It is my pleasure to crown you as\nthe greatest marksman of all time!”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE1
-LANG_ENGLISH_ARABIC       ": “Hmmph. A real marksman would never take shortcuts.”"
+LANG_ENGLISHARABIC       "Judge Porthos: “Hmmph. A real marksman would never take shortcuts.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE2
-LANG_ENGLISH_ARABIC       ": “Is this any way for a sharpshooter to conduct themselves?”"
+LANG_ENGLISHARABIC       "Judge Porthos: “Is this any way for a sharpshooter to conduct themselves?”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE3
-LANG_ENGLISH_ARABIC       ": “Entirely undignified.”"
+LANG_ENGLISHARABIC       "Judge Porthos: “Entirely undignified.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE4
-LANG_ENGLISH_ARABIC       ": “I don’t even know what to say at this point.”"
+LANG_ENGLISHARABIC       "Judge Porthos: “I don’t even know what to say at this point.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE5
-LANG_ENGLISH_ARABIC       ": “Where are you even getting all this money?”"
+LANG_ENGLISHARABIC       "Judge Porthos: “Where are you even getting all this money?”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART0
-LANG_ENGLISH_ARABIC       ": “Look at you, so innocent and pure… that must change.\nGet your hands dirty!”"
+LANG_ENGLISHARABIC       "Judge D'Artagnan: “Look at you, so innocent and pure… that must change.\nGet your hands dirty!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART1
-LANG_ENGLISH_ARABIC       ": “Good… good… do not hesitate to delve further\ninto the blood of your enemies.”"
+LANG_ENGLISHARABIC       "Judge D'Artagnan: “Good… good… do not hesitate to delve further\ninto the blood of your enemies.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART2
-LANG_ENGLISH_ARABIC       ": “More! More! More bloodshed!”"
+LANG_ENGLISHARABIC       "Judge D'Artagnan: “More! More! More bloodshed!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART3
-LANG_ENGLISH_ARABIC       ": “SWISH SWHOOSH STAB! STAB STAB STAB!”"
+LANG_ENGLISHARABIC       "Judge D'Artagnan: “SWISH SWHOOSH STAB! STAB STAB STAB!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART4
-LANG_ENGLISH_ARABIC       ": “The scent of your vanquished foes is just... so... intoxicating!\nBWAHAHAHA!”"
+LANG_ENGLISHARABIC       "Judge D'Artagnan: “The scent of your vanquished foes is just... so... intoxicating!\nBWAHAHAHA!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART10
-LANG_ENGLISH_ARABIC       ": “Isn’t total annihilation simply beautiful?”"
+LANG_ENGLISHARABIC       "Judge D'Artagnan: “Isn’t total annihilation simply beautiful?”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART15
-LANG_ENGLISH_ARABIC       ": “Your brutality rivals that of The Doctor!\nOh, you've never heard of him?”"
+LANG_ENGLISHARABIC       "Judge D'Artagnan: “Your brutality rivals that of The Doctor!\nOh, you've never heard of him?”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART25
-LANG_ENGLISH_ARABIC       ": “You know I love your murderous spirit,\nbut maybe you should take a break at this point.”"
+LANG_ENGLISHARABIC       "Judge D'Artagnan: “You know I love your murderous spirit,\nbut maybe you should take a break at this point.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE1
-LANG_ENGLISH_ARABIC       ": “This is a little too sterile for me.”"
+LANG_ENGLISHARABIC       "Judge D'Artagnan: “This is a little too sterile for me.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE2
-LANG_ENGLISH_ARABIC       ": “This is so humdrum! You know what I crave.”"
+LANG_ENGLISHARABIC       "Judge D'Artagnan: “This is so humdrum! You know what I crave.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE3
-LANG_ENGLISH_ARABIC       ": “I’m just going to tell myself that this is blood money.”"
+LANG_ENGLISHARABIC       "Judge D'Artagnan: “I’m just going to tell myself that this is blood money.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE4
-LANG_ENGLISH_ARABIC       ": “Whose slaughter generated this wealth?\nNo — don’t tell me. It’s more fun to imagine!”"
+LANG_ENGLISHARABIC       "Judge D'Artagnan: “Whose slaughter generated this wealth?\nNo — don’t tell me. It’s more fun to imagine!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE5
-LANG_ENGLISH_ARABIC       ": “It’s a wonder what reframing can do for the mind.\nI feel so much better about accepting these bribes now!”"
+LANG_ENGLISHARABIC       "Judge D'Artagnan: “It’s a wonder what reframing can do for the mind.\nI feel so much better about accepting these bribes now!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS0
-LANG_ENGLISH_ARABIC       ": “Pathetic creature! You are most certainly not worthy of anything!”"
+LANG_ENGLISHARABIC       "Judge Athos: “Pathetic creature! You are most certainly not worthy of anything!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS1
-LANG_ENGLISH_ARABIC       ": “I suppose you think you’re some hotshot now.\nNo. You. Are. Nothing.”"
+LANG_ENGLISHARABIC       "Judge Athos: “I suppose you think you’re some hotshot now.\nNo. You. Are. Nothing.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS2
-LANG_ENGLISH_ARABIC       ": “I guess you’ve managed to luck your way this far.\nTake your reward and get out of my sight.”"
+LANG_ENGLISHARABIC       "Judge Athos: “I guess you’ve managed to luck your way this far.\nTake your reward and get out of my sight.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS3
-LANG_ENGLISH_ARABIC       ": “Have I been applying my standards incorrectly?\nNo, it’s these scoundrel that are wrong!”"
+LANG_ENGLISHARABIC       "Judge Athos: “Have I been applying my standards incorrectly?\nNo, it’s these scoundrel that are wrong!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS4
-LANG_ENGLISH_ARABIC       ": “Ugh, fine, I guess I maybe sort of misjudged you...”"
+LANG_ENGLISHARABIC       "Judge Athos: “Ugh, fine, I guess I maybe sort of misjudged you...”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS10
-LANG_ENGLISH_ARABIC       ": “Go ahead, rub it in.”"
+LANG_ENGLISHARABIC       "Judge Athos: “Go ahead, rub it in.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS15
-LANG_ENGLISH_ARABIC       ": “Enough already!”"
+LANG_ENGLISHARABIC       "Judge Athos: “Enough already!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS25
-LANG_ENGLISH_ARABIC       ": “I don’t have anything more to say.\nI hope you’re pleased with yourself.”"
+LANG_ENGLISHARABIC       "Judge Athos: “I don’t have anything more to say.\nI hope you’re pleased with yourself.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE1
-LANG_ENGLISH_ARABIC       ": “I feel dirty accepting anything from you.”"
+LANG_ENGLISHARABIC       "Judge Athos: “I feel dirty accepting anything from you.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE2
-LANG_ENGLISH_ARABIC       ": “I suppose you’ve lived a comfortable life, haven’t you?\nExplains your weak character.”"
+LANG_ENGLISHARABIC       "Judge Athos: “I suppose you’ve lived a comfortable life, haven’t you?\nExplains your weak character.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE3
-LANG_ENGLISH_ARABIC       ": “I’ll have you know this is illegal.\nWhen the authorities return, I’ll be reporting you.”"
+LANG_ENGLISHARABIC       "Judge Athos: “I’ll have you know this is illegal.\nWhen the authorities return, I’ll be reporting you.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE4
-LANG_ENGLISH_ARABIC       ": “Can I bribe you to never come back?”"
+LANG_ENGLISHARABIC       "Judge Athos: “Can I bribe you to never come back?”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE5
-LANG_ENGLISH_ARABIC       ": “I wish you’d just die already.”"
+LANG_ENGLISHARABIC       "Judge Athos: “I wish you’d just die already.”"
 
 REFERENCE           	TRIAL_RANDOM_GUM
-LANG_ENGLISH_ARABIC       "Random GargoyleGum"
+LANG_ENGLISHARABIC       "Mystery GargoyleGum"
 
 REFERENCE           	TRIAL_ARAMIS_DESC
-LANG_ENGLISH_ARABIC       "Complete Rounds"
+LANG_ENGLISHARABIC       "Complete Rounds"
 
 REFERENCE           	TRIAL_PORTHOS_DESC
-LANG_ENGLISH_ARABIC       "Obtain Headshot Kills"
+LANG_ENGLISHARABIC       "Obtain Headshot Kills"
 
 REFERENCE           	TRIAL_DART_DESC
-LANG_ENGLISH_ARABIC       "Obtain Melee Kills"
+LANG_ENGLISHARABIC       "Obtain Melee Kills"
 
 REFERENCE           	TRIAL_ATHOS_DESC
-LANG_ENGLISH_ARABIC       "Unknown Trial"
+LANG_ENGLISHARABIC       "Unknown Trial"
 
 REFERENCE           	TRIAL_ATHOS_NEW_TRIAL
-LANG_ENGLISH_ARABIC       " (New Trial in "
+LANG_ENGLISHARABIC       " (New Trial in "
 
 REFERENCE           	TRIAL_ATHOS_NEW_TRIAL_END
-LANG_ENGLISH_ARABIC       " Rounds)"
+LANG_ENGLISHARABIC       " Rounds)"
 
 REFERENCE           	TRIAL_ATHOS_NEW_TRIAL_SING_END
-LANG_ENGLISH_ARABIC       " Round)"
+LANG_ENGLISHARABIC       " Round)"
+
+REFERENCE           	TRIAL_ATHOS_WAYPOINTS
+LANG_ENGLISHARABIC       "^3[{+activate}]^7 Toggle Athos Waypoints"
+
+REFERENCE           	TRIAL_ATHOS_WAYPOINTS_ON
+LANG_ENGLISHARABIC       "ON"
+
+REFERENCE           	TRIAL_ATHOS_WAYPOINTS_OFF
+LANG_ENGLISHARABIC       "OFF"
 
 REFERENCE           	TRIAL_ATHOS_DESC_WALLBUY
-LANG_ENGLISH_ARABIC       "Obtain Kills with the "
+LANG_ENGLISHARABIC       "Obtain Kills with the "
 
 REFERENCE           	TRIAL_ATHOS_DESC_BOX
-LANG_ENGLISH_ARABIC       "Obtain Kills with a Weapon newly acquired from the Mystery Box"
+LANG_ENGLISHARABIC       "Obtain Kills with a Weapon newly acquired from the Mystery Box"
 
 REFERENCE           	TRIAL_ATHOS_DESC_ELEVATION
-LANG_ENGLISH_ARABIC       "Obtain Kills from a Higher Elevation"
+LANG_ENGLISHARABIC       "Obtain Kills from a Higher Elevation"
 
 REFERENCE           	TRIAL_ATHOS_DESC_AASSAULT
-LANG_ENGLISH_ARABIC       "Obtain Kills in the "
+LANG_ENGLISHARABIC       "Obtain Kills in the "
 
 REFERENCE           	TRIAL_ATHOS_DESC_CROUCH
-LANG_ENGLISH_ARABIC       "Obtain Kills while Crouched"
+LANG_ENGLISHARABIC       "Obtain Kills while Crouched"
 
 REFERENCE           	TRIAL_ATHOS_DESC_TRAP
-LANG_ENGLISH_ARABIC       "Obtain Trap Kills"
+LANG_ENGLISHARABIC       "Obtain Trap Kills"
 
 REFERENCE           	TRIAL_ATHOS_DESC_BLOOD_VIAL
-LANG_ENGLISH_ARABIC       "Fill Blood Vials"
+LANG_ENGLISHARABIC       "Fill Blood Vials"
 
 REFERENCE           	ROOM_SPAWN_ROOM
-LANG_ENGLISH_ARABIC       	"Spawn Room"
+LANG_ENGLISHARABIC       	"Spawn Room"
 
 REFERENCE           	ROOM_STAMINARCH
-LANG_ENGLISH_ARABIC       	"Staminarch"
+LANG_ENGLISHARABIC       	"Staminarch"
 
 REFERENCE           	ROOM_WATER_TOWER
-LANG_ENGLISH_ARABIC       	"Water Tower"
+LANG_ENGLISHARABIC       	"Water Tower"
 
 REFERENCE           	ROOM_CLEAN_ROOM
-LANG_ENGLISH_ARABIC       	"Clean Room"
+LANG_ENGLISHARABIC       	"Clean Room"
 
 REFERENCE           	ROOM_LION_ROOM
-LANG_ENGLISH_ARABIC       	"Lion Room"
+LANG_ENGLISHARABIC       	"Lion Room"
 
 REFERENCE           	ROOM_DOWNSTAIRS_ROOM
-LANG_ENGLISH_ARABIC       	"Downstairs Room"
+LANG_ENGLISHARABIC       	"Downstairs Room"
 
 REFERENCE           	ROOM_CRASH_SITE
-LANG_ENGLISH_ARABIC       	"Crash Site"
+LANG_ENGLISHARABIC       	"Crash Site"
 
 REFERENCE           	ROOM_RED_ROOM
-LANG_ENGLISH_ARABIC       	"Red Room"
+LANG_ENGLISHARABIC       	"Red Room"
 
 REFERENCE           	ROOM_BELL_TOWER
-LANG_ENGLISH_ARABIC       	"Bell Tower"
+LANG_ENGLISHARABIC       	"Bell Tower"
 
 REFERENCE           	ROOM_RADIO_GALLERY
-LANG_ENGLISH_ARABIC       	"Radio Gallery"
+LANG_ENGLISHARABIC       	"Radio Gallery"
 
 REFERENCE           	ROOM_SCAFFOLDING
-LANG_ENGLISH_ARABIC       	"Scaffolding"
+LANG_ENGLISHARABIC       	"Scaffolding"
 
 REFERENCE           	ROOM_CHOIR
-LANG_ENGLISH_ARABIC       	"Choir"
+LANG_ENGLISHARABIC       	"Choir"
 
 REFERENCE           	ROOM_CENTRE
-LANG_ENGLISH_ARABIC       	"Centre"
+LANG_ENGLISHARABIC       	"Centre"
 
 REFERENCE           	ROOM_BASILICA
-LANG_ENGLISH_ARABIC       	"Basilica"
+LANG_ENGLISHARABIC       	"Basilica"
 
 REFERENCE           	ROOM_AIRFIELD
-LANG_ENGLISH_ARABIC       	"Airfield"
+LANG_ENGLISHARABIC       	"Airfield"
 
 REFERENCE           	ROOM_DORMITORY
-LANG_ENGLISH_ARABIC       	"Dormitory"
+LANG_ENGLISHARABIC       	"Dormitory"
 
 REFERENCE           	ROOM_CLOITRE
-LANG_ENGLISH_ARABIC       	"Cloitre"
+LANG_ENGLISHARABIC       	"Cloitre"
 
 REFERENCE           	ROOM_MERVEILLE
-LANG_ENGLISH_ARABIC       	"Merveille de Verite"
+LANG_ENGLISHARABIC       	"Merveille de Verite"
 
 REFERENCE           	ROOM_GUARD_TOWER
-LANG_ENGLISH_ARABIC       	"Guard Tower"
+LANG_ENGLISHARABIC       	"Guard Tower"
 
 REFERENCE           	ROOM_COURTYARD
-LANG_ENGLISH_ARABIC       	"Courtyard"
+LANG_ENGLISHARABIC       	"Courtyard"
 
 REFERENCE           	ROOM_COURTROOM
-LANG_ENGLISH_ARABIC       	"Courtroom"
+LANG_ENGLISHARABIC       	"Courtroom"
 
 REFERENCE           	ROOM_VERITE_LIBRARY
-LANG_ENGLISH_ARABIC       	"Verite Library"
+LANG_ENGLISHARABIC       	"Verite Library"
 
 REFERENCE           	ROOM_LOWER_PILGRIMAGE
-LANG_ENGLISH_ARABIC       	"Lower Pilgrimage Stairs"
+LANG_ENGLISHARABIC       	"Lower Pilgrimage Stairs"
 
 REFERENCE           	ROOM_CATWALK
-LANG_ENGLISH_ARABIC       	"Catwalk"
+LANG_ENGLISHARABIC       	"Catwalk"
 
 REFERENCE           	ROOM_BRIDGE
-LANG_ENGLISH_ARABIC       	"Bridge"
+LANG_ENGLISHARABIC       	"Bridge"
 
 REFERENCE           	ROOM_URM_LABORATORY
-LANG_ENGLISH_ARABIC       	"URM Laboratory"
+LANG_ENGLISHARABIC       	"URM Laboratory"
 
 REFERENCE           	ROOM_UPPER_PILGRIMAGE
-LANG_ENGLISH_ARABIC       	"Upper Pilgrimage Stairs"
+LANG_ENGLISHARABIC       	"Upper Pilgrimage Stairs"
 
 REFERENCE           	ROOM_MIDDLE_PILGRIMAGE
-LANG_ENGLISH_ARABIC       	"Middle Pilgrimage Stairs"
+LANG_ENGLISHARABIC       	"Middle Pilgrimage Stairs"
 
 REFERENCE           	ROOM_BRIDGE_V2
-LANG_ENGLISH_ARABIC       	"Bridge v2"
+LANG_ENGLISHARABIC       	"Bridge v2"
 
 REFERENCE           	ROOM_KNIGHTS_HALL
-LANG_ENGLISH_ARABIC       	"Knight's Hall"
+LANG_ENGLISHARABIC       	"Knight's Hall"
 
 REFERENCE           	ROOM_NO_MANS_LAND
-LANG_ENGLISH_ARABIC       	"No Man's Land"
+LANG_ENGLISHARABIC       	"No Man's Land"
+
+REFERENCE           	ROOM_ALLEYWAY
+LANG_ENGLISHARABIC       	"Allleyway"
 
 REFERENCE           	SB_POINTS
-LANG_ENGLISH_ARABIC       	"Points"
+LANG_ENGLISHARABIC       	"Points"
 
 REFERENCE           	SB_KILLS
-LANG_ENGLISH_ARABIC       	"Kills"
+LANG_ENGLISHARABIC       	"Kills"
 
 REFERENCE           	SB_DOWNS
-LANG_ENGLISH_ARABIC       	"Downs"
+LANG_ENGLISHARABIC       	"Downs"
 
 REFERENCE           	SB_REVIVES
-LANG_ENGLISH_ARABIC       	"Revives"
+LANG_ENGLISHARABIC       	"Revives"
 
 REFERENCE           	SB_HEADSHOTS
-LANG_ENGLISH_ARABIC       	"Headshots"
+LANG_ENGLISHARABIC       	"Headshots"
 
 ENDMARKER

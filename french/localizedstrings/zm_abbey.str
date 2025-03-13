@@ -90,7 +90,7 @@ REFERENCE           	JOURNAL_HEADER_CHALLENGE
 LANG_FRENCH       "Perk Challenges"
 
 REFERENCE           	JOURNAL_HEADER_BGB
-LANG_FRENCH       "Divinium Trials"
+LANG_FRENCH       "Gargoyle Trials"
 
 REFERENCE           	JOURNAL_HEADER_PERKBP
 LANG_FRENCH       "Perk Blueprints"
@@ -164,9 +164,6 @@ LANG_FRENCH       "Active: Progress resets next round"
 REFERENCE           	TRIAL_ARAMIS_NAME
 LANG_FRENCH       	"Judge Aramis"
 
-REFERENCE           	TRIAL_ARAMIS_NAME_SHORT
-LANG_FRENCH       	"Aramis"
-
 REFERENCE           	TRIAL_PORTHOS_NAME
 LANG_FRENCH       "Judge Porthos"
 
@@ -176,20 +173,17 @@ LANG_FRENCH       "Judge D'Artagnan"
 REFERENCE           	TRIAL_ATHOS_NAME
 LANG_FRENCH       "Judge Athos"
 
-REFERENCE           	TRIAL_HINTSTRING_START
-LANG_FRENCH       "Press ^3[{+activate}]^7 for "
+REFERENCE           	TRIAL_HINTSTRING
+LANG_FRENCH       "Press ^3[{+activate}]^7 for &&1\nMelee for next GargoyleGum"
 
-REFERENCE           	TRIAL_HINTSTRING_BRIBE_START
-LANG_FRENCH       "Press ^3[{+activate}]^7 to Bribe for "
+REFERENCE           	TRIAL_HINTSTRING_UNAVAILABLE
+LANG_FRENCH       "&&1 unavailable\nCheck Journal to view Gargoyle Trial progress\nMelee for next GargoyleGum"
 
-REFERENCE           	TRIAL_HINTSTRING_VALUE
-LANG_FRENCH       " [Quantity: "
-
-REFERENCE           	TRIAL_HINTSTRING_BRIBE_VALUE
-LANG_FRENCH       " [Cost: "
+REFERENCE           	TRIAL_HINTSTRING_BRIBE
+LANG_FRENCH       "Press ^3[{+activate}]^7 to Bribe for &&1 [Cost: &&2]\nMelee for next GargoyleGum"
 
 REFERENCE           	TRIAL_HINTSTRING_NEXT
-LANG_FRENCH       "\nMelee for next GargoyleGum\n"
+LANG_FRENCH       "\nMelee for next GargoyleGum"
 
 REFERENCE           	TRIAL_BRIBE_PICKUP
 LANG_FRENCH       "Press ^3[{+activate}]^7 for Bribe"
@@ -198,163 +192,163 @@ REFERENCE           	TRIAL_BRIBE_PICKUP_MAX
 LANG_FRENCH       "Cannot hold more Bribes"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS0
-LANG_FRENCH       ": “Hi, I’m Judge Aramis, but you can just call me Aramis!\nI see a lot of potential in you!”"
+LANG_FRENCH       "Judge Aramis: “Hi, I’m Judge Aramis, but you can just call me Aramis!\nI see a lot of potential in you!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS1
-LANG_FRENCH       ": “You’re already off to a hot start!”"
+LANG_FRENCH       "Aramis: “You’re already off to a hot start!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS2
-LANG_FRENCH       ": “Nice work!”"
+LANG_FRENCH       "Aramis: “Nice work!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS3
-LANG_FRENCH       ": “Yo! Champ in the making! Sorry, I hope that wasn’t weird...”"
+LANG_FRENCH       "Aramis: “Yo! Champ in the making! Sorry, I hope that wasn’t weird...”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS4
-LANG_FRENCH       ": “Wowzers!! I knew you were something special!”"
+LANG_FRENCH       "Aramis: “Wowzers!! I knew you were something special!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS10
-LANG_FRENCH       ": “I can’t believe what I’m watching!\nThis is like a top class motion picture!”"
+LANG_FRENCH       "Aramis: “I can’t believe what I’m watching!\nThis is like a top class motion picture!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS15
-LANG_FRENCH       ": “I’m going to write an ode to your greatness!”"
+LANG_FRENCH       "Aramis: “I’m going to write an ode to your greatness!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS25
-LANG_FRENCH       ": “Oh my, you made it to Round 115!! That’s my favorite number!”"
+LANG_FRENCH       "Aramis: “Oh my, you made it to Round 115!! That’s my favorite number!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE1
-LANG_FRENCH       ": “Thanks for the gold! Hope you enjoy what I gave you!”"
+LANG_FRENCH       "Aramis: “Thanks for the gold! Hope you enjoy what I gave you!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE2
-LANG_FRENCH       ": “More gold, nice!”"
+LANG_FRENCH       "Aramis: “More gold, nice!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE3
-LANG_FRENCH       ": “Aww, aren’t you sweet?”"
+LANG_FRENCH       "Aramis: “Aww, aren’t you sweet?”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE4
-LANG_FRENCH       ": “You shouldn’t have...”"
+LANG_FRENCH       "Aramis: “You shouldn’t have...”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE5
-LANG_FRENCH       ": “What a generous soul you are!”"
+LANG_FRENCH       "Aramis: “What a generous soul you are!”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS0
-LANG_FRENCH       ": “Are you willing to do what it takes to be a true marksman?”"
+LANG_FRENCH       "Judge Porthos: “Are you willing to do what it takes to be a true marksman?”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS1
-LANG_FRENCH       ": “This is just the beginning.\nYou have yet much ground to travel on your sharpshooting journey.”"
+LANG_FRENCH       "Judge Porthos: “This is just the beginning.\nYou have yet much ground to travel on your sharpshooting journey.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS2
-LANG_FRENCH       ": “If you are to proceed along the path of a deadshot,\ndaiquiri doubles as an effective aiming partner.”"
+LANG_FRENCH       "Judge Porthos: “If you are to proceed along the path of a deadshot,\ndaiquiri doubles as an effective aiming partner.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS3
-LANG_FRENCH       ": “It seems you have taken well to the craft of precision.”"
+LANG_FRENCH       "Judge Porthos: “It seems you have taken well to the craft of precision.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS4
-LANG_FRENCH       ": “At last, you have attained the rank of a true marksman!”"
+LANG_FRENCH       "Judge Porthos: “At last, you have attained the rank of a true marksman!”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS10
-LANG_FRENCH       ": “Wonderful work!\nI’ll be extending you an invite to my rifle club shortly.”"
+LANG_FRENCH       "Judge Porthos: “Wonderful work!\nI’ll be extending you an invite to my rifle club shortly.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS15
-LANG_FRENCH       ": “You’re cementing your place in the history books!”"
+LANG_FRENCH       "Judge Porthos: “You’re cementing your place in the history books!”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS25
-LANG_FRENCH       ": “It is my pleasure to crown you as\nthe greatest marksman of all time!”"
+LANG_FRENCH       "Judge Porthos: “It is my pleasure to crown you as\nthe greatest marksman of all time!”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE1
-LANG_FRENCH       ": “Hmmph. A real marksman would never take shortcuts.”"
+LANG_FRENCH       "Judge Porthos: “Hmmph. A real marksman would never take shortcuts.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE2
-LANG_FRENCH       ": “Is this any way for a sharpshooter to conduct themselves?”"
+LANG_FRENCH       "Judge Porthos: “Is this any way for a sharpshooter to conduct themselves?”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE3
-LANG_FRENCH       ": “Entirely undignified.”"
+LANG_FRENCH       "Judge Porthos: “Entirely undignified.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE4
-LANG_FRENCH       ": “I don’t even know what to say at this point.”"
+LANG_FRENCH       "Judge Porthos: “I don’t even know what to say at this point.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE5
-LANG_FRENCH       ": “Where are you even getting all this money?”"
+LANG_FRENCH       "Judge Porthos: “Where are you even getting all this money?”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART0
-LANG_FRENCH       ": “Look at you, so innocent and pure… that must change.\nGet your hands dirty!”"
+LANG_FRENCH       "Judge D'Artagnan: “Look at you, so innocent and pure… that must change.\nGet your hands dirty!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART1
-LANG_FRENCH       ": “Good… good… do not hesitate to delve further\ninto the blood of your enemies.”"
+LANG_FRENCH       "Judge D'Artagnan: “Good… good… do not hesitate to delve further\ninto the blood of your enemies.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART2
-LANG_FRENCH       ": “More! More! More bloodshed!”"
+LANG_FRENCH       "Judge D'Artagnan: “More! More! More bloodshed!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART3
-LANG_FRENCH       ": “SWISH SWHOOSH STAB! STAB STAB STAB!”"
+LANG_FRENCH       "Judge D'Artagnan: “SWISH SWHOOSH STAB! STAB STAB STAB!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART4
-LANG_FRENCH       ": “The scent of your vanquished foes is just... so... intoxicating!\nBWAHAHAHA!”"
+LANG_FRENCH       "Judge D'Artagnan: “The scent of your vanquished foes is just... so... intoxicating!\nBWAHAHAHA!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART10
-LANG_FRENCH       ": “Isn’t total annihilation simply beautiful?”"
+LANG_FRENCH       "Judge D'Artagnan: “Isn’t total annihilation simply beautiful?”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART15
-LANG_FRENCH       ": “Your brutality rivals that of The Doctor!\nOh, you've never heard of him?”"
+LANG_FRENCH       "Judge D'Artagnan: “Your brutality rivals that of The Doctor!\nOh, you've never heard of him?”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART25
-LANG_FRENCH       ": “You know I love your murderous spirit,\nbut maybe you should take a break at this point.”"
+LANG_FRENCH       "Judge D'Artagnan: “You know I love your murderous spirit,\nbut maybe you should take a break at this point.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE1
-LANG_FRENCH       ": “This is a little too sterile for me.”"
+LANG_FRENCH       "Judge D'Artagnan: “This is a little too sterile for me.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE2
-LANG_FRENCH       ": “This is so humdrum! You know what I crave.”"
+LANG_FRENCH       "Judge D'Artagnan: “This is so humdrum! You know what I crave.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE3
-LANG_FRENCH       ": “I’m just going to tell myself that this is blood money.”"
+LANG_FRENCH       "Judge D'Artagnan: “I’m just going to tell myself that this is blood money.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE4
-LANG_FRENCH       ": “Whose slaughter generated this wealth?\nNo — don’t tell me. It’s more fun to imagine!”"
+LANG_FRENCH       "Judge D'Artagnan: “Whose slaughter generated this wealth?\nNo — don’t tell me. It’s more fun to imagine!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE5
-LANG_FRENCH       ": “It’s a wonder what reframing can do for the mind.\nI feel so much better about accepting these bribes now!”"
+LANG_FRENCH       "Judge D'Artagnan: “It’s a wonder what reframing can do for the mind.\nI feel so much better about accepting these bribes now!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS0
-LANG_FRENCH       ": “Pathetic creature! You are most certainly not worthy of anything!”"
+LANG_FRENCH       "Judge Athos: “Pathetic creature! You are most certainly not worthy of anything!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS1
-LANG_FRENCH       ": “I suppose you think you’re some hotshot now.\nNo. You. Are. Nothing.”"
+LANG_FRENCH       "Judge Athos: “I suppose you think you’re some hotshot now.\nNo. You. Are. Nothing.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS2
-LANG_FRENCH       ": “I guess you’ve managed to luck your way this far.\nTake your reward and get out of my sight.”"
+LANG_FRENCH       "Judge Athos: “I guess you’ve managed to luck your way this far.\nTake your reward and get out of my sight.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS3
-LANG_FRENCH       ": “Have I been applying my standards incorrectly?\nNo, it’s these scoundrel that are wrong!”"
+LANG_FRENCH       "Judge Athos: “Have I been applying my standards incorrectly?\nNo, it’s these scoundrel that are wrong!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS4
-LANG_FRENCH       ": “Ugh, fine, I guess I maybe sort of misjudged you...”"
+LANG_FRENCH       "Judge Athos: “Ugh, fine, I guess I maybe sort of misjudged you...”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS10
-LANG_FRENCH       ": “Go ahead, rub it in.”"
+LANG_FRENCH       "Judge Athos: “Go ahead, rub it in.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS15
-LANG_FRENCH       ": “Enough already!”"
+LANG_FRENCH       "Judge Athos: “Enough already!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS25
-LANG_FRENCH       ": “I don’t have anything more to say.\nI hope you’re pleased with yourself.”"
+LANG_FRENCH       "Judge Athos: “I don’t have anything more to say.\nI hope you’re pleased with yourself.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE1
-LANG_FRENCH       ": “I feel dirty accepting anything from you.”"
+LANG_FRENCH       "Judge Athos: “I feel dirty accepting anything from you.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE2
-LANG_FRENCH       ": “I suppose you’ve lived a comfortable life, haven’t you?\nExplains your weak character.”"
+LANG_FRENCH       "Judge Athos: “I suppose you’ve lived a comfortable life, haven’t you?\nExplains your weak character.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE3
-LANG_FRENCH       ": “I’ll have you know this is illegal.\nWhen the authorities return, I’ll be reporting you.”"
+LANG_FRENCH       "Judge Athos: “I’ll have you know this is illegal.\nWhen the authorities return, I’ll be reporting you.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE4
-LANG_FRENCH       ": “Can I bribe you to never come back?”"
+LANG_FRENCH       "Judge Athos: “Can I bribe you to never come back?”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE5
-LANG_FRENCH       ": “I wish you’d just die already.”"
+LANG_FRENCH       "Judge Athos: “I wish you’d just die already.”"
 
 REFERENCE           	TRIAL_RANDOM_GUM
-LANG_FRENCH       "Random GargoyleGum"
+LANG_FRENCH       "Mystery GargoyleGum"
 
 REFERENCE           	TRIAL_ARAMIS_DESC
 LANG_FRENCH       "Complete Rounds"
@@ -376,6 +370,15 @@ LANG_FRENCH       " Rounds)"
 
 REFERENCE           	TRIAL_ATHOS_NEW_TRIAL_SING_END
 LANG_FRENCH       " Round)"
+
+REFERENCE           	TRIAL_ATHOS_WAYPOINTS
+LANG_FRENCH       "^3[{+activate}]^7 Toggle Athos Waypoints"
+
+REFERENCE           	TRIAL_ATHOS_WAYPOINTS_ON
+LANG_FRENCH       "ON"
+
+REFERENCE           	TRIAL_ATHOS_WAYPOINTS_OFF
+LANG_FRENCH       "OFF"
 
 REFERENCE           	TRIAL_ATHOS_DESC_WALLBUY
 LANG_FRENCH       "Obtain Kills with the "
@@ -490,6 +493,9 @@ LANG_FRENCH       	"Knight's Hall"
 
 REFERENCE           	ROOM_NO_MANS_LAND
 LANG_FRENCH       	"No Man's Land"
+
+REFERENCE           	ROOM_ALLEYWAY
+LANG_FRENCH       	"Allleyway"
 
 REFERENCE           	SB_POINTS
 LANG_FRENCH       	"Points"
