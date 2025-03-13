@@ -141,7 +141,7 @@ function __init__()
     thread _refill_jug_potions(); // Refills Juggernog Potions (at least 2 generators must be activated)
     thread _set_next_shadow_breach(); // Sets next shadow breach (cannot be done during a Shadow Breach or before a generator is activated)
     thread _skip_shadow_breach(); // Skips Shadow Breach
-    thread _set_bgb_quantities(); // Sets BGB quantities
+    thread _set_bgb_all(); // Sets BGB quantities
     thread _set_bg_kills(); // Sets kills required to complete a Blood Gun sequence
 
     if( ToLower( GetDvarString( "mapname" ) ) != "zm_castle" ){
@@ -475,33 +475,31 @@ function private _skip_shadow_breach(command_args)
         if(isdefined(dvar_value) && dvar_value == "1")
         {
             level notify(#"skip_round");
-            dvar_value = ToLower(GetDvarString("shadow_skip", ""));
             SetDvar("shadow_skip", 0);
         }
     }
 }
 
-function private _set_bgb_quantities(command_args)
+function private _set_bgb_all(command_args)
 {
-    ModVar("bgb_set_qs", "");
+    ModVar("bgb_set", "");
 
     for(;;)
     {
         WAIT_SERVER_FRAME
 
-        dvar_value = ToLower(GetDvarString("bgb_set_qs", ""));
+        dvar_value = ToLower(GetDvarString("bgb_set", ""));
 
-        if(isdefined(dvar_value) && StrIsInt(dvar_value) && Int(dvar_value) > 0)
+        if(isdefined(dvar_value) && dvar_value == "all")
         {
             foreach(player in level.players)
             {
                 foreach(gum in level.gg_all)
                 {
-                    player.gg_quantities[gum] = Int(dvar_value);
+                    player.gg_available[gum] = true;
                 }
             }
-            dvar_value = ToLower(GetDvarString("bgb_set_qs", ""));
-            SetDvar("bgb_set_qs", 0);
+            SetDvar("bgb_set", "");
         }
     }
 }

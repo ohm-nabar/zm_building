@@ -32,10 +32,6 @@
 
 #precache( "eventstring", "trial_upgrade_text_show" );
 
-#precache( "string", "ZM_ABBEY_TRIAL_ACTIVATE" );
-#precache( "string", "ZM_ABBEY_TRIAL_IN_PROGRESS" );
-#precache( "string", "ZM_ABBEY_TRIAL_REWARD" );
-
 // 8400
 #define TRIAL_GOAL 8400
 #define TRIAL_KILL_INCREMENT 140
@@ -284,7 +280,7 @@ function display_gums()
 	self endon("disconnect");
 	self endon("bled_out");
 
-	while(! (isdefined(self.gargoyle_gums) && isdefined(self.gg_quantities)))
+	while(! (isdefined(self.gargoyle_gums) && isdefined(self.gg_available)))
 	{
 		wait(0.05);
 	}
@@ -295,7 +291,7 @@ function display_gums()
 		{
 			gum = self.gargoyle_gums[i][j];
 			cf_val = j + 1;
-			if(self.gg_quantities[gum] == 0)
+			if(! self.gg_available[gum])
 			{
 				cf_val += 4;
 			}
@@ -405,6 +401,7 @@ function gargoyle_progress_check(garg_num, progress)
 	self.gargoyle_progress[garg_num] += progress;
 
 	index = self.gargoyle_indices[garg_num];
+	gum = undefined;
 	if(self.gargoyle_progress[garg_num] >= 1)
 	{
 		self notify("trial_complete" + garg_num);
@@ -417,22 +414,41 @@ function gargoyle_progress_check(garg_num, progress)
 		self clientfield::set_to_player(level.gargoyle_cfs[garg_num], self.gargoyle_progress[garg_num]);
 		if(index >= level.gargoyle_goals[garg_num].size - 1)
 		{
-			rand_index = RandomIntRange(0, level.gargoyle_goals[garg_num].size - 1);
-			rand_cf = level.gargoyle_cfs[garg_num] + "Random";
-			gum = self.gargoyle_gums[garg_num][rand_index];
-			self.gg_quantities[gum] += 1;
-			self thread lua_toggle_gum_vis(rand_cf, rand_index + 1);
+			reward_arr = [];
+			for(i = 0; i < 4; i++)
+			{
+				reward_gum = self.gargoyle_gums[garg_num][i];
+				if(! self.gg_available[reward_gum])
+				{
+					level array::add(reward_arr, i);
+				}
+			}
+			if(reward_arr.size > 0)
+			{
+				index = level array::random(reward_arr);
+				rand_cf = level.gargoyle_cfs[garg_num] + "Random";
+				gum = self.gargoyle_gums[garg_num][index];
+				self.gg_available[gum] = true;
+				self thread lua_toggle_gum_vis(rand_cf, index + 1);
+			}
 		}
 		else
 		{
 			gum = self.gargoyle_gums[garg_num][index];
-			self.gg_quantities[gum] += 1;
+			self.gg_available[gum] = true;
 			self.gargoyle_indices[garg_num] += 1;
 		}
-
-		notif_cf = NOTIF_GUM_OFFSET + garg_num;
-		gum_cf = level.gg_notifs[gum];
-		self thread zm_abbey_inventory::notifyText(notif_cf, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG, gum_cf);
+		if(isdefined(gum))
+		{
+			notif_cf = NOTIF_GUM_OFFSET + garg_num;
+			gum_cf = level.gg_notifs[gum];
+			self thread zm_abbey_inventory::notifyText(notif_cf, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG, gum_cf);
+			if(self.judge_indices[garg_num] != index)
+			{
+				self.judge_indices[garg_num] = index;
+				self notify("judge_display_update" + garg_num);
+			}
+		}
 	}
 	else if(progress > 0)
 	{
