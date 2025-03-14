@@ -244,7 +244,7 @@ function antiverse_reset()
 	}
 	level.broken_walls = [];
 
-	if(level flag::get("dog_round"))
+	if(level.shadow_vision_active)
 	{
 		level thread zm_ai_shadowpeople::unpause(true);
 		level thread zm_audio::sndMusicSystem_PlayState("shadow_breach");
