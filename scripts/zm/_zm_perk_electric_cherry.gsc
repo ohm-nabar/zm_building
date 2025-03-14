@@ -228,7 +228,7 @@ function electric_cherry_laststand()  //self = player
 		{
 			if ( IsAlive( self ) && IsAlive( a_zombies[ i ] ) && a_zombies[ i ].targetname != "zombie_cloak" && a_zombies[ i ].targetname != "zombie_escargot")
 			{
-				if ( a_zombies[ i ].health <= ELECTRIC_CHERRY_DOWNED_ATTACK_DAMAGE )
+				if ( a_zombies[ i ].health <= ELECTRIC_CHERRY_DOWNED_ATTACK_DAMAGE || level.zombie_vars[self.team]["zombie_insta_kill"] == 1 )
 				{
 					a_zombies[ i ] thread electric_cherry_death_fx();
 					
