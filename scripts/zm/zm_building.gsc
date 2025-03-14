@@ -189,12 +189,25 @@ function main()
 	level thread zm_zonemgr::manage_zones( init_zones );
 
 	level.pathdist_type = PATHDIST_ORIGINAL;
-	spare_change();
-	spawner::add_archetype_spawn_function( "zombie", &test );
-	spawner::add_archetype_spawn_function( "zombie", &zombie_unpush );
-	spawner::add_archetype_spawn_function( "zombie", &zombie_custom_melee_speed );
-	zm_flamethrower::init();
+	level thread spare_change();
+	bells = GetEntArray("abbey_bell", "targetname");
+	level array::thread_all(bells, &bell_sound);
+	level spawner::add_archetype_spawn_function( "zombie", &test );
+	level spawner::add_archetype_spawn_function( "zombie", &zombie_unpush );
+	level spawner::add_archetype_spawn_function( "zombie", &zombie_custom_melee_speed );
+	level zm_flamethrower::init();
 	//testeroo();
+}
+
+function bell_sound()
+{
+	self SetCanDamage(true);
+	while(true)
+	{
+		self waittill("damage", n_damage, e_attacker, v_dir, v_loc, str_type, STR_MODEL, str_tag, str_part, w_weapon);
+		self PlaySound("abbey_bell");
+		wait(3);
+	}
 }
 
 function test()
