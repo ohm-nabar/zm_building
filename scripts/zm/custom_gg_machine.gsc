@@ -113,7 +113,6 @@
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_CRATE_POWER" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_AFTERTASTE_BLOOD" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_CHALLENGE_REJECTED" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_PERKAHOLIC" );
 
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_STOCK_OPTION", "1" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_SWORD_FLAY", "1" );
@@ -137,62 +136,42 @@
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS0" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS1" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS2" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS3" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS4" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS10" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS15" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS25" );
 
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE1" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE2" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE3" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE4" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE5" );
 
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS0" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS1" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS2" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS3" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS4" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS10" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS15" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS25" );
 
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE1" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE2" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE3" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE4" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE5" );
 
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART0" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART1" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART2" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART3" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART4" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART10" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART15" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART25" );
 
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE1" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE2" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE3" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE4" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE5" );
 
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS0" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS1" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS2" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS3" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS4" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS10" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS15" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS25" );
 
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE1" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE2" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE3" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE4" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE5" );
 
 #namespace custom_gg_machine;
 
@@ -231,19 +210,18 @@ function __init__()
 		level.gg_notifs[ level.gg_all[i] ] = i;
 	}
 
-	aramis_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS0", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS1", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS2", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS3", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS4", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS10", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS15", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS25");
-	porthos_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS0", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS1", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS2", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS3", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS4", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS10", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS15", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS25");
-	dart_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_DART0", &"ZM_ABBEY_TRIAL_DIALOGUE_DART1", &"ZM_ABBEY_TRIAL_DIALOGUE_DART2", &"ZM_ABBEY_TRIAL_DIALOGUE_DART3", &"ZM_ABBEY_TRIAL_DIALOGUE_DART4", &"ZM_ABBEY_TRIAL_DIALOGUE_DART10", &"ZM_ABBEY_TRIAL_DIALOGUE_DART15", &"ZM_ABBEY_TRIAL_DIALOGUE_DART25");
-	athos_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS0", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS1", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS2", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS3", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS4", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS10", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS15", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS25");
+	aramis_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS0", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS1", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS2", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS4");
+	porthos_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS0", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS1", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS2", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS4");
+	dart_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_DART0", &"ZM_ABBEY_TRIAL_DIALOGUE_DART1", &"ZM_ABBEY_TRIAL_DIALOGUE_DART2", &"ZM_ABBEY_TRIAL_DIALOGUE_DART4");
+	athos_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS0", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS1", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS2", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS4");
 
-	aramis_dialogue_bribe = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE1", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE2", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE3", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE4", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE5");
-	porthos_dialogue_bribe = array(&"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE1", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE2", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE3", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE4", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE5");
-	dart_dialogue_bribe = array(&"ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE1", &"ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE2", &"ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE3", &"ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE4", &"ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE5");
-	athos_dialogue_bribe = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE1", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE2", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE3", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE4", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE5");
+	aramis_dialogue_bribe = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE1", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE2", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE3", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE4");
+	porthos_dialogue_bribe = array(&"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE1", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE2", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE3", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE4");
+	dart_dialogue_bribe = array(&"ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE1", &"ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE2", &"ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE3", &"ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE4");
+	athos_dialogue_bribe = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE1", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE2", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE3", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE4");
 
 	level.gargoyle_dialogue = array(aramis_dialogue, porthos_dialogue, dart_dialogue, athos_dialogue);
 	level.gargoyle_dialogue_bribe = array(aramis_dialogue_bribe, porthos_dialogue_bribe, dart_dialogue_bribe, athos_dialogue_bribe);
-	level.gargoyle_prefixes = array(&"ZM_ABBEY_TRIAL_ARAMIS_NAME_SHORT", &"ZM_ABBEY_TRIAL_PORTHOS_NAME", &"ZM_ABBEY_TRIAL_DART_NAME", &"ZM_ABBEY_TRIAL_ATHOS_NAME");
 
 	level.judge_gumballs = [];
 	for(i = 0; i < 4; i++)
@@ -300,9 +278,9 @@ function judge_dialogue_update(garg_num)
 {
 	self endon("disconnect");
 
-	prefix = MakeLocalizedString(level.gargoyle_prefixes[garg_num]);
 	num_trials_completed = 0;
 	num_bribes_given = 0;
+	trial_indices = array(0, 1, 2, 2, 3);
 
 	while(true)
 	{
@@ -310,28 +288,20 @@ function judge_dialogue_update(garg_num)
 		if(result == "trial_complete" + garg_num)
 		{
 			num_trials_completed += 1;
-			if(num_trials_completed < 10)
+			if(num_trials_completed < 5)
 			{
-				trial_index = Int(Min(num_trials_completed, 4));
+				trial_index = trial_indices[num_trials_completed];
 				self.judge_dialogue[garg_num] = level.gargoyle_dialogue[garg_num][trial_index];
-			}
-			else if(num_trials_completed >= 10 && num_trials_completed < 15)
-			{
-				self.judge_dialogue[garg_num] = level.gargoyle_dialogue[garg_num][5];
-			}
-			else if(num_trials_completed >= 15 && num_trials_completed < 25)
-			{
-				self.judge_dialogue[garg_num] = level.gargoyle_dialogue[garg_num][6];
 			}
 			else
 			{
-				self.judge_dialogue[garg_num] = level.gargoyle_dialogue[garg_num][7];
+				self.judge_dialogue[garg_num] = level.gargoyle_dialogue[garg_num][3];
 			}
 		}
 		else
 		{
 			num_bribes_given += 1;
-			bribe_index = Int(Min((num_bribes_given - 1), 4));
+			bribe_index = Int(Min((num_bribes_given - 1), 3));
 			self.judge_dialogue[garg_num] = level.gargoyle_dialogue_bribe[garg_num][bribe_index];
 		}
 	}
