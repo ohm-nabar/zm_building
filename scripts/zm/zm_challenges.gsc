@@ -91,9 +91,9 @@ function __init__()
 	level.gg_tier3 = array("zm_bgb_on_the_house", "zm_bgb_unquenchable", "zm_bgb_head_drama", "zm_bgb_alchemical_antithesis");
 
 	aramis_goals = array(2, 3, 4, 5, 5);
-	porthos_goals = array(20, 25, 30, 40, 75);
+	porthos_goals = array(20, 35, 55, 90, 100);
 	dart_goals = array(15, 25, 25, 35, 50);
-	athos_goals = array(25, 35, 40, 45, 75);
+	athos_goals = array(30, 35, 45, 60, 75);
 	level.gargoyle_goals = array(aramis_goals, porthos_goals, dart_goals, athos_goals);
 
 	level.gargoyle_cfs = array("trials.aramis", "trials.porthos", "trials.dart", "trials.athos");
