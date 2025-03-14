@@ -121,6 +121,11 @@ function shadow_round_base_logic()
 function giveBackShadowPerks()
 {
 	self endon("disconnect");
+
+	while(level.in_antiverse)
+	{
+		wait(0.05);
+	}
 	
 	for(j = 0; j < self.shadowPerks.size; j++)
 	{
