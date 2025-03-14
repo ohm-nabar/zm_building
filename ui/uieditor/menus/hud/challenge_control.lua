@@ -391,7 +391,7 @@ function CoD.ChallengeControl.new(HudRef, InstanceRef)
     local ProgressTextTable = {CherryProgressText, StaminProgressText, DoubleProgressText, MuleProgressText, PoseidonProgressText, QuickProgressText, PHDProgressText, DeadshotProgressText}
     local BackgroundCircleTable = {CherryBackgroundCircle, StaminBackgroundCircle, DoubleBackgroundCircle, MuleBackgroundCircle, PoseidonBackgroundCircle, QuickBackgroundCircle, PHDBackgroundCircle, DeadshotBackgroundCircle}
     local ProgressCircleTable = {CherryProgressCircle, StaminProgressCircle, DoubleProgressCircle, MuleProgressCircle, PoseidonProgressCircle, QuickProgressCircle, PHDProgressCircle, DeadshotProgressCircle}
-    local GoalTable = {10, 5, 3, 10, 8, 4, 8, 10}
+    local GoalTable = {10, 12, 5, 15, 10, 4, 12, 10}
     local ProgressTextXTable = {431, 431, 431, 431, 921, 921, 921, 921}
 
     local function StatusUpdate(Icon, ChallengeText, RewardText, StatusText, ProgressText, BackgroundCircle, ProgressCircle, Data, Goal)

@@ -134,22 +134,22 @@ function on_player_connect()
 	self.cherry_challenge_goal = 10;
 	self.cherry_challenge_progress = 0;
 
-	self.stamin_challenge_goal = 5;
+	self.stamin_challenge_goal = 12;
 	self.stamin_challenge_progress = 0;
 
-	self.double_challenge_goal = 3;
+	self.double_challenge_goal = 5;
 	self.double_challenge_progress = 0;
 
-	self.mule_challenge_goal = 10;
+	self.mule_challenge_goal = 15;
 	self.mule_challenge_progress = 0;
 
-	self.poseidon_challenge_goal = 8;
+	self.poseidon_challenge_goal = 10;
 	self.poseidon_challenge_progress = 0;
 
 	self.quick_challenge_goal = 4;
 	self.quick_challenge_progress = 0;
 
-	self.PHD_challenge_goal = 8;
+	self.PHD_challenge_goal = 12;
 	self.PHD_challenge_progress = 0;
 
 	self.deadshot_challenge_goal = 10;
@@ -1154,7 +1154,7 @@ function checkForSprintKills()
 		if(wasSprinting && time_sprinted >= 2) 
 		{
 			wasSprinting = false;
-			for(i = 0; i < 40; i++) 
+			for(i = 0; i < 20; i++) 
 			{
 				if(self IsSprinting())
 				{

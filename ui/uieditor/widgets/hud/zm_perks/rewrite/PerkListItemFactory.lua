@@ -49,13 +49,13 @@ function CoD.PerkListItemFactory.new(HudRef, arg1)
 	perkModelLookup["specialty_deadshot_zombies"] = "deadshotUpdate"
 
 	local perkGoalLookup = {}
-	perkGoalLookup["specialty_giant_three_guns_zombies"] = 10
-	perkGoalLookup["specialty_giant_marathon_zombies"] = 5
+	perkGoalLookup["specialty_giant_three_guns_zombies"] = 15
+	perkGoalLookup["specialty_giant_marathon_zombies"] = 12
 	perkGoalLookup["specialty_giant_quickrevive_zombies"] = 4
 	perkGoalLookup["specialty_blue_electric_cherry_zombies"] = 10
-	perkGoalLookup["specialty_phdlite_zombies"] = 8
-	perkGoalLookup["specialty_doubletap_zombies"] = 3
-	perkGoalLookup["specialty_poseidon_zombies"] = 8
+	perkGoalLookup["specialty_phdlite_zombies"] = 12
+	perkGoalLookup["specialty_doubletap_zombies"] = 5
+	perkGoalLookup["specialty_poseidon_zombies"] = 10
 	perkGoalLookup["specialty_deadshot_zombies"] = 10
 
 	local perkImage = LUI.UIImage.new()
