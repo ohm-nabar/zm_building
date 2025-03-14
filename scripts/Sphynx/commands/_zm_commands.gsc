@@ -107,7 +107,6 @@ function __init__()
     SetDvar("sv_cheats", 1);
 
     thread _get_xuid_command_response(); // Gets the player XUID and their playername
-    thread _give_weapon_command_response(); //Give weapon (better give) -- OR USE /give random for a random weapon or /give random_up
     thread _points_command_response(); // Give points to player
     thread _spawn_dog_command_response(); //  spawn a specified number of dogs
     thread _spawn_zombie_command_response(); //  spawn a specified number of zombies
@@ -235,84 +234,6 @@ function private _points_command_response(command_args)
                 }
 
                 print_subtitle(undefined, "^5Dev: added " + value + " points to all players");
-            }
-        }
-    }
-}
-
-function private _give_weapon_command_response(command_args)
-{
-    ModVar("give", "");
-
-    for(;;){
-        WAIT_SERVER_FRAME;
-
-        dvar_value = ToLower(GetDvarString("give", ""));
-
-        if(isdefined(dvar_value) && dvar_value != "")
-        {
-            ModVar("give", "");
-
-            tokenized = StrTok(dvar_value, " ");
-            if(tokenized.size > 1){
-                player_index = Int(tokenized[0]);
-                weapon_name = tokenized[1];
-
-                print_subtitle(level.players[player_index], "^5Dev: Weapon " + weapon_name + " given to " + level.players[player_index].playername);
-
-                if(weapon_name == "ammo"){
-                    if(player_index >= 0 && player_index <= 7){
-                        level.players[player_index] thread _player_max_ammo();
-                    }else{
-                        foreach(player in GetPlayers()){
-                            player thread _player_max_ammo();
-                        }
-                    }
-                }else if(weapon_name == "random"){
-                    if(player_index >= 0 && player_index <= 7){
-                        level.players[player_index] zm_weapons::weapon_give( array::random( GetArrayKeys( level.zombie_weapons ) ), false, false, true, true );
-                    }else{
-                        foreach(player in GetPlayers()){
-                            player zm_weapons::weapon_give( array::random( GetArrayKeys( level.zombie_weapons ) ), false, false, true, true );
-                        }
-                    }
-                }else if(weapon_name == "random_up"){
-                    if(player_index >= 0 && player_index <= 7){
-                        level.players[player_index] zm_weapons::weapon_give( array::random( GetArrayKeys( level.zombie_weapons_upgraded ) ), false, false, true, true );
-                    }else{
-                        foreach(player in GetPlayers()){
-                            player zm_weapons::weapon_give( array::random( GetArrayKeys( level.zombie_weapons ) ), false, false, true, true );
-                        }
-                    }
-                }else{
-                    if(player_index >= 0 && player_index <= 7){
-                        level.players[player_index] zm_weapons::weapon_give( GetWeapon(weapon_name), false, false, true, true );
-                    }else{
-                        foreach(player in GetPlayers()){
-                            player zm_weapons::weapon_give( GetWeapon(weapon_name), false, false, true, true );
-                        }
-                    }
-                }
-            }else{
-                weapon_name = tokenized[0];
-
-                if(weapon_name == "ammo"){
-                    array::thread_all( GetPlayers(), &_player_max_ammo);
-                }else if(weapon_name == "random"){
-                    foreach(player in GetPlayers()){
-                        player zm_weapons::weapon_give( array::random( GetArrayKeys( level.zombie_weapons ) ), false, false, true, true );
-                    }
-                }else if(weapon_name == "random_up"){
-                    foreach(player in GetPlayers()){
-                        player zm_weapons::weapon_give( array::random( GetArrayKeys( level.zombie_weapons_upgraded ) ), false, false, true, true );
-                    }
-                }else{
-                    foreach(player in GetPlayers()){
-                        player zm_weapons::weapon_give( GetWeapon(weapon_name), false, false, true, true );
-                    }
-                }
-
-                print_subtitle(undefined, "^5Dev: given " + weapon_name + " weapon to all players");
             }
         }
     }
