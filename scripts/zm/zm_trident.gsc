@@ -519,6 +519,7 @@ function upgrade_quest_think()
 			continue;
 		}
 
+		statue PlaySound("trident_complete_sting");
 		weapon SetModel("vm_trident");
 		self SetHintString(&"ZM_ABBEY_TAKE_WEAPON", level.abbey_trident.displayname);
 
@@ -552,6 +553,7 @@ function upgrade_quest_init_think()
 	}
 
 	weapon SetVisibleToAll();
+	statue PlaySound("trident_escargot_sting");
 	self SetHintString(&"ZM_ABBEY_TAKE_WEAPON", level.abbey_pitchfork.displayname);
 
 	self waittill("trigger", player);
