@@ -610,6 +610,7 @@ function deposit_waypoint_manage()
 
 			if(level.active_generators.size >= 2 && isdefined(level.jug_uses_left) && level.jug_uses_left == 0)
 			{
+				wait(0.05);
 				closest_dist = 9999999;
 				closest_dist_index = -1;
 
