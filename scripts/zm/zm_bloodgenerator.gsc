@@ -901,20 +901,8 @@ function zombie_super_speed()
 {
 	self endon("death");
 	level endon(#"blood_finished");
-	/*
-	playable_area = getentarray("player_volume","script_noteworthy");
-	while(true)
-	{
-		for (i = 0; i < playable_area.size; i++)
-		{
-			if (self IsTouching(playable_area[i]))
-			{
-				break;
-			}
-		}
-		wait(0.05);
-	}
-	*/
+
+	self thread zombie_monitor_beach();
 	
 	while(! IS_TRUE(self.completed_emerging_into_playable_area))
 	{
@@ -923,6 +911,59 @@ function zombie_super_speed()
 	
 	self zombie_utility::set_zombie_run_cycle_override_value("super_sprint");
 	self thread play_ambient_zombie_vocals();
+}
+
+function zombie_monitor_beach()
+{
+	self endon("death");
+	level endon(#"blood_finished");
+
+	foreach(player in level.players)
+	{
+		if(player.isInBloodMode)
+		{
+			bloodgun_player = player;
+			break;
+		}
+	}
+
+	while(true)
+	{
+		bloodgun_player_on_beach = false;
+		self_on_beach = false;
+
+		foreach(beach_room in level.beach_rooms)
+		{
+			if(bloodgun_player zm_room_manager::is_player_in_room(level.abbey_rooms[beach_room]))
+			{
+				bloodgun_player_on_beach = true;
+				break;
+			}
+		}
+
+		foreach(beach_room in level.beach_rooms)
+		{
+			if(self zm_room_manager::is_player_in_room(level.abbey_rooms[beach_room]))
+			{
+				self_on_beach = true;
+				if(! bloodgun_player_on_beach && ! IS_TRUE( self.in_the_ground ))
+				{
+					level.zombie_total++;
+					level.zombie_respawns++;
+					self dodamage( self.health + 666, self.origin );
+				}
+				break;
+			}
+		}
+
+		if(bloodgun_player_on_beach && ! self_on_beach)
+		{
+			level.zombie_total++;
+			level.zombie_respawns++;
+			self dodamage( self.health + 666, self.origin );
+		}
+		wait(0.05);
+	}
 }
 
 function play_ambient_zombie_vocals()
