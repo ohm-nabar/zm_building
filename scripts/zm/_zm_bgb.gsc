@@ -674,13 +674,13 @@ function private bgb_play_gumball_anim_end(w_original, bgb, activating)
 	Parameters: 0
 	Flags: Linked, Private
 */
-function private bgb_clear_monitors_and_clientfields()
+function private bgb_clear_monitors_and_clientfields(giving=false)
 {
 	self notify("bgb_limit_monitor");
 	self notify("bgb_activation_monitor");
 	self clientfield::set_player_uimodel("bgb_display", 0);
 	self clientfield::set_player_uimodel("bgb_activations_remaining", 0);
-	self clear_timer();
+	self clear_timer(giving);
 }
 
 /*
@@ -1198,9 +1198,12 @@ function run_timer(max)
 	Parameters: 0
 	Flags: Linked
 */
-function clear_timer()
+function clear_timer(giving=false)
 {
-	self bgb_set_timer_clientfield(0);
+	if(! giving)
+	{
+		self bgb_set_timer_clientfield(0);
+	}
 	self notify("bgb_run_timer");
 }
 
@@ -1471,7 +1474,7 @@ function function_d35f60a1(name)
 */
 function give(name)
 {
-	self thread take();
+	self take(true);
 	if("none" == name)
 	{
 		return;
@@ -1505,7 +1508,7 @@ function give(name)
 	Parameters: 0
 	Flags: Linked
 */
-function take()
+function take(giving=false)
 {
 	if("none" == self.bgb)
 	{
@@ -1517,7 +1520,7 @@ function take()
 	{
 		self thread [[level.bgb[self.bgb].disable_func]]();
 	}
-	self bgb_clear_monitors_and_clientfields();
+	self bgb_clear_monitors_and_clientfields(giving);
 	self notify("bgb_update", "none", self.bgb);
 	self notify("bgb_update_take_" + self.bgb);
 	self.bgb = "none";
