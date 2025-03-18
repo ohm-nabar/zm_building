@@ -107,7 +107,7 @@ function __init__()
 	level.athos_trials = array(athos_trials_0, athos_trials_1, athos_trials_2, athos_trials_3);
 
 	level.airfield_name = "Airfield";
-	level.pilgrimage_name ="Upper Pilgrimage Stairs";
+	level.pilgrimage_name = "Upper Pilgrimage Stairs";
 	level.airfield_box_indices = array(4, 5);
 	level.pilgrimage_box_indices = array(7, 8);
 	if(GetDvarString("ui_mapname") == "zm_building")
@@ -559,8 +559,8 @@ function athos_trial()
 		athos_trials = level.athos_trials[athos_stage];
 		if(athos_stage == 2)
 		{
-			airfield_path_active = level zm_room_manager::is_room_active(level.airfield_name);
-			pilgrimage_path_active = level zm_room_manager::is_room_active(level.pilgrimage_name);
+			airfield_path_active = level zm_room_manager::is_room_active(level.abbey_rooms[level.airfield_name]);
+			pilgrimage_path_active = level zm_room_manager::is_room_active(level.abbey_rooms[level.pilgrimage_name]);
 			
 			both_paths_active = airfield_path_active && pilgrimage_path_active;
 			neither_path_active = ! (airfield_path_active || pilgrimage_path_active);
@@ -633,8 +633,8 @@ function wallbuy_trial(athos_stage)
 
 	index = RandomIntRange(start_index, end_index);
 
-	airfield_path_active = level zm_room_manager::is_room_active(level.airfield_name);
-	pilgrimage_path_active = level zm_room_manager::is_room_active(level.pilgrimage_name);
+	airfield_path_active = level zm_room_manager::is_room_active(level.abbey_rooms[level.airfield_name]);
+	pilgrimage_path_active = level zm_room_manager::is_room_active(level.abbey_rooms[level.pilgrimage_name]);
 
 	both_paths_active = airfield_path_active && pilgrimage_path_active;
 	neither_path_active = ! (airfield_path_active || pilgrimage_path_active);
@@ -764,8 +764,8 @@ function area_assault_trial(athos_stage)
 	start_index = level.area_assault_trial_start_indices[athos_stage];
 	end_index = level.area_assault_trial_end_indices[athos_stage];
 
-	airfield_path_active = level zm_room_manager::is_room_active(level.airfield_name);
-	pilgrimage_path_active = level zm_room_manager::is_room_active(level.pilgrimage_name);
+	airfield_path_active = level zm_room_manager::is_room_active(level.abbey_rooms[level.airfield_name]);
+	pilgrimage_path_active = level zm_room_manager::is_room_active(level.abbey_rooms[level.pilgrimage_name]);
 
 	both_paths_active = airfield_path_active && pilgrimage_path_active;
 	neither_path_active = ! (airfield_path_active || pilgrimage_path_active);
