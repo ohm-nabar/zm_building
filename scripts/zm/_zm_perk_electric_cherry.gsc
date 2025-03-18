@@ -460,7 +460,7 @@ function electric_cherry_reload_attack() // self = player
 						}
 					}
 					
-					if ( a_zombies[ i ].health <= perk_dmg )
+					if ( a_zombies[ i ].health <= perk_dmg || level.zombie_vars[self.team]["zombie_insta_kill"] == 1 )
 					{
 						a_zombies[ i ] thread electric_cherry_death_fx();
 						
