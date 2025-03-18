@@ -452,4 +452,10 @@ LANG_FRENCH       	"Revives"
 REFERENCE           	SB_HEADSHOTS
 LANG_FRENCH       	"Headshots"
 
+REFERENCE           	BOX_ACTIVATE
+LANG_FRENCH       	"Press ^3[{+activate}]^7 for a Random Weapon [Cost: &&1]"
+
+REFERENCE           	BOX_TRADE
+LANG_FRENCH       	"Hold ^3[{+activate}]^7 to trade Weapons"
+
 ENDMARKER

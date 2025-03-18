@@ -452,4 +452,10 @@ LANG_ITALIAN       	"Revives"
 REFERENCE           	SB_HEADSHOTS
 LANG_ITALIAN       	"Headshots"
 
+REFERENCE           	BOX_ACTIVATE
+LANG_ITALIAN       	"Press ^3[{+activate}]^7 for a Random Weapon [Cost: &&1]"
+
+REFERENCE           	BOX_TRADE
+LANG_ITALIAN       	"Hold ^3[{+activate}]^7 to trade Weapons"
+
 ENDMARKER

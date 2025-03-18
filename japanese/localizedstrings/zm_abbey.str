@@ -452,4 +452,10 @@ LANG_JAPANESE       	"Revives"
 REFERENCE           	SB_HEADSHOTS
 LANG_JAPANESE       	"Headshots"
 
+REFERENCE           	BOX_ACTIVATE
+LANG_JAPANESE       	"Press ^3[{+activate}]^7 for a Random Weapon [Cost: &&1]"
+
+REFERENCE           	BOX_TRADE
+LANG_JAPANESE       	"Hold ^3[{+activate}]^7 to trade Weapons"
+
 ENDMARKER

@@ -452,4 +452,10 @@ LANG_ENGLISHARABIC       	"Revives"
 REFERENCE           	SB_HEADSHOTS
 LANG_ENGLISHARABIC       	"Headshots"
 
+REFERENCE           	BOX_ACTIVATE
+LANG_ENGLISHARABIC       	"Press ^3[{+activate}]^7 for a Random Weapon [Cost: &&1]"
+
+REFERENCE           	BOX_TRADE
+LANG_ENGLISHARABIC       	"Hold ^3[{+activate}]^7 to trade Weapons"
+
 ENDMARKER

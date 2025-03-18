@@ -452,4 +452,10 @@ LANG_RUSSIAN       	"Revives"
 REFERENCE           	SB_HEADSHOTS
 LANG_RUSSIAN       	"Headshots"
 
+REFERENCE           	BOX_ACTIVATE
+LANG_RUSSIAN       	"Press ^3[{+activate}]^7 for a Random Weapon [Cost: &&1]"
+
+REFERENCE           	BOX_TRADE
+LANG_RUSSIAN       	"Hold ^3[{+activate}]^7 to trade Weapons"
+
 ENDMARKER
