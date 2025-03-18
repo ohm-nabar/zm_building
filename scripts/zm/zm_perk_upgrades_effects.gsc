@@ -191,18 +191,25 @@ function quick_upgrade_effects()
 	while(true)
 	{
 		result = self util::waittill_any_return("quick2_heal_boost", "quick2_revive_boost");
-		if(result == "quick2_revive_boost")
-		{
-			self.quick2_player SetMoveSpeedScale(1.25);
-		}
-		self SetMoveSpeedScale(1.25);
 
-		wait(2.4);
-		if(result == "quick2_revive_boost")
+		if(! level.is_coop_paused)
 		{
-			self.quick2_player SetMoveSpeedScale(1);
+			if(result == "quick2_revive_boost")
+			{
+				self.quick2_player SetMoveSpeedScale(1.5);
+			}
+			self SetMoveSpeedScale(1.5);
 		}
-		self SetMoveSpeedScale(1);
+
+		wait(2.5);
+		if(! level.is_coop_paused)
+		{
+			if(result == "quick2_revive_boost")
+			{
+				self.quick2_player SetMoveSpeedScale(1);
+			}
+			self SetMoveSpeedScale(1);
+		}
 	}
 }
 

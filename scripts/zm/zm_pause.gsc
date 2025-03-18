@@ -223,7 +223,7 @@ function should_pause()
 				}
 				level.is_coop_paused = false;
 				foreach(player in level.players) {
-					player SetMoveSpeedScale( player.prevMoveSpeedScale );
+					player SetMoveSpeedScale(1);
 					player AllowJump(true);
 					if(! player.abbey_inventory_active)
 					{
@@ -258,7 +258,6 @@ function should_pause()
 				level.is_coop_paused = true;
 				foreach(player in level.players)
 				{
-					player.prevMoveSpeedScale = player GetMoveSpeedScale();
 					player SetMoveSpeedScale(0);
 					player AllowJump(false);
 					player DisableWeapons();
