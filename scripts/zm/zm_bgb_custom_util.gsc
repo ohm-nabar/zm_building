@@ -124,7 +124,7 @@ function lookup_gobblegum(name)
     {
         gumStr = row[0];
 
-        if(gumStr == name)
+        if(isdefined(gumStr) && gumStr == MakeLocalizedString(name))
             break;
 
         index++;
