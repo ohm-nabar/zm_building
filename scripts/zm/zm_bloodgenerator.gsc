@@ -548,7 +548,7 @@ function deposit_waypoint_manage()
 		self.generator_indicators[generator.script_noteworthy] = deposit_indicator;
 	}
 
-	self.fountain_indicators = [];
+	fountain_indicators = [];
 	foreach(fountain in fountains)
 	{
 		waypoint_pos = Spawn("script_model", fountain.origin);
@@ -559,29 +559,41 @@ function deposit_waypoint_manage()
 		fountain_indicator SetWayPoint(true, "deposit_waypoint_jug", false, false);
 		fountain_indicator.alpha = 0;
 		fountain_indicator.linked_origin = fountain.origin;
-		self.fountain_indicators[self.fountain_indicators.size] = fountain_indicator;
+		fountain_indicators[fountain_indicators.size] = fountain_indicator;
 	}
 
 	while(! (isdefined(level.shadow_transition_active) && isdefined(level.shadow_vision_active)))
 	{
 		wait(0.05);
 	}
-
+	
+	indicators_showing = false;
 	while(true)
 	{
 		if(!level.hasVial || IS_TRUE(self.abbey_no_waypoints) || level.shadow_transition_active || level.shadow_vision_active)
 		{
+			if(indicators_showing)
+			{
+				indicators_showing = false;
+				wait(0.05);
+			}
+
 			foreach(indicator in self.generator_indicators)
 			{
 				indicator.alpha = 0;
 			}
-			foreach(indicator in self.fountain_indicators)
+			foreach(indicator in fountain_indicators)
 			{
 				indicator.alpha = 0;
 			}
 		}
 		else
 		{
+			if(! indicators_showing)
+			{
+				indicators_showing = true;
+				wait(0.05);
+			}
 			closest_dist = 9999999;
 			closest_dist_key = -1;
 			keys = GetArrayKeys(self.generator_indicators);
@@ -610,13 +622,12 @@ function deposit_waypoint_manage()
 
 			if(level.active_generators.size >= 2 && isdefined(level.jug_uses_left) && level.jug_uses_left == 0)
 			{
-				wait(0.05);
 				closest_dist = 9999999;
 				closest_dist_index = -1;
 
-				for(i = 0; i < self.fountain_indicators.size; i++)
+				for(i = 0; i < fountain_indicators.size; i++)
 				{
-					dist = DistanceSquared(self.origin, self.fountain_indicators[i].linked_origin);
+					dist = DistanceSquared(self.origin, fountain_indicators[i].linked_origin);
 					if(dist < closest_dist)
 					{
 						closest_dist = dist;
@@ -624,15 +635,15 @@ function deposit_waypoint_manage()
 					}
 				}
 
-				for(i = 0; i < self.fountain_indicators.size; i++)
+				for(i = 0; i < fountain_indicators.size; i++)
 				{
 					if(i == closest_dist_index)
 					{
-						self.fountain_indicators[i].alpha = 1;
+						fountain_indicators[i].alpha = 1;
 					}
 					else
 					{
-						self.fountain_indicators[i].alpha = 0.5;
+						fountain_indicators[i].alpha = 0.5;
 					}
 				}
 			}
@@ -795,9 +806,9 @@ function blood_think()
 				//IPrintLn("Vial Filled!");				
 				level.hasVial = true;
 				success = true;
-				if(isdefined(p.blood_vial_trial_fills))
+				if(isdefined(player.blood_vial_trial_fills))
 				{
-					p.blood_vial_trial_fills += 1;
+					player.blood_vial_trial_fills += 1;
 				}
 				if(level.bloodgun_kills < BLOODGUN_KILLS_MAX)
 				{
@@ -956,7 +967,7 @@ function zombie_monitor_beach()
 			}
 		}
 
-		if(bloodgun_player_on_beach && ! self_on_beach)
+		if(bloodgun_player_on_beach && ! self_on_beach && ! IS_TRUE( self.in_the_ground ))
 		{
 			level.zombie_total++;
 			level.zombie_respawns++;
@@ -1129,6 +1140,10 @@ function turn_generator_on(generator_name, after_shadow)
 				{
 					player.generator_indicators["generator4"] Destroy();
 					player.generator_indicators = array::remove_index(player.generator_indicators, "generator4", true);
+					if(level.active_generators.size >= 4)
+					{
+						player.generator_indicators = array();
+					}
 					player LUINotifyEvent(&"generator_activated", 1, 3);
 				}
 				level notify(#"generator_activated");
