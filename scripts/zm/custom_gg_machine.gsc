@@ -133,6 +133,50 @@
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_AFTERTASTE_BLOOD", "2" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_CHALLENGE_REJECTED", "2" );
 
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS0" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS1" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS3" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS4" );
+
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE1" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE3" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE4" );
+
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS0" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS1" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS3" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS4" );
+
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE1" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE3" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE4" );
+
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART0" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART1" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART3" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART4" );
+
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE1" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE3" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_DART_BRIBE4" );
+
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS0" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS1" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS3" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS4" );
+
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE1" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE3" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE4" );
+
 #namespace custom_gg_machine;
 
 REGISTER_SYSTEM( "custom_gg_machine", &__init__, undefined )
@@ -170,11 +214,10 @@ function __init__()
 		level.gg_notifs[ level.gg_all[i] ] = i;
 	}
 
-	/*
-	aramis_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS0", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS1", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS2", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS4");
-	porthos_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS0", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS1", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS2", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS4");
-	dart_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_DART0", &"ZM_ABBEY_TRIAL_DIALOGUE_DART1", &"ZM_ABBEY_TRIAL_DIALOGUE_DART2", &"ZM_ABBEY_TRIAL_DIALOGUE_DART4");
-	athos_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS0", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS1", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS2", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS4");
+	aramis_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS0", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS1", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS2", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS3", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS4");
+	porthos_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS0", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS1", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS2", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS3", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS4");
+	dart_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_DART0", &"ZM_ABBEY_TRIAL_DIALOGUE_DART1", &"ZM_ABBEY_TRIAL_DIALOGUE_DART2", &"ZM_ABBEY_TRIAL_DIALOGUE_DART3", &"ZM_ABBEY_TRIAL_DIALOGUE_DART4");
+	athos_dialogue = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS0", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS1", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS2", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS3", &"ZM_ABBEY_TRIAL_DIALOGUE_ATHOS4");
 
 	aramis_dialogue_bribe = array(&"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE1", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE2", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE3", &"ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS_BRIBE4");
 	porthos_dialogue_bribe = array(&"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE1", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE2", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE3", &"ZM_ABBEY_TRIAL_DIALOGUE_PORTHOS_BRIBE4");
@@ -183,7 +226,7 @@ function __init__()
 
 	level.gargoyle_dialogue = array(aramis_dialogue, porthos_dialogue, dart_dialogue, athos_dialogue);
 	level.gargoyle_dialogue_bribe = array(aramis_dialogue_bribe, porthos_dialogue_bribe, dart_dialogue_bribe, athos_dialogue_bribe);
-	*/
+
 	level.judge_gumballs = [];
 	for(i = 0; i < 4; i++)
 	{
@@ -219,11 +262,11 @@ function on_player_connect()
 	}
 
 	self.judge_indices = [];
-	//self.judge_dialogue = [];
+	self.judge_dialogue = [];
 	for(i = 0; i < 4; i++)
 	{
 		self.judge_indices[i] = 0;
-		//self.judge_dialogue[i] = level.gargoyle_dialogue[i][0];
+		self.judge_dialogue[i] = level.gargoyle_dialogue[i][0];
 		self thread judge_dialogue_update(i);
 		level array::thread_all(level.judge_gumballs[i], &judge_display_ball_think, i, self);
 	}
@@ -242,22 +285,15 @@ function judge_dialogue_update(garg_num)
 	num_trials_completed = 0;
 	num_bribes_given = 0;
 	trial_indices = array(0, 1, 2, 2, 3);
-	/*
+
 	while(true)
 	{
 		result = self util::waittill_any_return("trial_complete" + garg_num, "bribe_given" + garg_num);
 		if(result == "trial_complete" + garg_num)
 		{
 			num_trials_completed += 1;
-			if(num_trials_completed < 5)
-			{
-				trial_index = trial_indices[num_trials_completed];
-				self.judge_dialogue[garg_num] = level.gargoyle_dialogue[garg_num][trial_index];
-			}
-			else
-			{
-				self.judge_dialogue[garg_num] = level.gargoyle_dialogue[garg_num][3];
-			}
+			trial_index = Int(Min(num_trials_completed, 4));
+			self.judge_dialogue[garg_num] = level.gargoyle_dialogue[garg_num][trial_index];
 		}
 		else
 		{
@@ -266,7 +302,6 @@ function judge_dialogue_update(garg_num)
 			self.judge_dialogue[garg_num] = level.gargoyle_dialogue_bribe[garg_num][bribe_index];
 		}
 	}
-	*/
 }
 
 function judge_display_ball_think(garg_num, player)
@@ -357,8 +392,7 @@ function judge_dialogue_think(player)
 	player endon("disconnect");
 
 	self SetCursorHint("HINT_NOICON");
-	self SetHintStringForPlayer(player, &"ZM_ABBEY_EMPTY");
-	/*
+
 	garg_num = self.script_int;
 
 	prev_dialogue = &"ZM_ABBEY_EMPTY";
@@ -373,7 +407,6 @@ function judge_dialogue_think(player)
 		}
 		wait(0.05);
 	}
-	*/
 }
 
 // logic for gum machines
