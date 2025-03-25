@@ -319,10 +319,15 @@ function judge_hintstring_think(player)
 	{
 		index = player.judge_indices[garg_num];
 		gum = player.gargoyle_gums[garg_num][index];
-		gum_struct = zm_bgb_custom_util::lookup_gobblegum(gum);
-		displayName = gum_struct.displayName;
+		displayName = level.gg_names[gum];
 		gg_available = player.gg_available[gum];
 		bribe_count = player.bribe_count;
+
+		// failsafe for a weird case where a perkaholic triggerstring registered for a moment
+		if(displayName == &"ZMUI_BGB_PERKAHOLIC")
+		{
+			displayName = &"ZMUI_BGB_STOCK_OPTION";
+		}
 
 		if(displayName != prev_displayName || gg_available != prev_gg_available || bribe_count != prev_bribe_count)
 		{
