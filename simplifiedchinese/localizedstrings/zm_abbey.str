@@ -54,7 +54,7 @@ REFERENCE           	BLOODGUN_COOLDOWN
 LANG_SIMPLIFIEDCHINESE       	"Cooling down... Please wait a round"
 
 REFERENCE           	BLOODGUN_ACTIVATE
-LANG_SIMPLIFIEDCHINESE       	"Press and hold ^3[{+activate}]^7 to acuire L'Arme Ensanglante
+LANG_SIMPLIFIEDCHINESE       	"Press and hold ^3[{+activate}]^7 to acquire L'Arme Ensanglante
 
 REFERENCE           	TRIAL_ACTIVATE
 LANG_SIMPLIFIEDCHINESE       	"Press ^3[{+activate}]^7 to accept a Divinium Trial [Cost: &&1]"
@@ -75,7 +75,7 @@ REFERENCE           	FOUNTAIN_ACTIVATE
 LANG_SIMPLIFIEDCHINESE       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [&&1 use(s) left]"
 
 REFERENCE           	TAKE_WEAPON
-LANG_SIMPLIFIEDCHINESE       "Press ^3[{+activate}]^7 to take &&1"
+LANG_SIMPLIFIEDCHINESE       "Press ^3[{+activate}]^7 to take {{weapon_name}}"
 
 REFERENCE           	TRIDENT_SEEK
 LANG_SIMPLIFIEDCHINESE       "I seem to have misplaced my weapon. Can you help me find it?"
@@ -198,6 +198,9 @@ REFERENCE           	TRIAL_DIALOGUE_ARAMIS1
 LANG_SIMPLIFIEDCHINESE       "Aramis: “You’re already off to a hot start!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS2
+LANG_SIMPLIFIEDCHINESE       "Aramis: “Nice work!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS3
 LANG_SIMPLIFIEDCHINESE       "Aramis: “Yo! Champ in the making! Sorry, I hope that wasn’t weird...”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS4
@@ -224,6 +227,9 @@ LANG_SIMPLIFIEDCHINESE       "Judge Porthos: “This is just the beginning.\nYou
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS2
 LANG_SIMPLIFIEDCHINESE       "Judge Porthos: “If you are to proceed along the path of a deadshot,\ndaiquiri doubles as an effective aiming partner.”"
 
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS3
+LANG_SIMPLIFIEDCHINESE       "Judge Porthos: “It seems you have taken well to the craft of precision.”"
+
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS4
 LANG_SIMPLIFIEDCHINESE       "Judge Porthos: “At last, you have attained the rank of a true marksman!”"
 
@@ -248,6 +254,9 @@ LANG_SIMPLIFIEDCHINESE       "Judge D'Artagnan: “Good… good… do not hesita
 REFERENCE           	TRIAL_DIALOGUE_DART2
 LANG_SIMPLIFIEDCHINESE       "Judge D'Artagnan: “More! More! More bloodshed!”"
 
+REFERENCE           	TRIAL_DIALOGUE_DART3
+LANG_SIMPLIFIEDCHINESE       "Judge D'Artagnan: “SWISH SWHOOSH STAB! STAB STAB STAB!”"
+
 REFERENCE           	TRIAL_DIALOGUE_DART4
 LANG_SIMPLIFIEDCHINESE       "Judge D'Artagnan: “The scent of your vanquished foes is just... so... intoxicating!\nBWAHAHAHA!”"
 
@@ -270,6 +279,9 @@ REFERENCE           	TRIAL_DIALOGUE_ATHOS1
 LANG_SIMPLIFIEDCHINESE       "Judge Athos: “I suppose you think you’re some hotshot now.\nNo. You. Are. Nothing.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS2
+LANG_SIMPLIFIEDCHINESE       "Judge Athos: “I suppose you think you’re some hotshot now. No. You. Are. Nothing.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS3
 LANG_SIMPLIFIEDCHINESE       "Judge Athos: “I guess you’ve managed to luck your way this far.\nTake your reward and get out of my sight.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS4
