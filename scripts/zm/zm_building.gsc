@@ -392,6 +392,10 @@ function validate_and_set_no_target_position( position )
 		{
 			self SetGoal( goal_point );
 			self.has_exit_point = 1;
+			if(isdefined(self.targetname) && self.targetname == "zombie_escargot")
+			{
+				self thread stay_at_goal(goal_point);
+			}
 			return true;
 		}
 	}
@@ -399,9 +403,22 @@ function validate_and_set_no_target_position( position )
 	return false;
 }
 
+function stay_at_goal(goal_point)
+{
+	self endon("death");
+
+	while(level.wait_and_revive || level.in_antiverse)
+	{
+		self SetGoal( goal_point );
+		wait(0.05);
+	}
+
+	self SetGoal(self.origin);
+}
+
 function no_target_override( zombie )
 {
-	if( isdefined( zombie.has_exit_point ) || level flag::get("dog_round") )
+	if( isdefined( zombie.has_exit_point ) )
 	{
 		return;
 	}

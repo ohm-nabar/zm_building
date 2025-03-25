@@ -133,6 +133,7 @@ function pause(antiverse=false)
 
 	if(antiverse)
 	{
+		wait(5);
 		zombies = GetAITeamArray( level.zombie_team );
 		foreach(zombie in zombies)
 		{
@@ -143,7 +144,10 @@ function pause(antiverse=false)
 			else
 			{
 				zombie.kill_indicator.alpha = 0;
-				zombie ASMSetAnimationRate(0);
+				if(zombie.targetname == "zombie_cloak")
+				{
+					zombie ASMSetAnimationRate(0);
+				}
 			}
 			
 		}		
@@ -543,14 +547,29 @@ function dog_round_spawning()
 
 	while(level.num_cloaks > 0)
 	{
-		if(zombie_utility::get_current_zombie_count() >= level.shadow_ai_limit || level.shadow_round_paused)
+		in_antiverse = false;
+		if(zombie_utility::get_current_zombie_count() >= level.shadow_ai_limit || (level.shadow_round_paused && ! level.in_antiverse))
 		{
 			wait(0.05);
 			continue;
 		}
-		thread choker_spawn(level get_random_valid_player());
-		choker_wait_time = 1 - ( 0.2 * (players.size - 1) );
-		wait(choker_wait_time);
+
+		while(level.in_antiverse)
+		{
+			in_antiverse = true;
+			wait(0.05);
+		}
+
+		if(in_antiverse)
+		{
+			wait(1);
+		}
+		else
+		{
+			level thread choker_spawn(level get_random_valid_player());
+			choker_wait_time = 1 - ( 0.2 * (players.size - 1) );
+			wait(choker_wait_time);
+		}
 	}
 
 	while(level.shadow_round_paused)
@@ -579,24 +598,37 @@ function dog_round_spawning()
 		}
 		if(i == 0 && ! level.trident_shell_activated && zm_room_manager::is_room_active(level.abbey_rooms[level.trident_init_room]))
 		{
-			thread escargot_spawn(level get_random_valid_player(), true);
+			level thread escargot_spawn(level get_random_valid_player(), true);
 		}
 		else
 		{
-			thread escargot_spawn(level get_random_valid_player());
+			level thread escargot_spawn(level get_random_valid_player());
 		}
 		wait(1.5);
 	}
 
 	while(level.num_escargots > 0)
 	{
-		if(zombie_utility::get_current_zombie_count() >= level.shadow_ai_limit || level.shadow_round_paused)
+		in_antiverse = false;
+		if(zombie_utility::get_current_zombie_count() >= level.shadow_ai_limit || (level.shadow_round_paused && ! level.in_antiverse))
 		{
 			wait(0.05);
 			continue;
 		}
-		thread choker_spawn(level get_random_valid_player());
-		choker_wait_time = 1.25 - ( 0.25 * (players.size - 1) );
+
+		while(level.in_antiverse)
+		{
+			in_antiverse = true;
+			wait(0.05);
+		}
+
+		if(in_antiverse)
+		{
+			wait(1);
+		}
+
+		level thread choker_spawn(level get_random_valid_player());
+		choker_wait_time = 1 - ( 0.2 * (players.size - 1) );
 		wait(choker_wait_time);
 	}
 
@@ -633,6 +665,7 @@ function cloak_spawn_sequence()
 	level.num_gens_shadowed = 0;
 	for(i = 0; i < cloaks_to_spawn; i++)
 	{
+		in_antiverse = false;
 		time_to_wait = randomintrange(1, 4);
 		wait(time_to_wait);
 
@@ -661,10 +694,22 @@ function cloak_spawn_sequence()
 			continue;
 		}
 
-		while(level.shadow_round_paused)
+		while(level.shadow_round_paused && ! level.in_antiverse)
 		{
 			wait(0.05);
 		}
+
+		while(level.in_antiverse)
+		{
+			in_antiverse = true;
+			wait(0.05);
+		}
+
+		if(in_antiverse)
+		{
+			wait(1);
+		}
+
 		cloak = cloak_spawn(trigger);
 		level.cloak = cloak;
 		//cloak.v_zombie_custom_goal_pos = trigger.origin;
