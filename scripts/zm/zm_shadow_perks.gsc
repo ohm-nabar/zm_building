@@ -63,6 +63,7 @@ function on_player_connect()
 	self.shadowQuick = false;
 	self.shadowDouble = false;
 	self.shadowPHD = false;
+	self.shadowMule = false;
 	self LUINotifyEvent(&"generator_unshadowed", 0);
 }
 
@@ -140,13 +141,22 @@ function giveBackShadowPerks()
 
 		if(self.shadowPerks[j][0] == PERK_ADDITIONAL_PRIMARY_WEAPON)
 		{
-			self EnableWeaponCycling();
-			self GiveWeapon(self.shadowThirdGun);
-			self SetWeaponAmmoClip(self.shadowThirdGun, self.shadowThirdGunClip);
-			self SetWeaponAmmoStock(self.shadowThirdGun, self.shadowThirdGunStock);
-			self.shadowThirdGun = undefined;
-			self.shadowThirdGunClip = undefined;
-			self.shadowThirdGunStock = undefined;
+			if(self.shadowThirdGun == level.weaponNone)
+			{
+				debug_str = "Not returning (shadow) a weapon (weaponNone)";
+			}
+			else
+			{
+				debug_str = "Returning (shadow) " + self.shadowThirdGun.displayName;
+				self EnableWeaponCycling();
+				self GiveWeapon(self.shadowThirdGun);
+				self SetWeaponAmmoClip(self.shadowThirdGun, self.shadowThirdGunClip);
+				self SetWeaponAmmoStock(self.shadowThirdGun, self.shadowThirdGunStock);
+				self.shadowThirdGun = undefined;
+				self.shadowThirdGunClip = undefined;
+				self.shadowThirdGunStock = undefined;
+			}
+			/# PrintLn(debug_str); #/
 		}
 	}
 	self.shadowPerks = [];
@@ -249,10 +259,21 @@ function generator3_shadow_monitor()
 		mulearray = []; mulearray[mulearray.size] = PERK_ADDITIONAL_PRIMARY_WEAPON; mulearray[mulearray.size] = players[i] HasPerk(PERK_ADDITIONAL_PRIMARY_WEAPON);
 
 		players[i].shadowPerks[players[i].shadowPerks.size] = mulearray;
+		players[i].shadowMule = true;
 
 		players[i].shadowThirdGun = players[i] zm_perk_upgrades::return_additionalprimaryweapon();
 		players[i].shadowThirdGunClip = players[i] GetWeaponAmmoClip( players[i].shadowThirdGun );
 		players[i].shadowThirdGunStock = players[i] GetWeaponAmmoStock( players[i].shadowThirdGun );
+
+		if(players[i].shadowThirdGun == level.weaponNone)
+		{
+			debug_str = "Mule Kick return weapon (shadow) is now weaponNone";
+		}
+		else
+		{
+			debug_str = "Mule Kick return weapon (shadow) is now " + players[i].shadowThirdGun.displayName;
+		}
+		/# PrintLn(debug_str); #/
 
 		players[i] TakeWeapon( players[i].shadowThirdGun );
 		players[i] notify(PERK_ADDITIONAL_PRIMARY_WEAPON + "_stop");
@@ -498,6 +519,7 @@ function mule_dummy_function()
 
 	level waittill("last_ai_down");
 
+	self.shadowMule = false;
 	self.should_end_shadow_mule = true;
 }
 

@@ -8,6 +8,7 @@
 #insert scripts\shared\shared.gsh;
 #insert scripts\shared\version.gsh;
 
+#using scripts\zm\_zm_magicbox;
 #using scripts\zm\zm_perk_upgrades;
 
 #insert scripts\zm\_zm_perks.gsh;
@@ -16,7 +17,7 @@
 
 #namespace zm_perk_upgrades_effects;
 
-REGISTER_SYSTEM( "zm_perk_upgrades_effects", &__init__, undefined )
+REGISTER_SYSTEM_EX( "zm_perk_upgrades_effects", &__init__, &__main__, undefined )
 
 // MAIN
 //*****************************************************************************
@@ -26,7 +27,28 @@ function __init__()
 	clientfield::register( "clientuimodel", "muleIndicator", VERSION_SHIP, 1, "int" );
 
 	callback::on_connect( &on_player_connect );
-	callback::on_laststand( &on_laststand );
+}
+
+function __main__()
+{
+	level.perk_lost_func = &perk_lost_callback;
+}
+
+function perk_lost_callback(perk)
+{
+	if(perk == PERK_ADDITIONAL_PRIMARY_WEAPON && self.hasMule2 && ! self.shadowMule)
+	{
+		self.hasGivenGunBack = false;
+		if(self.gunToGiveBack == level.weaponNone)
+		{
+			debug_str = "No Mule Kick return weapon set on down (weaponNone)";
+		}
+		else
+		{
+			debug_str = "Mule Kick return weapon set on down (" + self.gunToGiveBack.displayName + ")";
+		}
+		/# PrintLn(debug_str); #/
+	}
 }
 
 function on_player_connect()
@@ -96,65 +118,40 @@ function mule_upgrade_effects()
 	self thread mule_third_gun_hud();
 	self.hasGivenGunBack = true;
 	self.gunToGiveBack = level.weaponNone;
-
-	//testCounter = 0;
 	
 	while(true)
 	{
-		/*
-		IPrintLn("Is upgrade active: ");
-		IPrintLn(self zm_perk_upgrades::IsPerkUpgradeActive(PERK_ADDITIONAL_PRIMARY_WEAPON));
-		IPrintLn("Has gun been given back?: ");
-		IPrintLn(self zm_perk_upgrades::IsPerkUpgradeActive(PERK_ADDITIONAL_PRIMARY_WEAPON));
-		wait(1);
-		IPrintLn("Number of guns: : ");
-		IPrintLn((self GetWeaponsListPrimaries()).size);
-		IPrintLn("Is it weaponnone: ");
-		IPrintLn(self.gunToGiveBack == level.weaponNone);
-		wait(1);
-		*/
-		if(self.hasGivenGunBack && self HasPerk(PERK_ADDITIONAL_PRIMARY_WEAPON) && ! self laststand::player_is_in_laststand())
+		if(self.hasGivenGunBack && self zm_perk_upgrades::IsPerkUpgradeActive(PERK_ADDITIONAL_PRIMARY_WEAPON) && ! self laststand::player_is_in_laststand())
 		{
-			self.gunToGiveBack = self zm_perk_upgrades::return_additionalprimaryweapon();
- 			self.gunToGiveBackClip = self GetWeaponAmmoClip(self.gunToGiveBack);
- 			self.gunToGiveBackStock = self GetWeaponAmmoStock(self.gunToGiveBack);
-
- 			/*
- 			if(testCounter % 100 == 0)
- 			{
- 				IPrintLn(self.gunToGiveBack.name);
- 				IPrintLn("Clip ammo:");
- 				IPrintLn(self.gunToGiveBackClip);
- 				IPrintLn("Stock ammo:");
- 				IPrintLn(self.gunToGiveBackStock);
- 			}
- 			//*/
+			mule_kick_gun = self zm_perk_upgrades::return_additionalprimaryweapon();
+			if(mule_kick_gun != self.gunToGiveBack)
+			{
+				if(mule_kick_gun == level.weaponNone)
+				{
+					debug_str = "Mule Kick return weapon is now weaponNone";
+				}
+				else
+				{
+					debug_str = "Mule Kick return weapon is now " + mule_kick_gun.displayName;
+				}
+				/# PrintLn(debug_str); #/
+				self.gunToGiveBack = mule_kick_gun;
+				self.gunToGiveBackClip = self GetWeaponAmmoClip(self.gunToGiveBack);
+				self.gunToGiveBackStock = self GetWeaponAmmoStock(self.gunToGiveBack);
+			}
 		}
 
-		if(self HasPerk(PERK_ADDITIONAL_PRIMARY_WEAPON) && ! self.hasGivenGunBack && (self GetWeaponsListPrimaries()).size < 3 &&
-		self.gunToGiveBack != level.weaponNone) 
+		if(self zm_perk_upgrades::IsPerkUpgradeActive(PERK_ADDITIONAL_PRIMARY_WEAPON) && ! self.hasGivenGunBack && (self GetWeaponsListPrimaries()).size < 3 &&
+		self.gunToGiveBack != level.weaponNone && ! self HasWeapon(self.gunToGiveBack) && self zm_magicbox::can_buy_weapon() && ! self.isInBloodMode) 
 		{
-			//IPrintLn("Giving back: ");
-			//IPrintLn(self.gunToGiveBack.name);
+			debug_str = "Returning " + self.gunToGiveBack.displayName;
+			/# PrintLn(debug_str); #/
 			self notify("third_gun_returned");
 			self.hasGivenGunBack = true;
 			self GiveWeapon(self.gunToGiveBack);
 			self SetWeaponAmmoClip(self.gunToGiveBack, self.gunToGiveBackClip);
 			self SetWeaponAmmoStock(self.gunToGiveBack, self.gunToGiveBackStock);
-
-			self.gunToGiveBack = level.weaponNone;
-
-			/*
-			IPrintLn("Giving back: ");
-			IPrintLn(self.gunToGiveBack.name);
-			IPrintLn("Clip ammo:");
-			IPrintLn(self.gunToGiveBackClip);
-			IPrintLn("Stock ammo:");
-			IPrintLn(self.gunToGiveBackStock);
-			self.gunToGiveBack = level.weaponNone;
-			//*/
 		}
-		//testCounter++;
 		wait(0.05);
 	}
 }
@@ -246,16 +243,5 @@ function quick2_reviver_check()
 			reviver.quick2_player = self;
 			reviver notify("quick2_revive_boost");
 		}
-	}
-}
-
-
-function on_laststand()
-{
-	self endon("disconnect");
-
-	if(self zm_perk_upgrades::IsPerkUpgradeActive(PERK_ADDITIONAL_PRIMARY_WEAPON))
-	{
-		self.hasGivenGunBack = false;
 	}
 }
