@@ -28,8 +28,6 @@
 #precache( "triggerstring", "ZM_ABBEY_TRIDENT_SEEK" );
 #precache( "triggerstring", "ZM_ABBEY_TRIDENT_REJECT" );
 #precache( "triggerstring", "ZM_ABBEY_TRIDENT_CHARGE" );
-#precache( "triggerstring", "ZM_ABBEY_TAKE_WEAPON", "Atlantean Artifact 001" );
-#precache( "triggerstring", "ZM_ABBEY_TAKE_WEAPON", "Pride of Atlantis" );
 
 #namespace zm_trident;
 
@@ -467,15 +465,16 @@ function monitor_trident_fx()
 
 function upgrade_quest_think()
 {
-	self SetCursorHint("HINT_NOICON");
 	statue = GetEnt(self.target, "targetname");
 	weapon = GetEnt(statue.target, "targetname");
 
 	while(true)
 	{
+		self SetCursorHint("HINT_NOICON");
+		self SetHintString(&"ZM_ABBEY_TRIDENT_SEEK");
+
 		level.pitchfork_upgrading = false;
 		weapon SetInvisibleToAll();
-		self SetHintString(&"ZM_ABBEY_TRIDENT_SEEK");
 		upgrading_player = undefined;
 
 		while(true)
@@ -530,7 +529,8 @@ function upgrade_quest_think()
 
 		statue PlaySound("trident_complete_sting");
 		weapon SetModel("vm_trident");
-		self SetHintString(&"ZM_ABBEY_TAKE_WEAPON", level.abbey_trident.displayname);
+		self SetCursorHint("HINT_WEAPON", level.abbey_trident);
+		self SetHintString(&"ZM_ABBEY_TAKE_WEAPON");
 
 		while(isdefined(upgrading_player))
 		{
@@ -563,7 +563,8 @@ function upgrade_quest_init_think()
 
 	weapon SetVisibleToAll();
 	statue PlaySound("trident_escargot_sting");
-	self SetHintString(&"ZM_ABBEY_TAKE_WEAPON", level.abbey_pitchfork.displayname);
+	self SetCursorHint("HINT_WEAPON", level.abbey_pitchfork);
+	self SetHintString(&"ZM_ABBEY_TAKE_WEAPON");
 	level.pitchfork_available = true;
 
 	self waittill("trigger", player);
@@ -573,6 +574,7 @@ function upgrade_quest_init_think()
 	}
 	player zm_weapons::weapon_give(level.abbey_pitchfork);
 	weapon SetInvisibleToAll();
+	self SetCursorHint("HINT_NOICON");
 	self SetHintString(&"ZM_ABBEY_EMPTY");
 	level.pitchfork_available = false;
 }

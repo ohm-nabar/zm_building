@@ -57,10 +57,7 @@
 
 #precache( "fx", "custom/pistol_glint" );
 
-#precache( "triggerstring", "ZM_ABBEY_TAKE_WEAPON", "Colt M1911" );
-#precache( "triggerstring", "ZM_ABBEY_TAKE_WEAPON", "Luger P-08" );
-#precache( "triggerstring", "ZM_ABBEY_TAKE_WEAPON", "Webley Mk VI" );
-#precache( "triggerstring", "ZM_ABBEY_TAKE_WEAPON", "M712 Schnellfeuer" );
+#precache( "triggerstring", "ZM_ABBEY_TAKE_WEAPON" );
 
 //*****************************************************************************
 // MAIN
@@ -96,7 +93,9 @@ function main()
 		{
 			weapon = cz;
 		}
-		pistol_pickup_trigs[i] SetHintString(&"ZM_ABBEY_TAKE_WEAPON", weapon.displayName);
+
+		pistol_pickup_trigs[i] SetCursorHint("HINT_WEAPON", weapon);
+		pistol_pickup_trigs[i] SetHintString(&"ZM_ABBEY_TAKE_WEAPON");
 		pistol_pickup_trigs[i] thread pistol_pickup_think(weapon);
 	}
 
@@ -203,11 +202,12 @@ function pistol_pickup_think(weapon)
 			pistol_pickup_trigs = GetEntArray("pistol_pickup", "targetname");
 			foreach(trig in pistol_pickup_trigs)
 			{
-				trig SetHintStringForPlayer(player, &"ZM_ABBEY_EMPTY");
+				trig SetInvisibleToPlayer(player, true);
 			}
 
 			pistol_model SetInvisibleToAll();
 			level exploder::stop_exploder(exploder_name);
+			self SetCursorHint("HINT_NOICON");
 			self SetHintString(&"ZM_ABBEY_EMPTY");
 
 			player waittill("disconnect");
@@ -215,7 +215,8 @@ function pistol_pickup_think(weapon)
 			pistol_model SetVisibleToAll();
 			level exploder::exploder(exploder_name);
 
-			self SetHintString(&"ZM_ABBEY_TAKE_WEAPON", weapon.displayName);
+			self SetCursorHint("HINT_WEAPON", weapon);
+			self SetHintString(&"ZM_ABBEY_TAKE_WEAPON");
 		}
 		wait(0.05);
 	}
