@@ -443,7 +443,7 @@ function electric_cherry_reload_attack() // self = player
 			
 			for ( i = 0; i < a_zombies.size; i++ )
 			{
-				if ( IsAlive( self ) && IsAlive( a_zombies[ i ] ) && a_zombies[ i ].targetname != "zombie_cloak" && a_zombies[ i ].targetname != "zombie_escargot" )
+				if ( IsAlive( self ) && IsAlive( a_zombies[ i ] ) && (! isdefined( a_zombies[ i ].targetname ) || ( a_zombies[ i ].targetname != "zombie_cloak" && a_zombies[ i ].targetname != "zombie_escargot" ) ) )
 				{
 					// If the limit of zombies is undefined, keep going and hit all zombies we can
 					if( IsDefined( n_zombie_limit ) )
@@ -470,7 +470,10 @@ function electric_cherry_reload_attack() // self = player
 							self.cherry_kills++;
 						}
 					
-						self zm_score::add_to_player_score( RELOAD_ATTACK_POINTS );  //add points only if zombie is killed
+						if(! isdefined( a_zombies[ i ].targetname) || a_zombies[ i ].targetname != "zombie_choker")
+						{
+							self zm_score::add_to_player_score( RELOAD_ATTACK_POINTS );  //add points only if zombie is killed and not a choker
+						}
 					}
 					else
 					{
