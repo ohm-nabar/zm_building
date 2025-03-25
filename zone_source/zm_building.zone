@@ -704,3 +704,6 @@ image,notif_athos_crouch
 image,notif_athos_elevation
 image,notif_athos_trap
 image,notif_athos_wallbuy
+
+// PaP Util
+scriptparsetree,scripts/zm/_zm_pack_a_punch_util.gsc
