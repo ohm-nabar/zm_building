@@ -30,6 +30,12 @@
 #precache( "fx", "zombie/fx_weapon_box_marker_fl_zmb" );
 #precache( "fx", "zombie/fx_barrier_buy_zmb" );
 
+#precache( "triggerstring", "ZOMBIE_RANDOM_WEAPON_COST", "950" );
+#precache( "triggerstring", "ZOMBIE_RANDOM_WEAPON_COST", "10" );
+
+#precache( "triggerstring", "ZOMBIE_TRADE_EQUIP_FILL" );
+#precache( "triggerstring", "ZOMBIE_TRADE_WEAPON_FILL" );
+
 //////////////////////////////////////////////////
 ///////////// FUNCTION OVERRIDE LIST /////////////
 //// If any of these functions are overriden, they will override functionality in this script
@@ -45,11 +51,6 @@
 //////////////////////////////////////////////////
 
 #namespace zm_magicbox;
-
-#precache( "triggerstring", "ZM_ABBEY_BOX_ACTIVATE", "10" );
-#precache( "triggerstring", "ZM_ABBEY_BOX_ACTIVATE", "950" );
-#precache( "triggerstring", "ZM_ABBEY_BOX_TRADE" );
-
 
 REGISTER_SYSTEM_EX( "zm_magicbox", &__init__, &__main__, undefined )
 
@@ -343,7 +344,7 @@ function boxtrigger_update_prompt( player )
 
 function boxstub_update_prompt( player )
 {
-	self setCursorHint( "HINT_NOICON" );
+	//self setCursorHint( "HINT_NOICON" );
 
 	if (!self trigger_visible_to_player( player ))
 		return false;
@@ -359,12 +360,19 @@ function boxstub_update_prompt( player )
 	self.hint_parm1 = undefined;
 	if(IS_TRUE(self.stub.trigger_target.grab_weapon_hint))
 	{
-		self.hint_string = &"ZM_ABBEY_BOX_TRADE"; 
+		cursor_hint = "HINT_WEAPON";
+		cursor_hint_weapon = self.stub.trigger_target.grab_weapon;
+		self setCursorHint( cursor_hint, cursor_hint_weapon ); 
+		if (IsDefined(level.magic_box_check_equipment) && [[level.magic_box_check_equipment]]( cursor_hint_weapon ) )
+			self.hint_string = &"ZOMBIE_TRADE_EQUIP_FILL"; 
+		else
+			self.hint_string = &"ZOMBIE_TRADE_WEAPON_FILL"; 
 	}
 	else
 	{
+		self setCursorHint( "HINT_NOICON" );
 		self.hint_parm1 = self.stub.trigger_target.zombie_cost; 
-		self.hint_string = &"ZM_ABBEY_BOX_ACTIVATE";
+		self.hint_string = zm_utility::get_hint_string( self, "default_treasure_chest" );
 	}
 	return true;
 } 
@@ -2222,4 +2230,3 @@ function box_encounter_vo()
 		wait 0.5;
 	}
 }
-
