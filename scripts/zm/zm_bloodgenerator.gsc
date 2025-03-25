@@ -67,6 +67,8 @@
 #precache( "triggerstring", "ZM_ABBEY_PERK_ELECTRIC_CHERRY_RED", "2000" );
 #precache( "triggerstring", "ZM_ABBEY_PERK_DOUBLETAP_ORIGINAL", "2000" );
 
+#precache( "triggerstring", "ZOMBIE_BUTTON_BUY_TRAP", "1000" );
+
 #precache( "model", "mainframe_comp_offline_s38" );
 #precache( "model", "mainframe_comp_online_s38" );
 #precache( "model", "mainframe_comp_online_s_s38" );
