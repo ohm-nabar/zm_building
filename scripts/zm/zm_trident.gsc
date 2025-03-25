@@ -53,6 +53,7 @@ function __init__()
     level.pitchfork_melee_damage = 2702;
     level.trident_melee_damage = 2702;
 
+	level.pitchfork_available = false;
     level.pitchfork_upgrading = false;
 
     level.trident_upgrade_kills = 25;
@@ -148,7 +149,7 @@ function pitchfork_statue_check(weapon)
 {
 	if(isdefined(weapon) && weapon == level.abbey_pitchfork)
 	{
-		if(level.pitchfork_upgrading)
+		if(level.pitchfork_available || level.pitchfork_upgrading)
 		{
 			return 1;
 		}
@@ -156,6 +157,14 @@ function pitchfork_statue_check(weapon)
 		foreach(player in level.players)
 		{
 			if(player HasWeapon(level.abbey_trident))
+			{
+				return 1;
+			}
+			else if(isdefined(player.gunToGiveBack) && (player.gunToGiveBack == level.abbey_pitchfork || player.gunToGiveBack == level.abbey_trident))
+			{
+				return 1;
+			}
+			else if(isdefined(player.shadowThirdGun) && (player.shadowThirdGun == level.abbey_pitchfork || player.shadowThirdGun == level.abbey_trident))
 			{
 				return 1;
 			}
@@ -555,6 +564,7 @@ function upgrade_quest_init_think()
 	weapon SetVisibleToAll();
 	statue PlaySound("trident_escargot_sting");
 	self SetHintString(&"ZM_ABBEY_TAKE_WEAPON", level.abbey_pitchfork.displayname);
+	level.pitchfork_available = true;
 
 	self waittill("trigger", player);
 	while(! zm_utility::is_player_valid(player) || IS_TRUE(player.isInBloodMode))
@@ -564,6 +574,7 @@ function upgrade_quest_init_think()
 	player zm_weapons::weapon_give(level.abbey_pitchfork);
 	weapon SetInvisibleToAll();
 	self SetHintString(&"ZM_ABBEY_EMPTY");
+	level.pitchfork_available = false;
 }
 
 function soul_fx(origin)
