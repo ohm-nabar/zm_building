@@ -311,7 +311,7 @@ function electric_cherry_upgrade()
 			self.isUpgradingCherry = true;
 			self.cherryChallengeActive = true;
 
-			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
+			if(! failedByTime && (! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades())))
 			{
 				self.perk_notif_sent = true;
 				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
@@ -405,7 +405,7 @@ function double_tap_upgrade()
 			self.isUpgradingDouble = true;
 			self.doubleChallengeActive = true;
 
-			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
+			if(! failedByTime && (! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades())))
 			{
 				self.perk_notif_sent = true;
 				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
@@ -495,7 +495,7 @@ function phd_lite_upgrade()
 			self.isUpgradingPHD = true;
 			self.PHDChallengeActive = true;
 
-			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
+			if(! failedByTime && (! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades())))
 			{
 				self.perk_notif_sent = true;
 				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
@@ -583,7 +583,7 @@ function poseidon_punch_upgrade()
 			self.isUpgradingPoseidon = true;
 			self.poseidonChallengeActive = true;
 
-			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
+			if(! failedByTime && (! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades())))
 			{
 				self.perk_notif_sent = true;
 				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
@@ -670,7 +670,7 @@ function stamin_up_upgrade()
 			self.isUpgradingStamin = true;
 			self.staminChallengeActive = true;
 
-			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
+			if(! failedByTime && (! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades())))
 			{
 				self.perk_notif_sent = true;
 				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
@@ -760,7 +760,7 @@ function mule_kick_upgrade()
 			self.isUpgradingMule = true;
 			self.muleChallengeActive = true;
 
-			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
+			if(! failedByTime && (! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades())))
 			{
 				self.perk_notif_sent = true;
 				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
@@ -850,7 +850,7 @@ function quick_revive_upgrade()
 			self.isUpgradingQuick = true;
 			self.quickChallengeActive = true;
 
-			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
+			if(! failedByTime && (! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades())))
 			{
 				self.perk_notif_sent = true;
 				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
@@ -939,7 +939,7 @@ function deadshot_upgrade()
 			self.isUpgradingDeadshot = true;
 			self.deadshotChallengeActive = true;
 
-			if(! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades()))
+			if(! failedByTime && (! self.perk_notif_sent || (! self.perk_notif2_sent && level.active_generators.size >= 4 && self has_no_perk_upgrades())))
 			{
 				self.perk_notif_sent = true;
 				if(level.active_generators.size >= 4 && self has_no_perk_upgrades())
