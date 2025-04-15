@@ -62,9 +62,6 @@ function create_walls()
 
 function create_nodes()
 {
-	// i hate to do it like this but working with gsc classes
-	// has been the worst experience of my life and i will never do it again
-	// wtf treyarch??
 	level.maze_node_neighbors = [];
 	level.maze_node_assigned = [];
 	for(i = 0; i < 25; i++)
@@ -95,6 +92,79 @@ function create_edge(index1, index2)
 	array::add(level.maze_node_neighbors[index2], index1);
 }
 
+function solve_maze(start_node, end_node, &node_neighbors)
+{
+	maze_node_unvisited = [];
+	maze_node_distance = [];
+	maze_node_prev = [];
+
+	for(i = 0; i < 25; i++)
+	{
+		level array::add(maze_node_unvisited, i);
+		if(i == start_node)
+		{
+			maze_node_distance[i] = 0;
+		}
+		else
+		{
+			maze_node_distance[i] = 999999;
+		}
+		maze_node_prev[i] = undefined;
+	}
+
+	while(maze_node_unvisited.size > 0 && nodes_reachable(maze_node_unvisited, maze_node_distance))
+	{
+		cur_node = maze_node_unvisited[0];
+		foreach(node in maze_node_unvisited)
+		{
+			if(maze_node_distance[node] < maze_node_distance[cur_node])
+			{
+				cur_node = node;
+			}
+		}
+
+		ArrayRemoveValue(maze_node_unvisited, cur_node);
+
+		foreach(neighbor in node_neighbors[cur_node])
+		{
+			if(level array::contains(maze_node_unvisited, neighbor))
+			{
+				alt = maze_node_distance[cur_node] + 1;
+				if(alt < maze_node_distance[neighbor])
+				{
+					maze_node_distance[neighbor] = alt;
+					maze_node_prev[neighbor] = cur_node;
+				}
+				
+			}
+		}
+	}
+
+	solution = [];
+	cur_node = end_node; 
+	while(isdefined(cur_node) && cur_node != start_node)
+	{
+		prev_node = maze_node_prev[cur_node];
+		level array::push_front(solution, cur_node);
+		cur_node = prev_node;
+	}
+
+	return solution;
+}
+
+function nodes_reachable(&maze_node_unvisited, &maze_node_distance)
+{
+	foreach(node in maze_node_unvisited)
+	{
+		if(maze_node_distance[node] != 999999)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 function send_to_antiverse()
 {
 	self thread player_maze_setup(level.antiverse_spawn_points[0].origin, level.antiverse_spawn_points[0].angles);
@@ -106,10 +176,17 @@ function send_to_antiverse()
 	neighbor = random_unassigned_neighbor(0);
 	furthest_dist = 0;
 	end_node = 0;
+	node_neighbors = [];
+	for(i = 0; i < 25; i++)
+	{
+		node_neighbors[i] = [];
+	}
 
 	while(isdefined(neighbor))
 	{
 		break_wall(cur_node, neighbor);
+		level array::add(node_neighbors[cur_node], neighbor);
+		level array::add(node_neighbors[neighbor], cur_node);
 		if(queue.size > furthest_dist)
 		{
 			furthest_dist = queue.size;
@@ -128,11 +205,32 @@ function send_to_antiverse()
 		wait(0.05);
 	}
 
-	level.antiverse_end = Spawn("script_model", level.antiverse_end_points[end_node].origin);
-	level.antiverse_end SetModel("tag_origin");
-	PlayFXOnTag("custom/fx_trail_blood_soul_zmb", level.antiverse_end, "tag_origin");
+	level.antiverse_end = level.antiverse_end_points[end_node];
+
+	level.fading_light = Spawn("script_model", level.antiverse_end_points[0].origin);
+	level.fading_light SetModel("tag_origin");
+	PlayFXOnTag("custom/fx_trail_blood_soul_zmb", level.fading_light, "tag_origin");
+	level.fading_light PlayLoopSound("zmb_spawn_powerup_loop");
+
+	solution = solve_maze(0, end_node, node_neighbors);
+
+	level.fading_light thread move_to_end(solution);
 
 	self thread player_finish_monitor();
+}
+
+function move_to_end(solution)
+{
+	wait(2);
+	move_time = 1.0;
+	for(i = 0; i < solution.size; i++)
+	{
+		move_time -= 0.15;
+		move_time = Max(move_time, 0.1);
+		
+		self MoveTo(level.antiverse_end_points[solution[i]].origin, move_time);
+		wait(move_time);
+	}
 }
 
 function player_maze_setup(origin, angles)
@@ -154,6 +252,9 @@ function player_maze_setup(origin, angles)
 	antiverse_loadout = level.antiverse_loadout;
 	antiverse_loadout.a_location_info = []; antiverse_loadout.a_location_info["origin"] = origin; antiverse_loadout.a_location_info["angles"] = angles; 
 	self zm_sphynx_util::give_player_loadout(level.antiverse_loadout, 1, 1, 1, 1);
+	self SetStance("stand");
+	wait(0.05);
+	self FreezeControls(true);
 
 	wait(1.2);
 	self thread lui::screen_fade_in( 1.5, "black" );
@@ -162,6 +263,8 @@ function player_maze_setup(origin, angles)
 
 function player_finish_monitor()
 {
+	wait(2.5);
+	self FreezeControls(false);
 	timer = 0;
 	flashlight_75 = false;
 	flashlight_50 = false;
@@ -233,8 +336,8 @@ function antiverse_reset()
 		level.maze_node_assigned[i] = false;
 	}
 
-	level.antiverse_end Delete();
-	level.antiverse_end = undefined;
+	level.fading_light Delete();
+	level.fading_light = undefined;
 	
 	wait(1.5);
 
