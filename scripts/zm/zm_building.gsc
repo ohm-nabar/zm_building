@@ -257,7 +257,6 @@ function zombie_unpush()
 		wait(0.05);
 	}
 }
-
 function spare_change( str_trigger = "audio_bump_trigger", str_sound = "zmb_perks_bump_bottle" )
 {
 	// Check under the machines for change
@@ -269,6 +268,22 @@ function spare_change( str_trigger = "audio_bump_trigger", str_sound = "zmb_perk
 			t_audio_bump thread check_for_change();
 		}
 	}
+
+	vending_trigs = GetEntArray( "zombie_vending", "targetname" );
+	foreach(vending_trig in vending_trigs)
+	{
+		switch(vending_trig.script_noteworthy)
+		{
+			case PERK_ADDITIONAL_PRIMARY_WEAPON:
+			case PERK_STAMINUP:
+				vending_trig.bump thread move_down();
+		}
+	}
+}
+
+function move_down()
+{
+	self.origin = self.origin - (0, 0, 10);
 }
 
 function check_for_change()//self = trigger
