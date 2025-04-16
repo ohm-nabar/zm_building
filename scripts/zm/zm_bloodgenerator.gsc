@@ -597,7 +597,7 @@ function deposit_waypoint_manage()
 				wait(0.05);
 			}
 			closest_dist = 9999999;
-			closest_dist_key = -1;
+			closest_dist_key = "";
 			keys = GetArrayKeys(self.generator_indicators);
 
 			foreach(key in keys)
@@ -1156,28 +1156,6 @@ function turn_generator_on(generator_name, after_shadow)
 	foreach(player in level.players)
 	{
 		player thread zm_abbey_inventory::notifyGenerator();
-	}
-}
-
-function turn_generator_off(generator_name)
-{
-	switch(generator_name) {
-		case "generator1":
-			//level notify( getVendingMachineNotify(PERK_QUICK_REVIVE) + "_off" );
-			//zm_perks::perk_pause(PERK_QUICK_REVIVE);
-			level flag::clear("power_on1");
-			//zm_perks::perk_pause(PERK_ELECTRIC_CHERRY);
-			break;
-		case "generator2":
-			level flag::clear("power_on2");
-			//zm_perks::perk_pause(PERK_JUGGERNOG);
-			break;
-		case "generator3":
-			level flag::clear("power_on3");
-			break;
-		case "generator4":
-			level flag::clear("power_on4");
-			break;
 	}
 }
 
