@@ -159,12 +159,40 @@ function take_starting_gun()
 {
 	self endon("disconnect");
 
+	pistol_clip = 0;
+	pistol_stock = 0;	
+
 	while(true)
 	{
-		if(self HasWeapon(level.start_weapon) && self.startingpistol != level.start_weapon)
+		if(self.startingpistol != level.start_weapon)
 		{
-			self TakeWeapon(level.start_weapon);
+			if(self HasWeapon(self.startingpistol) && ! level.in_antiverse)
+			{
+				pistol_clip = self GetWeaponAmmoClip(self.startingpistol);
+				pistol_stock = self GetWeaponAmmoStock(self.startingpistol);
+			}
+			else if(! self HasWeapon(self.startingpistol) && self GetCurrentWeapon() != level.weaponNone)
+			{
+				pistol_clip = self.startingpistol.clipsize;
+				pistol_stock = self.startingpistol.startammo - pistol_clip;
+			}
+
+			if(self HasWeapon(level.start_weapon))
+			{
+				self TakeWeapon(level.start_weapon);
+				self GiveWeapon(self.startingpistol);
+			}
+		}
+
+		if(self GetCurrentWeapon() == level.weaponNone)
+		{
+			self TakeWeapon(level.weaponNone);
 			self GiveWeapon(self.startingpistol);
+			if(self.startingpistol != level.start_weapon)
+			{
+				self SetWeaponAmmoClip(self.startingpistol, pistol_clip);
+				self SetWeaponAmmoStock(self.startingpistol, pistol_stock);
+			}
 		}
 		wait(0.05);
 	}
