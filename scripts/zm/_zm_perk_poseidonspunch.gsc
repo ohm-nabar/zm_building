@@ -130,9 +130,9 @@ function custom_perk_set_clientfield( state )
 
 function custom_perk_machine_setup( use_trigger, perk_machine, bump_trigger, collision )
 {
-	use_trigger.script_sound = "";
+	use_trigger.script_sound = "mus_perks_pp_jingle";
 	use_trigger.script_string = "";
-	use_trigger.script_label = "";
+	use_trigger.script_label = "mus_perks_pp_sting";
 	use_trigger.target = POSEIDON_PUNCH_RADIANT_MACHINE_NAME;
 	perk_machine.script_string = "";
 	perk_machine.targetname = POSEIDON_PUNCH_RADIANT_MACHINE_NAME;
