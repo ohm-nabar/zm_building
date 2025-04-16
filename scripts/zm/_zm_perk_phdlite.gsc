@@ -260,7 +260,11 @@ function phd_slide_think()
 					if(dist < PHD_LITE_RADIUS)
 					{
 						damage = max_damage * (1 - (dist / PHD_LITE_RADIUS));
-						zombie.phd_damaged = true;
+						if(zombie.health <= damage || level.zombie_vars[self.team]["zombie_insta_kill"] == 1 && isdefined(self.slidekills))
+						{
+							self.slidekills += 1;
+							wait(0.05);
+						}
 						zombie DoDamage(damage, zombie_origin, self, self, "none", "MOD_EXPLOSIVE", 0 );
 						//IPrintLn(damage);
 					}
