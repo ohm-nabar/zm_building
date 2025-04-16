@@ -38,7 +38,7 @@ function flogger_trap_activate()
 	
 	a_targets = getEntArray( self.target, "targetname" );
 	for ( i = 0; i < a_targets.size; i++ )
-		if ( a_targets[ i ].script_noteworthy == "belt" )
+		if ( isdefined(a_targets[i].script_noteworthy) && a_targets[ i ].script_noteworthy == "belt" )
 		{
 			a_targets[ i ] setModel( FLOGGER_TRAP_BELT_ON_MODEL );
 			playSoundAtPosition( "zmb_motor_start_left", a_targets[ i ].origin );
@@ -56,13 +56,13 @@ function flogger_trap_activate()
 	
 	self unLink();
 	for ( i = 0; i < a_targets.size; i++ )
-		if ( a_targets[ i ].script_noteworthy == "belt" )
+		if ( isdefined(a_targets[i].script_noteworthy) && a_targets[ i ].script_noteworthy == "belt" )
 		{
 			a_targets[ i ] setModel( FLOGGER_TRAP_BELT_OFF_MODEL );
 			playSoundAtPosition( "zmb_motor_stop_left", a_targets[ i ].origin );
 			a_targets[ i ] stopLoopSound( .5 );
 		}
-		else if ( a_targets[ i ].script_noteworthy == "mover" )
+		else if ( isdefined(a_targets[i].script_noteworthy) && a_targets[ i ].script_noteworthy == "mover" )
 			a_targets[ i ] stopLoopSound( .5 );
 		
 	self notify( "trap_done" );
