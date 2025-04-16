@@ -81,7 +81,6 @@ function __init__()
 	level.abbey_perk_indices[PERK_DEAD_SHOT] = 7;
 
 	callback::on_connect( &on_player_connect );
-	zm::register_zombie_damage_override_callback( &zombie_damage_override );
 }
 
 function on_player_connect() 
@@ -166,25 +165,6 @@ function on_player_connect()
 	self thread quick_revive_upgrade();
 	self thread phd_lite_upgrade();
 	self thread deadshot_upgrade();
-}
-
-function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
-{
-	if ( isPlayer( attacker ) && willBeKilled )
-	{
-		if(IS_TRUE(self.poseidon_knockdown) && isdefined(attacker.blessedkills))
-		{
-			attacker.blessedkills++;
-		}
-		if(IS_TRUE(self.phd_damaged) && isdefined(attacker.slidekills))
-		{
-			attacker.slidekills++;
-		}
-	}
-	else
-	{
-		self.phd_damaged = false;
-	}
 }
 
 function get_player_perk_purchase_limit()
