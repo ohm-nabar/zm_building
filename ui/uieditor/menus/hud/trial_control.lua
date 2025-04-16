@@ -324,7 +324,7 @@ function CoD.TrialControl.new(HudRef, InstanceRef)
     end
     TrialControl:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "athosWaypoints"), AthosWaypointsUpdate)
 
-    local WallbuyTable = {"Kar98k", "Gewehr 43", "M1 Garand", "Trench Gun", "MP40", "Double Barreled Shotgun", "Sten Mk. IV", "MAS-38", "Thompson M1A1", "StG-44", "SVT-40", "BAR", "Type 11"}
+    local WallbuyTable = {"Kar98k", "Gewehr 43", "M1 Garand", "Trench Gun", "MP40", "Double Barreled Shotgun", "Sten Mk. IV", "MAS-38", "Thompson M1A1", "StG-44", "BAR", "SVT-40", "Type 11"}
     local RoomTable = {"ZM_ABBEY_ROOM_CRASH_SITE", "ZM_ABBEY_ROOM_BELL_TOWER", "ZM_ABBEY_ROOM_RED_ROOM", "ZM_ABBEY_ROOM_BASILICA", "ZM_ABBEY_ROOM_AIRFIELD", "ZM_ABBEY_ROOM_UPPER_PILGRIMAGE", "ZM_ABBEY_ROOM_MERVEILLE_DE_VERITE", "ZM_ABBEY_ROOM_KNIGHTS_HALL", "ZM_ABBEY_ROOM_URM_LABORATORY", "ZM_ABBEY_ROOM_VERITE_LIBRARY", "ZM_ABBEY_ROOM_COURTYARD", "ZM_ABBEY_ROOM_NO_MANS_LAND"}
 
     local function GargoyleProgress(GargNum, NotifyData)
