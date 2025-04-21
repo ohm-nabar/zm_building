@@ -47,6 +47,7 @@ function __init__()
 {
 	enable_custom_perk_for_level();
 	level.quad_gas_immune_func = &quad_gas_immune_func;
+	zm::register_player_damage_callback( &player_damage_override );
 	//thread testeroo();
 	//level.check_quickrevive_hotjoin = &check_quickrevive_for_hotjoin;
 }
@@ -70,6 +71,16 @@ function enable_custom_perk_for_level()
 	//zm_perks::register_perk_machine_power_override( PERK_PHD_LITE, &turn_revive_on ); // custom power function gets threaded here
 	//level flag::init( "solo_revive" );
 	
+}
+
+function player_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, weapon, vPoint, vDir, sHitLoc, psOffsetTime )
+{
+	if(IS_TRUE(self.phd_invulnerable))
+	{
+		return 0;
+	}
+
+	return -1;
 }
 
 function phd_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, weapon, vPoint, vDir, sHitLoc, psOffsetTime )
@@ -280,13 +291,10 @@ function phd_slide_iframes()
 	self endon("disconnect");
 
 	time = PHD_LITE_IFRAME_TIME * 20;
-	for(i = 0; i < time; i++)
-	{
-		self EnableInvulnerability();
-		wait(0.05);
-	}
+	self.phd_invulnerable = true;
+	wait(PHD_LITE_IFRAME_TIME);
 	
-	self DisableInvulnerability();
+	self.phd_invulnerable = false;
 }
 
 function testeroo()

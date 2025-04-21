@@ -38,6 +38,7 @@ function __init__()
 {
 	clientfield::register( "clientuimodel", "soloLivesUpdate", VERSION_SHIP, 2, "int" );
 	callback::on_connect( &on_player_connect );
+	zm::register_player_damage_callback( &player_damage_callback );
 
 	level.override_use_solo_revive = &override_use_solo_revive;
 	level.player_out_of_playable_area_monitor_callback = &player_out_of_playable_area_monitor_callback;
@@ -57,6 +58,16 @@ function on_player_connect()
 		self thread set_lives();
 		//self thread testeroo();
 	}
+}
+
+function player_damage_callback( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, weapon, vPoint, vDir, sHitLoc, psOffsetTime )
+{
+	if(IS_TRUE(self.solo_revive_invulnerable))
+	{
+		return 0;
+	}
+
+	return -1;
 }
 
 function set_lives()
@@ -607,7 +618,7 @@ function wait_and_revive()
 		self.abbey_no_waypoints = true;
 		self.athos_indicators_active = false;
 		level lui::screen_fade_out( 5, "black" );
-		self EnableInvulnerability();
+		self.solo_revive_invulnerable = true;
 		self zm_laststand::auto_revive( self );
 		self.waiting_to_revive = false;
 		level flag::clear( "wait_and_revive" );
@@ -615,7 +626,7 @@ function wait_and_revive()
 		self thread zm_antiverse::send_to_antiverse();
 		wait(2);
 		level.sending_to_antiverse = false;
-		self DisableInvulnerability();
+		self.solo_revive_invulnerable = false;
 	}
 }
 

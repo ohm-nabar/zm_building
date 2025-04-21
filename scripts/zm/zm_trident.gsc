@@ -90,8 +90,6 @@ function on_player_connect()
 	self.trident_power_level = 0;
 	self.trident_melee_kills = 0;
 
-	//self EnableInvulnerability();
-
 	self thread watch_trident_fired();
 	self thread monitor_trident_fired();
 	self thread monitor_trident_used();

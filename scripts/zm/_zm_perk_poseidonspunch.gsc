@@ -64,6 +64,7 @@ function __init__()
 	level.poseidon_recharge_time = 10;
 	enable_custom_perk_for_level();
 	callback::on_connect( &on_player_connect );
+	zm::register_player_damage_callback( &player_damage_override );
 	zm::register_zombie_damage_override_callback( &zombie_damage_override );
 	//thread testeroo();
 	//level.check_quickrevive_hotjoin = &check_quickrevive_for_hotjoin;
@@ -75,6 +76,16 @@ function on_player_connect()
 	self.poseidon_zombie_deaths_until_drop = RandomIntRange(4, 15);
 	self.poseidon_ready = true;
 	self.is_poseidon_blessed = false;
+}
+
+function player_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, weapon, vPoint, vDir, sHitLoc, psOffsetTime )
+{
+	if(IS_TRUE(self.poseidon_invulnerable))
+	{
+		return 0;
+	}
+
+	return -1;
 }
 
 function zombie_damage_override( willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType )
@@ -255,12 +266,12 @@ function poseidon_melee_iframes()
 	{
 		if(self IsMeleeing() && self HasPerk(PERK_POSEIDON_PUNCH) && self.poseidon_ready)
 		{
+			self.poseidon_invulnerable = true;
 			while (self IsMeleeing())
 			{
-				self EnableInvulnerability();
 				wait(0.05);
 			}
-			self DisableInvulnerability();
+			self.poseidon_invulnerable = false;
 		}
 	}
 }
