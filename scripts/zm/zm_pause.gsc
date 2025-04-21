@@ -12,6 +12,7 @@
 #insert scripts\shared\version.gsh;
 #insert scripts\zm\zm_abbey_inventory.gsh;
 
+#using scripts\zm\_zm;
 #using scripts\zm\_zm_laststand;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\zm_abbey_inventory;
@@ -33,8 +34,19 @@ function __init__()
 	level.is_coop_paused = false;
 	level.wants_pause = false;
 	callback::on_connect( &on_player_connect );
+	zm::register_player_damage_callback( &player_damage_override );
 	
 	thread should_pause();
+}
+
+function player_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, weapon, vPoint, vDir, sHitLoc, psOffsetTime )
+{
+	if(IS_TRUE(self.pause_invulnerable))
+	{
+		return 0;
+	}
+
+	return -1;
 }
 
 function round_spawn_failsafe()
@@ -229,6 +241,7 @@ function should_pause()
 					{
 						player EnableWeapons();
 					}
+					player.pause_invulnerable = false;
 				}
 
 				SetPauseWorld(0);
@@ -261,6 +274,7 @@ function should_pause()
 					player SetMoveSpeedScale(0);
 					player AllowJump(false);
 					player DisableWeapons();
+					player.pause_invulnerable = true;
 					player thread health_check();
 				}
 				
