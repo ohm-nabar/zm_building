@@ -159,8 +159,15 @@ function take_starting_gun()
 {
 	self endon("disconnect");
 
+	while(!(level flag::exists("initial_blackscreen_passed") && level flag::get("initial_blackscreen_passed")))
+	{
+		wait(0.05);
+	}
+
 	pistol_clip = 0;
-	pistol_stock = 0;	
+	pistol_stock = 0;
+	failsafe_start_time = undefined;
+	pap_triggers = zm_pap_util::get_triggers();
 
 	while(true)
 	{
@@ -184,10 +191,23 @@ function take_starting_gun()
 			}
 		}
 
-		if(self GetCurrentWeapon() == level.weaponNone)
+		gun_in_pap = false;
+		foreach(trigger in pap_triggers)
 		{
-			self TakeWeapon(level.weaponNone);
+			if(isdefined(trigger.pack_player) && trigger.pack_player == self)
+			{
+				gun_in_pap = true;
+			}
+		}
+
+		if(self GetWeaponsListPrimaries().size == 0 && ! gun_in_pap)
+		{
+			str_debug = "engaging no weapons failsafe";
+
+			/# PrintLn(str_debug); #/
+			failsafe_start_time = undefined;
 			self GiveWeapon(self.startingpistol);
+			self SwitchToWeapon(self.startingpistol);
 			if(self.startingpistol != level.start_weapon)
 			{
 				self SetWeaponAmmoClip(self.startingpistol, pistol_clip);
@@ -254,8 +274,7 @@ function testeroo()
 {
 	while(true)
 	{
-		weapon = self GetCurrentWeapon();
-		IPrintLn(weapon.name);
-		wait(2);
+		IPrintLn(self GetWeaponsListPrimaries().size);
+		wait(1.5);
 	}
 }
