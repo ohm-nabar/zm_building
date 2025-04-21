@@ -78,11 +78,22 @@ function __init__()
 	//clientfield::register( "actor", "shadow_choker_fx", VERSION_SHIP, 1, "int" );
 	//clientfield::register( "actor", "shadow_wizard_fx", VERSION_SHIP, 1, "int" );
 
+	zm::register_player_damage_callback( &player_damage_override );
 	zm::register_actor_damage_callback( &damage_adjustment );
 	zm::register_zombie_damage_override_callback( &zombie_damage_override );
 	visionset_mgr::register_info("visionset", "abbey_shadow", VERSION_SHIP, 61, 1, true);
 	//thread choker_spawn();
 	thread testeroo();
+}
+
+function player_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, weapon, vPoint, vDir, sHitLoc, psOffsetTime )
+{
+	if(IS_TRUE(self.shadow_invulnerable))
+	{
+		return 0;
+	}
+
+	return -1;
 }
 
 function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType  )
@@ -391,6 +402,8 @@ function end_shadow_round()
 	level util::set_lighting_state( 0 );
 	foreach(player in level.players)
 	{
+		player.shadow_invulnerable = true;
+		player.inhibit_scoring_from_zombies = false;
 		player PlaySoundToPlayer("shadow_flash", player);
 		level visionset_mgr::deactivate("visionset", "abbey_shadow", player);
 	}
@@ -401,9 +414,10 @@ function end_shadow_round()
 	level.dog_round_count += 1;
 	level.zombie_ai_limit = 24;
 
+	wait(1.4);
 	foreach(player in level.players)
 	{
-		player.inhibit_scoring_from_zombies = false;
+		player.shadow_invulnerable = false;
 	}
 }
 
@@ -580,6 +594,7 @@ function dog_round_spawning()
 	lui::screen_flash( 0.3, 0.8, 0.3, 1.0, "white" );
 	foreach(player in level.players)
 	{
+		player.shadow_invulnerable = true;
 		player PlaySoundToPlayer("shadow_flash", player);
 	}
 	wait(1);
@@ -588,6 +603,13 @@ function dog_round_spawning()
 	for(i = 0; i < zombies.size; i++)
 	{
 		zombies[i] dodamage( zombies[i].health + 666, zombies[i].origin );
+	}
+
+	wait(0.4);
+
+	foreach(player in level.players)
+	{
+		player.shadow_invulnerable = false;
 	}
 
 	for(i = 0; i < level.num_escargots; i++)
