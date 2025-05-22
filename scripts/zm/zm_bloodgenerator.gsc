@@ -1,6 +1,7 @@
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
+#using scripts\shared\exploder_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\laststand_shared;
 #using scripts\shared\music_shared;
@@ -17,6 +18,7 @@
 #using scripts\zm\_zm_audio;
 #using scripts\zm\_zm_magicbox;
 #using scripts\zm\_zm_powerups;
+#using scripts\zm\_zm_score;
 #using scripts\zm\_zm_utility;
 
 #using scripts\zm\zm_abbey_inventory;
@@ -55,7 +57,8 @@
 #precache( "triggerstring", "ZM_ABBEY_GENERATOR_NO_BLOOD" );
 #precache( "triggerstring", "ZM_ABBEY_BLOODGUN_IN_USE" );
 #precache( "triggerstring", "ZM_ABBEY_BLOODGUN_HAS_VIAL" );
-#precache( "triggerstring", "ZM_ABBEY_BLOODGUN_COOLDOWN" );
+#precache( "triggerstring", "ZM_ABBEY_BLOODGUN_COOLDOWN", "2" );
+#precache( "triggerstring", "ZM_ABBEY_BLOODGUN_COOLDOWN_SINGULAR" );
 #precache( "triggerstring", "ZM_ABBEY_BLOODGUN_ACTIVATE" );
 
 #precache( "triggerstring", "ZOMBIE_PERK_QUICKREVIVE", "1500" );
@@ -89,7 +92,11 @@
 #precache( "model", "zm_abbey_bg_shadow" );
 
 #define ELECTRIC_CHERRY_MACHINE_LIGHT_FX                    "electric_cherry_light"
+#define BLOODGUN_COST_START 500
+#define BLOODGUN_COST_MAX 1500
+#define BLOODGUN_COST_INCREMENT 250
 #define BLOODGUN_KILLS_MAX 38
+#define BLOOD_COOLDOWN_ROUNDS 2
 
 #namespace zm_bloodgenerator;
 
@@ -115,11 +122,19 @@ function __init__()
 	level.vialFilled = 0;
 	level.hasVial = false;
 	level.bloodgun_active = false;
-	level.bloodgun_cost = 2000;
+	level.local_bloodgun_active = [];
+	for(i = 1; i <= 4; i++)
+	{
+		level.local_bloodgun_active[i] = false;
+	}
+	level.bloodgun_cost = BLOODGUN_COST_START;
 	level.bloodgun_kills = 10;
 	level.bloodgun_kill_increment = 1;
-	level.blood_cooling_down = false;
-	level.blood_uses = 0;
+	level.blood_cooldown = [];
+	for(i = 1; i <= 4; i++)
+	{
+		level.blood_cooldown[i] = 0;
+	}
 	level.blood_used_once = false;
 	level.active_generators = [];
 	level.bloodgun = GetWeapon("bloodgun");
@@ -166,7 +181,6 @@ function __init__()
 	level array::thread_all(blood_wires_off, &blood_wire_off_think);
 	level array::thread_all(blood_wires_on, &blood_wire_on_think);
 
-	level thread blood_cool_down();
 	level thread acquire_waypoint_manage();
 	level thread perk_set_fx();
 
@@ -258,12 +272,12 @@ function bloodgun_station_think()
 	while(true)
 	{
 		self SetVisibleToAll();
-		while(! level.bloodgun_active)
+		while(! level.local_bloodgun_active[self.script_int])
 		{
 			wait(0.05);
 		}
 		self SetInvisibleToAll();
-		while(level.bloodgun_active)
+		while(level.local_bloodgun_active[self.script_int])
 		{
 			wait(0.05);
 		}
@@ -295,7 +309,7 @@ function bloodgun_screen_think()
 			wait(0.05);
 		}
 		self SetModel("zm_abbey_bg_cooldown");
-		while(level.blood_uses >= 2)
+		while(level.blood_cooldown[self.script_int] > 0)
 		{
 			wait(0.05);
 		}
@@ -698,14 +712,61 @@ function pap_jingle()
 	pap_trigger thread zm_audio::sndPerksJingles_Timer();
 }
 
-function blood_cool_down()
+function bloodgun_blockers()
 {
+	exploder_name = "bloodgun" + self.script_int;
+	trigs = GetEntArray(exploder_name, "targetname");
+	IPrintLn(self.script_int + ": " + trigs.size);
+	bg_active = false;
+
 	while(true)
 	{
-		level waittill("end_of_round");
-		level.blood_uses = 0;
+		if(! bg_active && level.local_bloodgun_active[self.script_int])
+		{
+			level exploder::exploder(exploder_name);
+			foreach(trig in trigs)
+			{
+				trig thread bloodgun_blocker_physics(self.script_int);
+			}
+			bg_active = true;
+		}
+		else if(bg_active && ! level.local_bloodgun_active[self.script_int])
+		{
+			level exploder::stop_exploder(exploder_name);
+			bg_active = false;
+		}
 		wait(0.05);
 	}
+}
+
+function bloodgun_blocker_physics(gen_num)
+{
+	level endon(#"blood_finished");
+
+	angle = 90 - self.script_int;
+	x = Sin(angle) * 250;
+	y = Cos(angle) * 250;
+
+	while(true)
+	{
+		self waittill("trigger", player);
+		player thread apply_physics_force(gen_num, x, y);
+	}
+}
+
+function apply_physics_force(gen_num, x, y)
+{
+	self endon("disconnect");
+
+	if(IS_TRUE(self.bloodgun_push))
+	{
+		return;
+	}
+	self.bloodgun_push = true;
+	IPrintLn("applying physics force");
+	self SetVelocity((x, y, 0));
+	wait(0.05);
+	self.bloodgun_push = false;
 }
 
 function blood_think()
@@ -715,31 +776,30 @@ function blood_think()
 		wait(0.05);
 	}
 
+	self thread set_bloodgun_hintstring();
+	self thread bloodgun_blockers();
+
 	while(true) 
 	{
-		self thread set_bloodgun_hintstring();
 		self waittill("trigger", player);
-		if(! (zm_utility::is_player_valid(player)) || level.bloodgun_active || level.blood_cooling_down || level.hasVial || ! player zm_magicbox::can_buy_weapon() || (isdefined(level.next_dog_round) && level.round_number == level.next_dog_round) || level flag::get("dog_round"))
+		if(! (zm_utility::is_player_valid(player)) || level.bloodgun_active || level.blood_cooldown[self.script_int] > 0 || level.hasVial || ! player zm_magicbox::can_buy_weapon() || (isdefined(level.next_dog_round) && level.round_number == level.next_dog_round) || level flag::get("dog_round"))
 		{
 			wait(0.05);
 			continue;
 		}
-		/*
+		
 		if(player.score < level.bloodgun_cost)
 		{
-			player playSound("no_cha_ching"); // no idea if this sound exists, or if this function is right
+			player PlaySound("zmb_no_cha_ching");
 			wait(0.05);
 			continue;
 		}
-		*/
 
-		level.blood_uses++;
 		level.bloodgun_active = true;
+		level.local_bloodgun_active[self.script_int] = true;
 		player.isInBloodMode = true;
-		//player zm_score::minus_to_player_score(level.bloodgun_cost);
-		//visionset_mgr::activate("visionset", "zm_blood", player, 0.5);
+		player zm_score::minus_to_player_score(level.bloodgun_cost);
 		
-
 		weapon_powerup_bloodgun(player, "bloodgun");
 		
 		player AllowMelee(false);
@@ -801,15 +861,12 @@ function blood_think()
 			}
 			else if((isdefined(level.next_dog_round) && level.round_number == level.next_dog_round) || level flag::get("dog_round"))
 			{
-				//player zm_score::add_to_player_score(level.bloodgun_cost);
+				player zm_score::add_to_player_score(level.bloodgun_cost);
 				wait(0.05);
 				break;
 			}
 			if(level.vialFilled >= level.bloodgun_kills)
-			{
-				//player zm_score::add_to_player_score(level.bloodgun_cost/2);
-
-				//IPrintLn("Vial Filled!");				
+			{		
 				level.hasVial = true;
 				success = true;
 				if(isdefined(player.blood_vial_trial_fills))
@@ -821,6 +878,11 @@ function blood_think()
 					level.bloodgun_kills += level.bloodgun_kill_increment;
 					level.bloodgun_kill_increment += 1;
 				}
+				if(level.bloodgun_cost < BLOODGUN_COST_MAX)
+				{
+					level.bloodgun_cost += BLOODGUN_COST_INCREMENT;
+				}
+				self thread blood_cooldown();
 			}
 
 			zombies = GetAISpeciesArray("axis", "all");
@@ -887,16 +949,19 @@ function blood_think()
 
 		player AllowMelee(true);
 		level.bloodgun_active = false;
+		level.local_bloodgun_active[self.script_int] = false;
 		level.vialFilled = 0;
 		player.isInBloodMode = false;
 		player.attracting_zombies = false;
+	}
+}
 
-		while(level.blood_uses == 2)
-		{
-			level.blood_cooling_down = true;
-			wait(0.05);
-		}
-		level.blood_cooling_down = false;
+function blood_cooldown()
+{
+	for(i = 0; i <= BLOOD_COOLDOWN_ROUNDS; i++)
+	{
+		level.blood_cooldown[self.script_int] = BLOOD_COOLDOWN_ROUNDS - i;
+		level waittill("start_of_round");
 	}
 }
 
@@ -1063,7 +1128,7 @@ function turn_generator_on(generator_name, after_shadow)
 
 	foreach(p in level.players)
 	{
-		if(level.blood_uses == 4)
+		if(level.active_generators.size == 3)
 		{
 			p PlaySound("blood_gene_all_activate");
 		}
@@ -1202,34 +1267,57 @@ function set_bloodgun_hintstring()
 {
 	prev_hintstring_state = -1;
 	hintstring_state = -1;
-	hintstrings = array(&"ZM_ABBEY_BLOODGUN_IN_USE", &"ZM_ABBEY_SHADOW_DISABLED", &"ZM_ABBEY_BLOODGUN_HAS_VIAL", &"ZM_ABBEY_BLOODGUN_COOLDOWN", &"ZM_ABBEY_BLOODGUN_ACTIVATE");
+	hintstrings = array(&"ZM_ABBEY_BLOODGUN_COOLDOWN", &"ZM_ABBEY_BLOODGUN_COOLDOWN_SINGULAR", &"ZM_ABBEY_BLOODGUN_IN_USE", &"ZM_ABBEY_SHADOW_DISABLED", &"ZM_ABBEY_BLOODGUN_HAS_VIAL", &"ZM_ABBEY_BLOODGUN_ACTIVATE");
+	cost_weapons = array(GetWeapon("s4_1911"), GetWeapon("s4_klauser"), GetWeapon("s2_mas38"), GetWeapon("s4_topbreak"), GetWeapon("s4_type11"));
+	cost_weapon = GetWeapon("s4_1911");
 
 	while(true) 
 	{
-		if(level.bloodgun_active)
+		if(level.blood_cooldown[self.script_int] > 1)
 		{
 			hintstring_state = 0;
-		}	
-		else if((isdefined(level.next_dog_round) && level.round_number == level.next_dog_round) || level flag::get("dog_round"))
+		}
+		else if(level.blood_cooldown[self.script_int] == 1)
 		{
 			hintstring_state = 1;
 		}
-		else if(level.hasVial)
+		else if(level.bloodgun_active)
 		{
 			hintstring_state = 2;
-		}
-		else if(level.blood_cooling_down)
+		}	
+		else if((isdefined(level.next_dog_round) && level.round_number == level.next_dog_round) || level flag::get("dog_round"))
 		{
 			hintstring_state = 3;
 		}
-		else
+		else if(level.hasVial)
 		{
 			hintstring_state = 4;
+		}
+		else
+		{
+			hintstring_state = 5;
+			cost_index = Int((level.bloodgun_cost - BLOODGUN_COST_START) / BLOODGUN_COST_INCREMENT);
+			cost_weapon = cost_weapons[cost_index];
 		}
 
 		if(prev_hintstring_state != hintstring_state)
 		{
-			self SetHintString(hintstrings[hintstring_state]);
+			hintstring = hintstrings[hintstring_state];
+			if(hintstring_state == 0)
+			{
+				self SetCursorHint("HINT_NOICON");
+				self SetHintString(hintstring, level.blood_cooldown[self.script_int]);
+			}
+			else if(hintstring_state == 5)
+			{
+				self SetCursorHint("HINT_WEAPON", cost_weapon);
+				self SetHintString(hintstring);
+			}
+			else
+			{
+				self SetCursorHint("HINT_NOICON");
+				self SetHintString(hintstring);
+			}
 			prev_hintstring_state = hintstring_state;
 		}
 		wait(0.05);
