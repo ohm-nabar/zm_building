@@ -45,16 +45,19 @@ REFERENCE           	GENERATOR_NO_BLOOD
 LANG_ENGLISH       	"Security Protocol 38: Blood Vial required"
 
 REFERENCE           	BLOODGUN_IN_USE
-LANG_ENGLISH       	"L'Arme Ensanglante in use"
+LANG_ENGLISH       	"L'Arme Sanglante in use"
 
 REFERENCE           	BLOODGUN_HAS_VIAL
 LANG_ENGLISH       	"Already have Blood Vial"
 
 REFERENCE           	BLOODGUN_COOLDOWN
-LANG_ENGLISH       	"Cooling down... Please wait a round"
+LANG_ENGLISH       	"Cooling down... Please wait &&1 rounds or visit another Blood Gun station"
+
+REFERENCE           	BLOODGUN_COOLDOWN_SINGULAR
+LANG_ENGLISH       	"Cooling down... Please wait 1 round or visit another Blood Gun station"
 
 REFERENCE           	BLOODGUN_ACTIVATE
-LANG_ENGLISH       	"Press and hold ^3[{+activate}]^7 to wield L'Arme Ensanglante"
+LANG_ENGLISH       	"Press and hold ^3[{+activate}]^7 to wield L'Arme Sanglante [Cost: {{weapon_cost}}]"
 
 REFERENCE           	TRIAL_ACTIVATE
 LANG_ENGLISH       	"Press ^3[{+activate}]^7 to accept a Divinium Trial [Cost: &&1]"
@@ -72,7 +75,10 @@ REFERENCE           	FOUNTAIN_DEPOSIT
 LANG_ENGLISH       "Press and hold ^3[{+activate}]^7 to insert a Blood Vial into the Juggernog Station"
 
 REFERENCE           	FOUNTAIN_ACTIVATE
-LANG_ENGLISH       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [&&1 use(s) left]"
+LANG_ENGLISH       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [&&1 uses left]"
+
+REFERENCE           	FOUNTAIN_ACTIVATE_SINGULAR
+LANG_ENGLISH       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [1 use left]"
 
 REFERENCE           	TAKE_WEAPON
 LANG_ENGLISH       "Press ^3[{+activate}]^7 to take {{weapon_name}}"
