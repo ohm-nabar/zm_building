@@ -556,7 +556,7 @@ function athos_trial()
 			athos_stage = 2;
 		}
 
-		athos_trials = level.athos_trials[athos_stage];
+		athos_trials = ArrayCopy(level.athos_trials[athos_stage]);
 		if(athos_stage == 2)
 		{
 			airfield_path_active = level zm_room_manager::is_room_active(level.abbey_rooms[level.airfield_name]);
