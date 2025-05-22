@@ -22,10 +22,10 @@
 
 #precache("triggerstring", "ZM_ABBEY_FOUNTAIN_OFFLINE");
 #precache("triggerstring", "ZM_ABBEY_FOUNTAIN_DEPOSIT");
-#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "1");
 #precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "2");
 #precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "3");
 #precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "4");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE_SINGULAR");
 
 #namespace zm_juggernog_potions;
 
@@ -209,7 +209,14 @@ function hintstring_management()
 						sound_origin PlayLoopSound("jug_fountain_idle");
 					}
 					level exploder::exploder("jug_light");
-					self SetHintString(&"ZM_ABBEY_FOUNTAIN_ACTIVATE", level.jug_uses_left);
+					if(level.jug_uses_left > 1)
+					{
+						self SetHintString(&"ZM_ABBEY_FOUNTAIN_ACTIVATE", level.jug_uses_left);
+					}
+					else
+					{
+						self SetHintString(&"ZM_ABBEY_FOUNTAIN_ACTIVATE_SINGULAR");
+					}
 					break;
 				}
 				case 1:
