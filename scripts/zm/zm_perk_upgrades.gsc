@@ -1,59 +1,10 @@
-#using scripts\codescripts\struct;
-
-#using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
-#using scripts\shared\clientfield_shared;
-#using scripts\shared\compass;
-#using scripts\shared\exploder_shared;
-#using scripts\shared\flag_shared;
-#using scripts\shared\laststand_shared;
-#using scripts\shared\math_shared;
-#using scripts\shared\scene_shared;
-#using scripts\shared\util_shared;
-
-#insert scripts\shared\shared.gsh;
-#insert scripts\shared\version.gsh;
-
-#insert scripts\zm\_zm_utility.gsh;
-
-#using scripts\zm\_load;
-#using scripts\zm\_zm;
-#using scripts\zm\_zm_audio;
-#using scripts\zm\_zm_powerups;
-#using scripts\zm\_zm_utility;
-#using scripts\zm\_zm_weapons;
-#using scripts\zm\_zm_zonemgr;
-
-#using scripts\shared\ai\zombie_utility;
-
-//Perks
-#using scripts\zm\_zm_pack_a_punch;
-#using scripts\zm\_zm_pack_a_punch_util;
-#using scripts\zm\_zm_perk_additionalprimaryweapon;
-#using scripts\zm\_zm_perk_juggernaut;
-#using scripts\zm\_zm_perk_quick_revive;
-#using scripts\zm\_zm_perk_staminup;
-#using scripts\zm\_zm_perk_electric_cherry;
-
-//Powerups
-#using scripts\zm\_zm_powerup_double_points;
-#using scripts\zm\_zm_powerup_carpenter;
-#using scripts\zm\_zm_powerup_fire_sale;
-#using scripts\zm\_zm_powerup_free_perk;
-#using scripts\zm\_zm_powerup_full_ammo;
-#using scripts\zm\_zm_powerup_insta_kill;
-#using scripts\zm\_zm_powerup_nuke;
-
-//Traps
-#using scripts\zm\_zm_trap_electric;
-
-#using scripts\zm\zm_usermap;
-#using scripts\zm\_zm_score;
-#using scripts\zm\_zm_laststand;
-#using scripts\zm\_zm_perks;
-
 #using scripts\shared\system_shared;
 
+#insert scripts\shared\shared.gsh;
+
+#using scripts\zm\_zm;
+#using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_abbey_inventory;
 
 #insert scripts\zm\_zm_perks.gsh;
@@ -81,6 +32,7 @@ function __init__()
 	level.abbey_perk_indices[PERK_DEAD_SHOT] = 7;
 
 	callback::on_connect( &on_player_connect );
+	zm::register_zombie_damage_override_callback( &zombie_damage_override );
 }
 
 function on_player_connect() 
@@ -165,6 +117,17 @@ function on_player_connect()
 	self thread quick_revive_upgrade();
 	self thread phd_lite_upgrade();
 	self thread deadshot_upgrade();
+}
+
+function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
+{
+	if ( isPlayer( attacker ) && willBeKilled )
+	{
+		if(IS_TRUE(self.poseidon_knockdown) && isdefined(attacker.blessedkills))
+		{
+			attacker.blessedkills++;
+		}
+	}
 }
 
 function get_player_perk_purchase_limit()
@@ -1121,16 +1084,18 @@ function checkForSprintKills()
 	while(self.isUpgradingStamin && self.sprintKills < self.stamin_challenge_goal)
 	{
 		time_sprinted = 0;
+		player_kills = self.pers["kills"];
 		while (self IsSprinting())
 		{
-			//IPrintLn("WERE IN THE BIG LEAGUES NOW");
 			wasSprinting = true;
 			time_sprinted += 0.05;
-			//IPrintLn(time_sprinted);
+			if(time_sprinted >= 2)
+			{
+				player_kills = self.pers["kills"];
+			}
 			wait(0.05);
 		} 
 
-		player_kills = self.pers["kills"];
 		if(wasSprinting && time_sprinted >= 2) 
 		{
 			wasSprinting = false;
@@ -1143,7 +1108,6 @@ function checkForSprintKills()
 
 				self.sprintKills = self.sprintKills + self.pers["kills"] - player_kills;
 				player_kills = self.pers["kills"];
-				//IPrintLn(self.sprintKills);
 				wait(0.05);
 			}
 		}
