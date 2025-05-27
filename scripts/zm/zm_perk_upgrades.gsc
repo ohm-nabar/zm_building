@@ -121,11 +121,19 @@ function on_player_connect()
 
 function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
 {
-	if ( isPlayer( attacker ) && willBeKilled )
+	if ( isPlayer( attacker ) && (willBeKilled || level.zombie_vars[attacker.team]["zombie_insta_kill"]))
 	{
-		if(IS_TRUE(self.poseidon_knockdown) && isdefined(attacker.blessedkills))
+		if(isdefined(attacker.blessedkills) && IS_TRUE(self.poseidon_knockdown))
 		{
 			attacker.blessedkills++;
+		}
+		if(isdefined(attacker.thirdgunkills))
+		{
+			third_gun = attacker return_additionalprimaryweapon();
+			if(third_gun != level.weaponNone && weapon == third_gun)
+			{
+				attacker.thirdgunkills++;
+			}
 		}
 	}
 }
@@ -575,7 +583,7 @@ function poseidon_punch_upgrade()
 				}
 				if(self.blessedkills >= self.poseidon_challenge_goal)
 				{
-					//self IPrintLnBold("Double Tap Upgraded! (Effects: Increased damage)");
+					self.blessedkills = undefined;
 					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_POSEIDON, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK_UP);
 					self notify(#"poseidonUpgradeSucceeded");
 					self givePerkUpgrade(PERK_POSEIDON_PUNCH);
@@ -745,7 +753,6 @@ function mule_kick_upgrade()
 			self.muleChallengeActive = true;
 			currentRound = level.round_number;
 			self.thirdgunkills = 0;
-			self thread checkForThirdGunKills();
 			while(level.round_number < currentRound + 1)
 			{
 				self.mule_challenge_progress = self.thirdgunkills;
@@ -755,7 +762,7 @@ function mule_kick_upgrade()
 				}
 				if(self.thirdgunkills >= self.mule_challenge_goal)
 				{
-					//self IPrintLnBold("Double Tap Upgraded! (Effects: Increased damage)");
+					self.thirdgunkills = undefined;
 					self thread zm_abbey_inventory::notifyText(NOTIF_PERK_UP_MULE, NOTIF_FLASH_RIGHT, NOTIF_ALERT_PERK_UP);
 					self notify(#"muleUpgradeSucceeded");
 					self givePerkUpgrade(PERK_ADDITIONAL_PRIMARY_WEAPON);
@@ -1038,23 +1045,6 @@ function checkForPentas()
 		}
 
 		wait(0.05);
-	}
-}
-
-function checkForThirdGunKills() 
-{
-	self endon("disconnect");
-	self endon(#"muleUpgradeFailed");
-	self endon(#"muleUpgradeSucceeded");
-
-	while(self.isUpgradingMule && self.thirdgunkills < self.mule_challenge_goal)
-	{
-		self waittill("zom_kill");
-		if (self GetCurrentWeapon() == self return_additionalprimaryweapon() && ! IS_TRUE(self.abbey_inventory_active))
-		{
-			//IPrintLn("WERE IN THE BIG LEAGUES NOW");
-			self.thirdgunkills++;
-		}
 	}
 }
 

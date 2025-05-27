@@ -92,7 +92,7 @@ function zombie_damage_override( willBeKilled, inflictor, attacker, damage, flag
 {
 	if ( IS_EQUAL(meansofdeath,"MOD_MELEE") && IsDefined(attacker) && IsPlayer(attacker) && attacker HasPerk( PERK_POSEIDON_PUNCH ) && attacker.poseidon_ready )
 	{
-		attacker thread poseidon_knockdown();
+		attacker thread poseidon_knockdown(attacker, willBeKilled);
 	}
 	return false;
 }
@@ -181,7 +181,7 @@ function checkCustomPerk()
 	self clientfield::set_player_uimodel("poseidonCharge", 1);
 }
 
-function poseidon_knockdown()
+function poseidon_knockdown(attacker, willBeKilled)
 {
 	self endon("disconnect");
 	alias_name = "pp_melee" + RandomIntRange(1, 4);
@@ -198,19 +198,22 @@ function poseidon_knockdown()
 		}
 		if(IS_TRUE(zombie.completed_emerging_into_playable_area) && ! is_shadow_boss && DistanceSquared(self.origin, zombie.origin) <= POSEIDON_RADIUS && ! IS_TRUE(zombie.poseidon_knockdown))
 		{
-			zombie PlaySound("pp_knockback");
-			if(isdefined(zombie.animname) && zombie.animname == "quad_zombie")
+			if(! (zombie == self && (willBeKilled || level.zombie_vars[attacker.team]["zombie_insta_kill"])))
 			{
-				zombie thread quad_stun();
-			}
-			else
-			{
-				zombie zm_weap_thundergun::thundergun_knockdown_zombie(self, false);
-			}
-			zombie thread mark_zombie();
-			if(self zm_perk_upgrades::IsPerkUpgradeActive(PERK_POSEIDON_PUNCH))
-			{
-				self.health += 15;
+				zombie PlaySound("pp_knockback");
+				if(isdefined(zombie.animname) && zombie.animname == "quad_zombie")
+				{
+					zombie thread quad_stun();
+				}
+				else
+				{
+					zombie zm_weap_thundergun::thundergun_knockdown_zombie(self, false);
+				}
+				zombie thread mark_zombie();
+				if(self zm_perk_upgrades::IsPerkUpgradeActive(PERK_POSEIDON_PUNCH))
+				{
+					self.health += 15;
+				}
 			}
 		}
 	}
