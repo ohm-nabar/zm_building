@@ -221,22 +221,23 @@ function poseidon_knockdown(attacker, willBeKilled)
 
 function quad_stun()
 {
-	self endon("death");
-
 	loop_time = POSEIDON_QUAD_KNOCKDOWN_TIME * 20;
-	for(i = 0; i < loop_time; i++)
+	for(i = 0; i < loop_time && isdefined(self) && ! self IsRagdoll(); i++)
 	{
 		self ASMSetAnimationRate(0);
 		wait(0.05);
 	}
 	
-	if(! IS_TRUE(self.trident_slowdown))
+	if(isdefined(self))
 	{
-		self ASMSetAnimationRate(1);
-	}
-	else
-	{
-		self ASMSetAnimationRate(0.1);
+		if(! IS_TRUE(self.trident_slowdown) || self IsRagdoll())
+		{
+			self ASMSetAnimationRate(1);
+		}
+		else
+		{
+			self ASMSetAnimationRate(0.1);
+		}
 	}
 }
 

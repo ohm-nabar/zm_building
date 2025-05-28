@@ -27,6 +27,7 @@
 #insert scripts\shared\ai\systems\behavior.gsh;
 #insert scripts\shared\ai\systems\behavior_tree.gsh;
 #insert scripts\shared\ai\systems\animation_state_machine.gsh;
+#insert scripts\shared\archetype_shared\archetype_shared.gsh;
 #insert scripts\zm\_zm_ai_quad.gsh;
 
 #namespace zm_ai_quad; 
@@ -91,6 +92,7 @@ function __init__()
 
 	level.allow_quad_spawn = true;
 	level thread quad_spawn_delay();
+	level thread corpse_cleanup();
 }
 
 function quad_spawn_delay()
@@ -272,6 +274,31 @@ function quaddeathaction( e_entity )
 		e_entity thread quad_gas_explo_death();
 	
 	e_entity startRagdoll();
+}
+
+function corpse_cleanup()
+{
+	while(true)
+	{
+		foreach(corpse in GetCorpseArray())
+		{
+			if(isdefined(corpse) && IS_EQUAL(corpse.archetype, ARCHETYPE_ZOMBIE_QUAD))
+			{
+				if(! IS_TRUE(corpse.quad_cleanup))
+				{
+					corpse.quad_cleanup = true;
+					corpse thread cleanup_delay();
+				}
+			}
+		}
+		wait(0.05);
+	}
+}
+
+function cleanup_delay()
+{
+	wait(0.15);
+	self Delete();
 }
 
 function traversewallcrawlaction( e_entity, str_asm_state_name )
