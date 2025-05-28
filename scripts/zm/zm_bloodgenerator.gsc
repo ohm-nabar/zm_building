@@ -761,8 +761,12 @@ function blood_think()
 				{
 					p thread zm_abbey_inventory::notifyText(NOTIF_POWER_TEAM, undefined, NOTIF_ALERT_POWER, undefined, true);
 				}
-				p thread show_blood_empty(player);
 			}
+		}
+
+		foreach(p in level.players)
+		{
+			p thread show_blood_empty(player);
 		}
 
 		music_index = level.active_generators.size + 1;
