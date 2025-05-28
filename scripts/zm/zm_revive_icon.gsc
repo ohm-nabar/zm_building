@@ -98,11 +98,17 @@ function revive_icon_display()
 		blue = 0;
 		if(isdefined(self.revivetrigger.beingRevived) && self.revivetrigger.beingRevived == 0)
 		{
-			revive_icon.color = (red, green, blue);
+			foreach(icon in revive_icons)
+			{
+				icon.color = (red, green, blue);
+			}
 		}
 		else
 		{
-			revive_icon.color = (1, 1, 1);
+			foreach(icon in revive_icons)
+			{
+				icon.color = (1, 1, 1);
+			}
 		}
 		wait(0.05);
 	}
