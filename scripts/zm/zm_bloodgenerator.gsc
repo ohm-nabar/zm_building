@@ -716,7 +716,6 @@ function bloodgun_blockers()
 {
 	exploder_name = "bloodgun" + self.script_int;
 	trigs = GetEntArray(exploder_name, "targetname");
-	IPrintLn(self.script_int + ": " + trigs.size);
 	bg_active = false;
 
 	while(true)
@@ -763,7 +762,6 @@ function apply_physics_force(gen_num, x, y)
 		return;
 	}
 	self.bloodgun_push = true;
-	IPrintLn("applying physics force");
 	self SetVelocity((x, y, 0));
 	wait(0.05);
 	self.bloodgun_push = false;
@@ -897,8 +895,6 @@ function blood_think()
 
 			killsGained = player.bloodgun_kills - start_kills;
 			level.vialFilled += killsGained;
-			//IPrintLn("start_kills" + start_kills);
-			//IPrintLn("added " + killsGained + " kills");
 			start_kills = player.bloodgun_kills;
 			wait(0.05);
 		}
@@ -1103,10 +1099,8 @@ function generator_think()
 		generator_name = self.script_noteworthy;
 		self thread set_generator_hintstring();
 		self waittill("trigger", player);
-		//IPrintLn(generator_name + " had an attempt to activate it");
 		if(level.hasVial && ! (level.shadow_transition_active || level.shadow_vision_active)) 
 		{
-			//IPrintLn(generator_name + " was successfully activated, and the blood vial was taken.");
 			level.hasVial = false;
 			level turn_generator_on(generator_name);
 			self notify(#"generator_online");
@@ -1363,7 +1357,6 @@ function give_guns_back(weapon_store, weapon_store_clip, weapon_store_stock)
 	self TakeWeapon(bloodgun);
 
 	self waittill("player_revived");
-	//IPrintLn("Yerr up it's time to get yer guns back!");
 
 	self EnableWeaponCycling();
 	self EnableOffhandWeapons();
