@@ -789,6 +789,7 @@ function blood_think()
 		if(player.score < level.bloodgun_cost)
 		{
 			player PlaySound("zmb_no_cha_ching");
+			player zm_audio::create_and_play_dialog( "general", "outofmoney" );
 			wait(0.05);
 			continue;
 		}
