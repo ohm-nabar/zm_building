@@ -497,10 +497,19 @@ LANG_ENGLISH       	"Revives"
 REFERENCE           	SB_HEADSHOTS
 LANG_ENGLISH       	"Headshots"
 
-REFERENCE           	BOX_ACTIVATE
-LANG_ENGLISH       	"Press ^3[{+activate}]^7 for a Random Weapon [Cost: &&1]"
+REFERENCE           	PANZERWURFMINE_USE
+LANG_ENGLISH       	"Press ^3[{+activate}]^7 for Panzerwurfmine [Cost: {{weapon_cost}}]"
 
-REFERENCE           	BOX_TRADE
-LANG_ENGLISH       	"Hold ^3[{+activate}]^7 to trade Weapons"
+REFERENCE           	PANZERWURFMINE_RECHARGE
+LANG_ENGLISH       	"Recharging... Please wait &&1 minutes or visit another Armory location"
+
+REFERENCE           	PANZERWURFMINE_RECHARGE_SINGULAR
+LANG_ENGLISH       	"Recharging... Please wait 1 minute or visit another Armory location"
+
+REFERENCE           	CROSSBOW_USE
+LANG_ENGLISH       	"Press ^3[{+activate}]^7 for Crossbow"
+
+REFERENCE           	CROSSBOW_RECHARGE
+LANG_ENGLISH       	"Recharging... Slay more souls!"
 
 ENDMARKER
