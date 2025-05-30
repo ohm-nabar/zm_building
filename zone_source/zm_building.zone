@@ -707,3 +707,7 @@ image,notif_athos_wallbuy
 
 // PaP Util
 scriptparsetree,scripts/zm/_zm_pack_a_punch_util.gsc
+
+scriptparsetree,scripts/zm/zm_armory.gsc;
+weapon,zm_panzerwurfmine
+weapon,zm_panzerwurfmine_up

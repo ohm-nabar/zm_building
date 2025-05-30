@@ -97,6 +97,7 @@
 #using scripts\zm\zm_solo_revive;
 #using scripts\zm\zm_antiverse;
 #using scripts\zm\zm_abbey_quick_revive;
+#using scripts\zm\zm_armory;
 
 // NOVA
 #using scripts\shared\spawner_shared;
