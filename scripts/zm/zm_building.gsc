@@ -45,6 +45,8 @@
 #using scripts\zm\_zm_powerup_full_ammo;
 #using scripts\zm\_zm_powerup_insta_kill;
 #using scripts\zm\_zm_powerup_nuke;
+#using scripts\zm\_zm_powerup_weapon_crossbow;
+#using scripts\zm\_zm_powerup_weapon_crossbow_up;
 //#using scripts\zm\_zm_powerup_weapon_minigun;
 
 //Traps
