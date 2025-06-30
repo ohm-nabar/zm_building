@@ -19,9 +19,9 @@ function __init__()
 	clientfield::register( "toplayer", "trials.tier3", VERSION_SHIP, 5, "int", &trial_tier3, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 	
 	clientfield::register( "toplayer", "trials.aramis", VERSION_SHIP, 4, "float", &trial_aramis, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
-	clientfield::register( "toplayer", "trials.porthos", VERSION_SHIP, 10, "float", &trial_porthos, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
-	clientfield::register( "toplayer", "trials.dart", VERSION_SHIP, 10, "float", &trial_dart, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
-	clientfield::register( "toplayer", "trials.athos", VERSION_SHIP, 10, "float", &trial_athos, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	clientfield::register( "toplayer", "trials.porthos", VERSION_SHIP, 8, "float", &trial_porthos, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	clientfield::register( "toplayer", "trials.dart", VERSION_SHIP, 8, "float", &trial_dart, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	clientfield::register( "toplayer", "trials.athos", VERSION_SHIP, 8, "float", &trial_athos, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 
 	clientfield::register( "toplayer", "trials.aramisRandom", VERSION_SHIP, 4, "int", &trial_aramis_random, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 	clientfield::register( "toplayer", "trials.porthosRandom", VERSION_SHIP, 4, "int", &trial_porthos_random, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
