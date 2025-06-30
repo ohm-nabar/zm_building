@@ -57,7 +57,7 @@ REFERENCE           	BLOODGUN_COOLDOWN_SINGULAR
 LANG_ENGLISH       	"Cooling down... Please wait 1 round or visit another Blood Gun station"
 
 REFERENCE           	BLOODGUN_ACTIVATE
-LANG_ENGLISH       	"Press and hold ^3[{+activate}]^7 to acquire L'Arme Sanglante [Cost: {{weapon_cost}}]"
+LANG_ENGLISH       	"Press and hold ^3[{+activate}]^7 to wield L'Arme Sanglante [Cost: {{weapon_cost}}]"
 
 REFERENCE           	TRIAL_ACTIVATE
 LANG_ENGLISH       	"Press ^3[{+activate}]^7 to accept a Divinium Trial [Cost: &&1]"
@@ -480,7 +480,10 @@ REFERENCE           	PANZERWURFMINE_RECHARGE_SINGULAR
 LANG_ENGLISH       	"Recharging... Please wait 1 minute or visit another Armory location"
 
 REFERENCE           	CROSSBOW_USE
-LANG_ENGLISH       	"Press ^3[{+activate}]^7 for Crossbow"
+LANG_ENGLISH       	"Press ^3[{+activate}]^7 to wield the Crossbow"
+
+REFERENCE           	CROSSBOW_IN_USE
+LANG_ENGLISH       	"Crossbow in use"
 
 REFERENCE           	CROSSBOW_RECHARGE
 LANG_ENGLISH       	"Recharging... Slay more souls!"
