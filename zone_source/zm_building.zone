@@ -708,6 +708,14 @@ image,notif_athos_wallbuy
 // PaP Util
 scriptparsetree,scripts/zm/_zm_pack_a_punch_util.gsc
 
-scriptparsetree,scripts/zm/zm_armory.gsc;
+scriptparsetree,scripts/zm/zm_armory.gsc
+scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow.gsc
+scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow_up.gsc
+scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow.csc
+scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow_up.csc
+rawfile,ui_mp/t6/zombie/hudpowerupszombie_abbey.lua
 weapon,zm_panzerwurfmine
 weapon,zm_panzerwurfmine_up
+weapon,zm_crossbow
+weapon,zm_crossbow_up
+material,specialty_giant_crossbow_zombies

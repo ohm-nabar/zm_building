@@ -447,51 +447,7 @@ function dog_round_spawning()
 
 	level.dog_intermission = true;
 	level thread zm_ai_dogs::dog_round_aftermath();
-	players = GetPlayers();
-	array::thread_all( players,&zm_ai_dogs::play_dog_round );	
-
-	for(i = 0; i < players.size; i++)
-	{
-		players[i].inhibit_scoring_from_zombies = true;
-		primary_weapons = players[i] GetWeaponsList( true ); 
-
-		players[i] notify( "zmb_max_ammo" );
-		players[i] notify( "zmb_lost_knife" );
-		players[i] zm_placeable_mine::disable_all_prompts_for_player();
-		for( x = 0; x < primary_weapons.size; x++ )
-		{
-			//don't give grenades if headshot only option is enabled
-			if( level.headshots_only && zm_utility::is_lethal_grenade( primary_weapons[x] ) )
-			{
-				continue;
-			}
-			
-			// Don't refill Equipment
-			if ( IsDefined( level.zombie_include_equipment ) && 
-			     IsDefined( level.zombie_include_equipment[ primary_weapons[ x ] ] ) &&
-			     !IS_TRUE( level.zombie_equipment[ primary_weapons[ x ] ].refill_max_ammo ) )
-			{
-				continue;
-			}
-			
-			// exclude specific weapons from this list
-			if ( IsDefined( level.zombie_weapons_no_max_ammo ) && IsDefined( level.zombie_weapons_no_max_ammo[ primary_weapons[ x ].name ] ) )
-			{
-				continue;
-			}
-			
-			if ( zm_utility::is_hero_weapon( primary_weapons[ x ] ) )
-			{
-				continue;
-			}
-			
-
-			if ( players[i] HasWeapon( primary_weapons[x] ) ) {
-				players[i] ReloadWeaponAmmo( primary_weapons[x] );
-				players[i] GiveMaxAmmo( primary_weapons[x] );
-			}
-		}
-	}
+	array::thread_all( level.players,&zm_ai_dogs::play_dog_round );	
 	wait(1.1);
 	level.shadow_transition_active = true;
 	foreach(player in level.players)
@@ -510,7 +466,15 @@ function dog_round_spawning()
 	level util::set_lighting_state( 1 );
 	foreach(player in level.players)
 	{
-		visionset_mgr::activate("visionset", "abbey_shadow", player, 0.5, 9999, 0.5);
+		level visionset_mgr::activate("visionset", "abbey_shadow", player, 0.5, 9999, 0.5);
+		player.inhibit_scoring_from_zombies = true;
+
+		primary_weapons = player GetWeaponsListPrimaries();
+		foreach( weapon in primary_weapons )
+		{
+			player SetWeaponAmmoClip(weapon, weapon.clipSize);
+			player GiveMaxAmmo(weapon);
+		}
 	}
 	level.shadow_vision_active = true;
 	level thread lui::screen_fade_in( 4.9, "black" );
@@ -581,7 +545,7 @@ function dog_round_spawning()
 		else
 		{
 			level thread choker_spawn(level get_random_valid_player());
-			choker_wait_time = 1 - ( 0.2 * (players.size - 1) );
+			choker_wait_time = 1 - ( 0.2 * (level.players.size - 1) );
 			wait(choker_wait_time);
 		}
 	}
@@ -650,7 +614,7 @@ function dog_round_spawning()
 		}
 
 		level thread choker_spawn(level get_random_valid_player());
-		choker_wait_time = 1 - ( 0.2 * (players.size - 1) );
+		choker_wait_time = 1 - ( 0.2 * (level.players.size - 1) );
 		wait(choker_wait_time);
 	}
 
