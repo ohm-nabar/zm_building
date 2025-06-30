@@ -3,7 +3,6 @@
 #using scripts\shared\flag_shared;
 
 #using scripts\zm\_zm_playerhealth;
-#using scripts\zm\zm_perk_upgrades;
 
 #insert scripts\shared\shared.gsh;
 #insert scripts\zm\_zm_perks.gsh;
@@ -116,10 +115,7 @@ function playerHealthRegen()
 
 		if( self.hurtAgain )
 		{
-			if(! self zm_perk_upgrades::IsPerkUpgradeActive(PERK_QUICK_REVIVE))
-			{
-				hurtTime = gettime();
-			}
+			hurtTime = gettime();
 			self.hurtAgain = false;
 		}
 
