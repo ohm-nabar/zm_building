@@ -75,63 +75,63 @@
 #precache( "fx", "custom/fx_trail_blood_soul_zmb" );
 #precache( "eventstring", "GGReset" );
 
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_STOCK_OPTION" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_SWORD_FLAY" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_TEMPORAL_GIFT" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_IN_PLAIN_SIGHT" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_IM_FEELIN_LUCKY" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_IMMOLATION_LIQUIDATION" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_HEAD_DRAMA" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_PHOENIX_UP" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_POP_SHOCKS" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_ON_THE_HOUSE" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_EXTRA_CREDIT" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_PROFIT_SHARING" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_FLAVOR_HEXED" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_UNQUENCHABLE" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_ALCHEMICAL_ANTITHESIS" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_CRATE_POWER" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_AFTERTASTE_BLOOD" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_CHALLENGE_REJECTED" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING", "ZMUI_BGB_PERKAHOLIC" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_GREEN", "ZMUI_BGB_STOCK_OPTION" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_GREEN", "ZMUI_BGB_SWORD_FLAY" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BLUE", "ZMUI_BGB_TEMPORAL_GIFT" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_PURPLE", "ZMUI_BGB_IN_PLAIN_SIGHT" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_PURPLE", "ZMUI_BGB_IM_FEELIN_LUCKY" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_PURPLE", "ZMUI_BGB_IMMOLATION_LIQUIDATION" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BLUE", "ZMUI_BGB_HEAD_DRAMA" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_PURPLE", "ZMUI_BGB_PHOENIX_UP" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_ORANGE", "ZMUI_BGB_POP_SHOCKS" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_PURPLE", "ZMUI_BGB_ON_THE_HOUSE" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_PURPLE", "ZMUI_BGB_EXTRA_CREDIT" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_GREEN", "ZMUI_BGB_PROFIT_SHARING" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_ORANGE", "ZMUI_BGB_FLAVOR_HEXED" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_ORANGE", "ZMUI_BGB_UNQUENCHABLE" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_PURPLE", "ZMUI_BGB_ALCHEMICAL_ANTITHESIS" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_ORANGE", "ZMUI_BGB_CRATE_POWER" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BLUE", "ZMUI_BGB_AFTERTASTE_BLOOD" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_PURPLE", "ZMUI_BGB_CHALLENGE_REJECTED" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_ORANGE", "ZMUI_BGB_PERKAHOLIC" );
 
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_STOCK_OPTION" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_SWORD_FLAY" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_TEMPORAL_GIFT" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_IN_PLAIN_SIGHT" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_IM_FEELIN_LUCKY" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_IMMOLATION_LIQUIDATION" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_HEAD_DRAMA" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_PHOENIX_UP" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_POP_SHOCKS" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_ON_THE_HOUSE" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_EXTRA_CREDIT" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_PROFIT_SHARING" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_FLAVOR_HEXED" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_UNQUENCHABLE" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_ALCHEMICAL_ANTITHESIS" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_CRATE_POWER" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_AFTERTASTE_BLOOD" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", "ZMUI_BGB_CHALLENGE_REJECTED" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_GREEN", "ZMUI_BGB_STOCK_OPTION" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_GREEN", "ZMUI_BGB_SWORD_FLAY" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_BLUE", "ZMUI_BGB_TEMPORAL_GIFT" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_PURPLE", "ZMUI_BGB_IN_PLAIN_SIGHT" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_PURPLE", "ZMUI_BGB_IM_FEELIN_LUCKY" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_PURPLE", "ZMUI_BGB_IMMOLATION_LIQUIDATION" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_BLUE", "ZMUI_BGB_HEAD_DRAMA" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_PURPLE", "ZMUI_BGB_PHOENIX_UP" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_ORANGE", "ZMUI_BGB_POP_SHOCKS" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_PURPLE", "ZMUI_BGB_ON_THE_HOUSE" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_PURPLE", "ZMUI_BGB_EXTRA_CREDIT" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_GREEN", "ZMUI_BGB_PROFIT_SHARING" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_ORANGE", "ZMUI_BGB_FLAVOR_HEXED" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_ORANGE", "ZMUI_BGB_UNQUENCHABLE" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_PURPLE", "ZMUI_BGB_ALCHEMICAL_ANTITHESIS" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_ORANGE", "ZMUI_BGB_CRATE_POWER" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_BLUE", "ZMUI_BGB_AFTERTASTE_BLOOD" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_PURPLE", "ZMUI_BGB_CHALLENGE_REJECTED" );
 
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_STOCK_OPTION", "1" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_SWORD_FLAY", "1" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_TEMPORAL_GIFT", "1" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_IN_PLAIN_SIGHT", "1" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_IM_FEELIN_LUCKY", "1" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_IMMOLATION_LIQUIDATION", "2" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_HEAD_DRAMA", "3" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_PHOENIX_UP", "3" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_POP_SHOCKS", "2" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_ON_THE_HOUSE", "3" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_EXTRA_CREDIT", "2" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_PROFIT_SHARING", "2" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_FLAVOR_HEXED", "2" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_UNQUENCHABLE", "3" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_ALCHEMICAL_ANTITHESIS", "3" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_CRATE_POWER", "2" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_AFTERTASTE_BLOOD", "2" );
-#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", "ZMUI_BGB_CHALLENGE_REJECTED", "2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_GREEN", "ZMUI_BGB_STOCK_OPTION", "1" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_GREEN", "ZMUI_BGB_SWORD_FLAY", "1" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_BLUE", "ZMUI_BGB_TEMPORAL_GIFT", "1" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_PURPLE", "ZMUI_BGB_IN_PLAIN_SIGHT", "1" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_PURPLE", "ZMUI_BGB_IM_FEELIN_LUCKY", "1" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_PURPLE", "ZMUI_BGB_IMMOLATION_LIQUIDATION", "2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_BLUE", "ZMUI_BGB_HEAD_DRAMA", "3" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_PURPLE", "ZMUI_BGB_PHOENIX_UP", "3" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_ORANGE", "ZMUI_BGB_POP_SHOCKS", "2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_PURPLE", "ZMUI_BGB_ON_THE_HOUSE", "3" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_PURPLE", "ZMUI_BGB_EXTRA_CREDIT", "2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_GREEN", "ZMUI_BGB_PROFIT_SHARING", "2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_ORANGE", "ZMUI_BGB_FLAVOR_HEXED", "2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_ORANGE", "ZMUI_BGB_UNQUENCHABLE", "3" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_PURPLE", "ZMUI_BGB_ALCHEMICAL_ANTITHESIS", "3" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_ORANGE", "ZMUI_BGB_CRATE_POWER", "2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_BLUE", "ZMUI_BGB_AFTERTASTE_BLOOD", "2" );
+#precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_PURPLE", "ZMUI_BGB_CHALLENGE_REJECTED", "2" );
 
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS0" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ARAMIS1" );
@@ -208,6 +208,24 @@ function __init__()
 	level.gg_names["zm_bgb_aftertaste_blood"] = &"ZMUI_BGB_AFTERTASTE_BLOOD";
 	level.gg_names["zm_bgb_perkaholic"] = &"ZMUI_BGB_PERKAHOLIC";
 
+	level.gg_hintstrings = [];
+	level.gg_hintstrings["purple"] = &"ZM_ABBEY_TRIAL_HINTSTRING_PURPLE";
+	level.gg_hintstrings["blue"] = &"ZM_ABBEY_TRIAL_HINTSTRING_BLUE";
+	level.gg_hintstrings["orange"] = &"ZM_ABBEY_TRIAL_HINTSTRING_ORANGE";
+	level.gg_hintstrings["green"] = &"ZM_ABBEY_TRIAL_HINTSTRING_GREEN";
+
+	level.gg_hintstrings_unavailable = [];
+	level.gg_hintstrings_unavailable["purple"] = &"ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_PURPLE";
+	level.gg_hintstrings_unavailable["blue"] = &"ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_BLUE";
+	level.gg_hintstrings_unavailable["orange"] = &"ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_ORANGE";
+	level.gg_hintstrings_unavailable["green"] = &"ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE_GREEN";
+
+	level.gg_hintstrings_bribe = [];
+	level.gg_hintstrings_bribe["purple"] = &"ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_PURPLE";
+	level.gg_hintstrings_bribe["blue"] = &"ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_BLUE";
+	level.gg_hintstrings_bribe["orange"] = &"ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_ORANGE";
+	level.gg_hintstrings_bribe["green"] = &"ZM_ABBEY_TRIAL_HINTSTRING_BRIBE_GREEN";
+
 	level.gg_notifs = [];
 	for(i = 0; i < level.gg_all.size; i++)
 	{
@@ -272,6 +290,7 @@ function on_player_connect()
 	}
 
 	self.bribe_count = 0;
+	self.eating_gum = false;
 
 	level array::thread_all(level.gargoyle_judges, &judge_hintstring_think, self);
 	level array::thread_all(level.gargoyle_judges_dialogue, &judge_dialogue_think, self);
@@ -345,10 +364,12 @@ function judge_hintstring_think(player)
 	player endon("disconnect");
 
 	garg_num = self.script_int;
+	gum_weapon = GetWeapon("zombie_bgb_grab");
 
 	prev_displayName = &"ZM_ABBEY_EMPTY";
 	prev_gg_available = false;
 	prev_bribe_count = -1;
+	prev_eating = false;
 
 	while(true)
 	{
@@ -357,6 +378,7 @@ function judge_hintstring_think(player)
 		displayName = level.gg_names[gum];
 		gg_available = player.gg_available[gum];
 		bribe_count = player.bribe_count;
+		eating = player.eating_gum; 
 
 		// failsafe for a weird case where a perkaholic triggerstring registered for a moment
 		if(displayName == &"ZMUI_BGB_PERKAHOLIC")
@@ -364,25 +386,38 @@ function judge_hintstring_think(player)
 			displayName = &"ZMUI_BGB_STOCK_OPTION";
 		}
 
-		if(displayName != prev_displayName || gg_available != prev_gg_available || bribe_count != prev_bribe_count)
+
+		if(eating)
+		{
+			if(! prev_eating)
+			{
+				self SetHintStringForPlayer(player, player.judge_dialogue[garg_num]);
+			}
+		}
+		else if(prev_eating || displayName != prev_displayName || gg_available != prev_gg_available || bribe_count != prev_bribe_count)
 		{
 			prev_displayName = displayName;
 			prev_gg_available = gg_available;
 			prev_bribe_count = bribe_count;
-			bribe_cost = zm_bgb_custom_util::gg_bribe_cost(gum);
+			bribe_cost = level zm_bgb_custom_util::gg_bribe_cost(gum);
+			color = level zm_bgb_custom_util::gg_color_value(gum);
 			if(gg_available)
 			{
-				self SetHintStringForPlayer(player, &"ZM_ABBEY_TRIAL_HINTSTRING", displayName);
+				hintstring = level.gg_hintstrings[color];
+				self SetHintStringForPlayer(player, hintstring, displayName);
 			}
 			else if(bribe_count >= bribe_cost)
 			{
-				self SetHintStringForPlayer(player, &"ZM_ABBEY_TRIAL_HINTSTRING_BRIBE", displayName, bribe_cost);
+				hintstring = level.gg_hintstrings_bribe[color];
+				self SetHintStringForPlayer(player, hintstring, displayName, bribe_cost);
 			}
 			else
 			{
-				self SetHintStringForPlayer(player, &"ZM_ABBEY_TRIAL_HINTSTRING_UNAVAILABLE", displayName);
+				hintstring = level.gg_hintstrings_unavailable[color];
+				self SetHintStringForPlayer(player, hintstring, displayName);
 			}
 		}
+		prev_eating = eating;
 		wait(0.05);
 	}
 }
@@ -432,6 +467,7 @@ function judge_think()
 
 		gum_struct = zm_bgb_custom_util::lookup_gobblegum(gum);
 		player thread zm_bgb_custom_util::give_gobblegum(gum_struct);
+		player.eating_gum = true;
 
 		if(gg_available)
 		{	

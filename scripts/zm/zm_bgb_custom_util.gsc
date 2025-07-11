@@ -60,14 +60,14 @@
 // MAIN
 //*****************************************************************************
 
-function getColourValue( activation )
+function gg_color_value(gum)
 {
-	switch(activation)
+	switch(level.bgb[gum].limit_type)
 	{
 		case "activated":
 			return "purple";
 			break;
-		case "round":
+		case "rounds":
 			return "blue";
 			break;	
 		case "event":
@@ -167,6 +167,7 @@ function give_gobblegum(gum)
 		self bgb::give(gum.name);
 	}
 	self perk_give_bottle_end( gun, gum_weapon);
+	self.eating_gum = false;
 
     /*
     self TakeWeapon(gum_weapon);

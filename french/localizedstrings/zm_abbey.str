@@ -54,7 +54,7 @@ REFERENCE           	BLOODGUN_COOLDOWN
 LANG_FRENCH       	"Cooling down... Please wait a round"
 
 REFERENCE           	BLOODGUN_ACTIVATE
-LANG_FRENCH       	"Press and hold ^3[{+activate}]^7 to acquire L'Arme Ensanglante
+LANG_FRENCH       	"Press and hold ^3[{+activate}]^7 to wield L'Arme Ensanglante"
 
 REFERENCE           	TRIAL_ACTIVATE
 LANG_FRENCH       	"Press ^3[{+activate}]^7 to accept a Divinium Trial [Cost: &&1]"
@@ -173,14 +173,41 @@ LANG_FRENCH       "Judge D'Artagnan"
 REFERENCE           	TRIAL_ATHOS_NAME
 LANG_FRENCH       "Judge Athos"
 
-REFERENCE           	TRIAL_HINTSTRING
-LANG_FRENCH       "Press ^3[{+activate}]^7 for &&1\nMelee for next GargoyleGum"
+REFERENCE           	TRIAL_HINTSTRING_PURPLE
+LANG_FRENCH       "Press ^3[{+activate}]^7 for ^6&&1\n^7Melee for next GargoyleGum"
 
-REFERENCE           	TRIAL_HINTSTRING_UNAVAILABLE
-LANG_FRENCH       "&&1 unavailable\nCheck Journal to view Gargoyle Trial progress\nMelee for next GargoyleGum"
+REFERENCE           	TRIAL_HINTSTRING_BLUE
+LANG_FRENCH       "Press ^3[{+activate}]^7 for ^5&&1\n^7Melee for next GargoyleGum"
 
-REFERENCE           	TRIAL_HINTSTRING_BRIBE
-LANG_FRENCH       "Press ^3[{+activate}]^7 to Bribe for &&1 [Cost: &&2]\nMelee for next GargoyleGum"
+REFERENCE           	TRIAL_HINTSTRING_ORANGE
+LANG_FRENCH       "Press ^3[{+activate}]^7 for ^9&&1\n^7Melee for next GargoyleGum"
+
+REFERENCE           	TRIAL_HINTSTRING_GREEN
+LANG_FRENCH       "Press ^3[{+activate}]^7 for ^2&&1\n^7Melee for next GargoyleGum"
+
+REFERENCE           	TRIAL_HINTSTRING_UNAVAILABLE_PURPLE
+LANG_FRENCH       "^6&&1^7 unavailable\nCheck Journal to view Gargoyle Trial progress\nMelee for next GargoyleGum"
+
+REFERENCE           	TRIAL_HINTSTRING_UNAVAILABLE_BLUE
+LANG_FRENCH       "^5&&1^7 unavailable\nCheck Journal to view Gargoyle Trial progress\nMelee for next GargoyleGum"
+
+REFERENCE           	TRIAL_HINTSTRING_UNAVAILABLE_ORANGE
+LANG_FRENCH       "^9&&1^7 unavailable\nCheck Journal to view Gargoyle Trial progress\nMelee for next GargoyleGum"
+
+REFERENCE           	TRIAL_HINTSTRING_UNAVAILABLE_GREEN
+LANG_FRENCH       "^2&&1^7 unavailable\nCheck Journal to view Gargoyle Trial progress\nMelee for next GargoyleGum"
+
+REFERENCE           	TRIAL_HINTSTRING_BRIBE_PURPLE
+LANG_FRENCH       "Press ^3[{+activate}]^7 to Bribe for ^6&&1^7 [Cost: &&2]\nMelee for next GargoyleGum"
+
+REFERENCE           	TRIAL_HINTSTRING_BRIBE_BLUE
+LANG_FRENCH       "Press ^3[{+activate}]^7 to Bribe for ^5&&1^7 [Cost: &&2]\nMelee for next GargoyleGum"
+
+REFERENCE           	TRIAL_HINTSTRING_BRIBE_ORANGE
+LANG_FRENCH       "Press ^3[{+activate}]^7 to Bribe for ^9&&1^7 [Cost: &&2]\nMelee for next GargoyleGum"
+
+REFERENCE           	TRIAL_HINTSTRING_BRIBE_GREEN
+LANG_FRENCH       "Press ^3[{+activate}]^7 to Bribe for ^2&&1^7 [Cost: &&2]\nMelee for next GargoyleGum"
 
 REFERENCE           	TRIAL_HINTSTRING_NEXT
 LANG_FRENCH       "\nMelee for next GargoyleGum"
