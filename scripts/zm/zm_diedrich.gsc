@@ -34,14 +34,8 @@ function main()
 	level.audio_get_mod_type = &get_mod_type;
 
     zm::register_zombie_damage_override_callback( &zombie_damage_override );
-	callback::on_connect( &on_player_connect );
     //zm::register_actor_damage_callback( &damage_adjustment );
 	
-}
-
-function on_player_connect()
-{
-	self thread monitor_diedrich_used();
 }
 
 
@@ -156,26 +150,6 @@ function get_mod_type( impact, mod, weapon, zombie, instakill, dist, player )
 	}
 	
 	return "default";
-}
-
-function monitor_diedrich_used()
-{
-	self endon( "disconnect" );
-	
-	while (true)
-	{
-		weapon = self GetCurrentWeapon();
-		if ( self IsFiring() && ! self IsMeleeing() && (weapon == level.abbey_diedrich || weapon == level.abbey_diedrich_upgraded) )
-		{
-			alias_name = "diedrich_shot" + RandomIntRange(1, 4);
-			self PlaySoundOnTag(alias_name, "tag_weapon_right");
-			while (self IsFiring())
-			{
-				wait(0.05);
-			}
-		}
-		wait(0.05);
-	}
 }
 
 function diedrich_think(isUpgraded, player)

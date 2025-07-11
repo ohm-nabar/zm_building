@@ -92,53 +92,11 @@ function on_player_connect()
 
 	self thread watch_trident_fired();
 	self thread monitor_trident_fired();
-	self thread monitor_trident_used();
 	self thread monitor_trident_melee_streaks();
 	self thread monitor_trident_melee_reset();
-	self thread monitor_trident_melee_used();
 	self thread monitor_trident_fx();
 	//self thread display_trident_power_level();
 	//self thread testeroo();
-}
-
-function monitor_trident_used()
-{
-	self endon( "disconnect" );
-	
-	while (true)
-	{
-		weapon = self GetCurrentWeapon();
-		if ( self IsFiring() && ! self IsMeleeing() && isdefined(weapon) && weapon == level.abbey_trident )
-		{
-			alias_name = "trident_fire" + RandomIntRange(1, 4);
-			self PlaySound(alias_name);
-			while (self IsFiring())
-			{
-				wait(0.05);
-			}
-		}
-		wait(0.05);
-	}
-}
-
-function monitor_trident_melee_used()
-{
-	self endon( "disconnect" );
-	
-	while (true)
-	{
-		weapon = self GetCurrentWeapon();
-		if ( self IsMeleeing() && isdefined(weapon) && (weapon == level.abbey_pitchfork || weapon == level.abbey_trident) )
-		{
-			alias_name = "trident_melee_" + RandomIntRange(1, 4);
-			self PlaySound(alias_name);
-			while(self MeleeButtonPressed() || self IsMeleeing())
-			{
-				wait(0.05);
-			}
-		}
-		wait(0.05);
-	}
 }
 
 function pitchfork_statue_check(weapon)
