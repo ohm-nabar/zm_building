@@ -300,31 +300,31 @@ REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE4
 LANG_GERMAN       "^2Judge D'Artagnan^7: “Whose slaughter generated this wealth?\nNo — don’t tell me. It’s more fun to imagine!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS0
-LANG_GERMAN       "^4Judge Athos^7: “Pathetic creature! You are most certainly not worthy of anything!”"
+LANG_GERMAN       "8Judge Athos^7: “Pathetic creature! You are most certainly not worthy of anything!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS1
-LANG_GERMAN       "^4Judge Athos^7: “I suppose you think you’re some hotshot now.\nNo. You. Are. Nothing.”"
+LANG_GERMAN       "8Judge Athos^7: “I suppose you think you’re some hotshot now.\nNo. You. Are. Nothing.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS2
-LANG_GERMAN       "^4Judge Athos^7: “I suppose you think you’re some hotshot now. No. You. Are. Nothing.”"
+LANG_GERMAN       "8Judge Athos^7: “I suppose you think you’re some hotshot now. No. You. Are. Nothing.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS3
-LANG_GERMAN       "^4Judge Athos^7: “I guess you’ve managed to luck your way this far.\nTake your reward and get out of my sight.”"
+LANG_GERMAN       "8Judge Athos^7: “I guess you’ve managed to luck your way this far.\nTake your reward and get out of my sight.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS4
-LANG_GERMAN       "^4Judge Athos^7: “Ugh, fine, I guess I maybe sort of misjudged you...”"
+LANG_GERMAN       "8Judge Athos^7: “Ugh, fine, I guess I maybe sort of misjudged you...”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE1
-LANG_GERMAN       "^4Judge Athos^7: “I feel dirty accepting anything from you.”"
+LANG_GERMAN       "8Judge Athos^7: “I feel dirty accepting anything from you.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE2
-LANG_GERMAN       "^4Judge Athos^7: “I suppose you’ve lived a comfortable life, haven’t you?\nExplains your weak character.”"
+LANG_GERMAN       "8Judge Athos^7: “I suppose you’ve lived a comfortable life, haven’t you?\nExplains your weak character.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE3
-LANG_GERMAN       "^4Judge Athos^7: “I’ll have you know this is illegal.\nWhen the authorities return, I’ll be reporting you.”"
+LANG_GERMAN       "8Judge Athos^7: “I’ll have you know this is illegal.\nWhen the authorities return, I’ll be reporting you.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE4
-LANG_GERMAN       "^4Judge Athos^7: “Can I bribe you to never come back?”"
+LANG_GERMAN       "8Judge Athos^7: “Can I bribe you to never come back?”"
 
 REFERENCE           	TRIAL_RANDOM_GUM
 LANG_GERMAN       "Mystery GargoyleGum"
