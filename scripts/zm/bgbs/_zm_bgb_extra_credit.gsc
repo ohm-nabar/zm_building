@@ -90,6 +90,6 @@ function function_b18c3b2d(origin)
 */
 function function_3258dd42()
 {
-	return 1250;
+	return 1000;
 }
 
