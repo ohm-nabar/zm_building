@@ -44,3 +44,4 @@ bo3_sten,bo3_sten_upgraded,,2000,rifle,,,,,TRUE,FALSE,FALSE,,,FALSE,TRUE,smg,TRU
 bo3_mp40,bo3_mp40_upgraded,,5000,smg,,,,,TRUE,FALSE,FALSE,,,FALSE,TRUE,smg,TRUE,,reddot fastreload
 bo3_stg44,bo3_stg44_upgraded,,1400,rifle,,,,,TRUE,FALSE,FALSE,,,FALSE,TRUE,rifle,TRUE,,
 zm_panzerwurfmine,zm_panzerwurfmine_up,,512000,grenade,,,,,TRUE,FALSE,FALSE,,,FALSE,TRUE,grenade,TRUE,FALSE,
+ww2_crossbow,ww2_crossbow_upgraded,,32000,launcher,,,,,TRUE,FALSE,FALSE,,,FALSE,TRUE,launcher,TRUE,FALSE,

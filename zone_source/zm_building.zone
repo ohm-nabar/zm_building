@@ -716,6 +716,7 @@ scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow_up.csc
 rawfile,ui_mp/t6/zombie/hudpowerupszombie_abbey.lua
 weapon,zm_panzerwurfmine
 weapon,zm_panzerwurfmine_up
-weapon,zm_crossbow
-weapon,zm_crossbow_up
+weapon,ww2_crossbow_zm
+weapon,ww2_crossbow_upgraded_zm
+xmodel,ww2_crossbow_bolt_explosive
 material,specialty_giant_crossbow_zombies

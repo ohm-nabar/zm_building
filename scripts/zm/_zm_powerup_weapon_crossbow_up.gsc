@@ -27,6 +27,7 @@
 #insert scripts\zm\_zm_utility.gsh;
 
 #precache( "material", "specialty_giant_crossbow_zombies" );
+#precache( "model", "ww2_crossbow_bolt_explosive" );
 
 #namespace zm_powerup_weapon_crossbow_up;
 
@@ -46,7 +47,7 @@ function __init__()
 	if( ToLower( GetDvarString( "g_gametype" ) ) != "zcleansed" )
 	{
 		zm_powerups::add_zombie_powerup( "crossbow_up", "zombie_pickup_minigun", &"ZOMBIE_POWERUP_MINIGUN", &func_should_drop_crossbow_up, POWERUP_ONLY_AFFECTS_GRABBER, !POWERUP_ANY_TEAM, !POWERUP_ZOMBIE_GRABBABLE, undefined, "powerup_crossbow_up", "zombie_powerup_crossbow_up_time", "zombie_powerup_crossbow_up_on" );
-		level.zombie_powerup_weapon[ "crossbow_up" ] = GetWeapon( "zm_crossbow_up" );
+		level.zombie_powerup_weapon[ "crossbow_up" ] = GetWeapon( "ww2_crossbow_upgraded" );
 	}
 	
 	callback::on_connect( &init_player_zombie_vars);
@@ -69,6 +70,7 @@ function init_player_zombie_vars()
 {	
 	self.zombie_vars[ "zombie_powerup_crossbow_up_on" ] = false; // awful lawton
 	self.zombie_vars[ "zombie_powerup_crossbow_up_time" ] = 0;
+	self thread crossbow_up_monitor_fire();
 }
 
 function func_should_drop_crossbow_up()
@@ -152,7 +154,7 @@ function crossbow_up_weapon_powerup_off()
 
 function crossbow_up_damage_adjust(  inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType  ) //self is an enemy
 {
-	if ( weapon.name != "zm_crossbow_up" )
+	if ( weapon != level.zombie_powerup_weapon[ "crossbow_up" ] )
 	{
 		// Don't affect damage dealt if the weapon isn't the awful lawton, allow other damage callbacks to be evaluated - mbettelman 1/28/2016
 		return -1;
@@ -163,5 +165,40 @@ function crossbow_up_damage_adjust(  inflictor, attacker, damage, flags, meansof
 	}
 
 	return -1;
+}
+
+function crossbow_up_monitor_fire()
+{
+	self endon( "disconnect" );
+	
+	while(true)
+	{
+		self waittill("missile_fire", e_projectile, str_weapon);
+		
+		if ( isdefined(str_weapon) && str_weapon != level.zombie_powerup_weapon[ "crossbow_up" ] )
+		{
+			continue;
+		}
+
+		e_projectile thread crossbow_up_attract_zombies();
+	}
+}
+
+
+function crossbow_up_attract_zombies()
+{
+	self util::waittill_any( "grenade_bounce", "stationary", "death", "explode" );
+
+	if (!isdefined(self))
+	{
+		return;
+	}
+
+	self zm_utility::create_zombie_point_of_interest( 1536, 96, 10000 );
+	self.attract_to_origin = true;
+	PlayFXOnTag("zombie/fx_trap_green_light_doa", self, "tag_origin");
+
+	self thread zm_utility::create_zombie_point_of_interest_attractor_positions( 4, 45 );
+	self thread zm_utility::wait_for_attractor_positions_complete();
 }
 
