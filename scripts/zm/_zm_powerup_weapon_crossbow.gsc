@@ -46,7 +46,7 @@ function __init__()
 	if( ToLower( GetDvarString( "g_gametype" ) ) != "zcleansed" )
 	{
 		zm_powerups::add_zombie_powerup( "crossbow", "zombie_pickup_minigun", &"ZOMBIE_POWERUP_MINIGUN", &func_should_drop_crossbow, POWERUP_ONLY_AFFECTS_GRABBER, !POWERUP_ANY_TEAM, !POWERUP_ZOMBIE_GRABBABLE, undefined, "powerup_crossbow", "zombie_powerup_crossbow_time", "zombie_powerup_crossbow_on" );
-		level.zombie_powerup_weapon[ "crossbow" ] = GetWeapon( "zm_crossbow" );
+		level.zombie_powerup_weapon[ "crossbow" ] = GetWeapon( "ww2_crossbow" );
 	}
 	
 	callback::on_connect( &init_player_zombie_vars);
@@ -152,7 +152,7 @@ function crossbow_weapon_powerup_off()
 
 function crossbow_damage_adjust(  inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType  ) //self is an enemy
 {
-	if ( weapon.name != "zm_crossbow" )
+	if ( weapon != level.zombie_powerup_weapon[ "crossbow" ] )
 	{
 		// Don't affect damage dealt if the weapon isn't the crossbow, allow other damage callbacks to be evaluated - mbettelman 1/28/2016
 		return -1;
