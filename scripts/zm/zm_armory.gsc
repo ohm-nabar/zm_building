@@ -327,7 +327,7 @@ function crossbow_think()
 		}
 		
 		powerup_struct = Spawn("script_origin", player.origin);
-		if(level.crossbow_upgraded)
+		if(!level.crossbow_upgraded)
 		{
 			powerup_struct.powerup_name = "crossbow_up";
 		}
