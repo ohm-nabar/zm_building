@@ -87,8 +87,6 @@ function CoD.PerkListItemFactory.new(HudRef, arg1)
 			Elem.perk_key_value = perk_key_value
 			perkImage:setImage(RegisterImage(perk_key_value))
 			local model_string = perkModelLookup[perk_key_value]
-			local model = Engine.GetModel(Engine.GetModelForController(InstanceRef), model_string)
-			local model_value = Engine.GetModelValue(model)
 			local complete_val = perkGoalLookup[perk_key_value] + 4
 			
 			local function SetPerkUpgrade(ModelRef2)
@@ -100,7 +98,6 @@ function CoD.PerkListItemFactory.new(HudRef, arg1)
 				end
 			end
 			perkUpgradeImage:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), model_string), SetPerkUpgrade)
-
 			if perk_key_value == "specialty_poseidon_zombies" then
 				perkImage:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "poseidonCharge"), PoseidonRecharge)
 			end
