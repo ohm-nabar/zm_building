@@ -1,7 +1,10 @@
 #using scripts\shared\music_shared;
 
+#using scripts\zm\_zm;
 #using scripts\zm\_zm_audio;
 #using scripts\zm\zm_room_manager;
+
+#insert scripts\shared\shared.gsh;
 
 #define PLAYTYPE_REJECT 1
 #define PLAYTYPE_QUEUE 2
@@ -56,8 +59,34 @@ function main()
 	level zm_audio::musicState_Create("antiverse_amb_4", PLAYTYPE_SPECIAL, "antiverse_amb_4");
 	level zm_audio::musicState_Create("antiverse_amb_5", PLAYTYPE_SPECIAL, "antiverse_amb_5");
 	level zm_audio::musicState_Create("abbey_timer", PLAYTYPE_SPECIAL, "abbey_timer");
+	level zm_audio::musicState_Create("round_start_milestone", PLAYTYPE_ROUND, "round_start_milestone");
 	
+	level.zombie_round_change_custom = &round_change_custom;
 	//level thread testeroo();
+}
+
+function round_change_custom()
+{
+	if( !IS_TRUE( level.sndMusicSpecialRound ) )
+	{
+		if( IS_TRUE(level.sndGotoRoundOccurred))
+		{
+			level.sndGotoRoundOccurred = false;
+		}
+		else if( level.round_number == 1 )
+		{
+			level thread zm_audio::sndMusicSystem_PlayState( "round_start_first" );
+		}
+		else if( level.round_number % 10 == 0 )
+		{
+			level thread zm_audio::sndMusicSystem_PlayState( "round_start_milestone" );
+		}
+		else
+		{
+			level thread zm_audio::sndMusicSystem_PlayState( "round_start" );
+		}
+	}
+	level zm::round_one_up();
 }
 
 function create_ambience_think(room_name, room_cue)
