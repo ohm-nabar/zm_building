@@ -23,7 +23,7 @@
 #precache( "fx", "custom/water_rings" );
 #precache( "fx", "custom/fx_trail_blood_soul_zmb" );
 
-#precache( "model", "vm_trident" );
+#precache( "model", "isaypwn_trident_b_upg_view_01" );
 
 #precache( "triggerstring", "ZM_ABBEY_TRIDENT_SEEK" );
 #precache( "triggerstring", "ZM_ABBEY_TRIDENT_REJECT" );
@@ -456,7 +456,6 @@ function upgrade_quest_think()
 
 		upgrading_player zm_weapons::weapon_take(player_weapon);
 
-		weapon SetModel("vm_trident");
 		weapon SetVisibleToAll();
 
 		kills = 0;
@@ -484,7 +483,7 @@ function upgrade_quest_think()
 		}
 
 		statue PlaySound("trident_complete_sting");
-		weapon SetModel("vm_trident");
+		weapon SetModel("isaypwn_trident_b_upg_view_01");
 		self SetCursorHint("HINT_WEAPON", level.abbey_trident);
 		self SetHintString(&"ZM_ABBEY_TAKE_WEAPON");
 
@@ -591,7 +590,7 @@ function trident_position_source( player, str_weapon)
 		zombies = zombie_utility::get_round_enemy_array();
 		for(j = 0; j < zombies.size; j++)
 		{
-			if( Distance(zombies[j].origin, v_pos) < level.trident_charge_radius )
+			if( isdefined(zombies[j]) && isdefined(zombies[j].origin) && isdefined(v_pos) && Distance(zombies[j].origin, v_pos) < level.trident_charge_radius )
 			{
 				if(zombies[j].targetname == "zombie_escargot" || zombies[j].targetname == "zombie_cloak")
 				{
