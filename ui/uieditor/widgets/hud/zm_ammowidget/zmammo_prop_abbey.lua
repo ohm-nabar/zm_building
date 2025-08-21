@@ -404,8 +404,8 @@ CoD.ZmAmmo_Prop.new = function ( menu, controller )
 
 	local DpadIconMule = LUI.UIImage.new()
 	DpadIconMule:setImage( RegisterImage ( "i_thirdguninfo" ) )
-	DpadIconMule:setLeftRight( true, false, 113, 146 )
-	DpadIconMule:setTopBottom( true, false, 151, 184 )
+	DpadIconMule:setLeftRight( true, false, 100, 130 )
+	DpadIconMule:setTopBottom( true, false, 132, 162 )
 	DpadIconMule:hide()
 	self:addElement(DpadIconMule)
 
