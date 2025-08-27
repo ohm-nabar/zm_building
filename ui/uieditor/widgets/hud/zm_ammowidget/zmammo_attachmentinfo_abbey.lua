@@ -41,8 +41,8 @@ CoD.ZmAmmo_AttachmentInfo.new = function ( menu, controller )
 	self.anyChildUsesUpdateState = true
 	
 	local AttachmentInfo = CoD.ZmAmmo_TextAttachmentInfo.new( menu, controller )
-	AttachmentInfo:setLeftRight( false, true, -296, 0 )
-	AttachmentInfo:setTopBottom( false, true, -27, -9 )
+	AttachmentInfo:setLeftRight( false, true, -298, -2 )
+	AttachmentInfo:setTopBottom( false, true, -28, -10 )
 	AttachmentInfo:setRGB( 1, 0.99, 0.93 )
 	AttachmentInfo:setAlpha( 0 )
 	self:addElement( AttachmentInfo )
@@ -58,9 +58,9 @@ CoD.ZmAmmo_AttachmentInfo.new = function ( menu, controller )
 		local name = Engine.GetModelValue( model )
 		if name then
 			if name == "M2 Flamethrower" then
-				AttachmentInfoFireRate:setLeftRight(false, true, -345, -45)
+				AttachmentInfoFireRate:setLeftRight(false, true, -295, 5)
 			elseif name == "FIW Nitrogen Cooled" then
-				AttachmentInfoFireRate:setLeftRight(false, true, -320, -20)
+				AttachmentInfoFireRate:setLeftRight(false, true, -300, 0)
 			else
 				AttachmentInfoFireRate:setLeftRight( false, true, -296, 0 )
 			end

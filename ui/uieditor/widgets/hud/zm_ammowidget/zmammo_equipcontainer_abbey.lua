@@ -88,8 +88,8 @@ CoD.ZmAmmo_EquipContainer.new = function ( menu, controller )
 	self.TacticalGlow = TacticalGlow
 	
 	local TacticalItem = CoD.ZmAmmo_EquipTac.new( menu, controller )
-	TacticalItem:setLeftRight( true, false, 13.15, 50.15 )
-	TacticalItem:setTopBottom( true, false, 12.07, 44.07 )
+	TacticalItem:setLeftRight( true, false, 6.15, 43.15 )
+	TacticalItem:setTopBottom( true, false, 0.82, 32.82 )
 	TacticalItem:setRGB( 1, 0.99, 0.93 )
 	TacticalItem:setAlpha( 0.79 )
 	TacticalItem:setRFTMaterial( LUI.UIImage.GetCachedMaterial( "ui_add" ) )
@@ -173,8 +173,8 @@ CoD.ZmAmmo_EquipContainer.new = function ( menu, controller )
 	self.TacticalItem = TacticalItem
 	
 	local LethalItem = CoD.ZmAmmo_EquipTac.new( menu, controller )
-	LethalItem:setLeftRight( true, false, 37.15, 74.15 )
-	LethalItem:setTopBottom( true, false, 3.82, 35.82 )
+	LethalItem:setLeftRight( true, false, 32.15, 69.15 )
+	LethalItem:setTopBottom( true, false, -4.82, 28.82 )
 	LethalItem:setRGB( 1, 0.99, 0.93 )
 	LethalItem:setAlpha( 0.79 )
 	LethalItem:setRFTMaterial( LUI.UIImage.GetCachedMaterial( "ui_add" ) )

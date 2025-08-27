@@ -180,8 +180,8 @@ CoD.ZmAmmo_ClipInfo.new = function ( menu, controller )
 	--]]
 
 	local GasPercent = LUI.UIText.new()
-	GasPercent:setLeftRight( false, false, -90, 10 )
-	GasPercent:setTopBottom( false, false, -32, 32 )
+	GasPercent:setLeftRight( false, false, -40, 60 )
+	GasPercent:setTopBottom( false, false, -30, 30 )
 	GasPercent:setRGB( 1, 0.99, 0.93 )
 	GasPercent:setText( Engine.Localize( "33" ) )
 	GasPercent:setTTF( "fonts/WEARETRIPPINShort.ttf" )

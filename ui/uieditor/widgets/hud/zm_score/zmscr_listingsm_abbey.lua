@@ -25,21 +25,21 @@ function CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 	Elem.Panel = panel
 
 	local blood = LUI.UIImage.new()
-	blood:setLeftRight(true, false, 1144, 1258)
-	blood:setTopBottom(true, false, 1.000000, 51.000000)
+	blood:setLeftRight(true, false, 1154, 1258)
+	blood:setTopBottom(true, false, 12, 51)
 	blood:setRGB(0.64, 0.03, 0.05)
 
 	Elem:addElement(blood)
 	Elem.Blood = blood
 
 	local score = LUI.UITightText.new()
-	score:setLeftRight(true, false, 1151, 1228)
-	score:setTopBottom(true, false, 7.500000, 44.500000)
+	score:setLeftRight(true, false, 1161, 1228)
+	score:setTopBottom(true, false, 18, 50)
 	--score:setTTF("fonts/WEARETRIPPINShort.ttf")
 
 	local name = LUI.UITightText.new()
-	name:setLeftRight(true, false, 45, 82)
-	name:setTopBottom(true, false, 7.5, 44.5)
+	name:setLeftRight(true, false, 40, 82)
+	name:setTopBottom(true, false, 15, 46.5)
 	
 	local nameLookup = {"Charlie", "Jean-Paul", "Archie", "Rico"}
 	Elem:addElement(name)
@@ -47,7 +47,7 @@ function CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 
 	local bloodVial = LUI.UIImage.new()
 	bloodVial:setLeftRight(true, false, 82, 112)
-    bloodVial:setTopBottom(true, false, 12, 42)
+    bloodVial:setTopBottom(true, false, 15, 42)
 	bloodVial:setImage(RegisterImage("i_bloodvialempty"))
 	Elem:addElement(bloodVial)
 	Elem.BloodVial = bloodVial
@@ -80,8 +80,8 @@ function CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 	Elem.Score = score
 
 	local PortraitIcon = CoD.onOffImage.new(HudRef, InstanceRef)
-	PortraitIcon:setLeftRight(true, false, 5.000000, 40.000000)
-	PortraitIcon:setTopBottom(true, false, 8.5, 43.5)
+	PortraitIcon:setLeftRight(true, false, 5, 35)
+	PortraitIcon:setTopBottom(true, false, 12, 43.5)
 	local function PortraitIconLinkModel(Model)
 		PortraitIcon:setModel(Model, InstanceRef)
 	end
@@ -100,8 +100,8 @@ function CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 			if charNum then
 				local nameStr = nameLookup[charNum]
 				name:setText(nameStr)
-				local x = 45 + name:getTextWidth() - 5
-				local x2 = x + 30
+				local x = 35 + name:getTextWidth()
+				local x2 = x + 25
 				bloodVial:setLeftRight(true, false, x, x2)
 
 				local function BloodVialShow(ModelRef)

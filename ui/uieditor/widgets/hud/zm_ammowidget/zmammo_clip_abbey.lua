@@ -83,7 +83,7 @@ CoD.ZmAmmo_Clip.new = function ( menu, controller )
 	
 	local Clip = LUI.UIText.new()
 	Clip:setLeftRight( true, false, -11, 97 )
-	Clip:setTopBottom( true, false, -2, 62 )
+	Clip:setTopBottom( true, false, -2, 58 )
 	Clip:setRGB( 1, 0, 0.12 )
 	Clip:setText( Engine.Localize( "33" ) )
 	Clip:setTTF( "fonts/WEARETRIPPINShort.ttf" )

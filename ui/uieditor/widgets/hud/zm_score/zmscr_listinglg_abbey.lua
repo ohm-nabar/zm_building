@@ -28,7 +28,7 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 
 	local blood = LUI.UIImage.new()
 	blood:setLeftRight(true, false, 1144, 1258)
-	blood:setTopBottom(true, false, 1.000000, 51.000000)
+	blood:setTopBottom(true, false, 12, 52.5)
 	blood:setRGB(0.64, 0.03, 0.05)
 
 	Elem:addElement(blood)
@@ -36,7 +36,7 @@ function CoD.ZMScr_ListingLg.new(HudRef, InstanceRef)
 
 	local score = LUI.UITightText.new()
 	score:setLeftRight(true, false, 1151, 1228)
-	score:setTopBottom(true, false, 7.500000, 44.500000)
+	score:setTopBottom(true, false, 15, 52)
 	score:setTTF("fonts/CaslonAntique-Bold.ttf")
 
 	local name = LUI.UITightText.new()

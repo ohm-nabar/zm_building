@@ -111,12 +111,12 @@ function LUI.createMenu.T7Hud_zm_factory(InstanceRef)
 
     local ShadowPerksWidget = CoD.ShadowPerks.new(HudRef, InstanceRef)
     ShadowPerksWidget:setLeftRight(true, false, 12, 176)
-    ShadowPerksWidget:setTopBottom(false, true, -178.5, -122.5)
+    ShadowPerksWidget:setTopBottom(false, true, -169, -113)
     HudRef:addElement(ShadowPerksWidget)
 
     local PerksWidget = CoD.ZMPerksContainerFactory.new(HudRef, InstanceRef)
     PerksWidget:setLeftRight(true, false, 12, 176)
-    PerksWidget:setTopBottom(false, true, -175.5, -119.5)
+    PerksWidget:setTopBottom(false, true, -166, -110)
     HudRef:addElement(PerksWidget)
     HudRef.ZMPerksContainerFactory = PerksWidget
 
@@ -157,7 +157,7 @@ function LUI.createMenu.T7Hud_zm_factory(InstanceRef)
     
     local ScoreWidget = CoD.ZMScr.new(HudRef, InstanceRef)
     ScoreWidget:setLeftRight(true, false, 7, 141)
-    ScoreWidget:setTopBottom(false, true, -350.000000, -478.000000)
+    ScoreWidget:setTopBottom(false, true, -333.5, -461.5)
     ScoreWidget:setYRot(0.000000)
     
     local function HudStartScore(Unk1, Unk2, Unk3)
