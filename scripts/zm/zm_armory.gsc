@@ -23,7 +23,7 @@
 #define PANZERWURFMINE_COST_MAX 512000
 #define PANZERWURFMINE_COOLDOWN 120
 
-#define CROSSBOW_RECHARGE_KILLS_BASE 25
+#define CROSSBOW_RECHARGE_KILLS_BASE 10
 #define CROSSBOW_RECHARGE_KILLS_UPGRADE 50
 
 #namespace zm_armory;
@@ -272,13 +272,13 @@ function crossbow_souls_think()
 	canister = GetEnt("crossbow_soulbox" + self.script_int, "targetname");
 	target_canister = GetEnt("crossbow_soulbox_target" + self.script_int, "targetname");
 	target_canister SetInvisibleToAll();
-	if(! isdefined(canister))
-	{
-		IPrintLn("canister undefined");
-	}
+
 	original_pos = canister.origin;
 	z_diff = target_canister.origin[2] - canister.origin[2];
-	prev_prog = -CROSSBOW_RECHARGE_KILLS_BASE;
+	prev_prog = 0;
+	
+	level waittill("power_on" + self.script_int);
+
 	while(true)
 	{
 		new_prog = level.crossbow_recharge_progress - prev_prog;
@@ -287,12 +287,12 @@ function crossbow_souls_think()
 		{
 			z_inc = (z_diff / level.crossbow_recharge_kills) * new_prog;
 			canister MoveZ(z_inc, 0.05);
-			IPrintLn("moving up");
+			IPrintLn("moving up " + z_inc);
 		}
 		else if(new_prog < 0)
 		{
 			canister MoveZ(-z_diff, 0.05);
-			IPrintLn("moving down");
+			IPrintLn("moving down" + z_diff);
 		}
 		wait(0.05);
 	}
@@ -303,12 +303,10 @@ function crossbow_think()
 	self SetCursorHint("HINT_NOICON");
 	self SetHintString(&"ZOMBIE_NEED_POWER");
 
-	/*
 	if(self.script_int == 1)
 	{
 		self thread crossbow_souls_think();
 	}
-	*/
 
 	if(self.script_int > 0)
 	{
@@ -327,7 +325,7 @@ function crossbow_think()
 		}
 		
 		powerup_struct = Spawn("script_origin", player.origin);
-		if(!level.crossbow_upgraded)
+		if(level.crossbow_upgraded)
 		{
 			powerup_struct.powerup_name = "crossbow_up";
 		}
