@@ -97,6 +97,7 @@ function __init__()
 	armory_targets = GetEntArray("armory_target", "targetname");
 	level array::thread_all(armory_targets, &target_think);
 	level thread crossbow_watch_upgrade();
+	level thread golden_well_think();
 }
 
 function on_player_connect()
@@ -700,4 +701,27 @@ function target_sequence_state(gen_num)
 	}
 
 	return TARGET_SEQUENCE_INACTIVE;
+}
+
+function golden_well_think()
+{
+	level waittill("initial_blackscreen_passed");
+
+	well_cover = GetEnt("golden_well_cover", "targetname");
+	well_cover_clips = GetEntArray("golden_well_cover_clip", "targetname");
+
+	well_cover SetCanDamage(true);
+
+	w_weapon = level.weaponNone;
+	str_type = "";
+	while(w_weapon != level.zombie_powerup_weapon[ "crossbow_up" ] && str_type != "MOD_PROJECTILE_SPLASH")
+	{
+		well_cover waittill("damage", n_damage, e_attacker, v_dir, v_loc, str_type, STR_MODEL, str_tag, str_part, w_weapon);
+	}
+
+	well_cover Delete();
+	foreach(clip in well_cover_clips)
+	{
+		clip Delete();
+	}
 }

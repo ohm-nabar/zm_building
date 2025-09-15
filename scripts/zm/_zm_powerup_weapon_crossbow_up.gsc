@@ -155,12 +155,7 @@ function crossbow_up_weapon_powerup_off()
 
 function crossbow_up_damage_adjust(  inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType  ) //self is an enemy
 {
-	if ( weapon != level.zombie_powerup_weapon[ "crossbow_up" ] )
-	{
-		// Don't affect damage dealt if the weapon isn't the awful lawton, allow other damage callbacks to be evaluated - mbettelman 1/28/2016
-		return -1;
-	}
-	if ( ! self zm_ai_shadowpeople::is_shadow_boss())
+	if (weapon == level.zombie_powerup_weapon[ "crossbow_up" ] && meansofdeath == "MOD_PROJECTILE_SPLASH" && ! self zm_ai_shadowpeople::is_shadow_boss())
 	{
 		return self.health + 666;
 	}
