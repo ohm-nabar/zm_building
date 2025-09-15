@@ -20,6 +20,7 @@
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_lightning_chain;
+#using scripts\zm\zm_ai_shadowpeople;
 
 #insert scripts\zm\_zm_perk_deadshot.gsh;
 #insert scripts\zm\_zm_perks.gsh;
@@ -156,7 +157,7 @@ function mind_blown_think()
 		limit = (zm_perk_upgrades::IsPerkUpgradeActive(PERK_DEAD_SHOT) ? level.deadshot_upgraded_mind_blown_limit : level.deadshot_mind_blown_limit);
 		foreach ( zombie in zombies_in_sight )
 		{
-			if(!IsAlive(zombie) || zombie.targetname == "zombie_cloak" || zombie.targetname == "zombie_escargot")
+			if(!IsAlive(zombie) || zombie zm_ai_shadowpeople::is_shadow_boss())
 			{
 				continue;
 			}

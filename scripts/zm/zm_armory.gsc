@@ -10,6 +10,7 @@
 #using scripts\zm\_zm_score;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
+#using scripts\zm\zm_ai_shadowpeople;
 
 #insert scripts\shared\shared.gsh;
 
@@ -33,6 +34,7 @@
 #define PANZERWURFMINE_COST_BASE 500
 #define PANZERWURFMINE_COST_MAX 512000
 #define PANZERWURFMINE_COOLDOWN 120
+#define PANZERWURFMINE_UPGRADE_KILLS 25
 
 #define CROSSBOW_RECHARGE_KILLS_BASE 1
 #define CROSSBOW_RECHARGE_KILLS_UPGRADE 1
@@ -99,17 +101,26 @@ function __init__()
 
 function on_player_connect()
 {
+	self.panzerwurfmine_upgrade_kills = 0;
 	self.b_has_upgraded_panzerwurfmine = false;
 	self thread panzerwurfmine_award_grenade_skip();
 }
 
 function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
 {
-	if ((willBeKilled && ! IS_TRUE(self.marked_for_recycle))|| (isPlayer( attacker ) && level.zombie_vars[attacker.team]["zombie_insta_kill"]))
+	if (! self zm_ai_shadowpeople::is_shadow_person() && (willBeKilled && ! IS_TRUE(self.marked_for_recycle)) || (IsPlayer(attacker) && level.zombie_vars[attacker.team]["zombie_insta_kill"]))
 	{
 		if(level.crossbow_recharge_progress < level.crossbow_recharge_kills)
 		{
 			level.crossbow_recharge_progress += 1;
+		}
+		if(IsPlayer(attacker) && weapon == level.panzerwurfmine && attacker.panzerwurfmine_upgrade_kills < PANZERWURFMINE_UPGRADE_KILLS)
+		{
+			attacker.panzerwurfmine_upgrade_kills += 1;
+			if(attacker.panzerwurfmine_upgrade_kills >= PANZERWURFMINE_UPGRADE_KILLS)
+			{
+				IPrintLn("Panzerwurfmine upgrade ready!");
+			}
 		}
 	}
 }
@@ -664,7 +675,7 @@ function target_sequence_start(gen_num)
 	}
 	else
 	{
-		IPrintLn("Sequence fail");
+		IPrintLn("Sequence fail :(");
 		level notify("target_sequence_fail" + gen_num);
 	}
 

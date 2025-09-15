@@ -1,61 +1,17 @@
-#using scripts\codescripts\struct;
-
-#using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
-#using scripts\shared\clientfield_shared;
-#using scripts\shared\compass;
-#using scripts\shared\exploder_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\laststand_shared;
-#using scripts\shared\math_shared;
-#using scripts\shared\scene_shared;
-#using scripts\shared\util_shared;
 
 #insert scripts\shared\shared.gsh;
-#insert scripts\shared\version.gsh;
 
-#insert scripts\zm\_zm_utility.gsh;
-
-#using scripts\zm\_load;
-#using scripts\zm\_zm;
-#using scripts\zm\_zm_audio;
-#using scripts\zm\_zm_powerups;
-#using scripts\zm\_zm_utility;
-#using scripts\zm\_zm_weapons;
-#using scripts\zm\_zm_zonemgr;
-
-#using scripts\shared\ai\zombie_utility;
-
-//Perks
-#using scripts\zm\_zm_pack_a_punch;
-#using scripts\zm\_zm_pack_a_punch_util;
-#using scripts\zm\_zm_perk_additionalprimaryweapon;
-#using scripts\zm\_zm_perk_juggernaut;
-#using scripts\zm\_zm_perk_quick_revive;
-#using scripts\zm\_zm_perk_staminup;
-#using scripts\zm\_zm_perk_electric_cherry;
-#using scripts\zm\_zm_perks;
-
-//Powerups
-#using scripts\zm\_zm_powerup_double_points;
-#using scripts\zm\_zm_powerup_carpenter;
-#using scripts\zm\_zm_powerup_fire_sale;
-#using scripts\zm\_zm_powerup_free_perk;
-#using scripts\zm\_zm_powerup_full_ammo;
-#using scripts\zm\_zm_powerup_insta_kill;
-#using scripts\zm\_zm_powerup_nuke;
-
-//Traps
-#using scripts\zm\_zm_trap_electric;
-
-#using scripts\zm\zm_usermap;
-#using scripts\zm\_zm_score;
-#using scripts\zm\_zm_laststand;
 #using scripts\zm\aats\_zm_aat_turned;
-
+#using scripts\zm\_zm_audio;
+#using scripts\zm\_zm_laststand;
+#using scripts\zm\_zm_perks;
+#using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weap_cymbal_monkey;
-#using scripts\shared\ai\zombie_utility;
-
+#using scripts\zm\_zm_weapons;
+#using scripts\zm\zm_ai_shadowpeople;
 #using scripts\zm\zm_juggernog_potions;
 
 #precache ( "fx", "electric/fx_elec_sparks_burst_sm_physx_wind" );
@@ -199,13 +155,7 @@ function zombie_check(grenade, player)
 {
 	self endon("death");
 
-	is_shadow_person = false;
-	if(isdefined(self.targetname) && (self.targetname == "zombie_choker" || self.targetname == "zombie_cloak" || self.targetname == "zombie_escargot"))
-	{
-		is_shadow_person = true;
-	}
-
-	if(DistanceSquared(grenade.origin, self.origin) <= 90000 && self zm_aat_turned::turned_zombie_validation() && ! is_shadow_person)
+	if(DistanceSquared(grenade.origin, self.origin) <= 90000 && self zm_aat_turned::turned_zombie_validation() && ! self zm_ai_shadowpeople::is_shadow_person())
 	{
 		zombies = GetAISpeciesArray("axis", "all");
 		ArrayRemoveValue(zombies, self);

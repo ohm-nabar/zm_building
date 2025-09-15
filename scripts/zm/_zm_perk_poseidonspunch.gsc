@@ -9,6 +9,7 @@
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
+#using scripts\shared\ai\zombie_utility;
 
 #insert scripts\shared\shared.gsh;
 #insert scripts\shared\version.gsh;
@@ -27,9 +28,9 @@
 #insert scripts\zm\_zm_perk_poseidonspunch.gsh;
 #insert scripts\zm\_zm_perks.gsh;
 #insert scripts\zm\_zm_utility.gsh;
-#using scripts\shared\ai\zombie_utility;
 
 #using scripts\zm\zm_abbey_inventory;
+#using scripts\zm\zm_ai_shadowpeople;
 #using scripts\zm\zm_perk_upgrades;
 
 #using scripts\zm\_zm_weap_thundergun;
@@ -191,12 +192,7 @@ function poseidon_knockdown(attacker, willBeKilled)
 	zombies = GetAISpeciesArray("axis", "all");
 	foreach(zombie in zombies)
 	{
-		is_shadow_boss = false;
-		if(isdefined(zombie.targetname) && (zombie.targetname == "zombie_cloak" || zombie.targetname == "zombie_escargot"))
-		{
-			is_shadow_boss = true;
-		}
-		if(IS_TRUE(zombie.completed_emerging_into_playable_area) && ! is_shadow_boss && DistanceSquared(self.origin, zombie.origin) <= POSEIDON_RADIUS && ! IS_TRUE(zombie.poseidon_knockdown))
+		if(IS_TRUE(zombie.completed_emerging_into_playable_area) && ! zombie zm_ai_shadowpeople::is_shadow_boss() && DistanceSquared(self.origin, zombie.origin) <= POSEIDON_RADIUS && ! IS_TRUE(zombie.poseidon_knockdown))
 		{
 			if(! (zombie == self && (willBeKilled || level.zombie_vars[attacker.team]["zombie_insta_kill"])))
 			{

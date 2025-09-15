@@ -15,6 +15,7 @@
 #using scripts\shared\ai\zombie_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_perk_electric_cherry;
+#using scripts\zm\zm_ai_shadowpeople;
 
 #insert scripts\shared\version.gsh;
 #insert scripts\shared\shared.gsh;
@@ -143,7 +144,7 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 {
 	if (isPlayer( attacker ) && isdefined(level.abbey_trident) && isdefined(weapon) && weapon == level.abbey_trident && meansofdeath == "MOD_PROJECTILE")
 	{
-		if(self.targetname == "zombie_cloak" || self.targetname == "zombie_escargot")
+		if(self zm_ai_shadowpeople::is_shadow_boss())
 		{
 			return Int(self.maxhealth/6);
 		}
@@ -155,7 +156,7 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 	{
 		if(isdefined(level.abbey_pitchfork) && isdefined(weapon) && weapon == level.abbey_pitchfork)
 		{
-			if(self.targetname == "zombie_cloak" || self.targetname == "zombie_escargot")
+			if(self zm_ai_shadowpeople::is_shadow_boss())
 			{
 				return Int(self.maxhealth/10);
 			}
@@ -167,7 +168,7 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 
 		if(isdefined(level.abbey_trident) && isdefined(weapon) && weapon == level.abbey_trident)
 		{
-			if(self.targetname == "zombie_cloak" || self.targetname == "zombie_escargot")
+			if(self zm_ai_shadowpeople::is_shadow_boss())
 			{
 				if(attacker.trident_power_level == 0)
 				{
@@ -234,7 +235,7 @@ function water_pulse(origin, attacker, should_kill)
 		{
 			if( isdefined(zombies[j]) && IsAlive(zombies[j]) && Distance(zombies[j].origin, origin) < level.trident_pulse_radius )
 			{
-				if((isdefined(zombies[j].targetname) && (zombies[j].targetname == "zombie_escargot" || zombies[j].targetname == "zombie_cloak")) || (isdefined(self.animname) && self.animname == "quad_zombie"))
+				if(zombies[j] zm_ai_shadowpeople::is_shadow_boss() || (isdefined(zombies[j].animname) && zombies[j].animname == "quad_zombie"))
 				{
 					continue;
 				}
@@ -592,7 +593,7 @@ function trident_position_source( player, str_weapon)
 		{
 			if( isdefined(zombies[j]) && isdefined(zombies[j].origin) && isdefined(v_pos) && Distance(zombies[j].origin, v_pos) < level.trident_charge_radius )
 			{
-				if(zombies[j].targetname == "zombie_escargot" || zombies[j].targetname == "zombie_cloak")
+				if(zombies[j] zm_ai_shadowpeople::is_shadow_boss())
 				{
 					continue;
 				}

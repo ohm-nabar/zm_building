@@ -19,6 +19,7 @@
 #using scripts\zm\_zm_behavior_utility;
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_utility;
+#using scripts\zm\zm_ai_shadowpeople;
 
 #insert scripts\shared\shared.gsh;
 #insert scripts\shared\ai\zombie.gsh;
@@ -134,7 +135,7 @@ function enable_side_step()
 		wait(0.05);
 	}
 
-	if(isdefined(self) && self.targetname != "zombie_choker" && self.targetname != "zombie_cloak" && self.targetname != "zombie_escargot")
+	if(isdefined(self) && ! self zm_ai_shadowpeople::is_shadow_person())
 	{
 		self.n_stepped_direction 							= 0;
 		self.b_n_zombie_can_side_step 						= 1;

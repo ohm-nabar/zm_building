@@ -22,6 +22,7 @@
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
+#using scripts\zm\zm_ai_shadowpeople;
 
 #insert scripts\zm\_zm_powerups.gsh;
 #insert scripts\zm\_zm_utility.gsh;
@@ -157,7 +158,7 @@ function crossbow_damage_adjust(  inflictor, attacker, damage, flags, meansofdea
 		// Don't affect damage dealt if the weapon isn't the crossbow, allow other damage callbacks to be evaluated - mbettelman 1/28/2016
 		return -1;
 	}
-	if ( ! (isdefined(self.targetname) && (self.targetname == "zombie_cloak" || self.targetname == "zombie_escargot")))
+	if ( ! self zm_ai_shadowpeople::is_shadow_boss() )
 	{
 		return self.health + 666;
 	}

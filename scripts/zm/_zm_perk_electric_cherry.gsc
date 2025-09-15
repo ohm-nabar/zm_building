@@ -22,6 +22,7 @@
 #using scripts\zm\_zm_score;
 #using scripts\zm\_zm_stats;
 #using scripts\zm\_zm_utility;
+#using scripts\zm\zm_ai_shadowpeople;
 
 #insert scripts\zm\_zm_perks.gsh;
 #insert scripts\zm\_zm_utility.gsh;
@@ -226,7 +227,7 @@ function electric_cherry_laststand()  //self = player
 		
 		for ( i = 0; i < a_zombies.size; i++ )
 		{
-			if ( IsAlive( self ) && IsAlive( a_zombies[ i ] ) && a_zombies[ i ].targetname != "zombie_cloak" && a_zombies[ i ].targetname != "zombie_escargot")
+			if ( IsAlive( self ) && IsAlive( a_zombies[ i ] ) && ! a_zombies[ i ] zm_ai_shadowpeople::is_shadow_boss())
 			{
 				if ( a_zombies[ i ].health <= ELECTRIC_CHERRY_DOWNED_ATTACK_DAMAGE || level.zombie_vars[self.team]["zombie_insta_kill"] == 1 )
 				{
@@ -443,7 +444,7 @@ function electric_cherry_reload_attack() // self = player
 			
 			for ( i = 0; i < a_zombies.size; i++ )
 			{
-				if ( IsAlive( self ) && IsAlive( a_zombies[ i ] ) && (! isdefined( a_zombies[ i ].targetname ) || ( a_zombies[ i ].targetname != "zombie_cloak" && a_zombies[ i ].targetname != "zombie_escargot" ) ) )
+				if ( IsAlive( self ) && IsAlive( a_zombies[ i ] ) && ! a_zombies[ i ] zm_ai_shadowpeople::is_shadow_boss() )
 				{
 					// If the limit of zombies is undefined, keep going and hit all zombies we can
 					if( IsDefined( n_zombie_limit ) )

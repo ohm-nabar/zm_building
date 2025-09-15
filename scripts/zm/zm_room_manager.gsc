@@ -18,6 +18,8 @@
 #insert scripts\shared\shared.gsh;
 #insert scripts\shared\version.gsh;
 
+#using scripts\zm\zm_ai_shadowpeople;
+
 #namespace zm_room_manager;
 
 REGISTER_SYSTEM( "zm_room_manager", &__init__, undefined )
@@ -247,7 +249,7 @@ function monitor_beach_zones()
 			{
 				for(j = 0; j < level.beach_rooms.size; j++)
 				{
-					if(! IS_TRUE( zombies[i].in_the_ground ) && zombies[i] is_player_in_room(level.abbey_rooms[level.beach_rooms[j]]) && zombies[i].targetname != "zombie_cloak" && zombies[i].targetname != "zombie_escargot")
+					if(! IS_TRUE( zombies[i].in_the_ground ) && zombies[i] is_player_in_room(level.abbey_rooms[level.beach_rooms[j]]) && ! zombies[i] zm_ai_shadowpeople::is_shadow_boss())
 					{
 						level.zombie_total++;
 						level.zombie_respawns++;
@@ -264,7 +266,7 @@ function monitor_beach_zones()
 			{
 				for(j = 0; j < level.above_rooms.size; j++)
 				{
-					if(! IS_TRUE( zombies[i].in_the_ground ) && zombies[i] is_player_in_room(level.abbey_rooms[level.above_rooms[j]]) && zombies[i].targetname != "zombie_cloak" && zombies[i].targetname != "zombie_escargot")
+					if(! IS_TRUE( zombies[i].in_the_ground ) && zombies[i] is_player_in_room(level.abbey_rooms[level.above_rooms[j]]) && ! zombies[i] zm_ai_shadowpeople::is_shadow_boss())
 					{
 						level.zombie_total++;
 						level.zombie_respawns++;

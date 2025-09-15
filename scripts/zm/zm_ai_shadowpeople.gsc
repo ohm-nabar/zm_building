@@ -86,6 +86,16 @@ function __init__()
 	thread testeroo();
 }
 
+function is_shadow_boss()
+{
+	return (isdefined(self.targetname) && (self.targetname == "zombie_cloak" || self.targetname == "zombie_escargot"));
+}
+
+function is_shadow_person()
+{
+	return (isdefined(self.targetname) && (self is_shadow_boss() || self.targetname == "zombie_choker"));
+}
+
 function player_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, weapon, vPoint, vDir, sHitLoc, psOffsetTime )
 {
 	if(IS_TRUE(self.shadow_invulnerable))

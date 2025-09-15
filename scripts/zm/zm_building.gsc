@@ -224,7 +224,7 @@ function zombie_custom_melee_speed()
 
     while( isdefined( self ) )
     {
-		if(isdefined(self.targetname) && (self.targetname == "zombie_choker" || self.targetname == "zombie_cloak" || self.targetname == "zombie_escargot"))
+		if(self zm_ai_shadowpeople::is_shadow_person())
 		{
 			return;
 		}
