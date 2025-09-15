@@ -1,6 +1,7 @@
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\system_shared;
+#using scripts\shared\util_shared;
 
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_audio;
@@ -19,12 +20,32 @@
 #precache( "triggerstring", "ZM_ABBEY_CROSSBOW_USE" );
 #precache( "triggerstring", "ZM_ABBEY_CROSSBOW_RECHARGE" );
 
+#precache( "model", "gumball_blue" );
+#precache( "model", "gumball_green" );
+#precache( "model", "gumball_orange" );
+#precache( "model", "gumball_purple" );
+#precache( "model", "gumball_white" );
+#precache( "model", "gumball_aqua" );
+#precache( "model", "gumball_black" );
+#precache( "model", "gumball_red" );
+#precache( "model", "gumball_yellow" );
+
 #define PANZERWURFMINE_COST_BASE 500
 #define PANZERWURFMINE_COST_MAX 512000
 #define PANZERWURFMINE_COOLDOWN 120
 
-#define CROSSBOW_RECHARGE_KILLS_BASE 10
-#define CROSSBOW_RECHARGE_KILLS_UPGRADE 50
+#define CROSSBOW_RECHARGE_KILLS_BASE 1
+#define CROSSBOW_RECHARGE_KILLS_UPGRADE 1
+
+#define NUM_ARMORY_STATIONS 5
+
+#define NUM_TARGETS 3
+#define TARGET_WAIT 4
+#define PUZZLE_FAIL_WAIT 1.5
+
+#define TARGET_SEQUENCE_INACTIVE 0
+#define TARGET_SEQUENCE_OTHER 1
+#define TARGET_SEQUENCE_SAME 2
 
 #namespace zm_armory;
 
@@ -33,18 +54,32 @@ REGISTER_SYSTEM( "zm_armory", &__init__, undefined )
 function __init__()
 {
 	panzerwurfmine_trigs = GetEntArray("panzerwurfmine_use", "targetname");
-	crossbow_trigs = GetEntArray("crossbow_use", "targetname");
+	
 	level.panzerwurfmine = GetWeapon("zm_panzerwurfmine");
 	level.panzerwurfmine_up = GetWeapon("zm_panzerwurfmine_up");
 	level.panzerwurfmine_cost = PANZERWURFMINE_COST_BASE;
 	level.panzerwurfmine_start_of_round = [];
+	
+	crossbow_trigs = GetEntArray("crossbow_use", "targetname");
 	level.crossbow_upgraded = false;
+	level.crossbow_active = false;
 	level.crossbow_recharge_kills = CROSSBOW_RECHARGE_KILLS_BASE;
 	level.crossbow_recharge_progress = CROSSBOW_RECHARGE_KILLS_BASE;
-	for(i = 0; i < 5; i++)
+
+	level.target_sequence_count = [];
+	level.armory_symbols_all = array("gumball_blue", "gumball_green", "gumball_orange", "gumball_purple", "gumball_white", "gumball_aqua", "gumball_black", "gumball_red", "gumball_yellow");
+	level.armory_symbols = [];
+	level.cur_board_symbol = [];
+	level.symbol_board_opened = [];
+	level.armory_puzzles_solved = 0;
+	for(i = 0; i < NUM_ARMORY_STATIONS; i++)
 	{
 		level.panzerwurfmine_start_of_round[i] = false;
-		level.crossbow_shooting_active[i] = false;
+		level.target_sequence_count[i] = 0;
+		level.armory_symbols[i] = [];
+		level.cur_board_symbol[i] = undefined;
+		level.symbol_board_opened[i] = false;
+		level thread symbol_think(i);
 	}	
 
 	level callback::on_connect(&on_player_connect);
@@ -56,6 +91,10 @@ function __init__()
 	level array::thread_all(panzerwurfmine_trigs, &panzerwurfmine_think);
 	level array::thread_all(crossbow_trigs, &crossbow_think);
 	level thread panzerwurfmine_cost_scale();
+
+	armory_targets = GetEntArray("armory_target", "targetname");
+	level array::thread_all(armory_targets, &target_think);
+	level thread crossbow_watch_upgrade();
 }
 
 function on_player_connect()
@@ -119,7 +158,7 @@ function panzerwurfmine_cost_scale()
 		for(i = 0; i < 10; i++)
 		{
 			level waittill("start_of_round");
-			for(i = 0; i < 5; i++)
+			for(i = 0; i < NUM_ARMORY_STATIONS; i++)
 			{
 				level.panzerwurfmine_start_of_round[i] = true;
 			}
@@ -240,15 +279,7 @@ function crossbow_hintstring_think()
 	hintstring_state = -1;
 	while(true)
 	{
-		crossbow_on = false;
-		foreach(player in level.players)
-		{
-			if(player.zombie_vars[ "zombie_powerup_crossbow_on" ] || player.zombie_vars[ "zombie_powerup_crossbow_up_on" ])
-			{
-				crossbow_on = true;
-			}
-		}
-		if(crossbow_on && hintstring_state != 0)
+		if(level.crossbow_active && hintstring_state != 0)
 		{
 			hintstring_state = 0;
 			self SetHintString(&"ZM_ABBEY_CROSSBOW_IN_USE");
@@ -258,7 +289,7 @@ function crossbow_hintstring_think()
 			hintstring_state = 1;
 			self SetHintString(&"ZM_ABBEY_CROSSBOW_RECHARGE");
 		}
-		else if(! crossbow_on && level.crossbow_recharge_progress >= level.crossbow_recharge_kills && hintstring_state != 2)
+		else if(! level.crossbow_active && level.crossbow_recharge_progress >= level.crossbow_recharge_kills && hintstring_state != 2)
 		{
 			hintstring_state = 2;
 			self SetHintString(&"ZM_ABBEY_CROSSBOW_USE");
@@ -287,12 +318,10 @@ function crossbow_souls_think()
 		{
 			z_inc = (z_diff / level.crossbow_recharge_kills) * new_prog;
 			canister MoveZ(z_inc, 0.05);
-			IPrintLn("moving up " + z_inc);
 		}
 		else if(new_prog < 0)
 		{
 			canister MoveZ(-z_diff, 0.05);
-			IPrintLn("moving down" + z_diff);
 		}
 		wait(0.05);
 	}
@@ -341,16 +370,323 @@ function crossbow_think()
 		powerup_struct.powerup_player = player;
 
 		powerup_struct zm_powerups::powerup_grab(player.team);
-
-		while(player.zombie_vars[ "zombie_powerup_crossbow_on" ] || player.zombie_vars[ "zombie_powerup_crossbow_up_on" ])
+		level.crossbow_active = true;
+		while(isdefined(player) && (player.zombie_vars[ "zombie_powerup_crossbow_on" ] || player.zombie_vars[ "zombie_powerup_crossbow_up_on" ]))
 		{
 			wait(0.05);
 		}
-
+		level.crossbow_active = false;
 		level.crossbow_recharge_progress = 0;
 		while(level.crossbow_recharge_progress < level.crossbow_recharge_kills)
 		{
 			wait(0.05);
 		}
 	}
+}
+
+function crossbow_watch_upgrade()
+{
+	while(level.armory_puzzles_solved < NUM_ARMORY_STATIONS)
+	{
+		wait(0.05);
+	}
+
+	level.crossbow_upgraded = true;
+	IPrintLn("All puzzles complete!");
+}
+
+function symbol_think(gen_num)
+{
+	board_symbols = GetEntArray("symbol_board" + gen_num, "targetname");
+	board_symbols = level array::sort_by_script_int(board_symbols, true);
+	board_symbol_display = GetEntArray("symbol_display_board" + gen_num, "targetname");
+	board_symbol_display = level array::sort_by_script_int(board_symbol_display, true);
+	board_symbol_solution = GetEntArray("symbol_solution_board" + gen_num, "targetname");
+	board_symbol_solution = level array::sort_by_script_int(board_symbol_solution, true);
+	board_symbol_enter = GetEnt("symbol_enter_board" + gen_num, "targetname");
+	board_symbol_touching = GetEnt("symbol_touching_board" + gen_num, "targetname");
+	symbol_board_container = GetEnt("symbol_board_container" + gen_num, "targetname");
+	symbol_board_container_clip = GetEntArray("symbol_board_container_clip" + gen_num, "targetname");
+
+	foreach(symbol_display in board_symbol_display)
+	{
+		symbol_display SetScale(2);
+	}
+
+	foreach(symbol_solution in board_symbol_solution)
+	{
+		symbol_solution SetScale(2);
+	}
+
+	level thread board_symbol_look_handler_wrapper(gen_num, board_symbol_display, board_symbol_touching);
+	board_symbol_enter thread board_symbol_enter_think_wrapper(gen_num, board_symbol_solution);
+
+	board_symbol_enter SetCursorHint("HINT_NOICON");
+	board_symbol_enter SetHintString("");
+
+	for(i = 0; i < board_symbols.size; i++)
+	{
+		board_symbols[i] thread board_symbol_think_wrapper(gen_num, i, board_symbol_touching);
+	}
+
+	symbol_board_container thread symbol_board_container_think(gen_num, symbol_board_container_clip);
+}
+
+function board_symbol_think(gen_num, symbol_num, board_symbol_touching)
+{
+	level endon("target_sequence_started" + gen_num);
+	level endon("armory_puzzle_solved" + gen_num);
+	level endon("armory_puzzle_failed" + gen_num);
+
+	while(true)
+	{
+		self waittill("trigger", player);
+		if(player zm_magicbox::can_buy_weapon() && zm_utility::is_player_valid(player) && player IsTouching(board_symbol_touching))
+		{
+			level notify("board_symbol_lookat" + gen_num, symbol_num);
+		}
+	}
+}
+
+function board_symbol_think_wrapper(gen_num, symbol_num, board_symbol_touching)
+{
+	level endon("armory_puzzle_solved" + gen_num);
+
+	while(true)
+	{
+		level waittill("target_sequence_success" + gen_num);
+		self thread board_symbol_think(gen_num, symbol_num, board_symbol_touching);
+	}
+}
+
+function fx_model_cleanup(gen_num)
+{
+	level util::waittill_any("target_sequence_started" + gen_num, "armory_puzzle_solved" + gen_num, "armory_puzzle_failed" + gen_num);
+	self Delete();
+}
+
+function board_symbol_look_handler(gen_num, &board_symbol_display, board_symbol_touching)
+{
+	level endon("target_sequence_started" + gen_num);
+	level endon("armory_puzzle_solved" + gen_num);
+	level endon("armory_puzzle_failed" + gen_num);
+
+	fx_model = Spawn("script_model", board_symbol_display[0].origin);
+	fx_model thread fx_model_cleanup(gen_num);
+	fx_model SetModel("tag_origin");
+	PlayFXOnTag("custom/fx_trail_blood_soul_zmb", fx_model, "tag_origin");
+	fx_model Hide();
+
+	while(true)
+	{
+		level waittill("board_symbol_lookat" + gen_num, symbol_num);
+
+		if(! IS_EQUAL(level.cur_board_symbol[gen_num], symbol_num))
+		{
+			level.cur_board_symbol[gen_num] = symbol_num;
+			fx_model.origin = board_symbol_display[symbol_num].origin;
+			fx_model Show();
+		}
+	}
+}
+
+function board_symbol_look_handler_wrapper(gen_num, &board_symbol_display, board_symbol_touching)
+{
+	level endon("armory_puzzle_solved" + gen_num);
+
+	while(true)
+	{
+		level waittill("target_sequence_success" + gen_num);
+		level thread board_symbol_look_handler(gen_num, board_symbol_display, board_symbol_touching);
+	}
+}
+
+function board_symbol_enter_think(gen_num, &board_symbol_solution)
+{
+	level endon("target_sequence_started" + gen_num);
+
+	while(! level.symbol_board_opened[gen_num])
+	{
+		wait(0.05);
+	}
+
+	selected_symbols = [];
+	while(selected_symbols.size < 3)
+	{
+		self waittill("trigger", player);
+		if(isdefined(level.cur_board_symbol[gen_num]) && player zm_magicbox::can_buy_weapon() && zm_utility::is_player_valid(player))
+		{
+			selected_model = level.armory_symbols_all[level.cur_board_symbol[gen_num]];
+			display_model = board_symbol_solution[selected_symbols.size];
+			display_model SetModel(selected_model);
+			display_model Show();
+			level array::add(selected_symbols, selected_model);
+		}
+	}
+
+	solved = true;
+	foreach(symbol in selected_symbols)
+	{
+		if(! level array::contains(level.armory_symbols[gen_num], symbol))
+		{
+			solved = false;
+		}
+	}
+
+	if(solved)
+	{
+		IPrintLn("Solved puzzle!");
+		level.armory_puzzles_solved += 1;
+		level notify("armory_puzzle_solved" + gen_num);
+	}
+	else
+	{
+		IPrintLn("Failed puzzle :(");
+		level notify("armory_puzzle_failed" + gen_num);
+	}
+}
+
+function board_symbol_enter_think_wrapper(gen_num, &board_symbol_solution)
+{
+	level endon("armory_puzzle_solved" + gen_num);
+
+	solved = false;
+	while(true)
+	{
+		wait(PUZZLE_FAIL_WAIT);
+		foreach(symbol_solution in board_symbol_solution)
+		{
+			symbol_solution Hide();
+		}
+		level waittill("target_sequence_success" + gen_num);
+		self board_symbol_enter_think(gen_num, board_symbol_solution);
+	}
+}
+
+function symbol_board_container_think(gen_num, &symbol_board_container_clip)
+{
+	level waittill("initial_blackscreen_passed");
+	
+	self SetCanDamage(true);
+
+	w_weapon = level.weaponNone;
+	while(w_weapon != level.panzerwurfmine)
+	{
+		self waittill("damage", n_damage, e_attacker, v_dir, v_loc, str_type, STR_MODEL, str_tag, str_part, w_weapon);
+	}
+
+	self Delete();
+	foreach(clip in symbol_board_container_clip)
+	{
+		clip Delete();
+	}
+	level.symbol_board_opened[gen_num] = true;
+}
+
+function generate_target_symbols(gen_num)
+{
+	random_symbols = level array::randomize(level.armory_symbols_all);
+	level.armory_symbols[gen_num] = level array::clamp_size(random_symbols, NUM_TARGETS);
+}
+
+function target_delete_on_solve(gen_num, symbol)
+{
+	level waittill("armory_puzzle_solved" + gen_num);
+
+	self Delete();
+	symbol Delete();
+}
+
+function target_think()
+{
+	self SetCanDamage(true);
+	gen_num = self.script_int;
+	symbol = GetEnt(self.target, "targetname");
+	symbol SetScale(2);
+	self thread target_delete_on_solve(gen_num, symbol);
+	level endon("armory_puzzle_solved" + gen_num);
+
+	while(true)
+	{
+		symbol Hide();
+		self waittill("damage", n_damage, e_attacker, v_dir, v_loc, str_type, STR_MODEL, str_tag, str_part, w_weapon);
+		if(w_weapon != level.zombie_powerup_weapon[ "crossbow" ])
+		{
+			continue;
+		}
+		sequence_state = level target_sequence_state(gen_num);
+		switch(sequence_state)
+		{
+			case TARGET_SEQUENCE_OTHER:
+				break;
+			case TARGET_SEQUENCE_INACTIVE:
+				level thread target_sequence_start(gen_num);
+			case TARGET_SEQUENCE_SAME:
+				self target_shot_think(gen_num, symbol);
+				break;
+		}
+	}
+}
+
+function target_shot_think(gen_num, symbol)
+{
+	symbol_index = level.target_sequence_count[gen_num];
+	symbol_model = level.armory_symbols[gen_num][symbol_index];
+
+	level.target_sequence_count[gen_num] += 1;
+	self RotateYaw(180, 0.1);
+	symbol SetModel(symbol_model);
+	symbol Show();	
+	result = level util::waittill_any_return("target_sequence_success" + gen_num, "target_sequence_fail" + gen_num);
+	if(result == "target_sequence_success" + gen_num)
+	{
+		wait(TARGET_WAIT);
+	}
+	self RotateYaw(180, 0.1);
+}
+
+function target_sequence_start(gen_num)
+{
+	IPrintLn("Sequence start!");
+	level notify("target_sequence_started" + gen_num);
+
+	level generate_target_symbols(gen_num);
+
+	while(level.crossbow_active && level.target_sequence_count[gen_num] < NUM_TARGETS)
+	{
+		wait(0.05);
+	}
+	
+	if(level.target_sequence_count[gen_num] == NUM_TARGETS)
+	{
+		IPrintLn("Sequence success!");
+		level notify("target_sequence_success" + gen_num);
+	}
+	else
+	{
+		IPrintLn("Sequence fail");
+		level notify("target_sequence_fail" + gen_num);
+	}
+
+	level.target_sequence_count[gen_num] = 0;
+}
+
+function target_sequence_state(gen_num)
+{
+	for(i = 0; i < level.target_sequence_count.size; i++)
+	{
+		if(level.target_sequence_count[i] > 0)
+		{
+			if(i == gen_num)
+			{
+				return TARGET_SEQUENCE_SAME;
+			}
+			else
+			{
+				return TARGET_SEQUENCE_OTHER;
+			}
+		}
+	}
+
+	return TARGET_SEQUENCE_INACTIVE;
 }
