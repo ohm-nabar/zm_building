@@ -105,6 +105,7 @@ function on_player_connect()
 	self.panzerwurfmine_upgrade_kills = 0;
 	self.b_has_upgraded_panzerwurfmine = false;
 	self thread panzerwurfmine_award_grenade_skip();
+	self thread panzerwurfmine_watch_upgrade();
 }
 
 function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
@@ -124,6 +125,31 @@ function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags
 			}
 		}
 	}
+}
+
+function panzerwurfmine_watch_upgrade()
+{
+	self endon("disconnect");
+
+	well_bottom = GetEnt("golden_well_bottom", "targetname");
+	grenade = undefined;
+	while(! (isdefined(grenade) && grenade IsTouching(well_bottom)))
+	{
+		self waittill( "grenade_fire", grenade, weapon );
+		if(weapon != level.panzerwurfmine)
+		{
+			continue;
+		}
+		while(isdefined(grenade) && ! grenade IsTouching(well_bottom))
+		{
+			wait(0.05);
+		}
+	}
+
+	grenade Delete();
+	IPrintLn("Upgraded Panzerwurfmine!");
+	self.b_has_upgraded_panzerwurfmine = true;
+	self zm_weapons::weapon_give(level.panzerwurfmine_up);
 }
 
 function panzerwurfmine_award_grenade_skip()
@@ -181,7 +207,7 @@ function panzerwurfmine_cost_scale()
 
 function panzerwurfmine_hintstring_think()
 {
-	while(! IS_EQUAL(level.round_number, 1))
+	while(! (isdefined(level.round_number) && level.round_number >= 1))
 	{
 		wait(0.05);
 	}
@@ -234,7 +260,6 @@ function panzerwurfmine_think()
 	while(true)
 	{
 		self.recharge_time = 0;
-		level.panzerwurfmine_start_of_round[self.script_int] = false;
 		self waittill("trigger", player);
 
 		if(! (zm_utility::is_player_valid(player) && player zm_magicbox::can_buy_weapon()) || (player zm_weapons::has_weapon_or_upgrade(level.panzerwurfmine) && player GetFractionMaxAmmo(player zm_utility::get_player_lethal_grenade()) == 1))
@@ -254,6 +279,7 @@ function panzerwurfmine_think()
 		player zm_weapons::weapon_give(level.panzerwurfmine);
 
 		self.recharge_time = Ceil(PANZERWURFMINE_COOLDOWN / 60);
+		level.panzerwurfmine_start_of_round[self.script_int] = false;
 		for(i = PANZERWURFMINE_COOLDOWN; i > 0 && ! level.panzerwurfmine_start_of_round[self.script_int]; i--)
 		{
 			while(level.is_coop_paused)
@@ -714,7 +740,7 @@ function golden_well_think()
 
 	w_weapon = level.weaponNone;
 	str_type = "";
-	while(w_weapon != level.zombie_powerup_weapon[ "crossbow_up" ] && str_type != "MOD_PROJECTILE_SPLASH")
+	while(! (w_weapon == level.zombie_powerup_weapon[ "crossbow_up" ] && str_type == "MOD_PROJECTILE_SPLASH"))
 	{
 		well_cover waittill("damage", n_damage, e_attacker, v_dir, v_loc, str_type, STR_MODEL, str_tag, str_part, w_weapon);
 	}
