@@ -127,22 +127,17 @@ function take_custom_perk( b_pause, str_perk, str_result )
 
 function checkCustomPerk()
 {
-	while(1)
-	{
-		if(self HasPerk(PERK_DOUBLE_TAP))
-		{
-			if(! self HasPerk("specialty_rof"))
-			{
-				self SetPerk("specialty_rof");
-			}
-		}
-		if(! self HasPerk(PERK_DOUBLE_TAP))
-		{
-			if(self HasPerk("specialty_rof"))
-			{
-				self UnSetPerk("specialty_rof");
-			}
+	self endon("disconnect");
 
+	while(true)
+	{
+		if(self HasPerk(PERK_DOUBLE_TAP) && ! self HasPerk("specialty_rof"))
+		{
+			self SetPerk("specialty_rof");
+		}
+		if(! self HasPerk(PERK_DOUBLE_TAP) && self HasPerk("specialty_rof"))
+		{
+			self UnSetPerk("specialty_rof");
 		}
 		wait(0.05);
 	}

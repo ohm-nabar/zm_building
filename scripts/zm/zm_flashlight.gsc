@@ -22,26 +22,13 @@ REGISTER_SYSTEM_EX("zm_flashlight", &__init__, undefined, undefined)
 
 function __init__()
 {
-	callback::on_connect(&on_player_connect);
-	thread clientfield_init();
-}
-
-function on_player_connect()
-{
-	self thread disconnect_watch();
+	level thread clientfield_init();
 }
 
 function clientfield_init()
 {
 	clientfield::register("toplayer", "flashlight_fx_view", VERSION_SHIP, 3, "int");
 	clientfield::register("allplayers", "flashlight_fx_world", VERSION_SHIP, 2, "int");
-}
-
-function disconnect_watch()
-{
-	self waittill("disconnect");
-
-	self flashlight_state(0);
 }
 
 
