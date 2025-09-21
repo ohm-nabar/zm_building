@@ -1,3 +1,4 @@
+#using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
@@ -19,6 +20,7 @@
 #using scripts\zm\_zm_magicbox;
 #using scripts\zm\_zm_powerups;
 #using scripts\zm\_zm_score;
+#using scripts\zm\_zm_unitrigger;
 #using scripts\zm\_zm_utility;
 
 #using scripts\zm\zm_abbey_inventory;
@@ -34,6 +36,8 @@
 #insert scripts\zm\_zm_perk_doubletaporiginal.gsh;
 #insert scripts\zm\_zm_perk_phdlite.gsh;
 #insert scripts\zm\zm_abbey_inventory.gsh;
+
+#using scripts\Sphynx\_zm_sphynx_util;
 
 //Blood vial shaders
 #precache( "material", "acquire_waypoint" );
@@ -138,28 +142,18 @@ function __init__()
 	level.blood_used_once = false;
 	level.active_generators = [];
 	level.bloodgun = GetWeapon("bloodgun");
+	level.blood_cost_weapons = array(GetWeapon("s4_1911"), GetWeapon("s4_klauser"), GetWeapon("s2_mas38"), GetWeapon("s4_topbreak"), GetWeapon("s4_type11"));
 
-	level.boxcages_q1 = getEntArray("boxcage_q1", "targetname");
-	level.boxcages_q2 = getEntArray("boxcage_q2", "targetname");
-	level.boxcages_q3 = getEntArray("boxcage_q3", "targetname");
-	level.boxcages_q4 = getEntArray("boxcage_q4", "targetname");
+	level.boxcages_q1 = GetEntArray("boxcage_q1", "targetname");
+	level.boxcages_q2 = GetEntArray("boxcage_q2", "targetname");
+	level.boxcages_q3 = GetEntArray("boxcage_q3", "targetname");
+	level.boxcages_q4 = GetEntArray("boxcage_q4", "targetname");
 
-	bloodgun_trigs = getEntArray("bloodgun_trig", "targetname");
-	bloodgenerator_trigs = getEntArray("bloodgenerator_trig", "targetname");
+	bloodgun_trigs = struct::get_array("bloodgun_trig", "targetname");
+	bloodgenerator_trigs = struct::get_array("bloodgenerator_trig", "targetname");
 
-	for(i = 0; i < bloodgun_trigs.size; i++)
-	{
-		bloodgun_trigs[i] SetCursorHint( "HINT_NOICON" );
-		bloodgun_trigs[i] thread blood_think();
-	}
-
-	//visionset_mgr::register_info( "visionset", "zm_blood", VERSION_SHIP, 1200, 31, true, &visionset_mgr::ramp_in_thread_per_player, false );
-
-	for(i = 0; i < bloodgenerator_trigs.size; i++) 
-	{
-		bloodgenerator_trigs[i] SetCursorHint( "HINT_NOICON" );
-		bloodgenerator_trigs[i] thread generator_think();
-	}
+	level array::thread_all(bloodgun_trigs, &blood_think);
+	level array::thread_all(bloodgenerator_trigs, &generator_think);
 
 	blood_mainframes = GetEntArray("blood_mainframe", "targetname");
 	blood_mainframe2s = GetEntArray("blood_mainframe2", "targetname");
@@ -249,8 +243,16 @@ function blood_mainframe2_think()
 
 function blood_computer_think()
 {
+	while(! (level flag::exists("initial_blackscreen_passed") && level flag::get("initial_blackscreen_passed")))
+	{
+		wait(0.05);
+	}
+
 	self SetModel("p7_zm_abbey_computer_bloodgen");
+	self PlayLoopSound("blood_gene_idle_loop");
 	level waittill("power_on" + self.script_int);
+	self StopLoopSound();
+	self PlayLoopSound("blood_gene_running");
 
 	while(true)
 	{
@@ -429,7 +431,7 @@ function acquire_waypoint_manage()
 	{
 		wait(0.05);
 	}
-	bloodgun_trigs = GetEntArray("bloodgun_trig", "targetname");
+	bloodgun_trigs = GetEntArray("bloodgun_station", "targetname");
 	foreach(player in level.players)
 	{
 		player.acquire_indicators = [];
@@ -547,7 +549,7 @@ function deposit_waypoint_manage()
 {
 	self endon("disconnect");
 
-	generators = GetEntArray("bloodgenerator_trig", "targetname");
+	generators = GetEntArray("blood_computer", "targetname");
 	fountains = GetEntArray("jug_activate", "targetname");
 
 	self.generator_indicators = [];
@@ -561,7 +563,7 @@ function deposit_waypoint_manage()
 		deposit_indicator SetWayPoint(true, "deposit_waypoint", false, false);
 		deposit_indicator.alpha = 0;
 		deposit_indicator.linked_origin = generator.origin;
-		self.generator_indicators[generator.script_noteworthy] = deposit_indicator;
+		self.generator_indicators["generator" + generator.script_int] = deposit_indicator;
 	}
 
 	fountain_indicators = [];
@@ -767,6 +769,59 @@ function apply_physics_force(gen_num, x, y)
 	self.bloodgun_push = false;
 }
 
+function blood_prompt_and_visibility(player)
+{
+	blood_struct = self.stub.related_parent;
+	if(! player zm_magicbox::can_buy_weapon())
+	{
+		self SetHintString(&"ZM_ABBEY_EMPTY");
+		self SetCursorHint("HINT_NOICON");
+		return false;
+	}
+	if(level.blood_cooldown[blood_struct.script_int] > 1)
+	{
+		self SetHintString(&"ZM_ABBEY_BLOODGUN_COOLDOWN", level.blood_cooldown[blood_struct.script_int]);
+		self SetCursorHint("HINT_NOICON");
+		return false;
+	}
+	if(level.blood_cooldown[blood_struct.script_int] == 1)
+	{
+		self SetHintString(&"ZM_ABBEY_BLOODGUN_COOLDOWN_SINGULAR");
+		self SetCursorHint("HINT_NOICON");
+		return false;
+	}
+	if(level.bloodgun_active)
+	{
+		self SetHintString(&"ZM_ABBEY_BLOODGUN_IN_USE");
+		self SetCursorHint("HINT_NOICON");
+		return false;
+	}
+	if((isdefined(level.next_dog_round) && level.round_number == level.next_dog_round) || level flag::get("dog_round"))
+	{
+		self SetHintString(&"ZM_ABBEY_SHADOW_DISABLED");
+		self SetCursorHint("HINT_NOICON");
+		return false;
+	}
+	if(level.hasVial)
+	{
+		self SetHintString(&"ZM_ABBEY_BLOODGUN_HAS_VIAL");
+		self SetCursorHint("HINT_NOICON");
+		return false;
+	}
+
+	cost_weapon = level get_blood_cost_weapon();
+	self SetHintString(&"ZM_ABBEY_BLOODGUN_ACTIVATE");
+	self SetCursorHint("HINT_WEAPON", cost_weapon);
+	return true;
+}
+
+function get_blood_cost_weapon()
+{
+	cost_index = Int((level.bloodgun_cost - BLOODGUN_COST_START) / BLOODGUN_COST_INCREMENT);
+	cost_weapon = level.blood_cost_weapons[cost_index];
+	return cost_weapon;
+}
+
 function blood_think()
 {
 	while(! level flag::exists("dog_round"))
@@ -774,23 +829,18 @@ function blood_think()
 		wait(0.05);
 	}
 
-	self thread set_bloodgun_hintstring();
+	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_BLOODGUN_ACTIVATE", undefined, &blood_prompt_and_visibility);
+
 	self thread bloodgun_blockers();
 
 	while(true) 
 	{
-		self waittill("trigger", player);
-		if(! (zm_utility::is_player_valid(player)) || level.bloodgun_active || level.blood_cooldown[self.script_int] > 0 || level.hasVial || ! player zm_magicbox::can_buy_weapon() || (isdefined(level.next_dog_round) && level.round_number == level.next_dog_round) || level flag::get("dog_round"))
-		{
-			wait(0.05);
-			continue;
-		}
+		self waittill("trigger_activated", player);
 		
 		if(player.score < level.bloodgun_cost)
 		{
 			player PlaySound("zmb_no_cha_ching");
 			player zm_audio::create_and_play_dialog( "general", "outofmoney" );
-			wait(0.05);
 			continue;
 		}
 
@@ -962,20 +1012,6 @@ function blood_cooldown()
 	}
 }
 
-function generator_sound_think()
-{
-	while(! (level flag::exists("initial_blackscreen_passed") && level flag::get("initial_blackscreen_passed")))
-	{
-		wait(0.05);
-	}
-	sound_origin = Spawn("script_model", self.origin);
-	sound_origin SetModel("tag_origin");
-	sound_origin playloopsound("blood_gene_idle_loop");
-	self waittill(#"generator_online");
-	sound_origin stoploopsound();
-	sound_origin playloopsound("blood_gene_running");
-}
-
 function zombie_super_speed()
 {
 	self endon("death");
@@ -1092,26 +1128,38 @@ function play_ambient_zombie_vocals()
     }
 }
 
+function blood_gen_prompt_and_visibility(player)
+{
+	if(! player zm_magicbox::can_buy_weapon())
+	{
+		self SetHintString(&"ZM_ABBEY_EMPTY");
+		return false;
+	}
+	if(level.shadow_transition_active || level.shadow_vision_active)
+	{
+		self SetHintString(&"ZM_ABBEY_SHADOW_DISABLED");
+		return false;
+	}
+	if(! level.hasVial)
+	{
+		self SetHintString(&"ZM_ABBEY_GENERATOR_NO_BLOOD");
+		return false;
+	}
+	
+	self SetHintString(&"ZM_ABBEY_GENERATOR_DEPOSIT");
+	return true;
+}
+
 function generator_think() 
 {
-	while(true)
-	{
-		self thread generator_sound_think();
-		generator_name = self.script_noteworthy;
-		self thread set_generator_hintstring();
-		self waittill("trigger", player);
-		if(level.hasVial && ! (level.shadow_transition_active || level.shadow_vision_active)) 
-		{
-			level.hasVial = false;
-			level turn_generator_on(generator_name);
-			self notify(#"generator_online");
-			player zm_audio::create_and_play_dialog( "general", "power_on" );
-			wait(0.05);
-			break;
-		}
-		wait(0.05);
-	}
-	self TriggerEnable(false);
+	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_GENERATOR_NO_BLOOD", undefined, &blood_gen_prompt_and_visibility);
+	generator_name = self.script_noteworthy;
+	self waittill("trigger_activated", player);
+	level.hasVial = false;
+	level turn_generator_on(generator_name);
+	self notify(#"generator_online");
+	player zm_audio::create_and_play_dialog( "general", "power_on" );
+	level zm_unitrigger::unregister_unitrigger(self.s_unitrigger);
 }
 
 function turn_generator_on(generator_name, after_shadow)
@@ -1220,102 +1268,6 @@ function turn_generator_on(generator_name, after_shadow)
 	foreach(player in level.players)
 	{
 		player thread zm_abbey_inventory::notifyGenerator();
-	}
-}
-
-function set_generator_hintstring() 
-{
-	prev_hintstring_state = -1;
-	hintstring_state = -1;
-	hintstrings = array(&"ZM_ABBEY_SHADOW_DISABLED", &"ZM_ABBEY_GENERATOR_DEPOSIT", &"ZM_ABBEY_GENERATOR_NO_BLOOD");
-
-	while(! (isdefined(level.shadow_transition_active) && isdefined(level.shadow_vision_active)))
-	{
-		wait(0.05);
-	}
-	
-	while(true) 
-	{
-		if(level.shadow_transition_active || level.shadow_vision_active)
-		{
-			hintstring_state = 0;
-		}
-		else if(level.hasVial)
-		{
-			hintstring_state = 1;
-		}
-		else
-		{
-			hintstring_state = 2;
-		}
-
-		if(prev_hintstring_state != hintstring_state)
-		{
-			self SetHintString(hintstrings[hintstring_state]);
-			prev_hintstring_state = hintstring_state;
-		}
-		wait(0.05);
-	}
-}
-
-function set_bloodgun_hintstring() 
-{
-	prev_hintstring_state = -1;
-	hintstring_state = -1;
-	hintstrings = array(&"ZM_ABBEY_BLOODGUN_COOLDOWN", &"ZM_ABBEY_BLOODGUN_COOLDOWN_SINGULAR", &"ZM_ABBEY_BLOODGUN_IN_USE", &"ZM_ABBEY_SHADOW_DISABLED", &"ZM_ABBEY_BLOODGUN_HAS_VIAL", &"ZM_ABBEY_BLOODGUN_ACTIVATE");
-	cost_weapons = array(GetWeapon("s4_1911"), GetWeapon("s4_klauser"), GetWeapon("s2_mas38"), GetWeapon("s4_topbreak"), GetWeapon("s4_type11"));
-	cost_weapon = GetWeapon("s4_1911");
-
-	while(true) 
-	{
-		if(level.blood_cooldown[self.script_int] > 1)
-		{
-			hintstring_state = 0;
-		}
-		else if(level.blood_cooldown[self.script_int] == 1)
-		{
-			hintstring_state = 1;
-		}
-		else if(level.bloodgun_active)
-		{
-			hintstring_state = 2;
-		}	
-		else if((isdefined(level.next_dog_round) && level.round_number == level.next_dog_round) || level flag::get("dog_round"))
-		{
-			hintstring_state = 3;
-		}
-		else if(level.hasVial)
-		{
-			hintstring_state = 4;
-		}
-		else
-		{
-			hintstring_state = 5;
-			cost_index = Int((level.bloodgun_cost - BLOODGUN_COST_START) / BLOODGUN_COST_INCREMENT);
-			cost_weapon = cost_weapons[cost_index];
-		}
-
-		if(prev_hintstring_state != hintstring_state)
-		{
-			hintstring = hintstrings[hintstring_state];
-			if(hintstring_state == 0)
-			{
-				self SetCursorHint("HINT_NOICON");
-				self SetHintString(hintstring, level.blood_cooldown[self.script_int]);
-			}
-			else if(hintstring_state == 5)
-			{
-				self SetCursorHint("HINT_WEAPON", cost_weapon);
-				self SetHintString(hintstring);
-			}
-			else
-			{
-				self SetCursorHint("HINT_NOICON");
-				self SetHintString(hintstring);
-			}
-			prev_hintstring_state = hintstring_state;
-		}
-		wait(0.05);
 	}
 }
 
