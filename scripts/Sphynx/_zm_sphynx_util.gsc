@@ -1786,17 +1786,27 @@ function rotateAndBobItem(bobbingTime = 3.5, bobbingHeightMin = 6, bobbingHeight
 "Example: self zm_sphynx_util::create_unitrigger_general("Hold ^3&&1^7 to pickup Key", undefined, &key_prompt_and_visibility);"
 "SPMP: both"
 @/
-function create_unitrigger_general(str_hint, n_radius = 64, func_prompt_and_visibility = &zm_unitrigger::unitrigger_prompt_and_visibility, func_unitrigger_logic = &unitrigger_logic, s_trigger_type = "unitrigger_radius_use"){
+function create_unitrigger_general(str_hint, n_radius = 64, func_prompt_and_visibility = &zm_unitrigger::unitrigger_prompt_and_visibility, func_unitrigger_logic = &unitrigger_logic, s_trigger_type = "unitrigger_box_use"){
 
     self.s_unitrigger = SpawnStruct();
     self.s_unitrigger.origin = self.origin;
     self.s_unitrigger.angles = self.angles;
-    self.s_unitrigger.script_unitrigger_type = "unitrigger_box_use";
+    self.s_unitrigger.script_unitrigger_type = s_trigger_type;
     self.s_unitrigger.cursor_hint = "HINT_NOICON";
     self.s_unitrigger.hint_string = str_hint;
-    self.s_unitrigger.script_width = 128;
-    self.s_unitrigger.script_height = 128;
-    self.s_unitrigger.script_length = 128;
+    if(isdefined(self.script_string))
+    {
+        dimensions = StrTok(self.script_string, " ");
+        self.s_unitrigger.script_width = Float(dimensions[0]);
+        self.s_unitrigger.script_length = Float(dimensions[1]);
+        self.s_unitrigger.script_height = Float(dimensions[2]);
+    }
+    else
+    {
+        self.s_unitrigger.script_width = 128;
+        self.s_unitrigger.script_height = 128;
+        self.s_unitrigger.script_length = 128;
+    }
     self.s_unitrigger.require_look_at = 0;
     self.s_unitrigger.related_parent = self;
     self.s_unitrigger.radius = n_radius;
@@ -1820,17 +1830,27 @@ function create_unitrigger_general(str_hint, n_radius = 64, func_prompt_and_visi
 "Example: self zm_sphynx_util::create_unitrigger_for_player_specific("Hold ^3&&1^7 to pickup Key", undefined, &key_prompt_and_visibility);"
 "SPMP: both"
 @/
-function create_unitrigger_for_player_specific(str_hint, n_radius = 64, func_prompt_and_visibility = &zm_unitrigger::unitrigger_prompt_and_visibility, func_unitrigger_logic = &unitrigger_logic, s_trigger_type = "unitrigger_radius_use"){
+function create_unitrigger_for_player_specific(str_hint, n_radius = 64, func_prompt_and_visibility = &zm_unitrigger::unitrigger_prompt_and_visibility, func_unitrigger_logic = &unitrigger_logic, s_trigger_type = "unitrigger_box_use"){
 
     self.s_unitrigger = SpawnStruct();
     self.s_unitrigger.origin = self.origin;
     self.s_unitrigger.angles = self.angles;
-    self.s_unitrigger.script_unitrigger_type = "unitrigger_box_use";
+    self.s_unitrigger.script_unitrigger_type = s_trigger_type;
     self.s_unitrigger.cursor_hint = "HINT_NOICON";
     self.s_unitrigger.hint_string = str_hint;
-    self.s_unitrigger.script_width = 128;
-    self.s_unitrigger.script_height = 128;
-    self.s_unitrigger.script_length = 128;
+    if(isdefined(self.script_string))
+    {
+        dimensions = StrTok(self.script_string, " ");
+        self.s_unitrigger.script_width = Float(dimensions[0]);
+        self.s_unitrigger.script_length = Float(dimensions[1]);
+        self.s_unitrigger.script_height = Float(dimensions[2]);
+    }
+    else
+    {
+        self.s_unitrigger.script_width = 128;
+        self.s_unitrigger.script_height = 128;
+        self.s_unitrigger.script_length = 128;
+    }
     self.s_unitrigger.require_look_at = 0;
     self.s_unitrigger.related_parent = self;
     self.s_unitrigger.radius = n_radius;
