@@ -2,58 +2,16 @@
 
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
-#using scripts\shared\clientfield_shared;
-#using scripts\shared\compass;
 #using scripts\shared\exploder_shared;
 #using scripts\shared\flag_shared;
-#using scripts\shared\laststand_shared;
-#using scripts\shared\math_shared;
-#using scripts\shared\scene_shared;
-#using scripts\shared\util_shared;
 
 #insert scripts\shared\shared.gsh;
-#insert scripts\shared\version.gsh;
 
-#insert scripts\zm\_zm_utility.gsh;
-
-#using scripts\zm\_load;
-#using scripts\zm\_zm;
-#using scripts\zm\_zm_audio;
-#using scripts\zm\_zm_powerups;
-#using scripts\zm\_zm_score;
-#using scripts\zm\_zm_utility;
-#using scripts\zm\_zm_weapons;
-#using scripts\zm\_zm_zonemgr;
-
-#using scripts\shared\ai\zombie_utility;
-
-//Perks
-#using scripts\zm\_zm_pack_a_punch;
+#using scripts\zm\_zm_magicbox;
 #using scripts\zm\_zm_pack_a_punch_util;
-#using scripts\zm\_zm_perk_additionalprimaryweapon;
-#using scripts\zm\_zm_perk_juggernaut;
-#using scripts\zm\_zm_perk_quick_revive;
-#using scripts\zm\_zm_perk_staminup;
-#using scripts\zm\_zm_perk_electric_cherry;
+#using scripts\zm\_zm_weapons;
 
-//Powerups
-#using scripts\zm\_zm_powerup_double_points;
-#using scripts\zm\_zm_powerup_carpenter;
-#using scripts\zm\_zm_powerup_fire_sale;
-#using scripts\zm\_zm_powerup_free_perk;
-#using scripts\zm\_zm_powerup_full_ammo;
-#using scripts\zm\_zm_powerup_insta_kill;
-#using scripts\zm\_zm_powerup_nuke;
-//#using scripts\zm\_zm_powerup_weapon_minigun;
-
-//Traps
-#using scripts\zm\_zm_trap_electric;
-
-#using scripts\zm\zm_usermap;
-
-#using scripts\zm\_zm_laststand;
-#using scripts\shared\gameobjects_shared;
-#using scripts\shared\demo_shared;
+#using scripts\Sphynx\_zm_sphynx_util;
 
 #precache( "fx", "custom/pistol_glint" );
 
@@ -65,45 +23,20 @@
 
 function main()
 {
-	//level.zombie_last_stand = &laststand_give_pistol;
+	weapon_arr = []; 
+	weapon_arr["bloodhound"] = GetWeapon("s4_topbreak");
+	weapon_arr["colt"] = GetWeapon("s4_1911");
+	weapon_arr["luger"] = GetWeapon("s4_klauser");
+	weapon_arr["cz"] = GetWeapon("s4_machinepistol");
 
-	bloodhound = GetWeapon("s4_topbreak");
-	colt = GetWeapon("s4_1911");
-	luger = GetWeapon("s4_klauser");
-	cz = GetWeapon("s4_machinepistol");
-
-	pistol_pickup_trigs = GetEntArray("pistol_pickup", "targetname");
-	for(i = 0; i < pistol_pickup_trigs.size; i++)
-	{
-		weapon = undefined;
-
-		if(pistol_pickup_trigs[i].script_noteworthy == "bloodhound")
-		{
-			weapon = bloodhound;
-		}
-		else if(pistol_pickup_trigs[i].script_noteworthy == "colt")
-		{
-			weapon = colt;
-		}
-		else if(pistol_pickup_trigs[i].script_noteworthy == "luger")
-		{
-			weapon = luger;
-		}
-		else
-		{
-			weapon = cz;
-		}
-
-		pistol_pickup_trigs[i] SetCursorHint("HINT_WEAPON", weapon);
-		pistol_pickup_trigs[i] SetHintString(&"ZM_ABBEY_TAKE_WEAPON");
-		pistol_pickup_trigs[i] thread pistol_pickup_think(weapon);
-	}
+	pistol_pickup_trigs = struct::get_array("pistol_pickup", "targetname");
+	level array::thread_all(pistol_pickup_trigs, &pistol_pickup_think, weapon_arr);
 
 	level.default_laststandpistol = GetWeapon("s4_1911");
 	level.laststandpistol = level.default_laststandpistol;
 	level.default_solo_laststandpistol = GetWeapon("s4_1911_rdw_up");
 
-	thread pistol_rank();
+	level thread pistol_rank();
 	callback::on_connect( &on_player_connect );
 }
 
@@ -218,55 +151,58 @@ function take_starting_gun()
 	}
 }
 
+function pistol_prompt_and_visibility(player)
+{
+	struct = self.stub.related_parent;
+	if(player.startingpistol != level.start_weapon || ! player zm_magicbox::can_buy_weapon() || struct.claimed)
+	{
+		self SetHintString(&"ZM_ABBEY_EMPTY");
+		self SetCursorHint("HINT_NOICON");
+		return false;
+	}
 
-function pistol_pickup_think(weapon)
+	self SetHintString(&"ZM_ABBEY_TAKE_WEAPON");
+	self SetCursorHint("HINT_WEAPON", struct.weapon);
+	return true;
+}
+
+function pistol_pickup_think(weapon_arr)
 {
 	while(!(level flag::exists("initial_blackscreen_passed") && level flag::get("initial_blackscreen_passed")))
 	{
 		wait(0.05);
 	}
 
+	self.weapon = weapon_arr[self.script_noteworthy];
+	self.claimed = false;
 	pistol_model = GetEnt(self.target, "targetname");
 	exploder_name = self.script_noteworthy + "_exploder";
+	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_TAKE_WEAPON", undefined, &pistol_prompt_and_visibility);
 	while(true)
 	{
 		level exploder::exploder(exploder_name);
-		self waittill("trigger", player);
-		if(player.startingpistol == level.start_weapon)
+		self waittill("trigger_activated", player);
+		self.claimed = true;
+		player.startingpistol = self.weapon;
+
+		if(player HasWeapon(level.start_weapon))
 		{
-			player.startingpistol = weapon;
-
-			if(player HasWeapon(level.start_weapon))
-			{
-				player TakeWeapon(level.start_weapon);
-				player GiveWeapon(player.startingpistol);
-				player SwitchToWeapon(player.startingpistol);
-			}
-			else
-			{
-				player zm_weapons::weapon_give(player.startingpistol);
-			}
-			
-			pistol_pickup_trigs = GetEntArray("pistol_pickup", "targetname");
-			foreach(trig in pistol_pickup_trigs)
-			{
-				trig SetInvisibleToPlayer(player, true);
-			}
-
-			pistol_model SetInvisibleToAll();
-			level exploder::stop_exploder(exploder_name);
-			self SetCursorHint("HINT_NOICON");
-			self SetHintString(&"ZM_ABBEY_EMPTY");
-
-			player waittill("disconnect");
-
-			pistol_model SetVisibleToAll();
-			level exploder::exploder(exploder_name);
-
-			self SetCursorHint("HINT_WEAPON", weapon);
-			self SetHintString(&"ZM_ABBEY_TAKE_WEAPON");
+			player TakeWeapon(level.start_weapon);
+			player GiveWeapon(player.startingpistol);
+			player SwitchToWeapon(player.startingpistol);
 		}
-		wait(0.05);
+		else
+		{
+			player zm_weapons::weapon_give(player.startingpistol);
+		}
+
+		pistol_model SetInvisibleToAll();
+		level exploder::stop_exploder(exploder_name);
+
+		player waittill("disconnect");
+		self.claimed = false;
+
+		pistol_model SetVisibleToAll();
 	}
 }
 
