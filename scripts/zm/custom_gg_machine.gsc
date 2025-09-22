@@ -3,54 +3,14 @@
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
-#using scripts\shared\compass;
-#using scripts\shared\exploder_shared;
-#using scripts\shared\flag_shared;
-#using scripts\shared\laststand_shared;
-#using scripts\shared\math_shared;
-#using scripts\shared\scene_shared;
 #using scripts\shared\util_shared;
 
 #insert scripts\shared\shared.gsh;
 #insert scripts\shared\version.gsh;
 
-#insert scripts\zm\_zm_utility.gsh;
-
-#using scripts\zm\_load;
-#using scripts\zm\_zm;
 #using scripts\zm\_zm_audio;
-#using scripts\zm\_zm_powerups;
 #using scripts\zm\_zm_utility;
-#using scripts\zm\_zm_weapons;
-#using scripts\zm\_zm_zonemgr;
 
-#using scripts\shared\ai\zombie_utility;
-
-//Perks
-#using scripts\zm\_zm_pack_a_punch;
-#using scripts\zm\_zm_pack_a_punch_util;
-#using scripts\zm\_zm_perk_additionalprimaryweapon;
-#using scripts\zm\_zm_perk_juggernaut;
-#using scripts\zm\_zm_perk_quick_revive;
-#using scripts\zm\_zm_perk_staminup;
-#using scripts\zm\_zm_perk_electric_cherry;
-
-//Powerups
-#using scripts\zm\_zm_powerup_double_points;
-#using scripts\zm\_zm_powerup_carpenter;
-#using scripts\zm\_zm_powerup_fire_sale;
-#using scripts\zm\_zm_powerup_free_perk;
-#using scripts\zm\_zm_powerup_full_ammo;
-#using scripts\zm\_zm_powerup_insta_kill;
-#using scripts\zm\_zm_powerup_nuke;
-
-//Traps
-#using scripts\zm\_zm_trap_electric;
-#using scripts\zm\_zm_bgb;
-
-#using scripts\zm\zm_usermap;
-#using scripts\zm\_zm_score;
-#using scripts\zm\_zm_laststand;
 #using scripts\zm\_zm_magicbox;
 #using scripts\zm\_zm_perks;
 
@@ -58,6 +18,8 @@
 
 #using scripts\zm\zm_bgb_custom_util;
 #using scripts\zm\zm_challenges;
+
+#using scripts\Sphynx\_zm_sphynx_util;
 
 #define BRIBE_MAX 3
 #define BRIBE_MAX_PLAYER 3
@@ -258,12 +220,13 @@ function __init__()
 	level.gargoyle_bribes_active = [];
 	level.gargoyle_first_bribe_taken = false;
 
-	level.gargoyle_judges = GetEntArray("gargoyle_judge", "targetname");
-	level array::thread_all(level.gargoyle_judges, &judge_think);
+	gargoyle_judges = struct::get_array("gargoyle_judge", "targetname");
+	level array::thread_all(gargoyle_judges, &judge_think);
 
-	level.gargoyle_judges_dialogue = GetEntArray("gargoyle_judge_dialogue", "targetname");
+	gargoyle_judges_dialogue = struct::get_array("gargoyle_judge_dialogue", "targetname");
+	level array::thread_all(gargoyle_judges_dialogue, &zm_sphynx_util::create_unitrigger_for_player_specific, &"ZM_ABBEY_EMPTY", 113, &judge_dialogue_prompt_and_visibility);
 
-	level.gargoyle_bribes = GetEntArray("abbey_bribe", "targetname");
+	level.gargoyle_bribes = struct::get_array("abbey_bribe", "targetname");
 	level array::thread_all(level.gargoyle_bribes, &bribe_think);
 
 	level thread bribe_manager();
@@ -291,10 +254,6 @@ function on_player_connect()
 
 	self.bribe_count = 0;
 	self.eating_gum = false;
-
-	level array::thread_all(level.gargoyle_judges, &judge_hintstring_think, self);
-	level array::thread_all(level.gargoyle_judges_dialogue, &judge_dialogue_think, self);
-	level array::thread_all(level.gargoyle_bribes, &bribe_hintstring_think, self);
 }
 
 function judge_dialogue_update(garg_num)
@@ -362,99 +321,55 @@ function display_ball_cleanup(player)
 	}
 }
 
-function judge_hintstring_think(player)
+function judge_dialogue_prompt_and_visibility(player)
 {
-	player endon("disconnect");
-
-	garg_num = self.script_int;
-	gum_weapon = GetWeapon("zombie_bgb_grab");
-
-	prev_displayName = &"ZM_ABBEY_EMPTY";
-	prev_gg_available = false;
-	prev_bribe_count = -1;
-	prev_eating = false;
-
-	while(true)
-	{
-		index = player.judge_indices[garg_num];
-		gum = player.gargoyle_gums[garg_num][index];
-		displayName = level.gg_names[gum];
-		gg_available = player.gg_available[gum];
-		bribe_count = player.bribe_count;
-		eating = player.eating_gum; 
-
-		// failsafe for a weird case where a perkaholic triggerstring registered for a moment
-		if(displayName == &"ZMUI_BGB_PERKAHOLIC")
-		{
-			displayName = &"ZMUI_BGB_STOCK_OPTION";
-		}
-
-
-		if(eating)
-		{
-			if(! prev_eating)
-			{
-				self SetHintStringForPlayer(player, player.judge_dialogue[garg_num]);
-			}
-		}
-		else if(prev_eating || displayName != prev_displayName || gg_available != prev_gg_available || bribe_count != prev_bribe_count)
-		{
-			prev_displayName = displayName;
-			prev_gg_available = gg_available;
-			prev_bribe_count = bribe_count;
-			bribe_cost = level zm_bgb_custom_util::gg_bribe_cost(gum);
-			color = level zm_bgb_custom_util::gg_color_value(gum);
-			if(gg_available)
-			{
-				hintstring = level.gg_hintstrings[color];
-				self SetHintStringForPlayer(player, hintstring, displayName);
-			}
-			else if(bribe_count >= bribe_cost)
-			{
-				hintstring = level.gg_hintstrings_bribe[color];
-				self SetHintStringForPlayer(player, hintstring, displayName, bribe_cost);
-			}
-			else
-			{
-				hintstring = level.gg_hintstrings_unavailable[color];
-				self SetHintStringForPlayer(player, hintstring, displayName);
-			}
-		}
-		prev_eating = eating;
-		wait(0.05);
-	}
+	garg_num = self.stub.related_parent.script_int;
+	self SetHintString(player.judge_dialogue[garg_num]);
+	return false;
 }
 
-function judge_dialogue_think(player)
+function judge_prompt_and_visibility(player)
 {
-	player endon("disconnect");
+	garg_num = self.stub.related_parent.script_int;
+	index = player.judge_indices[garg_num];
+	gum = player.gargoyle_gums[garg_num][index];
+	display_name = level.gg_names[gum];
+	color = level zm_bgb_custom_util::gg_color_value(gum);
+	bribe_cost = level zm_bgb_custom_util::gg_bribe_cost(gum);
 
-	self SetCursorHint("HINT_NOICON");
-
-	garg_num = self.script_int;
-
-	prev_dialogue = &"ZM_ABBEY_EMPTY";
-
-	while(true)
+	if(player.eating_gum)
 	{
-		dialogue = player.judge_dialogue[garg_num];
-		if(dialogue != prev_dialogue)
-		{
-			prev_dialogue = dialogue;
-			self SetHintStringForPlayer(player, dialogue);
-		}
-		wait(0.05);
+		self SetHintString(player.judge_dialogue[garg_num]);
+		return false;
 	}
+	if(! player zm_magicbox::can_buy_weapon())
+	{
+		self SetHintString(&"ZM_ABBEY_EMPTY");
+		return false;
+	}
+	if(player.gg_available[gum])
+	{
+		self SetHintString(level.gg_hintstrings[color], display_name);
+		return true;
+	}
+	if(player.bribe_count >= bribe_cost)
+	{
+		self SetHintString(level.gg_hintstrings_bribe[color], display_name, bribe_cost);
+		return true;
+	}
+
+	self SetHintString(level.gg_hintstrings_unavailable[color], display_name);
+	return false;
 }
 
 // logic for gum machines
 function judge_think() 
 {
-	self SetCursorHint( "HINT_NOICON" );
+	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_EMPTY", undefined, &judge_prompt_and_visibility);
 
 	garg_num = self.script_int;
 	while(true) {
-		self waittill("trigger", player);
+		self waittill("trigger_activated", player);
 
 		index = player.judge_indices[garg_num];
 		gum = player.gargoyle_gums[garg_num][index];
@@ -529,61 +444,44 @@ function judge_model_think(garg_num)
 	}
 }
 
-function bribe_hintstring_think(player)
+function bribe_prompt_and_visibility(player)
 {
-	player endon("disconnect");
+	struct = self.stub.related_parent;
+	bribe_active = level array::contains(level.gargoyle_bribes_active, struct) || (! level.gargoyle_first_bribe_taken && struct.target == "bribe1_model");
 
-	prev_bribe_active = true;
-	prev_max_bribes = true;
-
-	while(true)
+	if(! (bribe_active && player zm_magicbox::can_buy_weapon()))
 	{
-		bribe_active = level array::contains(level.gargoyle_bribes_active, self) || (! level.gargoyle_first_bribe_taken && self.target == "bribe1_model");
-		max_bribes = player.bribe_count >= 3;
-
-		if(bribe_active != prev_bribe_active || max_bribes != prev_max_bribes)
-		{
-			prev_bribe_active = bribe_active;
-			prev_max_bribes = max_bribes;
-			if(! bribe_active)
-			{
-				self SetHintStringForPlayer(player, &"ZM_ABBEY_EMPTY");
-			}
-			else if(max_bribes)
-			{
-				self SetHintStringForPlayer(player, &"ZM_ABBEY_TRIAL_BRIBE_PICKUP_MAX");
-			}
-			else
-			{
-				self SetHintStringForPlayer(player, &"ZM_ABBEY_TRIAL_BRIBE_PICKUP");
-			}
-		}
-		wait(0.05);
+		self SetHintString(&"ZM_ABBEY_EMPTY");
+		return false;
 	}
+	else if(player.bribe_count >= BRIBE_MAX)
+	{
+		self SetHintString(&"ZM_ABBEY_TRIAL_BRIBE_PICKUP_MAX");
+		return false;
+	}
+	
+	self SetHintString(&"ZM_ABBEY_TRIAL_BRIBE_PICKUP");
+	return true;
 }
 
 function bribe_think()
 {
 	model = GetEnt(self.target, "targetname");
-	fx_spot = Spawn("script_model", model.origin + (0, 0, BRIBE_OFFSET));
-	active = true;
-	self SetCursorHint("HINT_NOICON");
+	fx_spot = undefined;
+	self.active = true;
+	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_EMPTY", undefined, &bribe_prompt_and_visibility);
 
 	while(true)
 	{
 		if(level array::contains(level.gargoyle_bribes_active, self) || (! level.gargoyle_first_bribe_taken && self.target == "bribe1_model"))
 		{ 
-			active = true;
+			self.active = true;
 			model SetVisibleToAll();
 			fx_spot = Spawn("script_model", model.origin + (0, 0, BRIBE_OFFSET));
 			fx_spot SetModel("tag_origin");
 			PlayFXOnTag("custom/pistol_glint", fx_spot, "tag_origin");
 
-			self waittill("trigger", player);
-			while(player.bribe_count >= BRIBE_MAX_PLAYER)
-			{
-				self waittill("trigger", player);
-			}
+			self waittill("trigger_activated", player);
 			if(level.gargoyle_first_bribe_taken)
 			{
 				ArrayRemoveValue(level.gargoyle_bribes_active, self);
@@ -593,11 +491,14 @@ function bribe_think()
 			player.bribe_count += 1;
 			player clientfield::set_player_uimodel("bribeCount", player.bribe_count);
 		}
-		else if(active)
+		else if(self.active)
 		{
-			active = false;
+			self.active = false;
 			model SetInvisibleToAll();
-			fx_spot Delete();
+			if(isdefined(fx_spot))
+			{
+				fx_spot Delete();
+			}
 		}
 		wait(0.05);
 	}
