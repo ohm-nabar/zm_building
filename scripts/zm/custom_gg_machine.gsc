@@ -356,7 +356,10 @@ function display_ball_cleanup(player)
 	self endon("delete");
 
 	player waittill("disconnect");
-	self Delete();
+	if(isdefined(self))
+	{
+		self Delete();
+	}
 }
 
 function judge_hintstring_think(player)

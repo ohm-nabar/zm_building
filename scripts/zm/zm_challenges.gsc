@@ -1191,8 +1191,14 @@ function athos_indicator_cleanup(waypoint_pos, indicator)
 {
 	self util::waittill_any("disconnect", #"athos_trial_end");
 
-	waypoint_pos Delete();
-	indicator Destroy();
+	if(isdefined(waypoint_pos))
+	{
+		waypoint_pos Delete();
+	}
+	if(isdefined(indicator))
+	{
+		indicator Destroy();
+	}
 }
 
 function athos_closest_origin(arr)
