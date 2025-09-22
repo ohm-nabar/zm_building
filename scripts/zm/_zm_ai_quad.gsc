@@ -298,7 +298,10 @@ function corpse_cleanup()
 function cleanup_delay()
 {
 	wait(0.15);
-	self Delete();
+	if(isdefined(self))
+	{
+		self Delete();
+	}
 }
 
 function traversewallcrawlaction( e_entity, str_asm_state_name )
