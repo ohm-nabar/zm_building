@@ -16,10 +16,12 @@
 
 #using scripts\zm\_zm_powerups;
 #using scripts\zm\_zm_audio;
+#using scripts\zm\_zm_magicbox;
 #using scripts\zm\_zm_score;
 #using scripts\zm\_zm_timer;
 #using scripts\zm\_zm_utility;
-//#using scripts\zm\zm_giant; temp
+
+#using scripts\Sphynx\_zm_sphynx_util;
 
 #precache( "model", "collision_wall_128x128x10" );
 #precache( "model", "zm_abbey_teleporter_lights_off" );
@@ -73,16 +75,13 @@ function __main__()
 	// Get the Pad triggers
 	for ( i=0; i<8; i++ )
 	{
-		trig = GetEnt( "trigger_teleport_pad_" + i, "targetname");
+		trig = struct::get( "trigger_teleport_pad_" + i, "targetname");
 		if ( IsDefined(trig) )
 		{
 			level.teleporter_pad_trig[i] = trig;
+			level.teleporter_pad_trig[i].index = i;
+			level.teleporter_pad_trig[i] thread teleport_pad_think();
 		}
-	}
-
-	for(i = 0; i < 8; i++)
-	{
-		level thread teleport_pad_think( i );
 	}
 	
 	//mp_downhill_fx::SetDvar( "factoryAftereffectOverride", "-1" );
@@ -145,164 +144,112 @@ function lights_think()
 	self PlaySound("teleport_link_all");
 }
 
-
-//-------------------------------------------------------------------------------
-// handles activating and deactivating pads for cool down
-//-------------------------------------------------------------------------------
-function pad_manager()
+function teleport_prompt_and_visibility(player)
 {
+	index = self.stub.related_parent.index;
+	teleport_state = level.teleport[index];
 
-	for ( i = 0; i < level.teleporter_pad_trig.size; i++ )
+	if(! player zm_magicbox::can_buy_weapon() || teleport_state == "teleporting")
 	{
-		if ( level.teleporter_pad_trig[i].teleport_active )
-		{
-			level.teleporter_pad_trig[i] sethintstring( &"ZM_ABBEY_TELEPORTER_ACTIVATE" );
-		}
-		else
-		{
-			level.teleporter_pad_trig[i] sethintstring( &"ZM_ABBEY_TELEPORTER_SYNCHRONIZE", level.current_links );
-		}
-		level.teleporter_pad_trig[i] teleport_trigger_invisible( false );
+		self SetHintString(&"ZM_ABBEY_EMPTY");
+		return false;
 	}
+	if(teleport_state == "active")
+	{
+		self SetHintString(&"ZM_ABBEY_TELEPORTER_ACTIVATE");
+		return true;
+	}
+	if(! (level flag::exists("power_on") && level flag::get("power_on")))
+	{
+		self SetHintString(&"ZM_ABBEY_TELEPORTER_OFFLINE");
+		return false;
+	}
+	if(teleport_state == "waiting")
+	{
+		self SetHintString(&"ZM_ABBEY_TELEPORTER_SYNCHRONIZE", level.current_links);
+		return true;
+	}
+
+	self SetHintString(&"ZM_ABBEY_TELEPORTER_SYNCHRONIZING", level.current_links);
+	return false;
 }
 
 //-------------------------------------------------------------------------------
 // handles turning on the pad and waiting for link
 //-------------------------------------------------------------------------------
-function teleport_pad_think( index )
+function teleport_pad_think()
 {
-	/*
-	tele_help = getent( "tele_help_" + index, "targetname" );
-	if(isdefined( tele_help ) )
-	{
-		tele_help thread play_tele_help_vox();
-	}
-	*/
+	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_TELEPORT_OFFLINE", undefined, &teleport_prompt_and_visibility);
 
-	if(index > 3)
+	if(self.index > 3)
 	{
 		active = true;
 	
 		// init the pad
-		level.teleport[index] = "active";
+		level.teleport[self.index] = "active";
 
-		trigger = level.teleporter_pad_trig[ index ];
-
-		trigger setcursorhint( "HINT_NOICON" );
-		trigger sethintstring( &"ZM_ABBEY_TELEPORTER_ACTIVATE" );
-		trigger.teleport_active = true;
-		trigger thread teleport_pad_active_think( index );
+		self.teleport_active = true;
 	}
 	else
 	{
 		active = false;
 	
 		// init the pad
-		level.teleport[index] = "waiting";
-
-		trigger = level.teleporter_pad_trig[ index ];
-
-		trigger setcursorhint( "HINT_NOICON" );
-		trigger sethintstring( &"ZM_ABBEY_TELEPORTER_OFFLINE" );
-
+		level.teleport[self.index] = "waiting";
 		level flag::wait_till( "power_on" );
-
-		trigger sethintstring( &"ZM_ABBEY_TELEPORTER_SYNCHRONIZE", level.current_links );
-		trigger.teleport_active = false;
+		self.teleport_active = false;
 	}
-	
 
-	if ( isdefined( trigger ) )
+	while ( !active )
 	{
-		while ( !active )
+		self waittill( "trigger_activated" );
+
+		level.current_links += 1;
+		level.teleport[self.index] = "timer_on";
+		if(level.current_links < 4)
 		{
-			trigger waittill( "trigger" );
-
-			/*
-			if ( level.active_links < 3 )
-			{
-				trigger_core = getent( "trigger_teleport_core", "targetname" );
-				trigger_core teleport_trigger_invisible( false );
-			}
-
-			
-			// when one starts the others disabled
-			for ( i=0; i<level.teleporter_pad_trig.size; i++ )
-			{
-				level.teleporter_pad_trig[ i ] teleport_trigger_invisible( true );
-			}
-			*/
-
-			//trigger teleport_trigger_invisible(true);
-			level.current_links += 1;
-			level.teleport[index] = "timer_on";
-			if(level.current_links < 4)
-			{
-				trigger PlaySound("teleport_link_sting");
-				for(i = 0; i < 4; i++)
-				{
-					if(level.teleport[i] == "waiting")
-					{
-						level.teleporter_pad_trig[i] SetHintString(&"ZM_ABBEY_TELEPORTER_SYNCHRONIZE", level.current_links);
-					}
-					else
-					{
-						level.teleporter_pad_trig[i] SetHintString(&"ZM_ABBEY_TELEPORTER_SYNCHRONIZING", level.current_links);
-					}
-				}
-			}
-			
-			// start the countdown back to the core
-			trigger thread teleport_pad_countdown( index, level.link_time );
-			teleporter_vo( "countdown", trigger );
-
-			current_links_old = level.current_links;
-			// wait for the countdown
-			
-			while (level.current_links > 0 && level.current_links < 4)
-			{
-				wait( 0.05 );
-			}
-
-			// core was activated in time
-			if ( level.current_links == 4 )
-			{
-				trigger stop_countdown();
-				active = true;
-				level.teleport[index] = "active";
-
-				level util::clientNotify( "pw" + index );	// pad wire #
-											
-				//AUDIO
-				level util::clientNotify( "tp" + index );	// Teleporter #
-
-				// MM - Auto teleport the first time
-				teleporter_wire_wait( index );
-
-				trigger teleport_trigger_invisible( true );
-				trigger thread player_teleporting( index );
-			}
-			else
-			{
-				level.teleport[index] = "waiting";
-			}
-			wait( .05 );
+			PlaySoundAtPosition("teleport_link_sting", self.origin);
+		}
+		
+		// start the countdown back to the core
+		self thread teleport_pad_countdown();
+		
+		while (level.current_links > 0 && level.current_links < 4)
+		{
+			wait( 0.05 );
 		}
 
-		trigger thread teleport_pad_active_think( index );
+		// core was activated in time
+		if ( level.current_links == 4 )
+		{
+			self stop_countdown();
+			active = true;
+			level.teleport[self.index] = "active";
+										
+			//AUDIO
+			level util::clientNotify( "tp" + self.index );	// Teleporter #
+			self thread player_teleporting();
+		}
+		else
+		{
+			level.teleport[self.index] = "waiting";
+		}
+		wait( 0.05 );
 	}
+
+	self thread teleport_pad_active_think();
 }
 
 //-------------------------------------------------------------------------------
 // updates the teleport pad timer
 //-------------------------------------------------------------------------------
-function teleport_pad_countdown( index, time )
+function teleport_pad_countdown()
 {
-	self endon( "stop_countdown" );
+	level endon( #"stop_countdown" );
 
 	if ( level.active_timer < 0 )
 	{
-		level.active_timer = index;
+		level.active_timer = self.index;
 	}
 
 	level.countdown++;
@@ -318,17 +265,17 @@ function teleport_pad_countdown( index, time )
 	players = GetPlayers();
 	for( i = 0; i < players.size; i++ )
 	{
-		players[i] thread start_timer( time+1, "stop_countdown" );
+		players[i] thread start_timer( level.link_time+1, #"stop_countdown" );
 	}
-	wait( time+1 );
+	wait( level.link_time+1 );
 
-	if ( level.active_timer == index )
+	if ( level.active_timer == self.index )
 	{
 		level.active_timer = -1;
 	}
 
 	// ran out of time to activate teleporter
-	level.teleport[index] = "timer_off";
+	level.teleport[self.index] = "timer_off";
 	should_end_timer = true;
 	for(i = 0; i < level.teleport.size; i++)
 	{
@@ -341,10 +288,6 @@ function teleport_pad_countdown( index, time )
 	if(should_end_timer)
 	{
 		level.current_links = 0;
-		for(i = 0; i < 4; i++)
-		{
-			level.teleporter_pad_trig[i] SetHintString( &"ZM_ABBEY_TELEPORTER_SYNCHRONIZE", level.current_links);
-		}
 		level util::clientNotify( "TRs" );	// Stop flashing the receiver map light
 	}
 	
@@ -402,7 +345,7 @@ function start_timer( time, stop_notify )
 
 function sndCountdown()
 {
-	self endon( "stop_countdown" );
+	level endon( #"stop_countdown" );
 	
 
 	clock_sound = spawn ("script_origin", (0,0,0));
@@ -424,7 +367,7 @@ function sndCountdown()
 		wait( 1 );
 		count--;
 	}
-	level notify ("stop_countdown");
+	level notify (#"stop_countdown");
 	
 	//level thread zm_giant::sndPA_DoVox( "vox_maxis_teleporter_expired_0" ); temp
 }
@@ -463,50 +406,42 @@ function clock_timer()
 //-------------------------------------------------------------------------------
 // handles teleporting players when triggered
 //-------------------------------------------------------------------------------
-function teleport_pad_active_think( index )
+function teleport_pad_active_think()
 {
-	// link established, can be used to teleport
-	self setcursorhint( "HINT_NOICON" );
 	self.teleport_active = true;
 
 	user = undefined;
 
-	while ( 1 )
+	while (true)
 	{
-		self waittill( "trigger", user );
-
-		if ( zm_utility::is_player_valid( user ) )
-		{
-			self teleport_trigger_invisible( true );
-
-			// Non-threaded so the trigger doesn't activate before the cooldown
-			self player_teleporting( index );
-		}
+		self waittill("trigger_activated");
+		self player_teleporting();
 	}
 }
 
 //-------------------------------------------------------------------------------
 // handles moving the players and fx, etc...moved out so it can be threaded
 //-------------------------------------------------------------------------------
-function player_teleporting( index )
+function player_teleporting()
 {
+	level.teleport[self.index] = "teleporting";
 	time_since_last_teleport = GetTime() - level.teleport_time;
 
 	// begin the teleport
 	// add 3rd person fx
-	exploder::exploder_duration( "teleporter_" + level.teleport_pad_names[index % 3] + "_teleporting", 5.3 );
+	exploder::exploder_duration( "teleporter_" + level.teleport_pad_names[self.index % 3] + "_teleporting", 5.3 );
 
 	// play startup fx at the core
 	exploder::exploder_duration( "mainframe_warm_up", 4.8 );
 
 	//AUDIO
-	level util::clientNotify( "tpw" + (index % 3));
+	level util::clientNotify( "tpw" + (self.index % 3));
 	//level thread zm_giant::sndPA_DoVox( "vox_maxis_teleporter_success_0" ); temp
 
 	// start fps fx
 	self thread teleport_pad_player_fx( level.teleport_delay );
 
-	self PlaySound("teleport_warmup");
+	PlaySoundAtPosition("teleport_warmup", self.origin);
 	
 	//AUDIO
 	self thread teleport_2d_audio();
@@ -518,34 +453,17 @@ function player_teleporting( index )
 	wait( level.teleport_delay );
 
 	// end fps fx
-	self notify( "fx_done" );
+	level notify( "teleport_fx_done" + self.index );
 
-	dest_index = index + 4;
-	if(index > 3)
+	dest_index = self.index + 4;
+	if(self.index > 3)
 	{
-		dest_index = index - 4;
+		dest_index = self.index - 4;
 	}
 	// teleport the players
 	self teleport_players(dest_index);
 
-	thread pad_manager();
 	level.teleport_time = GetTime();
-}
-
-//-------------------------------------------------------------------------------
-// used to enable / disable the pad use trigger for players
-//-------------------------------------------------------------------------------
-function teleport_trigger_invisible( enable )
-{
-	players = GetPlayers();
-
-	for ( i = 0; i < players.size; i++ )
-	{
-		if ( isdefined( players[i] ) )
-		{
-			self SetInvisibleToPlayer( players[i], enable );
-		}
-	}
 }
 
 //-------------------------------------------------------------------------------
@@ -618,7 +536,7 @@ function teleport_players(dest_index)
 		occupied[i] = false;
 		image_room[i] = struct::get( "teleport_room_" + i, "targetname" );
 
-		if ( isdefined( players[i] ) )
+		if ( isdefined( players[i] ) && players[i] zm_magicbox::can_buy_weapon() )
 		{
 			// filter::SetTransported( players[i] );
 			
@@ -634,15 +552,10 @@ function teleport_players(dest_index)
 					{
 						visionset_mgr::deactivate("visionset", "abbey_shadow", players[i]);
 					}
-					if(players[i].isInBloodMode)
-					{
-						visionset_mgr::deactivate( "overlay", "zm_bgb_in_plain_sight", players[i] );
-						visionset_mgr::deactivate( "visionset", "zm_bgb_in_plain_sight", players[i] );
-					}
 					visionset_mgr::activate( "overlay", "zm_castle_teleport", players[i] ); // turn on the mid-teleport stargate effects
 					players[i] disableOffhandWeapons();
 					players[i] disableweapons();
-					self PlaySoundToPlayer("teleport_2d", players[i]);
+					players[i] PlaySoundToPlayer("teleport_2d", players[i]);
 					if( players[i] getstance() == "prone" )
 					{
 						desired_origin = image_room[i].origin + prone_offset;
@@ -674,10 +587,6 @@ function teleport_players(dest_index)
 	}
 
 	wait( 2 );
-
-	// Nuke anything at the core
-	core = level.teleporter_pad_trig[dest_index];
-	//core thread teleport_nuke( undefined, 300);	// Max any zombies at the pad range 300
 
 	// check if any players are standing on top of core teleport positions
 	for ( i = 0; i < players.size; i++ )
@@ -738,11 +647,6 @@ function teleport_players(dest_index)
 		}
 
 		visionset_mgr::deactivate( "overlay", "zm_castle_teleport", player ); // turn off the mid-teleport stargate effects
-		if(player.isInBloodMode)
-		{
-			visionset_mgr::activate("visionset", "zm_bgb_in_plain_sight", player, 0.5, 9999, 0.5);
-			visionset_mgr::activate("overlay", "zm_bgb_in_plain_sight", player);
-		}
 		
 		player thread reactivate_shadow_vision();
 		player enableweapons();
@@ -752,6 +656,8 @@ function teleport_players(dest_index)
 		player FreezeControls( false );
 		player thread teleport_aftereffects();
 	}
+
+	level.teleport[self.index] = "active";
 
 	// play beam fx at the core
 	exploder::exploder_duration( "mainframe_arrival", 1.7 );
@@ -776,139 +682,20 @@ function reactivate_shadow_vision()
 	}
 }
 
-//-------------------------------------------------------------------------------
-// updates the hint string when countdown is started and expired
-//-------------------------------------------------------------------------------
-function teleport_core_hint_update()
-{
-	self setcursorhint( "HINT_NOICON" );
-
-	while ( 1 )
-	{
-		// can't use teleporters until power is on
-		if ( !level flag::get( "power_on" ) )
-		{
-			self sethintstring( &"ZOMBIE_NEED_POWER" );
-		}
-		else if ( teleport_pads_are_active() )
-		{
-			self sethintstring( &"ZOMBIE_LINK_TPAD" );
-		}
-		else if ( level.active_links == 0 )
-		{
-			self sethintstring( &"ZOMBIE_INACTIVE_TPAD" );
-		}
-		else
-		{
-			self SetHintString(&"ZM_ABBEY_EMPTY");
-		}
-
-		wait( .05 );
-	}
-}
-
-//-------------------------------------------------------------------------------
-// establishes the link between teleporter pads and the core
-//-------------------------------------------------------------------------------
-function teleport_core_think()
-{
-	trigger = getent( "trigger_teleport_core", "targetname" );
-	if ( isdefined( trigger ) )
-	{
-		trigger thread teleport_core_hint_update();
-
-		// disable teleporters to power is turned on
-		level flag::wait_till( "power_on" );
-
-		while ( 1 )
-		{
-			if ( teleport_pads_are_active() )
-			{
-				trigger waittill( "trigger" );
-				
-				// link the activated pads
-				for ( i = 0; i < level.teleport.size; i++ )
-				{
-					if ( isdefined( level.teleport[i] ) )
-					{
-						if ( level.teleport[i] == "timer_on" )
-						{
-							level.teleport[i] = "active";
-							level.active_links++;
-							level flag::set( "teleporter_pad_link_"+level.active_links );
-
-							//AUDIO
-							//level thread zm_giant::sndPA_DoVox( "vox_maxis_teleporter_" + i + "active_0" );
-							level util::delay( 10, undefined, &zm_audio::sndMusicSystem_PlayState, "teleporter_"+level.active_links );
-
-							exploder::exploder( "teleporter_" + level.teleport_pad_names[i % 3] + "_linked" );
-							exploder::exploder( "lgt_teleporter_" + level.teleport_pad_names[i % 3] + "_linked" );
-							exploder::exploder_duration( "mainframe_steam", 14.6 );
-
-							// check for all teleporters active
-							if ( level.current_links == 4 )
-							{
-								exploder::exploder_duration( "mainframe_link_all", 4.6 );
-								exploder::exploder( "mainframe_ambient" );
-								level util::clientNotify( "pap1" );	// Pack-A-Punch door on
-								teleporter_vo( "linkall", trigger );
-								Earthquake( 0.3, 2.0, trigger.origin, 3700 );
-							}
-
-							// stop the countdown for the teleport pad
-							pad = "trigger_teleport_pad_" + i;
-							trigger_pad = getent( pad, "targetname" );
-							trigger_pad stop_countdown();
-							level util::clientNotify( "TRs" );	// Stop flashing the receiver map light
-							level.active_timer = -1;
-						}
-					}
-				}
-			}
-
-			wait( .05 );
-		}
-	}
-}
-
 function stop_countdown()
 {
-	self notify( "stop_countdown" );
-	level notify ("stop_countdown");  //using this on the new loop timer
+	level notify (#"stop_countdown");  //using this on the new loop timer
 	players = GetPlayers();
 	
 	for( i = 0; i < players.size; i++ )
 	{
-		players[i] notify( "stop_countdown" );
+		players[i] notify( #"stop_countdown" );
 	}
-}
-
-//-------------------------------------------------------------------------------
-// checks if any of the teleporter pads are counting down
-//-------------------------------------------------------------------------------
-function teleport_pads_are_active()
-{
-	// have any pads started?
-	if ( isdefined( level.teleport ) )
-	{
-		for ( i = 0; i < level.teleport.size; i++ )
-		{
-			if ( isdefined( level.teleport[i] ) )
-			{
-				if ( level.teleport[i] == "timer_on" )
-				{
-					return true;
-				}
-			}
-		}
-	}
-
-	return false;
 }
 
 function teleport_2d_audio()
 {
-	self endon( "fx_done" );
+	level endon( "teleport_fx_done" + self.index );
 
 	while ( 1 )
 	{
@@ -926,134 +713,6 @@ function teleport_2d_audio()
 				}
 			}
 		}
-	}
-}
-
-
-// kill anything near the pad
-function teleport_nuke( max_zombies, range )
-{
-	zombies = getaispeciesarray( level.zombie_team );
-
-	zombies = util::get_array_of_closest( self.origin, zombies, undefined, max_zombies, range );
-
-	for (i = 0; i < zombies.size; i++)
-	{
-		wait (randomfloatrange(0.2, 0.3));
-		if( !IsDefined( zombies[i] ) )
-		{
-			continue;
-		}
-
-		if( zm_utility::is_magic_bullet_shield_enabled( zombies[i] ) )
-		{
-			continue;
-		}
-
-		if( !( zombies[i].isdog ) )
-		{
-			zombies[i] zombie_utility::zombie_head_gib();
-		}
-
-		zombies[i] dodamage( 10000, zombies[i].origin );
-		playsoundatposition( "nuked", zombies[i].origin );
-	}
-}
-
-function teleporter_vo( tele_vo_type, location )
-{
-	if( !isdefined( location ))
-	{
-		self thread teleporter_vo_play( tele_vo_type, 2 );
-	}
-	else
-	{
-		players = GetPlayers();
-		for (i = 0; i < players.size; i++)
-		{
-			if (distance (players[i].origin, location.origin) < 64)
-			{
-				switch ( tele_vo_type )
-				{
-					case "linkall":
-						players[i] thread teleporter_vo_play( "tele_linkall" );
-						break;
-					case "countdown":
-						players[i] thread teleporter_vo_play( "tele_count", 3 );
-						break;
-				}
-			}
-		}
-	}
-}
-
-function teleporter_vo_play( vox_type, pre_wait )
-{
-	if(!isdefined( pre_wait ))
-	{
-		pre_wait = 0;
-	}
-	wait(pre_wait);
-//	self _zm_audio::create_and_play_dialog( "level", vox_type );
-}
-
-function play_tele_help_vox()
-{
-	level endon( "tele_help_end" );
-	
-	while(1)
-	{
-		self waittill("trigger", who);
-		
-		if( level flag::get( "power_on" ) )
-		{
-			who thread teleporter_vo_play( "tele_help" );	
-			level notify( "tele_help_end" );
-		}
-		
-		while(IsDefined (who) && (who) IsTouching (self))
-		{
-			wait(0.1);
-		}
-	}
-}
-
-function play_packa_see_vox()
-{
-	wait(10);
-	
-	if( !level flag::get( "teleporter_pad_link_3" ) )
-	{
-		self waittill("trigger", who);	
-		who thread teleporter_vo_play( "perk_packa_see" );
-	}
-}
-
-
-//	
-//	This should match the perk_wire_fx_client function
-//	waits for the effect to travel along the wire
-function teleporter_wire_wait( index )
-{
-	targ = struct::get( "pad_"+index+"_wire" ,"targetname");
-	if ( !IsDefined( targ ) )
-	{
-		return;
-	}
-
-	while(isDefined(targ))
-	{
-		if(isDefined(targ.target))
-		{
-			target = struct::get(targ.target,"targetname");
-			wait( 0.1 );
-
-			targ = target;
-		}
-		else
-		{
-			break;
-		}		
 	}
 }
 
@@ -1116,18 +775,3 @@ function packa_door_reminder()
 		wait(rand);
 	}
 }
-
-function dog_blocker_clip()
-{
-	//DCS: create collision blocker for dog near revive.
-	collision = Spawn("script_model", (-106, -2294, 216));
-	collision setmodel("collision_wall_128x128x10");
-	collision.angles = (0, 37.2, 0);
-	collision Hide();	
-	
-	// adding clip for barricade glitch
-	collision = Spawn("script_model", (-1208, -439, 363));
-	collision setmodel("collision_wall_128x128x10");
-	collision.angles = (0, 0, 0);
-	collision Hide();		
-}	
