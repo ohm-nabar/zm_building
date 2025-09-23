@@ -34,7 +34,6 @@
 #precache( "model", "gumball_purple");
 #precache( "model", "gumball_white");
 
-#precache( "fx", "custom/fx_trail_blood_soul_zmb" );
 #precache( "eventstring", "GGReset" );
 
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_HINTSTRING_GREEN", "ZMUI_BGB_STOCK_OPTION" );
@@ -210,10 +209,9 @@ function __init__()
 	level.judge_gumballs = [];
 	for(i = 0; i < 4; i++)
 	{
-		gumballs = GetEntArray("gumball" + i, "targetname");
+		gumballs = struct::get_array("gumball" + i, "targetname");
 		models = GetEntArray("gargoyle" + i, "targetname");
 		level.judge_gumballs[i] = gumballs;
-		level array::thread_all(gumballs, &judge_gumball_fx, i);
 		level array::thread_all(models, &judge_model_think, i);
 	}
 
@@ -418,15 +416,6 @@ function lua_decrement_bribe_count()
 		self clientfield::set_player_uimodel("bribeCount", self.bribe_count);
 		util::wait_network_frame();
 	}
-}
-
-function judge_gumball_fx(garg_num)
-{
-	self SetInvisibleToAll();
-		
-	tag_origin = Spawn("script_model", self.origin);
-	tag_origin SetModel("tag_origin");
-	PlayFXOnTag("custom/fx_trail_blood_soul_zmb", tag_origin, "tag_origin");
 }
 
 function judge_model_think(garg_num)
