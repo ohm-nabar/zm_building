@@ -1,3 +1,4 @@
+#using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\system_shared;
@@ -36,8 +37,8 @@
 #define PANZERWURFMINE_COOLDOWN 120
 #define PANZERWURFMINE_UPGRADE_KILLS 25
 
-#define CROSSBOW_RECHARGE_KILLS_BASE 1
-#define CROSSBOW_RECHARGE_KILLS_UPGRADE 1
+#define CROSSBOW_RECHARGE_KILLS_BASE 25
+#define CROSSBOW_RECHARGE_KILLS_UPGRADE 50
 
 #define NUM_ARMORY_STATIONS 5
 
@@ -339,14 +340,16 @@ function crossbow_hintstring_think()
 function crossbow_souls_think()
 {
 	canister = GetEnt("crossbow_soulbox" + self.script_int, "targetname");
-	target_canister = GetEnt("crossbow_soulbox_target" + self.script_int, "targetname");
-	target_canister SetInvisibleToAll();
+	target_canister = struct::get("crossbow_soulbox_target" + self.script_int, "targetname");
 
 	original_pos = canister.origin;
 	z_diff = target_canister.origin[2] - canister.origin[2];
 	prev_prog = 0;
 	
-	level waittill("power_on" + self.script_int);
+	if(self.script_int > 0)
+	{
+		level waittill("power_on" + self.script_int);
+	}
 
 	while(true)
 	{
@@ -370,10 +373,7 @@ function crossbow_think()
 	self SetCursorHint("HINT_NOICON");
 	self SetHintString(&"ZOMBIE_NEED_POWER");
 
-	if(self.script_int == 1)
-	{
-		self thread crossbow_souls_think();
-	}
+	self thread crossbow_souls_think();
 
 	if(self.script_int > 0)
 	{
