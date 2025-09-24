@@ -3,6 +3,7 @@
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
+#using scripts\shared\flag_shared;
 #using scripts\shared\util_shared;
 
 #insert scripts\shared\shared.gsh;
@@ -247,11 +248,114 @@ function on_player_connect()
 		self.judge_indices[i] = 0;
 		self.judge_dialogue[i] = level.gargoyle_dialogue[i][0];
 		self thread judge_dialogue_update(i);
-		level array::thread_all(level.judge_gumballs[i], &judge_display_ball_think, i, self);
+		self.smallest_gumballs = [];
+		self thread find_closest_gumball(i, level.judge_gumballs[i]);
+		self thread judge_display_ball_think(i);
 	}
 
 	self.bribe_count = 0;
 	self.eating_gum = false;
+}
+
+function find_closest_gumball(garg_num, gumballs)
+{
+	self endon("disconnect");
+
+	while(! (level flag::exists("initial_blackscreen_passed") && level flag::get("initial_blackscreen_passed")))
+	{
+		wait(0.05);
+	}
+
+	smallest_gumball = undefined;
+	prev_smallest_gumball = undefined;
+	while(true)
+	{
+		smallest_dist = undefined;
+		foreach(gumball in gumballs)
+		{
+			dist = DistanceSquared(gumball.origin, self.origin);
+			if(! isdefined(smallest_dist) || dist < smallest_dist)
+			{
+				smallest_dist = dist;
+				smallest_gumball = gumball;
+			}
+		}
+
+		self.smallest_gumballs[garg_num] = smallest_gumball;
+
+		wait(0.05);
+	}
+}
+
+function judge_display_ball_think(garg_num)
+{
+	self endon("disconnect");
+
+	while(! (level flag::exists("initial_blackscreen_passed") && level flag::get("initial_blackscreen_passed")))
+	{
+		wait(0.05);
+	}
+
+	notif = "judge_display_update" + garg_num;
+	display_ball = undefined;
+	while(true)
+	{
+		index = self.judge_indices[garg_num];
+		gum = self.gargoyle_gums[garg_num][index];
+		gum_struct = level zm_bgb_custom_util::lookup_gobblegum(gum);
+
+		if(isdefined(display_ball))
+		{
+			display_ball Delete();
+		}
+
+		display_ball = self zm_bgb_custom_util::create_gg_model_for_player(gum_struct, (0, 0, 0), (0, 0, 0));
+
+		display_ball thread display_ball_cleanup(self);
+		display_ball thread display_ball_move(garg_num, self);
+		self waittill(notif);
+	}
+}
+
+function display_ball_move(garg_num, player)
+{
+	player endon("disconnect");
+
+	garg_names = [];
+	garg_names[0] = "Aramis";
+	garg_names[1] = "Porthos";
+	garg_names[2] = "Dart";
+	garg_names[3] = "Athos";
+
+	garg_name = garg_names[garg_num];
+
+	prev_smallest_gumball = undefined;
+	while(isdefined(self))
+	{
+		smallest_gumball = player.smallest_gumballs[garg_num];
+		if(! isdefined(prev_smallest_gumball) || smallest_gumball != prev_smallest_gumball)
+		{
+			if(isdefined(smallest_gumball))
+			{
+				prev_smallest_gumball = smallest_gumball;
+				self.origin = smallest_gumball.origin;
+				self.angles = smallest_gumball.angles;
+			}
+		}
+		wait(0.05);
+	}
+}
+
+function display_ball_cleanup(player)
+{
+	while(isdefined(self))
+	{
+		if(! isdefined(player))
+		{
+			self Delete();
+		}
+		wait(0.05);
+	}
 }
 
 function judge_dialogue_update(garg_num)
@@ -277,45 +381,6 @@ function judge_dialogue_update(garg_num)
 			bribe_index = Int(Min((num_bribes_given - 1), 3));
 			self.judge_dialogue[garg_num] = level.gargoyle_dialogue_bribe[garg_num][bribe_index];
 		}
-	}
-}
-
-function judge_display_ball_think(garg_num, player)
-{
-	player endon("disconnect");
-
-	while(! isdefined(player.gargoyle_gums))
-	{
-		wait(0.05);
-	}
-
-	notif = "judge_display_update" + garg_num;
-	display_ball = undefined;
-	while(true)
-	{
-		index = player.judge_indices[garg_num];
-		gum = player.gargoyle_gums[garg_num][index];
-		gum_struct = zm_bgb_custom_util::lookup_gobblegum(gum);
-
-		if(isdefined(display_ball))
-		{
-			display_ball Delete();
-		}
-
-		display_ball = player zm_bgb_custom_util::create_gg_model_for_player(gum_struct, self.origin, self.angles);
-		display_ball thread display_ball_cleanup(player);
-		player waittill(notif);
-	}
-}
-
-function display_ball_cleanup(player)
-{
-	self endon("delete");
-
-	player waittill("disconnect");
-	if(isdefined(self))
-	{
-		self Delete();
 	}
 }
 
