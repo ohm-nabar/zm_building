@@ -248,43 +248,11 @@ function on_player_connect()
 		self.judge_indices[i] = 0;
 		self.judge_dialogue[i] = level.gargoyle_dialogue[i][0];
 		self thread judge_dialogue_update(i);
-		self.smallest_gumballs = [];
-		self thread find_closest_gumball(i, level.judge_gumballs[i]);
 		self thread judge_display_ball_think(i);
 	}
 
 	self.bribe_count = 0;
 	self.eating_gum = false;
-}
-
-function find_closest_gumball(garg_num, gumballs)
-{
-	self endon("disconnect");
-
-	while(! (level flag::exists("initial_blackscreen_passed") && level flag::get("initial_blackscreen_passed")))
-	{
-		wait(0.05);
-	}
-
-	smallest_gumball = undefined;
-	prev_smallest_gumball = undefined;
-	while(true)
-	{
-		smallest_dist = undefined;
-		foreach(gumball in gumballs)
-		{
-			dist = DistanceSquared(gumball.origin, self.origin);
-			if(! isdefined(smallest_dist) || dist < smallest_dist)
-			{
-				smallest_dist = dist;
-				smallest_gumball = gumball;
-			}
-		}
-
-		self.smallest_gumballs[garg_num] = smallest_gumball;
-
-		wait(0.05);
-	}
 }
 
 function judge_display_ball_think(garg_num)
@@ -321,28 +289,23 @@ function display_ball_move(garg_num, player)
 {
 	player endon("disconnect");
 
-	garg_names = [];
-	garg_names[0] = "Aramis";
-	garg_names[1] = "Porthos";
-	garg_names[2] = "Dart";
-	garg_names[3] = "Athos";
-
-	garg_name = garg_names[garg_num];
-
 	prev_smallest_gumball = undefined;
 	while(isdefined(self))
 	{
-		smallest_gumball = player.smallest_gumballs[garg_num];
-		if(! isdefined(prev_smallest_gumball) || smallest_gumball != prev_smallest_gumball)
+		if(level zm_utility::is_player_valid(player))
 		{
-			if(isdefined(smallest_gumball))
+			smallest_gumball = ArrayGetClosest(player.origin, level.judge_gumballs[garg_num]);
+			if(! isdefined(prev_smallest_gumball) || smallest_gumball != prev_smallest_gumball)
 			{
-				prev_smallest_gumball = smallest_gumball;
-				self.origin = smallest_gumball.origin;
-				self.angles = smallest_gumball.angles;
+				if(isdefined(smallest_gumball))
+				{
+					prev_smallest_gumball = smallest_gumball;
+					self.origin = smallest_gumball.origin;
+					self.angles = smallest_gumball.angles;
+				}
 			}
+			wait(0.05);
 		}
-		wait(0.05);
 	}
 }
 
