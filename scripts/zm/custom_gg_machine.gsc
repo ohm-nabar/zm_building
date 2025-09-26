@@ -224,8 +224,7 @@ function __init__()
 	gargoyle_judges = struct::get_array("gargoyle_judge", "targetname");
 	level array::thread_all(gargoyle_judges, &judge_think);
 
-	gargoyle_judges_dialogue = struct::get_array("gargoyle_judge_dialogue", "targetname");
-	level array::thread_all(gargoyle_judges_dialogue, &zm_sphynx_util::create_unitrigger_for_player_specific, &"ZM_ABBEY_EMPTY", 113, &judge_dialogue_prompt_and_visibility);
+	level.gargoyle_judges_dialogue = GetEntArray("gargoyle_judge_dialogue", "targetname");
 
 	level.gargoyle_bribes = struct::get_array("abbey_bribe", "targetname");
 	level array::thread_all(level.gargoyle_bribes, &bribe_think);
@@ -255,6 +254,8 @@ function on_player_connect()
 
 	self.bribe_count = 0;
 	self.eating_gum = false;
+
+	level array::thread_all(level.gargoyle_judges_dialogue, &judge_dialogue_think, self);
 }
 
 function judge_display_ball_think(garg_num)
@@ -349,11 +350,26 @@ function judge_dialogue_update(garg_num)
 	}
 }
 
-function judge_dialogue_prompt_and_visibility(player)
+function judge_dialogue_think(player)
 {
-	garg_num = self.stub.related_parent.script_int;
-	self SetHintString(player.judge_dialogue[garg_num]);
-	return false;
+	player endon("disconnect");
+
+	self SetCursorHint("HINT_NOICON");
+
+	garg_num = self.script_int;
+
+	prev_dialogue = &"ZM_ABBEY_EMPTY";
+
+	while(true)
+	{
+		dialogue = player.judge_dialogue[garg_num];
+		if(dialogue != prev_dialogue)
+		{
+			prev_dialogue = dialogue;
+			self SetHintStringForPlayer(player, dialogue);
+		}
+		wait(0.05);
+	}
 }
 
 function judge_prompt_and_visibility(player)
@@ -393,7 +409,7 @@ function judge_prompt_and_visibility(player)
 // logic for gum machines
 function judge_think() 
 {
-	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_EMPTY", undefined, &judge_prompt_and_visibility);
+	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_EMPTY", undefined, &judge_prompt_and_visibility, undefined, undefined, true);
 
 	garg_num = self.script_int;
 	while(true) {

@@ -1830,7 +1830,7 @@ function create_unitrigger_general(str_hint, n_radius = 64, func_prompt_and_visi
 "Example: self zm_sphynx_util::create_unitrigger_for_player_specific("Hold ^3&&1^7 to pickup Key", undefined, &key_prompt_and_visibility);"
 "SPMP: both"
 @/
-function create_unitrigger_for_player_specific(str_hint, n_radius = 64, func_prompt_and_visibility = &zm_unitrigger::unitrigger_prompt_and_visibility, func_unitrigger_logic = &unitrigger_logic, s_trigger_type = "unitrigger_box_use"){
+function create_unitrigger_for_player_specific(str_hint, n_radius = 64, func_prompt_and_visibility = &zm_unitrigger::unitrigger_prompt_and_visibility, func_unitrigger_logic = &unitrigger_logic, s_trigger_type = "unitrigger_box_use", require_look_at = false){
 
     self.s_unitrigger = SpawnStruct();
     self.s_unitrigger.origin = self.origin;
@@ -1851,7 +1851,7 @@ function create_unitrigger_for_player_specific(str_hint, n_radius = 64, func_pro
         self.s_unitrigger.script_height = 128;
         self.s_unitrigger.script_length = 128;
     }
-    self.s_unitrigger.require_look_at = 0;
+    self.s_unitrigger.require_look_at = require_look_at;
     self.s_unitrigger.related_parent = self;
     self.s_unitrigger.radius = n_radius;
 
