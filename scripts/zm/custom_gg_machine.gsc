@@ -139,6 +139,8 @@
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE3" );
 #precache( "triggerstring", "ZM_ABBEY_TRIAL_DIALOGUE_ATHOS_BRIBE4" );
 
+#precache( "model", "zombietron_gold_bricks" );
+
 #namespace custom_gg_machine;
 
 REGISTER_SYSTEM( "custom_gg_machine", &__init__, undefined )
@@ -464,7 +466,7 @@ function judge_model_think(garg_num)
 function bribe_prompt_and_visibility(player)
 {
 	struct = self.stub.related_parent;
-	bribe_active = level array::contains(level.gargoyle_bribes_active, struct) || (! level.gargoyle_first_bribe_taken && struct.target == "bribe1_model");
+	bribe_active = level array::contains(level.gargoyle_bribes_active, struct) || (! level.gargoyle_first_bribe_taken && IS_EQUAL(struct.script_noteworthy, "bribe1"));
 
 	if(! (bribe_active && player zm_magicbox::can_buy_weapon()))
 	{
@@ -483,17 +485,18 @@ function bribe_prompt_and_visibility(player)
 
 function bribe_think()
 {
-	model = GetEnt(self.target, "targetname");
+	model = undefined;
 	fx_spot = undefined;
 	self.active = true;
 	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_EMPTY", undefined, &bribe_prompt_and_visibility);
 
 	while(true)
 	{
-		if(level array::contains(level.gargoyle_bribes_active, self) || (! level.gargoyle_first_bribe_taken && self.target == "bribe1_model"))
+		if(level array::contains(level.gargoyle_bribes_active, self) || (! level.gargoyle_first_bribe_taken && IS_EQUAL(self.script_noteworthy, "bribe1")))
 		{ 
-			self.active = true;
-			model SetVisibleToAll();
+			model = Spawn("script_model", self.origin);
+			model.angles = self.angles;
+			model SetModel("zombietron_gold_bricks");
 			fx_spot = Spawn("script_model", model.origin + (0, 0, BRIBE_OFFSET));
 			fx_spot SetModel("tag_origin");
 			PlayFXOnTag("custom/pistol_glint", fx_spot, "tag_origin");
@@ -511,7 +514,10 @@ function bribe_think()
 		else if(self.active)
 		{
 			self.active = false;
-			model SetInvisibleToAll();
+			if(isdefined(model))
+			{
+				model Delete();
+			}
 			if(isdefined(fx_spot))
 			{
 				fx_spot Delete();
