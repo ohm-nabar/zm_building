@@ -1,8 +1,11 @@
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
+#using scripts\shared\flag_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
+
+#insert scripts\shared\shared.gsh;
 
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_audio;
@@ -13,9 +16,10 @@
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_ai_shadowpeople;
 
-#insert scripts\shared\shared.gsh;
+#using scripts\Sphynx\_zm_sphynx_util;
 
 #precache( "triggerstring", "ZM_ABBEY_PANZERWURFMINE_USE" );
+#precache( "triggerstring", "ZM_ABBEY_PANZERWURFMINE_AMMO_FULL" );
 #precache( "triggerstring", "ZM_ABBEY_PANZERWURFMINE_RECHARGE", "2" );
 #precache( "triggerstring", "ZM_ABBEY_PANZERWURFMINE_RECHARGE_SINGULAR" );
 
@@ -37,8 +41,8 @@
 #define PANZERWURFMINE_COOLDOWN 120
 #define PANZERWURFMINE_UPGRADE_KILLS 25
 
-#define CROSSBOW_RECHARGE_KILLS_BASE 25
-#define CROSSBOW_RECHARGE_KILLS_UPGRADE 50
+#define CROSSBOW_RECHARGE_KILLS_BASE 1
+#define CROSSBOW_RECHARGE_KILLS_UPGRADE 1
 
 #define NUM_ARMORY_STATIONS 5
 
@@ -56,14 +60,14 @@ REGISTER_SYSTEM( "zm_armory", &__init__, undefined )
 
 function __init__()
 {
-	panzerwurfmine_trigs = GetEntArray("panzerwurfmine_use", "targetname");
-	
+	panzerwurfmine_trigs = struct::get_array("panzerwurfmine_use", "targetname");
 	level.panzerwurfmine = GetWeapon("zm_panzerwurfmine");
 	level.panzerwurfmine_up = GetWeapon("zm_panzerwurfmine_up");
 	level.panzerwurfmine_cost = PANZERWURFMINE_COST_BASE;
+	level.panzerwurfmine_cost_weapons = array(GetWeapon("s4_1911"), GetWeapon("s2_mas38"), GetWeapon("zm_healing_grenade"), GetWeapon("s4_gorenko_rifle"), GetWeapon("s4_mg42"), GetWeapon("s4_machinepistol"), GetWeapon("s4_mk11"), GetWeapon("s4_owen_gun"), GetWeapon("s4_nz41"), GetWeapon("s4_ratt"), GetWeapon("zm_panzerwurfmine"));
 	level.panzerwurfmine_start_of_round = [];
 	
-	crossbow_trigs = GetEntArray("crossbow_use", "targetname");
+	crossbow_trigs = struct::get_array("crossbow_use", "targetname");
 	level.crossbow_upgraded = false;
 	level.crossbow_active = false;
 	level.crossbow_recharge_kills = CROSSBOW_RECHARGE_KILLS_BASE;
@@ -206,67 +210,61 @@ function panzerwurfmine_cost_scale()
 	}
 }
 
-function panzerwurfmine_hintstring_think()
+function panzerwurfmine_prompt_and_visibility(player)
 {
-	while(! (isdefined(level.round_number) && level.round_number >= 1))
+	struct = self.stub.related_parent;
+	if(struct.script_int > 0 && ! level flag::get("power_on" + struct.script_int))
 	{
-		wait(0.05);
+		self SetHintString(&"ZOMBIE_NEED_POWER");
+		return false;
+	}
+	if(! player zm_magicbox::can_buy_weapon())
+	{
+		self SetCursorHint("HINT_NOICON");
+		self SetHintString(&"ZM_ABBEY_EMPTY");
+		return false;
+	}
+	if(struct.recharge_time > 1)
+	{
+		self SetCursorHint("HINT_NOICON");
+		self SetHintString(&"ZM_ABBEY_PANZERWURFMINE_RECHARGE", struct.recharge_time);
+		return false;
+	}
+	if(struct.recharge_time == 1)
+	{
+		self SetCursorHint("HINT_NOICON");
+		self SetHintString(&"ZM_ABBEY_PANZERWURFMINE_RECHARGE_SINGULAR");
+		return false;
+	}
+	if(player zm_weapons::has_weapon_or_upgrade(level.panzerwurfmine) && player GetFractionMaxAmmo(player zm_utility::get_player_lethal_grenade()) == 1)
+	{
+		self SetCursorHint("HINT_NOICON");
+		self SetHintString(&"ZM_ABBEY_PANZERWURFMINE_AMMO_FULL");
+		return false;
 	}
 
-	hintstring_state = -1;
-	prev_cost = level.panzerwurfmine_cost;
-	prev_recharge_time = self.recharge_time;
-	cost_weapons = array(GetWeapon("s4_1911"), GetWeapon("s2_mas38"), GetWeapon("zm_healing_grenade"), GetWeapon("s4_gorenko_rifle"), GetWeapon("s4_mg42"), GetWeapon("s4_machinepistol"), GetWeapon("s4_mk11"), GetWeapon("s4_owen_gun"), GetWeapon("s4_nz41"), GetWeapon("s4_ratt"), GetWeapon("zm_panzerwurfmine"));
-	while(true)
-	{
-		if(self.recharge_time == 0 && (hintstring_state != 0 || level.panzerwurfmine_cost != prev_cost))
-		{
-			hintstring_state = 0;
-			prev_cost = level.panzerwurfmine_cost;
-			cost_index = Int(level.round_number / 10);
-			cost_weapon = cost_weapons[cost_index];
-			self SetCursorHint("HINT_WEAPON", cost_weapon);
-			self SetHintString(&"ZM_ABBEY_PANZERWURFMINE_USE");
-		}
-		else if(self.recharge_time > 1 && (hintstring_state != 1 || self.recharge_time != prev_recharge_time))
-		{
-			hintstring_state = 1;
-			prev_recharge_time = self.recharge_time;
-			self SetCursorHint("HINT_NOICON");
-			self SetHintString(&"ZM_ABBEY_PANZERWURFMINE_RECHARGE", self.recharge_time);
-		}
-		else if(self.recharge_time == 1 && hintstring_state != 2)
-		{
-			hintstring_state = 2;
-			self SetCursorHint("HINT_NOICON");
-			self SetHintString(&"ZM_ABBEY_PANZERWURFMINE_RECHARGE_SINGULAR");
-		}
-		wait(0.05);
-	}
+	cost_index = Int(level.round_number / 10);
+	cost_weapon = level.panzerwurfmine_cost_weapons[cost_index];
+	self SetCursorHint("HINT_WEAPON", cost_weapon);
+	self SetHintString(&"ZM_ABBEY_PANZERWURFMINE_USE");
+	return true;
 }
 
 function panzerwurfmine_think()
 {
+	level waittill("start_of_round");
 	self.recharge_time = 0;
-	self SetCursorHint("HINT_NOICON");
-	self SetHintString(&"ZOMBIE_NEED_POWER");
+	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZOMBIE_NEED_POWER", undefined, &panzerwurfmine_prompt_and_visibility);
 
 	if(self.script_int > 0)
 	{
 		level waittill("power_on" + self.script_int);
 	}
 
-	self thread panzerwurfmine_hintstring_think();
-
 	while(true)
 	{
 		self.recharge_time = 0;
-		self waittill("trigger", player);
-
-		if(! (zm_utility::is_player_valid(player) && player zm_magicbox::can_buy_weapon()) || (player zm_weapons::has_weapon_or_upgrade(level.panzerwurfmine) && player GetFractionMaxAmmo(player zm_utility::get_player_lethal_grenade()) == 1))
-		{
-			continue;
-		}
+		self waittill("trigger_activated", player);
 
 		if(player.score < level.panzerwurfmine_cost)
 		{
@@ -293,47 +291,6 @@ function panzerwurfmine_think()
 				self.recharge_time = Ceil(i / 60);
 			}
 		}
-	}
-}
-
-function crossbow_hintstring_think()
-{
-	zombie_vars_defined = false;
-	while(! zombie_vars_defined)
-	{
-		if(isdefined(level.players))
-		{
-			foreach(player in level.players)
-			{
-				if(isdefined(player.zombie_vars))
-				{
-					zombie_vars_defined = true;
-					break;
-				}
-			}
-		}
-		wait(0.05);
-	}
-
-	hintstring_state = -1;
-	while(true)
-	{
-		if(level.crossbow_active && hintstring_state != 0)
-		{
-			hintstring_state = 0;
-			self SetHintString(&"ZM_ABBEY_CROSSBOW_IN_USE");
-		}
-		else if(level.crossbow_recharge_progress < level.crossbow_recharge_kills && hintstring_state != 1)
-		{
-			hintstring_state = 1;
-			self SetHintString(&"ZM_ABBEY_CROSSBOW_RECHARGE");
-		}
-		else if(! level.crossbow_active && level.crossbow_recharge_progress >= level.crossbow_recharge_kills && hintstring_state != 2)
-		{
-			hintstring_state = 2;
-			self SetHintString(&"ZM_ABBEY_CROSSBOW_USE");
-		}
-		wait(0.05);
 	}
 }
 
@@ -368,10 +325,38 @@ function crossbow_souls_think()
 	}
 }
 
+function crossbow_prompt_and_update(player)
+{
+	struct = self.stub.related_parent;
+	if(struct.script_int > 0 && ! level flag::get("power_on" + struct.script_int))
+	{
+		self SetHintString(&"ZOMBIE_NEED_POWER");
+		return false;
+	}
+	if(! player zm_magicbox::can_buy_weapon())
+	{
+		self SetHintString(&"ZM_ABBEY_EMPTY");
+		return false;
+	}
+	if(level.crossbow_active)
+	{
+		self SetHintString(&"ZM_ABBEY_CROSSBOW_IN_USE");
+		return false;
+	}
+	if(level.crossbow_recharge_progress < level.crossbow_recharge_kills)
+	{
+		self SetCursorHint("HINT_NOICON");
+		self SetHintString(&"ZM_ABBEY_CROSSBOW_RECHARGE");
+		return false;
+	}
+	
+	self SetHintString(&"ZM_ABBEY_CROSSBOW_USE");
+	return true;
+}
+
 function crossbow_think()
 {
-	self SetCursorHint("HINT_NOICON");
-	self SetHintString(&"ZOMBIE_NEED_POWER");
+	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZOMBIE_NEED_POWER", undefined, &crossbow_prompt_and_update);
 
 	self thread crossbow_souls_think();
 
@@ -380,16 +365,9 @@ function crossbow_think()
 		level waittill("power_on" + self.script_int);
 	}
 
-	self thread crossbow_hintstring_think();
-
 	while(true)
 	{
-		self waittill("trigger", player);
-
-		if(! (zm_utility::is_player_valid(player) && player zm_magicbox::can_buy_weapon()))
-		{
-			continue;
-		}
+		self waittill("trigger_activated", player);
 		
 		powerup_struct = Spawn("script_origin", player.origin);
 		if(level.crossbow_upgraded)

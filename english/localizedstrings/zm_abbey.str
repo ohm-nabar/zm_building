@@ -500,6 +500,9 @@ LANG_ENGLISH       	"Headshots"
 REFERENCE           	PANZERWURFMINE_USE
 LANG_ENGLISH       	"Press ^3[{+activate}]^7 for Panzerwurfmine [Cost: {{weapon_cost}}]"
 
+REFERENCE           	PANZERWURFMINE_AMMO_FULL
+LANG_ENGLISH       	"Panzerwurfmine ammo full"
+
 REFERENCE           	PANZERWURFMINE_RECHARGE
 LANG_ENGLISH       	"Recharging... Please wait &&1 minutes or visit another Armory location"
 
