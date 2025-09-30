@@ -1,29 +1,29 @@
 #using scripts\codescripts\struct;
+#using scripts\shared\array_shared;
+#using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
+#using scripts\shared\flag_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
-#using scripts\shared\flag_shared;
-#using scripts\shared\array_shared;
-#using scripts\shared\math_shared;
 #using scripts\shared\ai\zombie_utility;
-#using scripts\zm\_zm_utility;
-#using scripts\shared\callbacks_shared;
+
+#insert scripts\shared\version.gsh;
+#insert scripts\shared\shared.gsh;
+
 #using scripts\zm\_zm;
-#using scripts\shared\ai\systems\gib;
-#using scripts\shared\scene_shared;
-#using scripts\zm\_zm_spawner;
-#using scripts\shared\ai\zombie_utility;
+#using scripts\zm\_zm_magicbox;
+#using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_perk_electric_cherry;
 #using scripts\zm\zm_ai_shadowpeople;
 
-#insert scripts\shared\version.gsh;
-#insert scripts\shared\shared.gsh;
+#using scripts\Sphynx\_zm_sphynx_util;
 
 #precache( "fx", "custom/whirlpool" );
 #precache( "fx", "custom/water_rings" );
 #precache( "fx", "custom/fx_trail_blood_soul_zmb" );
 
+#precache( "model", "isaypwn_trident_a_view_01" );
 #precache( "model", "isaypwn_trident_b_upg_view_01" );
 
 #precache( "triggerstring", "ZM_ABBEY_TRIDENT_SEEK" );
@@ -32,7 +32,7 @@
 
 #namespace zm_trident;
 
-REGISTER_SYSTEM( "zm_trident", &__init__, undefined )
+REGISTER_SYSTEM_EX( "zm_trident", &__init__, &__main__, undefined )
 	
 function __init__()
 {
@@ -43,9 +43,9 @@ function __init__()
 
     level.abbey_pitchfork = GetWeapon("zm_pitchfork");
 
-    level.trident_statue_radius = 450;
-    level.trident_charge_radius = 65;
-    level.trident_pulse_radius = 100;
+    level.trident_statue_radius_sq = 450 * 450;
+    level.trident_charge_radius_sq = 65 * 65;
+    level.trident_pulse_radius_sq = 100 * 100;
 
 	level.trident_cooldown_time = 10;
 
@@ -66,16 +66,19 @@ function __init__()
 		level.trident_init_room = "Clean Room";
 	}
 
-    statue_trig_init = GetEnt("poseidon_statue_trigger_init", "targetname");
-    statue_trig_init thread upgrade_quest_init_think();
-
-    statue_trig = GetEnt("poseidon_statue_trigger", "targetname");
-    statue_trig thread upgrade_quest_think();
-
     callback::on_connect( &on_player_connect );
     zm::register_actor_damage_callback( &damage_adjustment );
 	zm::register_zombie_damage_override_callback( &zombie_damage_override );
     zm_weapons::add_custom_limited_weapon_check( &pitchfork_statue_check );
+}
+
+function __main__()
+{
+	statue_trig_init = struct::get("poseidon_statue_trigger_init", "targetname");
+    statue_trig_init thread upgrade_quest_init_think();
+
+    statue_trig = struct::get("poseidon_statue_trigger", "targetname");
+    statue_trig thread upgrade_quest_think();
 }
 
 function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
@@ -233,7 +236,7 @@ function water_pulse(origin, attacker, should_kill)
 	{
 		for(j = 0; j < zombies.size; j++)
 		{
-			if( isdefined(zombies[j]) && IsAlive(zombies[j]) && Distance(zombies[j].origin, origin) < level.trident_pulse_radius )
+			if( isdefined(zombies[j]) && IsAlive(zombies[j]) && DistanceSquared(zombies[j].origin, origin) < level.trident_pulse_radius_sq )
 			{
 				if(zombies[j] zm_ai_shadowpeople::is_shadow_boss() || (isdefined(zombies[j].animname) && zombies[j].animname == "quad_zombie"))
 				{
@@ -420,59 +423,89 @@ function monitor_trident_fx()
 	}
 }
 
+function statue_prompt_and_visibility(player)
+{
+	struct = self.stub.related_parent;
+
+	if(level.pitchfork_upgrading)
+	{
+		if(struct.weapon_ready)
+		{
+			if(! (player zm_magicbox::can_buy_weapon() && player == struct.upgrading_player))
+			{
+				self SetCursorHint("HINT_NOICON");
+				self SetHintString(&"ZM_ABBEY_EMPTY");
+				return false;
+			}
+			self SetCursorHint("HINT_WEAPON", level.abbey_trident);
+			self SetHintString(&"ZM_ABBEY_TAKE_WEAPON");
+			return true;
+		}
+		self SetCursorHint("HINT_NOICON");
+		self SetHintString(&"ZM_ABBEY_TRIDENT_CHARGE");
+		return false;
+	}
+	if(struct.weapon_rejected)
+	{
+		self SetCursorHint("HINT_NOICON");
+		self SetHintString(&"ZM_ABBEY_TRIDENT_REJECT");
+		return false;
+	}
+
+	self SetCursorHint("HINT_NOICON");
+	self SetHintString(&"ZM_ABBEY_TRIDENT_SEEK");
+	return true;
+}
+
 function upgrade_quest_think()
 {
-	statue = GetEnt(self.target, "targetname");
-	weapon = GetEnt(statue.target, "targetname");
+	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_TRIDENT_SEEK", undefined, &statue_prompt_and_visibility);
+	weapon_struct = struct::get("poseidon_weapon", "targetname");
 
 	while(true)
 	{
-		self SetCursorHint("HINT_NOICON");
-		self SetHintString(&"ZM_ABBEY_TRIDENT_SEEK");
-
+		self.weapon_ready = false;
+		self.weapon_rejected = false;
 		level.pitchfork_upgrading = false;
-		weapon SetInvisibleToAll();
-		upgrading_player = undefined;
+		self.upgrading_player = undefined;
+		player_weapon = level.weaponNone;
 
-		while(true)
+		while(player_weapon != level.abbey_pitchfork)
 		{
-			self waittill("trigger", player);
-			upgrading_player = player;
-			player_weapon = upgrading_player GetCurrentWeapon();
-			if(! zm_utility::is_player_valid(upgrading_player) || IS_TRUE(upgrading_player.isInBloodMode))
+			self waittill("trigger_activated", player);
+			self.upgrading_player = player;
+			player_weapon = self.upgrading_player GetCurrentWeapon();
+
+			if(player_weapon != level.abbey_pitchfork)
 			{
-				continue;
+				self.weapon_rejected = true;
+				wait(1);
+				self.weapon_rejected = false;
 			}
-			if(isdefined(player_weapon) && player_weapon == level.abbey_pitchfork)
-			{
-				break;
-			}
-			self SetHintString(&"ZM_ABBEY_TRIDENT_REJECT");
-			wait(1);
-			self SetHintString(&"ZM_ABBEY_TRIDENT_SEEK");
 		}
 
 		level.pitchfork_upgrading = true;
-		self SetHintString(&"ZM_ABBEY_TRIDENT_CHARGE");
 
-		upgrading_player zm_weapons::weapon_take(player_weapon);
+		self.upgrading_player zm_weapons::weapon_take(player_weapon);
 
-		weapon SetVisibleToAll();
+		weapon = Spawn("script_model", weapon_struct.origin);
+		weapon.angles = weapon_struct.angles;
+		weapon SetModel("isaypwn_trident_a_view_01");
 
 		kills = 0;
 		should_terminate = false;
 
 		while(kills < level.trident_upgrade_kills)
 		{
-			if( ! isdefined(upgrading_player) )
+			if( ! isdefined(self.upgrading_player) )
 			{
 				should_terminate = true;
 				wait(0.05);
 				break;
 			}
-			upgrading_player waittill(#"potential_challenge_kill", origin);
-			if(Distance(origin, statue.origin) <= level.trident_statue_radius) {
-				statue thread soul_fx(origin);
+			self.upgrading_player waittill(#"potential_challenge_kill", origin);
+			if(DistanceSquared(origin, self.origin) <= level.trident_statue_radius_sq) {
+				self thread soul_fx(origin);
 				kills++;
 			}
 		}
@@ -483,55 +516,56 @@ function upgrade_quest_think()
 			continue;
 		}
 
-		statue PlaySound("trident_complete_sting");
+		PlaySoundAtPosition("trident_complete_sting", self.origin);
 		weapon SetModel("isaypwn_trident_b_upg_view_01");
-		self SetCursorHint("HINT_WEAPON", level.abbey_trident);
-		self SetHintString(&"ZM_ABBEY_TAKE_WEAPON");
+		self.weapon_ready = true;
 
-		while(isdefined(upgrading_player))
-		{
-			self waittill("trigger", player);
-			if(player == upgrading_player && zm_utility::is_player_valid(upgrading_player) && ! IS_TRUE(upgrading_player.isInBloodMode))
-			{
-				break;
-			}
-		}
+		level util::waittill_any_ents_two(self, "trigger_activated", self.upgrading_player, "disconnect");
 
-		if(isdefined(upgrading_player))
+		weapon Delete();
+		if(isdefined(self.upgrading_player))
 		{
-			upgrading_player zm_weapons::weapon_give(level.abbey_trident);
+			self.upgrading_player zm_weapons::weapon_give(level.abbey_trident);
 		}
 		wait(0.05);
 	}
 }
 
+function statue_init_prompt_and_visibility(player)
+{
+	if(! (level.pitchfork_available && player zm_magicbox::can_buy_weapon()))
+	{
+		self SetCursorHint("HINT_NOICON");
+		self SetHintString(&"ZM_ABBEY_EMPTY");
+		return false;
+	}
+
+	self SetCursorHint("HINT_WEAPON", level.abbey_pitchfork);
+	self SetHintString(&"ZM_ABBEY_TAKE_WEAPON");
+	return true;
+}
+
 function upgrade_quest_init_think()
 {
-	self SetCursorHint("HINT_NOICON");
-	statue = GetEnt(self.target, "targetname");
-	weapon = GetEnt(statue.target, "targetname");
-	weapon SetInvisibleToAll();
+	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_EMPTY", undefined, &statue_init_prompt_and_visibility);
+	weapon_struct = struct::get("poseidon_weapon_init", "targetname");
 
 	while(! level.trident_shell_activated)
 	{
 		wait(0.05);
 	}
 
-	weapon SetVisibleToAll();
-	statue PlaySound("trident_escargot_sting");
-	self SetCursorHint("HINT_WEAPON", level.abbey_pitchfork);
-	self SetHintString(&"ZM_ABBEY_TAKE_WEAPON");
+	weapon = Spawn("script_model", weapon_struct.origin);
+	weapon.angles = weapon_struct.angles;
+	weapon SetModel("isaypwn_trident_a_view_01");
+
+	PlaySoundAtPosition("trident_escargot_sting", self.origin);
+	
 	level.pitchfork_available = true;
 
-	self waittill("trigger", player);
-	while(! zm_utility::is_player_valid(player) || IS_TRUE(player.isInBloodMode))
-	{
-		self waittill("trigger", player);
-	}
+	self waittill("trigger_activated", player);
 	player zm_weapons::weapon_give(level.abbey_pitchfork);
-	weapon SetInvisibleToAll();
-	self SetCursorHint("HINT_NOICON");
-	self SetHintString(&"ZM_ABBEY_EMPTY");
+	weapon Delete();
 	level.pitchfork_available = false;
 }
 
@@ -541,12 +575,7 @@ function soul_fx(origin)
 	fxCarrier = Spawn("script_model", origin + (0, 0, 40));
 	fxCarrier SetModel("tag_origin");
 	PlayFXOnTag("custom/fx_trail_blood_soul_zmb", fxCarrier, "tag_origin");
-	
-	dist = Distance(origin, self.origin);
-	travelTime = dist * 0.01;
-
-	fxCarrier MoveTo(self.origin + (0, 0, 40) , 0.5);
-	
+	fxCarrier MoveTo(self.origin, 0.5);
 	wait(0.5);
 	fxCarrier Delete();
 }
@@ -591,7 +620,7 @@ function trident_position_source( player, str_weapon)
 		zombies = zombie_utility::get_round_enemy_array();
 		for(j = 0; j < zombies.size; j++)
 		{
-			if( isdefined(zombies[j]) && isdefined(zombies[j].origin) && isdefined(v_pos) && Distance(zombies[j].origin, v_pos) < level.trident_charge_radius )
+			if( isdefined(zombies[j]) && isdefined(zombies[j].origin) && isdefined(v_pos) && DistanceSquared(zombies[j].origin, v_pos) < level.trident_charge_radius_sq )
 			{
 				if(zombies[j] zm_ai_shadowpeople::is_shadow_boss())
 				{
