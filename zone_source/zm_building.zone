@@ -713,6 +713,7 @@ image,notif_athos_wallbuy
 // PaP Util
 scriptparsetree,scripts/zm/_zm_pack_a_punch_util.gsc
 
+// Armory
 scriptparsetree,scripts/zm/zm_armory.gsc
 scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow.gsc
 scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow_up.gsc
@@ -725,3 +726,6 @@ weapon,ww2_crossbow_zm
 weapon,ww2_crossbow_upgraded_zm
 xmodel,ww2_crossbow_bolt_explosive
 material,specialty_giant_crossbow_zombies
+
+// PaP Wallbuy Ammo
+scriptparsetree,scripts/zm/_zm_weapons.gsc
