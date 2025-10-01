@@ -307,8 +307,8 @@ function display_ball_move(garg_num, player)
 					self.angles = smallest_gumball.angles;
 				}
 			}
-			wait(0.05);
 		}
+		wait(0.05);
 	}
 }
 
