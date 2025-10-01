@@ -179,7 +179,7 @@ function teleport_prompt_and_visibility(player)
 //-------------------------------------------------------------------------------
 function teleport_pad_think()
 {
-	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_TELEPORT_OFFLINE", undefined, &teleport_prompt_and_visibility);
+	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_TELEPORTER_OFFLINE", undefined, &teleport_prompt_and_visibility);
 
 	if(self.index > 3)
 	{
