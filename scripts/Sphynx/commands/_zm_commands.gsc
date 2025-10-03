@@ -143,6 +143,7 @@ function __init__()
     thread _set_bgb_all(); // Sets BGB quantities
     thread _set_bg_kills(); // Sets kills required to complete a Blood Gun sequence
     thread _debug_triggerstrings(); // Creates new hintstrings until the game crashes
+    thread _armory_recharge(); // Recharges the Armory
 
     if( ToLower( GetDvarString( "mapname" ) ) != "zm_castle" ){
         thread _debug_keyline_command_response(); //Add keylines around a specific model to look for it easier
@@ -465,6 +466,29 @@ function private _debug_triggerstrings(command_args)
                 wait(1);
             }
             SetDvar("triggerstring_debug", 0);
+        }
+    }
+}
+
+function private _armory_recharge(command_args)
+{
+    ModVar("armory_recharge", "");
+
+    panzerwurfmine_trigs = level struct::get_array("panzerwurfmine_use", "targetname");
+    for(;;)
+    {
+        WAIT_SERVER_FRAME
+
+        dvar_value = ToLower(GetDvarString("armory_recharge", ""));
+
+        if(isdefined(dvar_value) && dvar_value == "1")
+        {
+            foreach(trig in panzerwurfmine_trigs)
+            {
+                level.panzerwurfmine_start_of_round[trig.script_int] = true;
+            }
+            level.crossbow_recharge_progress = level.crossbow_recharge_kills;
+            SetDvar("armory_recharge", 0);
         }
     }
 }
