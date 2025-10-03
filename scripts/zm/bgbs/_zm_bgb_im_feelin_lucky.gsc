@@ -106,11 +106,12 @@ function function_29a9b9b8()
 	var_d7a75a6e = array::randomize(var_d7a75a6e);
 	foreach(str_key in var_d7a75a6e)
 	{
-		if(level.zombie_powerups[str_key].player_specific === 1)
+		if(! (level.zombie_powerups[str_key].player_specific === 1 || str_key == "shield_charge" || str_key == "crossbow" || str_key == "crossbow_up"))
 		{
-			arrayremovevalue(var_d7a75a6e, str_key);
+			return(str_key);
 		}
 	}
-	return var_d7a75a6e[0];
+
+	return "insta_kill";
 }
 
