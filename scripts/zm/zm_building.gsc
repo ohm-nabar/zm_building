@@ -135,6 +135,11 @@
 // Cleanup Manager
 #using scripts\zm\zm_giant_cleanup_mgr;
 
+// On Spawned Leak Fix
+#using scripts\zm\_zm_melee_weapon;
+#using scripts\zm\_zm_equipment;
+#using scripts\zm\_zm_perks;
+
 #insert scripts\zm\_zm_perks.gsh;
 
 #precache( "fx", "custom/magic_box_og/fx_weapon_box_marker_og" );
@@ -146,6 +151,7 @@ function main()
 	//level.default_laststandpistol = GetWeapon("ray_gun");
 	level._effect["lght_marker"] = "custom/magic_box_og/fx_weapon_box_marker_og";
 	level._effect["lght_marker_flare"] = "custom/magic_box_og/fx_weapon_box_marker_fl_og";
+	level.custom_spawnPlayer = &fixed_respawn;
 	zm_usermap::main();
 	level.dog_round_track_override = &zm_ai_shadowpeople::dog_round_tracker;
 	zm::register_actor_damage_callback( &damage_adjustment );
@@ -200,6 +206,66 @@ function main()
 	level spawner::add_archetype_spawn_function( "zombie", &zombie_custom_melee_speed );
 	level zm_flamethrower::init();
 	//testeroo();
+}
+
+function fixed_respawn()
+{
+    self zm::setSpectatePermissions(false);
+
+    origin = self.spectator_respawn.origin;
+    angles = self.spectator_respawn.angles;
+
+    new_origin = undefined;
+    if(IsFunctionPtr(level.check_valid_spawn_override))
+    {
+        new_origin = [[level.check_valid_spawn_override]](self);
+    }
+
+    if(!IsDefined(new_origin))
+    {
+        new_origin = zm::check_for_valid_spawn_near_team(self, true);
+    }
+
+    if(IsDefined(new_origin))
+    {
+        self Spawn(new_origin.origin, (!IsDefined(new_origin.angles) ? (0, 0, 0) : new_origin.angles));
+    }
+    else
+    {
+        self Spawn(origin, angles);
+    }
+
+    if(IsDefined(self zm_utility::get_player_placeable_mine()))
+    {
+        self TakeWeapon(self zm_utility::get_player_placeable_mine());
+        self zm_utility::set_player_placeable_mine(level.weaponNone);
+    }
+
+    self zm_equipment::take();
+
+    self.is_burning = undefined;
+    self.abilities = [];
+
+    // The check_for_level_end looks for this
+    self.is_zombie = false;
+    zm_laststand::set_ignoreme(false);
+
+    self clientfield::set("zmbLastStand", 0);
+    self RevivePlayer();
+
+    if(IsFunctionPtr(level._zombiemode_post_respawn_callback))
+    {
+        self thread [[level._zombiemode_post_respawn_callback]]();
+    }
+    
+    // Penalize the player when we respawn, since he 'died'
+    self zm_score::player_reduce_points("died");
+    self zm_melee_weapon::spectator_respawn_all();
+
+    self thread zm::player_zombie_breadcrumb();
+    self thread zm_perks::return_retained_perks();
+    
+    return true;
 }
 
 function bell_sound()
