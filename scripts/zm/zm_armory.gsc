@@ -1,11 +1,13 @@
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
+#using scripts\shared\clientfield_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 
 #insert scripts\shared\shared.gsh;
+#insert scripts\shared\version.gsh;
 
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_audio;
@@ -54,20 +56,24 @@
 #define TARGET_SEQUENCE_OTHER 1
 #define TARGET_SEQUENCE_SAME 2
 
+#define SYMBOL_LOOKAT_DOT 0.99
+
 #namespace zm_armory;
 
 REGISTER_SYSTEM( "zm_armory", &__init__, undefined )
 
 function __init__()
 {
-	panzerwurfmine_trigs = struct::get_array("panzerwurfmine_use", "targetname");
+	level clientfield::register( "scriptmover", "fx_floating_orb_glow", VERSION_SHIP, 1, "int" );
+
+	panzerwurfmine_trigs = level struct::get_array("panzerwurfmine_use", "targetname");
 	level.panzerwurfmine = GetWeapon("zm_panzerwurfmine");
 	level.panzerwurfmine_up = GetWeapon("zm_panzerwurfmine_up");
 	level.panzerwurfmine_cost = PANZERWURFMINE_COST_BASE;
 	level.panzerwurfmine_cost_weapons = array(GetWeapon("s4_1911"), GetWeapon("s2_mas38"), GetWeapon("zm_healing_grenade"), GetWeapon("s4_gorenko_rifle"), GetWeapon("s4_mg42"), GetWeapon("s4_machinepistol"), GetWeapon("s4_mk11"), GetWeapon("s4_owen_gun"), GetWeapon("s4_nz41"), GetWeapon("s4_ratt"), GetWeapon("zm_panzerwurfmine"));
 	level.panzerwurfmine_start_of_round = [];
 	
-	crossbow_trigs = struct::get_array("crossbow_use", "targetname");
+	crossbow_trigs = level struct::get_array("crossbow_use", "targetname");
 	level.crossbow_upgraded = false;
 	level.crossbow_active = false;
 	level.crossbow_recharge_kills = CROSSBOW_RECHARGE_KILLS_BASE;
@@ -76,6 +82,7 @@ function __init__()
 	level.target_sequence_count = [];
 	level.armory_symbols_all = array("gumball_blue", "gumball_green", "gumball_orange", "gumball_purple", "gumball_white", "gumball_aqua", "gumball_black", "gumball_red", "gumball_yellow");
 	level.armory_symbols = [];
+	level.armory_symbols_selected = [];
 	level.cur_board_symbol = [];
 	level.symbol_board_opened = [];
 	level.armory_puzzles_solved = 0;
@@ -84,9 +91,10 @@ function __init__()
 		level.panzerwurfmine_start_of_round[i] = false;
 		level.target_sequence_count[i] = 0;
 		level.armory_symbols[i] = [];
+		level.armory_symbols_selected[i] = [];
 		level.cur_board_symbol[i] = undefined;
 		level.symbol_board_opened[i] = false;
-		level thread symbol_think(i);
+		level thread symbol_board_think(i);
 	}	
 
 	level callback::on_connect(&on_player_connect);
@@ -243,7 +251,7 @@ function panzerwurfmine_prompt_and_visibility(player)
 		return false;
 	}
 
-	cost_index = Int(level.round_number / 10);
+	cost_index = Int(Min(Int(level.round_number / 10), level.panzerwurfmine_cost_weapons.size - 1));
 	cost_weapon = level.panzerwurfmine_cost_weapons[cost_index];
 	self SetCursorHint("HINT_WEAPON", cost_weapon);
 	self SetHintString(&"ZM_ABBEY_PANZERWURFMINE_USE");
@@ -297,7 +305,7 @@ function panzerwurfmine_think()
 function crossbow_souls_think()
 {
 	canister = GetEnt("crossbow_soulbox" + self.script_int, "targetname");
-	target_canister = struct::get("crossbow_soulbox_target" + self.script_int, "targetname");
+	target_canister = level struct::get("crossbow_soulbox_target" + self.script_int, "targetname");
 
 	original_pos = canister.origin;
 	z_diff = target_canister.origin[2] - canister.origin[2];
@@ -411,68 +419,20 @@ function crossbow_watch_upgrade()
 	IPrintLn("All puzzles complete!");
 }
 
-function symbol_think(gen_num)
+function symbol_board_think(gen_num)
 {
-	board_symbols = GetEntArray("symbol_board" + gen_num, "targetname");
+	board_symbols = level struct::get_array("symbol_board" + gen_num, "targetname");
 	board_symbols = level array::sort_by_script_int(board_symbols, true);
-	board_symbol_display = GetEntArray("symbol_display_board" + gen_num, "targetname");
-	board_symbol_display = level array::sort_by_script_int(board_symbol_display, true);
-	board_symbol_solution = GetEntArray("symbol_solution_board" + gen_num, "targetname");
+	board_symbol_solution = level struct::get_array("symbol_solution_board" + gen_num, "targetname");
 	board_symbol_solution = level array::sort_by_script_int(board_symbol_solution, true);
-	board_symbol_enter = GetEnt("symbol_enter_board" + gen_num, "targetname");
-	board_symbol_touching = GetEnt("symbol_touching_board" + gen_num, "targetname");
+	board_symbol_enter = level struct::get("symbol_enter_board" + gen_num, "targetname");
 	symbol_board_container = GetEnt("symbol_board_container" + gen_num, "targetname");
 	symbol_board_container_clip = GetEntArray("symbol_board_container_clip" + gen_num, "targetname");
 
-	foreach(symbol_display in board_symbol_display)
-	{
-		symbol_display SetScale(2);
-	}
-
-	foreach(symbol_solution in board_symbol_solution)
-	{
-		symbol_solution SetScale(2);
-	}
-
-	level thread board_symbol_look_handler_wrapper(gen_num, board_symbol_display, board_symbol_touching);
-	board_symbol_enter thread board_symbol_enter_think_wrapper(gen_num, board_symbol_solution);
-
-	board_symbol_enter SetCursorHint("HINT_NOICON");
-	board_symbol_enter SetHintString("");
-
-	for(i = 0; i < board_symbols.size; i++)
-	{
-		board_symbols[i] thread board_symbol_think_wrapper(gen_num, i, board_symbol_touching);
-	}
+	level thread board_symbol_look_handler_wrapper(gen_num, board_symbols);
+	board_symbol_enter thread board_symbol_enter_think_wrapper(gen_num, board_symbols, board_symbol_solution);
 
 	symbol_board_container thread symbol_board_container_think(gen_num, symbol_board_container_clip);
-}
-
-function board_symbol_think(gen_num, symbol_num, board_symbol_touching)
-{
-	level endon("target_sequence_started" + gen_num);
-	level endon("armory_puzzle_solved" + gen_num);
-	level endon("armory_puzzle_failed" + gen_num);
-
-	while(true)
-	{
-		self waittill("trigger", player);
-		if(player zm_magicbox::can_buy_weapon() && zm_utility::is_player_valid(player) && player IsTouching(board_symbol_touching))
-		{
-			level notify("board_symbol_lookat" + gen_num, symbol_num);
-		}
-	}
-}
-
-function board_symbol_think_wrapper(gen_num, symbol_num, board_symbol_touching)
-{
-	level endon("armory_puzzle_solved" + gen_num);
-
-	while(true)
-	{
-		level waittill("target_sequence_success" + gen_num);
-		self thread board_symbol_think(gen_num, symbol_num, board_symbol_touching);
-	}
 }
 
 function fx_model_cleanup(gen_num)
@@ -481,40 +441,110 @@ function fx_model_cleanup(gen_num)
 	self Delete();
 }
 
-function board_symbol_look_handler(gen_num, &board_symbol_display, board_symbol_touching)
+function fx_model_hide_on_select(gen_num)
 {
 	level endon("target_sequence_started" + gen_num);
 	level endon("armory_puzzle_solved" + gen_num);
 	level endon("armory_puzzle_failed" + gen_num);
 
-	fx_model = Spawn("script_model", board_symbol_display[0].origin);
+	while(true)
+	{
+		level waittill("armory_puzzle_select" + gen_num);
+		self clientfield::set("fx_floating_orb_glow", 0);
+	}
+}
+
+function board_symbol_look_handler(gen_num, &board_symbols)
+{
+	level endon("target_sequence_started" + gen_num);
+	level endon("armory_puzzle_solved" + gen_num);
+	level endon("armory_puzzle_failed" + gen_num);
+
+	while(! level.symbol_board_opened[gen_num])
+	{
+		wait(0.05);
+	}
+
+	fx_model = Spawn("script_model", board_symbols[0].origin);
 	fx_model thread fx_model_cleanup(gen_num);
+	fx_model thread fx_model_hide_on_select(gen_num);
 	fx_model SetModel("tag_origin");
-	PlayFXOnTag("custom/fx_trail_blood_soul_zmb", fx_model, "tag_origin");
-	fx_model Hide();
 
 	while(true)
 	{
 		level waittill("board_symbol_lookat" + gen_num, symbol_num);
-
-		if(! IS_EQUAL(level.cur_board_symbol[gen_num], symbol_num))
+		if(! (IS_EQUAL(level.cur_board_symbol[gen_num], symbol_num) || level array::contains(level.armory_symbols_selected[gen_num], level.armory_symbols_all[symbol_num])))
 		{
 			level.cur_board_symbol[gen_num] = symbol_num;
-			fx_model.origin = board_symbol_display[symbol_num].origin;
-			fx_model Show();
+			fx_model.origin = board_symbols[symbol_num].origin;
+			fx_model clientfield::set("fx_floating_orb_glow", 1);
 		}
 	}
 }
 
-function board_symbol_look_handler_wrapper(gen_num, &board_symbol_display, board_symbol_touching)
+function board_symbol_look_handler_wrapper(gen_num, &board_symbols)
 {
 	level endon("armory_puzzle_solved" + gen_num);
 
 	while(true)
 	{
 		level waittill("target_sequence_success" + gen_num);
-		level thread board_symbol_look_handler(gen_num, board_symbol_display, board_symbol_touching);
+		level thread board_symbol_look_handler(gen_num, board_symbols);
 	}
+}
+
+function board_symbol_vector_dot(origin)
+{
+	eye = self util::get_eye();
+	delta_vec = AnglesToForward(VectorToAngles(origin - eye));
+	view_vec = AnglesToForward(self GetPlayerAngles());
+	new_dot = VectorDot( delta_vec, view_vec );
+
+	return new_dot;
+}
+
+function board_symbol_look_check(gen_num, board_symbol_enter_trig, &board_symbols)
+{
+	self endon("disconnect");
+	level endon("target_sequence_started" + gen_num);
+	level endon("armory_puzzle_solved" + gen_num);
+	level endon("armory_puzzle_failed" + gen_num);
+
+	while(! level.symbol_board_opened[gen_num])
+	{
+		wait(0.05);
+	}
+
+	while(true)
+	{
+		if(! (level zm_utility::is_player_valid(self) && self zm_magicbox::can_buy_weapon() && self IsTouching(board_symbol_enter_trig)))
+		{
+			wait(0.05);
+			continue;
+		}
+		for(i = 0; i < board_symbols.size; i++)
+		{
+			dot = self board_symbol_vector_dot(board_symbols[i].origin);
+			if(dot >= SYMBOL_LOOKAT_DOT)
+			{
+				level notify("board_symbol_lookat" + gen_num, i);
+				break;
+			}
+		}
+		wait(0.05);
+	}
+}
+
+function display_model_cleanup(gen_num)
+{
+	level endon("armory_puzzle_solved" + gen_num);
+
+	event = level util::waittill_any_return("target_sequence_started" + gen_num, "armory_puzzle_failed" + gen_num);
+	if(event == "armory_puzzle_failed" + gen_num)
+	{
+		wait(PUZZLE_FAIL_WAIT);
+	}
+	self Delete();
 }
 
 function board_symbol_enter_think(gen_num, &board_symbol_solution)
@@ -526,22 +556,29 @@ function board_symbol_enter_think(gen_num, &board_symbol_solution)
 		wait(0.05);
 	}
 
-	selected_symbols = [];
-	while(selected_symbols.size < 3)
+	level.armory_symbols_selected[gen_num] = [];
+	while(level.armory_symbols_selected[gen_num].size < NUM_TARGETS)
 	{
 		self waittill("trigger", player);
 		if(isdefined(level.cur_board_symbol[gen_num]) && player zm_magicbox::can_buy_weapon() && zm_utility::is_player_valid(player))
 		{
-			selected_model = level.armory_symbols_all[level.cur_board_symbol[gen_num]];
-			display_model = board_symbol_solution[selected_symbols.size];
+			selected_index = level.cur_board_symbol[gen_num];
+			selected_model = level.armory_symbols_all[selected_index];
+			display_struct = board_symbol_solution[level.armory_symbols_selected[gen_num].size];
+
+			display_model = Spawn("script_model", display_struct.origin);
+			display_model.angles = display_struct.angles;
 			display_model SetModel(selected_model);
-			display_model Show();
-			level array::add(selected_symbols, selected_model);
+			display_model thread display_model_cleanup(gen_num);
+
+			level array::add(level.armory_symbols_selected[gen_num], selected_model);
+			level.cur_board_symbol[gen_num] = undefined;
+			level notify("armory_puzzle_select" + gen_num);
 		}
 	}
 
 	solved = true;
-	foreach(symbol in selected_symbols)
+	foreach(symbol in level.armory_symbols_selected[gen_num])
 	{
 		if(! level array::contains(level.armory_symbols[gen_num], symbol))
 		{
@@ -560,22 +597,42 @@ function board_symbol_enter_think(gen_num, &board_symbol_solution)
 		IPrintLn("Failed puzzle :(");
 		level notify("armory_puzzle_failed" + gen_num);
 	}
+
+	return solved;
 }
 
-function board_symbol_enter_think_wrapper(gen_num, &board_symbol_solution)
+function board_symbol_enter_trig_spawn(origin, angles, width, length, height)
 {
-	level endon("armory_puzzle_solved" + gen_num);
+	trig = Spawn("trigger_box_use", origin, 0, width, length, height);
+	trig.angles = angles;
+	trig TriggerIgnoreTeam();
+	trig SetCursorHint("HINT_NOICON");
+	return trig;
+}
+
+function board_symbol_enter_think_wrapper(gen_num, &board_symbols, &board_symbol_solution)
+{
+	origin = self.origin;
+	angles = self.angles;
+	dimensions = StrTok(self.script_string, " ");
+	width = Float(dimensions[0]);
+	length = Float(dimensions[1]);
+	height = Float(dimensions[2]);
 
 	solved = false;
-	while(true)
+	while(! IS_TRUE(solved))
 	{
-		wait(PUZZLE_FAIL_WAIT);
-		foreach(symbol_solution in board_symbol_solution)
-		{
-			symbol_solution Hide();
-		}
 		level waittill("target_sequence_success" + gen_num);
-		self board_symbol_enter_think(gen_num, board_symbol_solution);
+		board_symbol_enter_trig = level board_symbol_enter_trig_spawn(origin, angles, width, length, height);
+
+		foreach(player in level.players)
+		{
+			player thread board_symbol_look_check(gen_num, board_symbol_enter_trig, board_symbols);
+		}
+
+		solved = board_symbol_enter_trig board_symbol_enter_think(gen_num, board_symbol_solution);
+
+		board_symbol_enter_trig Delete();
 	}
 }
 
@@ -605,26 +662,23 @@ function generate_target_symbols(gen_num)
 	level.armory_symbols[gen_num] = level array::clamp_size(random_symbols, NUM_TARGETS);
 }
 
-function target_delete_on_solve(gen_num, symbol)
+function target_delete_on_solve(gen_num)
 {
 	level waittill("armory_puzzle_solved" + gen_num);
 
 	self Delete();
-	symbol Delete();
 }
 
 function target_think()
 {
 	self SetCanDamage(true);
 	gen_num = self.script_int;
-	symbol = GetEnt(self.target, "targetname");
-	symbol SetScale(2);
-	self thread target_delete_on_solve(gen_num, symbol);
+	symbol = level struct::get(self.target, "targetname");
+	self thread target_delete_on_solve(gen_num);
 	level endon("armory_puzzle_solved" + gen_num);
 
 	while(true)
 	{
-		symbol Hide();
 		self waittill("damage", n_damage, e_attacker, v_dir, v_loc, str_type, STR_MODEL, str_tag, str_part, w_weapon);
 		if(w_weapon != level.zombie_powerup_weapon[ "crossbow" ])
 		{
@@ -647,17 +701,20 @@ function target_think()
 function target_shot_think(gen_num, symbol)
 {
 	symbol_index = level.target_sequence_count[gen_num];
-	symbol_model = level.armory_symbols[gen_num][symbol_index];
+	symbol_model_name = level.armory_symbols[gen_num][symbol_index];
 
 	level.target_sequence_count[gen_num] += 1;
 	self RotateYaw(180, 0.1);
-	symbol SetModel(symbol_model);
-	symbol Show();	
+	symbol_model = Spawn("script_model", symbol.origin);
+	symbol_model.angles = symbol.angles;
+	symbol_model SetModel(symbol_model_name);
+	symbol_model SetScale(2);
 	result = level util::waittill_any_return("target_sequence_success" + gen_num, "target_sequence_fail" + gen_num);
 	if(result == "target_sequence_success" + gen_num)
 	{
 		wait(TARGET_WAIT);
 	}
+	symbol_model Delete();
 	self RotateYaw(180, 0.1);
 }
 
