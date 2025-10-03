@@ -51,7 +51,6 @@ function __init__()
 	level.countdown = 0;
 
 	level.teleport_delay = 2;
-	level.active_timer = -1;
 	level.teleport_time = 0;
 	level.link_time = 45;
 
@@ -245,12 +244,7 @@ function teleport_pad_think()
 //-------------------------------------------------------------------------------
 function teleport_pad_countdown()
 {
-	level endon( #"stop_countdown" );
-
-	if ( level.active_timer < 0 )
-	{
-		level.active_timer = self.index;
-	}
+	self endon( #"stop_countdown" );
 
 	level.countdown++;
 
@@ -269,24 +263,22 @@ function teleport_pad_countdown()
 	}
 	wait( level.link_time+1 );
 
-	if ( level.active_timer == self.index )
-	{
-		level.active_timer = -1;
-	}
-
 	// ran out of time to activate teleporter
 	level.teleport[self.index] = "timer_off";
 	should_end_timer = true;
+	IPrintLn("timer off");
 	for(i = 0; i < level.teleport.size; i++)
 	{
 		if(level.teleport[i] == "timer_on")
 		{
+			IPrintLn("timer " + i + " still on");
 			should_end_timer = false;
 			break;
 		}
 	}
 	if(should_end_timer)
 	{
+		IPrintLn("timer (totally) off");
 		level.current_links = 0;
 		level util::clientNotify( "TRs" );	// Stop flashing the receiver map light
 	}
@@ -345,9 +337,8 @@ function start_timer( time, stop_notify )
 
 function sndCountdown()
 {
-	level endon( #"stop_countdown" );
+	self endon( #"stop_countdown" );
 	
-
 	clock_sound = spawn ("script_origin", (0,0,0));
 	clock_sound thread clock_timer();
 	
@@ -684,6 +675,7 @@ function reactivate_shadow_vision()
 
 function stop_countdown()
 {
+	self notify(#"stop_countdown");
 	level notify (#"stop_countdown");  //using this on the new loop timer
 	players = GetPlayers();
 	
