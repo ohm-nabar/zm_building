@@ -17,6 +17,9 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_ai_shadowpeople;
+#using scripts\zm\zm_healing_grenade;
+
+#insert scripts\zm\zm_armory.gsh;
 
 #using scripts\Sphynx\_zm_sphynx_util;
 
@@ -37,26 +40,6 @@
 #precache( "model", "gumball_black" );
 #precache( "model", "gumball_red" );
 #precache( "model", "gumball_yellow" );
-
-#define PANZERWURFMINE_COST_BASE 500
-#define PANZERWURFMINE_COST_MAX 512000
-#define PANZERWURFMINE_COOLDOWN 120
-#define PANZERWURFMINE_UPGRADE_KILLS 25
-
-#define CROSSBOW_RECHARGE_KILLS_BASE 25
-#define CROSSBOW_RECHARGE_KILLS_UPGRADE 50
-
-#define NUM_ARMORY_STATIONS 5
-
-#define NUM_TARGETS 3
-#define TARGET_WAIT 4
-#define PUZZLE_FAIL_WAIT 1.5
-
-#define TARGET_SEQUENCE_INACTIVE 0
-#define TARGET_SEQUENCE_OTHER 1
-#define TARGET_SEQUENCE_SAME 2
-
-#define SYMBOL_LOOKAT_DOT 0.99
 
 #namespace zm_armory;
 
@@ -117,52 +100,99 @@ function on_player_connect()
 {
 	self.panzerwurfmine_upgrade_kills = 0;
 	self.b_has_upgraded_panzerwurfmine = false;
+
+	self.cymbal_monkey_upgrade_kills = 0;
+	self.b_has_upgraded_cymbal_monkey = false;
+
+	self.healing_grenade_upgrade_kills = 0;
+	self.b_has_upgraded_healing_grenade = false;
+
 	self thread panzerwurfmine_award_grenade_skip();
 	self thread panzerwurfmine_watch_upgrade();
 }
 
 function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
 {
-	if (! self zm_ai_shadowpeople::is_shadow_person() && (willBeKilled && ! IS_TRUE(self.marked_for_recycle)) || (IsPlayer(attacker) && level.zombie_vars[attacker.team]["zombie_insta_kill"]))
+	if (! self zm_ai_shadowpeople::is_shadow_person() && ((willBeKilled && ! IS_TRUE(self.marked_for_recycle)) || (IsPlayer(attacker) && level.zombie_vars[attacker.team]["zombie_insta_kill"])))
 	{
 		if(level.crossbow_recharge_progress < level.crossbow_recharge_kills)
 		{
 			level.crossbow_recharge_progress += 1;
 		}
-		if(IsPlayer(attacker) && weapon == level.panzerwurfmine && attacker.panzerwurfmine_upgrade_kills < PANZERWURFMINE_UPGRADE_KILLS)
+		if(IsPlayer(attacker))
 		{
-			attacker.panzerwurfmine_upgrade_kills += 1;
-			if(attacker.panzerwurfmine_upgrade_kills >= PANZERWURFMINE_UPGRADE_KILLS)
+			if(weapon == level.panzerwurfmine && attacker.panzerwurfmine_upgrade_kills < PANZERWURFMINE_UPGRADE_KILLS)
 			{
-				IPrintLn("Panzerwurfmine upgrade ready!");
+				attacker.panzerwurfmine_upgrade_kills += 1;
+				if(attacker.panzerwurfmine_upgrade_kills >= PANZERWURFMINE_UPGRADE_KILLS)
+				{
+					IPrintLn("Panzerwurfmine upgrade ready!");
+				}
+			}
+			if(weapon == level.weaponZMCymbalMonkey && attacker.cymbal_monkey_upgrade_kills < MONKEY_UPGRADE_KILLS)
+			{
+				attacker.cymbal_monkey_upgrade_kills += 1;
+				if(attacker.cymbal_monkey_upgrade_kills >= MONKEY_UPGRADE_KILLS)
+				{
+					IPrintLn("Monkey Bomb upgrade ready!");
+				}
 			}
 		}
 	}
 }
 
+function grenade_upgrade_check(grenade, weapon, well_bottom)
+{
+	self endon("disconnect");
+
+	while(isdefined(grenade) && ! grenade IsTouching(well_bottom))
+	{
+		wait(0.05);
+	}
+
+	if(isdefined(grenade))
+	{
+		grenade Delete();
+		if(weapon == level.panzerwurfmine && self.panzerwurfmine_upgrade_kills >= PANZERWURFMINE_UPGRADE_KILLS)
+		{
+			IPrintLn("Upgraded Panzerwurfmine!");
+			self.b_has_upgraded_panzerwurfmine = true;
+			self zm_weapons::weapon_give(level.panzerwurfmine_up);
+		}
+		else if(weapon == level.weaponZMCymbalMonkey && self.cymbal_monkey_upgrade_kills >= MONKEY_UPGRADE_KILLS)
+		{
+			IPrintLn("Upgraded Monkey Bomb!");
+			self.b_has_upgraded_cymbal_monkey = true;
+			self zm_weapons::weapon_give(level.w_cymbal_monkey_upgraded);
+		}
+		else if(weapon == level.healingGrenade && self.healing_grenade_upgrade_kills >= HEALING_UPGRADE_KILLS)
+		{
+			IPrintLn("Upgraded Healing Grenade!");
+			self.b_has_upgraded_healing_grenade = true;
+			self zm_weapons::weapon_give(level.healingGrenadeUpgraded);
+		}
+		else
+		{
+			IPrintLn("Not yet!");
+		}
+	}
+}
+
+// Rewrite this to infinite(?) loop with separate threads for wurfmine, monkey, & hg
 function panzerwurfmine_watch_upgrade()
 {
 	self endon("disconnect");
 
 	well_bottom = GetEnt("golden_well_bottom", "targetname");
 	grenade = undefined;
-	while(! (isdefined(grenade) && grenade IsTouching(well_bottom)))
+	while(true)
 	{
 		self waittill( "grenade_fire", grenade, weapon );
-		if(weapon != level.panzerwurfmine)
+		if(weapon == level.panzerwurfmine || weapon == level.weaponZMCymbalMonkey || weapon == level.healingGrenade)
 		{
-			continue;
-		}
-		while(isdefined(grenade) && ! grenade IsTouching(well_bottom))
-		{
-			wait(0.05);
+			self thread grenade_upgrade_check(grenade, weapon, well_bottom);
 		}
 	}
-
-	grenade Delete();
-	IPrintLn("Upgraded Panzerwurfmine!");
-	self.b_has_upgraded_panzerwurfmine = true;
-	self zm_weapons::weapon_give(level.panzerwurfmine_up);
 }
 
 function panzerwurfmine_award_grenade_skip()

@@ -1,3 +1,4 @@
+#using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\laststand_shared;
@@ -14,9 +15,15 @@
 #using scripts\zm\zm_ai_shadowpeople;
 #using scripts\zm\zm_juggernog_potions;
 
-#precache ( "fx", "electric/fx_elec_sparks_burst_sm_physx_wind" );
-#precache ( "fx", "custom/healing_grenade" );
+#insert scripts\zm\zm_armory.gsh;
 
+#precache( "fx", "custom/healing_grenade" );
+#precache( "fx", "dlc3/stalingrad/fx_cymbal_monkey_radial_pulse" );
+
+#define HEALING_GRENADE_RADIUS 300
+#define TURNED_KILL_RADIUS_SQ 50
+#define MAX_TURNED_ZOMBIES 3
+#define MAX_TURNED_ZOMBIES_UPGRADED 8
 
 // MAIN
 //*****************************************************************************
@@ -25,12 +32,15 @@ function main()
 {
 	zm_utility::register_tactical_grenade_for_level( "zm_healing_grenade" );
 	level.healingGrenade = GetWeapon( "zm_healing_grenade" );
-	level.healingElectricEffect = "electric/fx_elec_sparks_burst_sm_physx_wind";
+	level.healingGrenadeUpgraded = GetWeapon( "zm_healing_grenade_up" );
+	level._effect["monkey_bass"] 	= "dlc3/stalingrad/fx_cymbal_monkey_radial_pulse";
 
 	level.zombie_weapons_callbacks[level.weaponZMCymbalMonkey] = &player_give_cymbal_monkey;
-	zm_weapons::register_zombie_weapon_callback( level.healingGrenade, &player_give_healing_grenade);
-	callback::on_connect( &on_player_connect );
-	callback::on_laststand( &on_laststand );
+	level.zombie_weapons_callbacks[level.w_cymbal_monkey_upgraded] = &player_give_cymbal_monkey_up;
+	level zm_weapons::register_zombie_weapon_callback( level.healingGrenade, &player_give_healing_grenade);
+	level zm_weapons::register_zombie_weapon_callback( level.healingGrenadeUpgraded, &player_give_healing_grenade_up);
+	level callback::on_connect( &on_player_connect );
+	level callback::on_laststand( &on_laststand );
 }
 
 function player_give_cymbal_monkey()
@@ -41,9 +51,36 @@ function player_give_cymbal_monkey()
 	{
 		self TakeWeapon( self zm_utility::get_player_tactical_grenade() );
 	}
-		
-	self giveweapon( level.weaponZMCymbalMonkey );
-	self zm_utility::set_player_tactical_grenade( level.weaponZMCymbalMonkey );
+	
+	if(self.b_has_upgraded_cymbal_monkey)
+	{
+		self GiveWeapon( level.w_cymbal_monkey_upgraded );
+		self zm_utility::set_player_tactical_grenade( level.w_cymbal_monkey_upgraded );
+	}
+	else
+	{
+		self GiveWeapon( level.weaponZMCymbalMonkey );
+		self zm_utility::set_player_tactical_grenade( level.weaponZMCymbalMonkey );
+	}
+	
+	self thread _zm_weap_cymbal_monkey::player_handle_cymbal_monkey();
+}
+
+function player_give_cymbal_monkey_up()
+{
+	self endon("disconnect");
+
+	if ( isdefined( self zm_utility::get_player_tactical_grenade() ) )
+	{
+		self TakeWeapon( self zm_utility::get_player_tactical_grenade() );
+	}
+	
+	// If we got it from Crate Power, set upgrade to true
+	self.b_has_upgraded_cymbal_monkey = true;
+
+	self GiveWeapon( level.w_cymbal_monkey_upgraded );
+	self zm_utility::set_player_tactical_grenade( level.w_cymbal_monkey_upgraded );
+
 	self thread _zm_weap_cymbal_monkey::player_handle_cymbal_monkey();
 }
 
@@ -55,9 +92,33 @@ function player_give_healing_grenade()
 	{
 		self TakeWeapon( self zm_utility::get_player_tactical_grenade() );
 	}
-		
-	self giveweapon( level.healingGrenade );
-	self zm_utility::set_player_tactical_grenade( level.healingGrenade );
+
+	if(self.b_has_upgraded_healing_grenade)
+	{
+		self GiveWeapon( level.healingGrenadeUpgraded );
+		self zm_utility::set_player_tactical_grenade( level.healingGrenadeUpgraded );
+	}
+	else
+	{
+		self GiveWeapon( level.healingGrenade );
+		self zm_utility::set_player_tactical_grenade( level.healingGrenade );
+	}
+}
+
+function player_give_healing_grenade_up()
+{
+	self endon("disconnect");
+
+	if ( isdefined( self zm_utility::get_player_tactical_grenade() ) )
+	{
+		self TakeWeapon( self zm_utility::get_player_tactical_grenade() );
+	}
+
+	// If we got it from Crate Power, set upgrade to true
+	self.b_has_upgraded_healing_grenade = true;
+
+	self GiveWeapon( level.healingGrenadeUpgraded );
+	self zm_utility::set_player_tactical_grenade( level.healingGrenadeUpgraded );
 }
 
 function on_player_connect()
@@ -75,11 +136,11 @@ function check_thrown()
 	while(1)
 	{
 		self waittill( "grenade_fire", grenade, weapName );
-		if( weapName == level.healingGrenade)
+		if( weapName == level.healingGrenade || weapName == level.healingGrenadeUpgraded )
 		{
 			self PlaySoundOnTag("healing_throw", "tag_weapon_right");
 			wait(0.05);
-			level thread spawn_aura(grenade, self);
+			level thread spawn_aura(grenade, self, weapName);
 		}
 		else
 		{
@@ -88,7 +149,7 @@ function check_thrown()
 	}
 }
 
-function spawn_aura(grenade, reviver)
+function spawn_aura(grenade, reviver, weapon)
 {
 	grenade waittill("stationary");
 
@@ -96,6 +157,12 @@ function spawn_aura(grenade, reviver)
 	fx_pos SetModel("tag_origin");
 	PlayFXOnTag("custom/healing_grenade", fx_pos, "tag_origin");
 	PlaySoundAtPosition("healing_aura", grenade.origin);
+
+	max_turned = MAX_TURNED_ZOMBIES;
+	if(weapon == level.healingGrenadeUpgraded)
+	{
+		max_turned = MAX_TURNED_ZOMBIES_UPGRADED;
+	}
 
 	grenade.zombies_turned = 0;
 
@@ -108,9 +175,13 @@ function spawn_aura(grenade, reviver)
 		}
 
 		zombies = GetAISpeciesArray("axis", "all");
-		for(i = 0; i < zombies.size && grenade.zombies_turned < 10; i++)
+		closest_zombies = level array::get_all_closest(grenade.origin, GetAITeamArray( "axis" ), undefined, undefined, HEALING_GRENADE_RADIUS);
+		foreach(zombie in closest_zombies)
 		{
-			zombies[i] zombie_check(grenade, reviver);
+			if(grenade.zombies_turned < max_turned)
+			{
+				zombie zombie_check(grenade, reviver);
+			}
 		}
 		wait(0.05);
 	}
@@ -127,7 +198,8 @@ function players_check(grenade, reviver)
 {
 	self endon("disconnect");
 
-	if((self laststand::player_is_in_laststand() && DistanceSquared(grenade.origin, self.origin) <= 90000))
+	radius_sq = HEALING_GRENADE_RADIUS * HEALING_GRENADE_RADIUS;
+	if((self laststand::player_is_in_laststand() && DistanceSquared(grenade.origin, self.origin) <= radius_sq))
 	{
 		if(level flag::get("solo_game"))
 		{
@@ -151,23 +223,65 @@ function players_check(grenade, reviver)
 	}	
 }
 
+function upgrade_kills_track(zombie)
+{
+	self endon("disconnect");
+
+	prev_turned_kills = 0;
+	while(isdefined(zombie))
+	{
+		if(zombie.n_aat_turned_zombie_kills > prev_turned_kills)
+		{
+			kill_diff = zombie.n_aat_turned_zombie_kills - prev_turned_kills;
+			prev_turned_kills = zombie.n_aat_turned_zombie_kills;
+			if(self.healing_grenade_upgrade_kills < HEALING_UPGRADE_KILLS)
+			{
+				self.healing_grenade_upgrade_kills += kill_diff;
+				if(self.healing_grenade_upgrade_kills >= HEALING_UPGRADE_KILLS)
+				{
+					IPrintLn("Healing Grenade upgrade ready!");
+				}
+			}
+		}
+		wait(0.05);
+	}
+}
+
+function extra_validation()
+{
+	if(! (isdefined(self) && IsAlive(self)))
+	{
+		return false;
+	}
+	if(IS_EQUAL(self.team, "allies"))
+	{
+		return false;
+	}
+
+	return true;
+}
+
 function zombie_check(grenade, player)
 {
 	self endon("death");
 
-	if(DistanceSquared(grenade.origin, self.origin) <= 90000 && self zm_aat_turned::turned_zombie_validation() && ! self zm_ai_shadowpeople::is_shadow_person())
+	if(self zm_aat_turned::turned_zombie_validation() && self extra_validation() && ! self zm_ai_shadowpeople::is_shadow_person())
 	{
 		zombies = GetAISpeciesArray("axis", "all");
 		ArrayRemoveValue(zombies, self);
 		foreach(zombie in zombies)
 		{
-			if(DistanceSquared(self.origin, zombie.origin) <= 50)
+			if(DistanceSquared(self.origin, zombie.origin) <= TURNED_KILL_RADIUS_SQ)
 			{
 				zombie DoDamage(zombie.health + 666, grenade.origin, player, player);
 			}
 		}
-
 		self zm_aat_turned::result("death", player, "MOD_UNKNOWN", level.healingGrenade);
+
+		if(player.healing_grenade_upgrade_kills < HEALING_UPGRADE_KILLS)
+		{
+			player thread upgrade_kills_track(self);
+		}
 		grenade.zombies_turned += 1;
 	}
 }

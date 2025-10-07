@@ -120,6 +120,7 @@ weapon,zm_diedrich_upgraded
 weapon,zm_pitchfork
 weapon,zm_trident
 weapon,zm_healing_grenade
+weapon,zm_healing_grenade_up
 weapon,bare_hands_t7
 
 weapon,zombie_perk_bottle_nuke
@@ -716,6 +717,7 @@ scriptparsetree,scripts/zm/_zm_pack_a_punch_util.gsc
 // Armory
 scriptparsetree,scripts/zm/zm_armory.gsc
 scriptparsetree,scripts/zm/zm_armory.csc
+scriptparsetree,scripts/zm/zm_armory.gsh
 scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow.gsc
 scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow_up.gsc
 scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow.csc
@@ -727,6 +729,14 @@ weapon,ww2_crossbow_zm
 weapon,ww2_crossbow_upgraded_zm
 xmodel,ww2_crossbow_bolt_explosive
 material,specialty_giant_crossbow_zombies
+
+// Upgraded Monkey
+weapon,cymbal_monkey_upgraded_zm
+fx,dlc3/stalingrad/fx_cymbal_monkey_radial_pulse
+
+// Healing Grenade Turned "Fix"
+scriptparsetree,scripts/zm/aats/_zm_aat_turned.gsc
+scriptparsetree,scripts/zm/aats/_zm_aat_turned.gsh
 
 // PaP Wallbuy Ammo
 scriptparsetree,scripts/zm/_zm_weapons.gsc
