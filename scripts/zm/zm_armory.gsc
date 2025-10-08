@@ -61,6 +61,7 @@ function __init__()
 	level.crossbow_active = false;
 	level.crossbow_recharge_kills = CROSSBOW_RECHARGE_KILLS_BASE;
 	level.crossbow_recharge_progress = CROSSBOW_RECHARGE_KILLS_BASE;
+	level.crossbow_recharge_progress_min = CROSSBOW_RECHARGE_PROGRESS_MIN_BASE;
 
 	level.target_sequence_count = [];
 	level.armory_symbols_all = array("gumball_blue", "gumball_green", "gumball_orange", "gumball_purple", "gumball_white", "gumball_aqua", "gumball_black", "gumball_red", "gumball_yellow");
@@ -113,14 +114,14 @@ function on_player_connect()
 
 function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
 {
-	if (! self zm_ai_shadowpeople::is_shadow_person() && ((willBeKilled && ! IS_TRUE(self.marked_for_recycle)) || (IsPlayer(attacker) && level.zombie_vars[attacker.team]["zombie_insta_kill"])))
+	if (! self zm_ai_shadowpeople::is_shadow_person() && isdefined(attacker) && weapon != level.zombie_powerup_weapon["crossbow"] && weapon != level.zombie_powerup_weapon["crossbow_up"])
 	{
-		if(level.crossbow_recharge_progress < level.crossbow_recharge_kills)
+		if(IsPlayer(attacker) && (willBeKilled || level.zombie_vars[attacker.team]["zombie_insta_kill"]))
 		{
-			level.crossbow_recharge_progress += 1;
-		}
-		if(IsPlayer(attacker))
-		{
+			if(level.crossbow_recharge_progress < level.crossbow_recharge_kills)
+			{
+				level.crossbow_recharge_progress += 1;
+			}
 			if(weapon == level.panzerwurfmine && attacker.panzerwurfmine_upgrade_kills < PANZERWURFMINE_UPGRADE_KILLS)
 			{
 				attacker.panzerwurfmine_upgrade_kills += 1;
@@ -136,6 +137,13 @@ function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags
 				{
 					IPrintLn("Monkey Bomb upgrade ready!");
 				}
+			}
+		}
+		else if(isdefined(attacker.activated_by_player) && willBeKilled)
+		{
+			if(level.crossbow_recharge_progress < level.crossbow_recharge_kills)
+			{
+				level.crossbow_recharge_progress += 1;
 			}
 		}
 	}
@@ -340,6 +348,7 @@ function crossbow_souls_think()
 	original_pos = canister.origin;
 	z_diff = target_canister.origin[2] - canister.origin[2];
 	prev_prog = 0;
+	prev_upgraded = false;
 	
 	if(self.script_int > 0)
 	{
@@ -348,16 +357,29 @@ function crossbow_souls_think()
 
 	while(true)
 	{
-		new_prog = level.crossbow_recharge_progress - prev_prog;
-		prev_prog = level.crossbow_recharge_progress;
-		if(new_prog > 0)
+		if(level.crossbow_upgraded && ! prev_upgraded)
 		{
+			if(level.crossbow_active)
+			{
+				while(level.crossbow_active)
+				{
+					wait(0.05);
+				}
+			}
+			else
+			{
+				prev_upgraded = true;
+				z_diff_upg = target_canister.origin[2] - canister.origin[2];
+				canister MoveZ(z_diff_upg, 0.05);
+			}
+			prev_prog = level.crossbow_recharge_progress;
+		}
+		else
+		{
+			new_prog = level.crossbow_recharge_progress - prev_prog;
+			prev_prog = level.crossbow_recharge_progress;
 			z_inc = (z_diff / level.crossbow_recharge_kills) * new_prog;
 			canister MoveZ(z_inc, 0.05);
-		}
-		else if(new_prog < 0)
-		{
-			canister MoveZ(-z_diff, 0.05);
 		}
 		wait(0.05);
 	}
@@ -407,6 +429,7 @@ function crossbow_think()
 	{
 		self waittill("trigger_activated", player);
 		
+		prev_upgraded = level.crossbow_upgraded;
 		powerup_struct = Spawn("script_origin", player.origin);
 		if(level.crossbow_upgraded)
 		{
@@ -425,17 +448,29 @@ function crossbow_think()
 
 		powerup_struct zm_powerups::powerup_grab(player.team);
 		level.crossbow_active = true;
+		time = 0;
 		while(isdefined(player) && (player.zombie_vars[ "zombie_powerup_crossbow_on" ] || player.zombie_vars[ "zombie_powerup_crossbow_up_on" ]))
 		{
+			time += 0.05;
 			wait(0.05);
 		}
 		level.crossbow_active = false;
-		level.crossbow_recharge_progress = 0;
+		if(! level.crossbow_upgraded || prev_upgraded)
+		{	
+			level set_crossbow_recharge_progress(time);
+		}
 		while(level.crossbow_recharge_progress < level.crossbow_recharge_kills)
 		{
 			wait(0.05);
 		}
 	}
+}
+
+function set_crossbow_recharge_progress(time)
+{
+	time_remaining = CROSSBOW_MAX_TIME - Min(time, CROSSBOW_MAX_TIME);
+	progress = (time_remaining / CROSSBOW_MAX_TIME) * level.crossbow_recharge_kills;
+	level.crossbow_recharge_progress = Int(Min(progress, level.crossbow_recharge_progress_min));
 }
 
 function crossbow_watch_upgrade()
@@ -445,6 +480,9 @@ function crossbow_watch_upgrade()
 		wait(0.05);
 	}
 
+	level.crossbow_recharge_kills = CROSSBOW_RECHARGE_KILLS_UPGRADE;
+	level.crossbow_recharge_progress = level.crossbow_recharge_kills;
+	level.crossbow_recharge_progress_min = CROSSBOW_RECHARGE_PROGRESS_MIN_UPGRADE;
 	level.crossbow_upgraded = true;
 	IPrintLn("All puzzles complete!");
 }
