@@ -17,7 +17,6 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_ai_shadowpeople;
-#using scripts\zm\zm_healing_grenade;
 
 #insert scripts\zm\zm_armory.gsh;
 
@@ -53,7 +52,8 @@ function __init__()
 	level.panzerwurfmine = GetWeapon("zm_panzerwurfmine");
 	level.panzerwurfmine_up = GetWeapon("zm_panzerwurfmine_up");
 	level.panzerwurfmine_cost = PANZERWURFMINE_COST_BASE;
-	level.panzerwurfmine_cost_weapons = array(GetWeapon("s4_1911"), GetWeapon("s2_mas38"), GetWeapon("zm_healing_grenade"), GetWeapon("s4_gorenko_rifle"), GetWeapon("s4_mg42"), GetWeapon("s4_machinepistol"), GetWeapon("s4_mk11"), GetWeapon("s4_owen_gun"), GetWeapon("s4_nz41"), GetWeapon("s4_ratt"), GetWeapon("zm_panzerwurfmine"));
+	level.panzerwurfmine_cost_weapons = array(GetWeapon("s4_1911"), GetWeapon("s2_mas38"), GetWeapon("zm_healing_grenade"), GetWeapon("s4_gorenko_rifle"), GetWeapon("s4_mg42"), GetWeapon("s4_machinepistol"), GetWeapon("s4_mk11"), GetWeapon("s4_owen_gun"), GetWeapon("s4_nz41"));
+	level.panzerwurfmine_cost_index = 0;
 	level.panzerwurfmine_start_of_round = [];
 	
 	crossbow_trigs = level struct::get_array("crossbow_use", "targetname");
@@ -186,7 +186,6 @@ function grenade_upgrade_check(grenade, weapon, well_bottom)
 	}
 }
 
-// Rewrite this to infinite(?) loop with separate threads for wurfmine, monkey, & hg
 function panzerwurfmine_watch_upgrade()
 {
 	self endon("disconnect");
@@ -200,6 +199,39 @@ function panzerwurfmine_watch_upgrade()
 		{
 			self thread grenade_upgrade_check(grenade, weapon, well_bottom);
 		}
+		else if(weapon == level.panzerwurfmine_up)
+		{
+			self thread panzerwurfmine_upgrade_damage(grenade);
+		}
+	}
+}
+
+function filter_invalid_zombies(zombie)
+{
+	return (isdefined(zombie) && IsAlive(zombie) && ! zombie zm_ai_shadowpeople::is_shadow_person());
+}
+
+function panzerwurfmine_upgrade_damage(grenade)
+{
+	origin = undefined;
+
+	while(isdefined(grenade))
+	{
+		origin = grenade.origin;
+		wait(0.05);
+	}
+
+	if(! isdefined(origin))
+	{
+		return;
+	}
+
+	zombies = GetAISpeciesArray("axis", "all");
+	exclude_zombies = level array::filter(zombies, false, &filter_invalid_zombies);
+	closest_zombies = level array::get_all_closest(origin, zombies, undefined, PANZERWURFMINE_UPGRADE_MAX_ZOMBIES, PANZERWURFMINE_UPGRADE_RADIUS);
+	foreach(zombie in closest_zombies)
+	{
+		zombie DoDamage(zombie.health + 666, origin, self, self);
 	}
 }
 
@@ -244,7 +276,7 @@ function panzerwurfmine_cost_scale()
 {
 	while(level.panzerwurfmine_cost < PANZERWURFMINE_COST_MAX)
 	{
-		for(i = 0; i < 10; i++)
+		for(i = 0; i < PANZERWURFMINE_COST_SCALE_ROUNDS; i++)
 		{
 			level waittill("start_of_round");
 			for(i = 0; i < NUM_ARMORY_STATIONS; i++)
@@ -252,7 +284,8 @@ function panzerwurfmine_cost_scale()
 				level.panzerwurfmine_start_of_round[i] = true;
 			}
 		}
-		level.panzerwurfmine_cost *= 2;
+		level.panzerwurfmine_cost *= PANZERWURFMINE_COST_MULT;
+		level.panzerwurfmine_cost_index += 1;
 	}
 }
 
@@ -289,8 +322,7 @@ function panzerwurfmine_prompt_and_visibility(player)
 		return false;
 	}
 
-	cost_index = Int(Min(Int(level.round_number / 10), level.panzerwurfmine_cost_weapons.size - 1));
-	cost_weapon = level.panzerwurfmine_cost_weapons[cost_index];
+	cost_weapon = level.panzerwurfmine_cost_weapons[level.panzerwurfmine_cost_index];
 	self SetCursorHint("HINT_WEAPON", cost_weapon);
 	self SetHintString(&"ZM_ABBEY_PANZERWURFMINE_USE");
 	return true;
