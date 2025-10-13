@@ -17,8 +17,9 @@ REGISTER_SYSTEM( "zm_trident", &__init__, undefined )
 	
 function __init__()
 {
-	clientfield::register( "actor", "trident_linger", VERSION_SHIP, 1, "int", &trident_linger, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
-	clientfield::register( "allplayers", "trident_glow", VERSION_SHIP, 2, "int", &trident_glow, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	level clientfield::register( "actor", "trident_linger", VERSION_SHIP, 1, "int", &trident_linger, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	level clientfield::register( "allplayers", "trident_glow", VERSION_SHIP, 2, "int", &trident_glow, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	level clientfield::register( "clientuimodel", "tridentClip", VERSION_SHIP, 1, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 }
 
 function trident_linger( localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fieldName, bWasTimeJump )//self = zombie

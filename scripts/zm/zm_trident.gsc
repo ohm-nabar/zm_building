@@ -11,6 +11,7 @@
 #insert scripts\shared\shared.gsh;
 
 #using scripts\zm\_zm;
+#using scripts\zm\_zm_bgb;
 #using scripts\zm\_zm_magicbox;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
@@ -36,8 +37,9 @@ REGISTER_SYSTEM_EX( "zm_trident", &__init__, &__main__, undefined )
 	
 function __init__()
 {
-	clientfield::register( "actor", "trident_linger", VERSION_SHIP, 1, "int" );
-	clientfield::register( "allplayers", "trident_glow", VERSION_SHIP, 2, "int");
+	level clientfield::register( "actor", "trident_linger", VERSION_SHIP, 1, "int" );
+	level clientfield::register( "allplayers", "trident_glow", VERSION_SHIP, 2, "int");
+	level clientfield::register( "clientuimodel", "tridentClip", VERSION_SHIP, 1, "int");
 
     level.abbey_trident = GetWeapon("zm_trident");
 
@@ -66,10 +68,10 @@ function __init__()
 		level.trident_init_room = "Clean Room";
 	}
 
-    callback::on_connect( &on_player_connect );
-    zm::register_actor_damage_callback( &damage_adjustment );
-	zm::register_zombie_damage_override_callback( &zombie_damage_override );
-    zm_weapons::add_custom_limited_weapon_check( &pitchfork_statue_check );
+    level callback::on_connect( &on_player_connect );
+    level zm::register_actor_damage_callback( &damage_adjustment );
+	level zm::register_zombie_damage_override_callback( &zombie_damage_override );
+    level zm_weapons::add_custom_limited_weapon_check( &pitchfork_statue_check );
 }
 
 function __main__()
@@ -83,9 +85,50 @@ function __main__()
 
 function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
 {
-	if(willBeKilled && isdefined(attacker) && IsPlayer(attacker) && isdefined(weapon) && weapon == level.abbey_trident)
+	if(isdefined(attacker) && IsPlayer(attacker) && weapon == level.abbey_trident)
 	{
-		self.no_powerups = true;
+		if(willBeKilled)
+		{
+			self.no_powerups = true;
+		}
+		if(meansofdeath == "MOD_MELEE")
+		{
+			attacker thread preserve_ammo_on_melee();
+		}
+	}
+}
+
+function preserve_ammo_on_melee()
+{
+	self endon("disconnect");
+
+	stock_ammo = self GetWeaponAmmoStock(level.abbey_trident);
+	if(self bgb::is_enabled( "zm_bgb_stock_option" ) && stock_ammo > 0)
+	{
+		stock_ammo_start = stock_ammo;
+		while(stock_ammo == stock_ammo_start)
+		{
+			wait(0.05);
+			stock_ammo = self GetWeaponAmmoStock(level.abbey_trident);
+		}
+		if(stock_ammo < stock_ammo_start)
+		{
+			self SetWeaponAmmoStock(level.abbey_trident, stock_ammo_start);
+		}
+	}
+	else
+	{
+		clip_ammo = self GetWeaponAmmoClip(level.abbey_trident);
+		if(clip_ammo == 0)
+		{
+			return;
+		}
+		while(clip_ammo > 0)
+		{
+			wait(0.05);
+			clip_ammo = self GetWeaponAmmoClip(level.abbey_trident);
+		}
+		self SetWeaponAmmoClip(level.abbey_trident, 1);
 	}
 }
 
@@ -93,9 +136,9 @@ function on_player_connect()
 {
 	self.trident_power_level = 0;
 	self.trident_melee_kills = 0;
+	self clientfield::set_player_uimodel("tridentClip", 1);
 
-	self thread watch_trident_fired();
-	self thread monitor_trident_fired();
+	self thread monitor_trident();
 	self thread monitor_trident_melee_streaks();
 	self thread monitor_trident_melee_reset();
 	self thread monitor_trident_fx();
@@ -145,7 +188,7 @@ function pitchfork_pack_block(player)
 
 function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType  )
 {
-	if (isPlayer( attacker ) && isdefined(level.abbey_trident) && isdefined(weapon) && weapon == level.abbey_trident && meansofdeath == "MOD_PROJECTILE")
+	if (isPlayer( attacker ) && weapon == level.abbey_trident && meansofdeath == "MOD_PROJECTILE")
 	{
 		if(self zm_ai_shadowpeople::is_shadow_boss())
 		{
@@ -157,7 +200,7 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 
 	if (isPlayer( attacker ) && meansofdeath == "MOD_MELEE")
 	{
-		if(isdefined(level.abbey_pitchfork) && isdefined(weapon) && weapon == level.abbey_pitchfork)
+		if(weapon == level.abbey_pitchfork)
 		{
 			if(self zm_ai_shadowpeople::is_shadow_boss())
 			{
@@ -169,7 +212,7 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 			}
 		}
 
-		if(isdefined(level.abbey_trident) && isdefined(weapon) && weapon == level.abbey_trident)
+		if(weapon == level.abbey_trident)
 		{
 			if(self zm_ai_shadowpeople::is_shadow_boss())
 			{
@@ -580,24 +623,85 @@ function soul_fx(origin)
 	fxCarrier Delete();
 }
 
-//from Harry Bo21's staff code
-function watch_trident_fired()
+function monitor_trident()
 {
 	self endon( "disconnect" );
 	
-	while ( 1 )
+	trident_clip = 0;
+	allow_melee = true;
+	while(true)
 	{
-		self waittill( #"trident_fired", e_projectile, str_weapon);
-		fire_angles = vectorToAngles( self getWeaponForwardDir() );
-		fire_origin = self getWeaponMuzzlePoint();
-		e_projectile thread trident_position_source( self, str_weapon);
+		current_weapon = self GetCurrentWeapon();
+		if(current_weapon == level.abbey_trident)
+		{
+			if(self GetWeaponAmmoClip(level.abbey_trident) == 1)
+			{
+				if(trident_clip == 0)
+				{
+					trident_clip = 1;
+					self clientfield::set_player_uimodel("tridentClip", 1);
+				}
+			}
+			else
+			{
+				trident_clip = 0;
+			}
+
+			if(! self.shadowPoseidon)
+			{
+				melee_cond = (self IsReloading() || self IsSlamming());
+				if(melee_cond && allow_melee)
+				{
+					allow_melee = false;
+					self AllowMelee(false);
+				}
+				else if(! melee_cond && ! allow_melee)
+				{
+					allow_melee = true;
+					self AllowMelee(true);
+				}
+			}
+
+			if(self IsSlamming())
+			{
+				while(! self IsOnGround())
+				{
+					wait(0.05);
+				}
+				self thread trident_create_whirlpool();
+				while(self IsSlamming())
+				{
+					wait(0.05);
+				}
+			}
+		}
+		else if(current_weapon != level.abbey_trident && ! allow_melee && ! self.shadowPoseidon)
+		{
+			allow_melee = true;
+			self AllowMelee(true);
+		}
+		wait(0.05);
 	}
 }
 
-function trident_position_source( player, str_weapon)
+function trident_create_whirlpool()
 {
-	self util::waittill_any( "grenade_bounce", "stationary", "death", "explode" );
+	self endon("disconnect");
 
+	if(self GetAmmoCount(level.abbey_trident) == 0)
+	{
+		return;
+	}
+	stock_ammo = self GetWeaponAmmoStock(level.abbey_trident);
+	if(self bgb::is_enabled( "zm_bgb_stock_option" ) && stock_ammo > 0)
+	{
+		self SetWeaponAmmoStock(level.abbey_trident, stock_ammo - 1);
+	}
+	else
+	{
+		self SetWeaponAmmoClip(level.abbey_trident, 0);
+		self clientfield::set_player_uimodel("tridentClip", 0);
+	}
 	//IPrintLn("DONEZO");
 	
 	/*
@@ -606,7 +710,7 @@ function trident_position_source( player, str_weapon)
 	*/
 
 	v_pos = self.origin;
-	v_pos += (0, 0, 10);
+	//v_pos += (0, 0, 10);
 	//IPrintLn(v_pos);
 
 	//PlaySoundAtPosition("trident_whirlpool", v_pos, player);
@@ -671,24 +775,6 @@ function check_for_death()
 	self waittill("death");
 	self ASMSetAnimationRate(1);
 	self clientfield::set( "trident_linger", 0 );
-}
-
-//from Harry Bo21's staff code
-function monitor_trident_fired()
-{
-	self endon( "disconnect" );
-	
-	while ( 1 )
-	{
-		self waittill( "missile_fire", e_projectile, str_weapon );
-		
-		if ( isdefined(str_weapon) && str_weapon != level.abbey_trident )
-		{
-			continue;
-		}
-
-		self notify( #"trident_fired", e_projectile, str_weapon);
-	}
 }
 
 

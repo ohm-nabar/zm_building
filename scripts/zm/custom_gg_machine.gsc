@@ -4,21 +4,20 @@
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\flag_shared;
+#using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 
 #insert scripts\shared\shared.gsh;
 #insert scripts\shared\version.gsh;
 
 #using scripts\zm\_zm_audio;
-#using scripts\zm\_zm_utility;
-
 #using scripts\zm\_zm_magicbox;
 #using scripts\zm\_zm_perks;
-
-#using scripts\shared\system_shared;
+#using scripts\zm\_zm_utility;
 
 #using scripts\zm\zm_bgb_custom_util;
 #using scripts\zm\zm_challenges;
+#using scripts\zm\zm_trident;
 
 #using scripts\Sphynx\_zm_sphynx_util;
 
@@ -472,6 +471,10 @@ function judge_model_think(garg_num)
 		self waittill("damage", n_damage, e_attacker, v_dir, v_loc, str_type, STR_MODEL, str_tag, str_part, w_weapon);
 		if(IsPlayer(e_attacker) && str_type == "MOD_MELEE")
 		{	
+			if(w_weapon == level.abbey_trident)
+			{
+				e_attacker thread zm_trident::preserve_ammo_on_melee();
+			}
 			e_attacker.judge_indices[garg_num] = (e_attacker.judge_indices[garg_num] + 1) % e_attacker.gargoyle_gums[garg_num].size;
 			notif = "judge_display_update" + garg_num;
 			e_attacker notify(notif);

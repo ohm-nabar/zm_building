@@ -268,14 +268,29 @@ function fixed_respawn()
     return true;
 }
 
+function bell_cooldown_reset()
+{
+	wait(3);
+	self.on_cooldown = false;
+}
+
 function bell_sound()
 {
 	self SetCanDamage(true);
+	self.on_cooldown = false;
 	while(true)
 	{
 		self waittill("damage", n_damage, e_attacker, v_dir, v_loc, str_type, STR_MODEL, str_tag, str_part, w_weapon);
-		self PlaySound("abbey_bell");
-		wait(3);
+		if(w_weapon == level.abbey_trident && str_type == "MOD_MELEE")
+		{
+			e_attacker thread zm_trident::preserve_ammo_on_melee();
+		}
+		if(! self.on_cooldown)
+		{
+			self PlaySound("abbey_bell");
+			self.on_cooldown = true;
+			self thread bell_cooldown_reset();
+		}
 	}
 }
 

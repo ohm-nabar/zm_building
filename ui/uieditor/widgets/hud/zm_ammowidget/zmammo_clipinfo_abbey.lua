@@ -22,16 +22,37 @@ CoD.ZmAmmo_ClipInfo.new = function ( menu, controller )
 	Clip:setTopBottom( true, false, 0, 48 )
 	Clip:setZoom( 3 )
 	Clip:subscribeToGlobalModel( controller, "CurrentWeapon", "ammoInClip", function ( model )
-		local ammoInClip = Engine.GetModelValue( model )
-		if ammoInClip then
-			Clip.Clip:setText( Engine.Localize( ammoInClip ) )
+		local weaponName = Engine.GetModelValue(Engine.GetModel(Engine.GetModelForController(controller), "currentWeapon.equippedWeaponReference"))
+		if weaponName ~= "zm_trident" then
+			local ammoInClip = Engine.GetModelValue( model )
+			if ammoInClip then
+				Clip.Clip:setText( Engine.Localize( ammoInClip ) )
+			end
+		else
+			local tridentClip = Engine.GetModelValue(Engine.GetModel(Engine.GetModelForController(controller), "tridentClip"))
+			Clip.Clip:setText( Engine.Localize( tridentClip ) )
+		end
+	end )
+	Clip:subscribeToModel(Engine.GetModel(Engine.GetModelForController(controller), "tridentClip"), function( model )
+		local weaponName = Engine.GetModelValue(Engine.GetModel(Engine.GetModelForController(controller), "currentWeapon.equippedWeaponReference"))
+		if weaponName == "zm_trident" then
+			local tridentClip = Engine.GetModelValue( model )
+			if tridentClip then
+				Clip.Clip:setText( Engine.Localize( tridentClip ) )
+			end
 		end
 	end )
 	Clip:mergeStateConditions( {
 		{
 			stateName = "LowAmmo",
 			condition = function ( menu, element, event )
-				return IsLowAmmoClip( controller ) and WeaponHasAmmo( controller )
+				local weaponName = Engine.GetModelValue(Engine.GetModel(Engine.GetModelForController(controller), "currentWeapon.equippedWeaponReference"))
+				if weaponName ~= "zm_trident" then
+					return IsLowAmmoClip( controller ) and WeaponHasAmmo( controller )
+				else
+					local tridentClip = Engine.GetModelValue(Engine.GetModel(Engine.GetModelForController(controller), "tridentClip"))
+					return tridentClip == 0 and WeaponHasAmmo( controller )
+				end
 			end
 		},
 		{
@@ -39,7 +60,13 @@ CoD.ZmAmmo_ClipInfo.new = function ( menu, controller )
 			condition = function ( menu, element, event )
 				local f4_local0
 				if not WeaponHasAmmo( controller ) then
-					f4_local0 = WeaponUsesAmmo( controller )
+					local weaponName = Engine.GetModelValue(Engine.GetModel(Engine.GetModelForController(controller), "currentWeapon.equippedWeaponReference"))
+					if weaponName ~= "zm_trident" then
+						f4_local0 = WeaponUsesAmmo( controller )
+					else
+						local tridentClip = Engine.GetModelValue(Engine.GetModel(Engine.GetModelForController(controller), "tridentClip"))
+						f4_local0 = tridentClip == 0
+					end
 				else
 					f4_local0 = false
 				end

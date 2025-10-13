@@ -64,6 +64,7 @@ function on_player_connect()
 	self.shadowDouble = false;
 	self.shadowPHD = false;
 	self.shadowMule = false;
+	self.shadowPoseidon = false;
 	self LUINotifyEvent(&"generator_unshadowed", 0);
 }
 
@@ -324,9 +325,11 @@ function shadow_poseidon_effects()
 {
 	self endon("disconnect");
 
+	self.shadowPoseidon = true;
 	self AllowMelee(false);
 	level waittill("last_ai_down");
 	self AllowMelee(true);
+	self.shadowPoseidon = false;
 }
 
 function shadow_cherry_effects()

@@ -17,6 +17,7 @@
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\zm_ai_shadowpeople;
+#using scripts\zm\zm_trident;
 
 #insert scripts\zm\zm_armory.gsh;
 
@@ -746,6 +747,10 @@ function symbol_board_container_think(gen_num, &symbol_board_container_clip)
 	while(w_weapon != level.panzerwurfmine)
 	{
 		self waittill("damage", n_damage, e_attacker, v_dir, v_loc, str_type, STR_MODEL, str_tag, str_part, w_weapon);
+		if(w_weapon == level.abbey_trident && str_type == "MOD_MELEE")
+		{
+			e_attacker thread zm_trident::preserve_ammo_on_melee();
+		}
 	}
 
 	self Delete();
@@ -878,6 +883,10 @@ function golden_well_think()
 	while(! (w_weapon == level.zombie_powerup_weapon[ "crossbow_up" ] && str_type == "MOD_PROJECTILE_SPLASH"))
 	{
 		well_cover waittill("damage", n_damage, e_attacker, v_dir, v_loc, str_type, STR_MODEL, str_tag, str_part, w_weapon);
+		if(w_weapon == level.abbey_trident && str_type == "MOD_MELEE")
+		{
+			e_attacker thread zm_trident::preserve_ammo_on_melee();
+		}
 	}
 
 	well_cover Delete();
