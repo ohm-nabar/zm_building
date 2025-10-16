@@ -47,8 +47,6 @@ REGISTER_SYSTEM( "zm_armory", &__init__, undefined )
 
 function __init__()
 {
-	level clientfield::register( "scriptmover", "fx_floating_orb_glow", VERSION_SHIP, 1, "int" );
-
 	panzerwurfmine_trigs = level struct::get_array("panzerwurfmine_use", "targetname");
 	level.panzerwurfmine = GetWeapon("zm_panzerwurfmine");
 	level.panzerwurfmine_up = GetWeapon("zm_panzerwurfmine_up");

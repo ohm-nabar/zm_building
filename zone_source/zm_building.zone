@@ -716,7 +716,6 @@ scriptparsetree,scripts/zm/_zm_pack_a_punch_util.gsc
 
 // Armory
 scriptparsetree,scripts/zm/zm_armory.gsc
-scriptparsetree,scripts/zm/zm_armory.csc
 scriptparsetree,scripts/zm/zm_armory.gsh
 scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow.gsc
 scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow_up.gsc
