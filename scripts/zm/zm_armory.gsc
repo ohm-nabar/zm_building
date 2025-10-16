@@ -335,7 +335,7 @@ function panzerwurfmine_think()
 
 	if(self.script_int > 0)
 	{
-		level waittill("power_on" + self.script_int);
+		level flag::wait_till("power_on" + self.script_int);
 	}
 
 	while(true)

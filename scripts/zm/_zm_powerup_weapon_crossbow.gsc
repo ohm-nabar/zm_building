@@ -38,20 +38,21 @@ REGISTER_SYSTEM( "zm_powerup_weapon_crossbow", &__init__, undefined )
 //-----------------------------------------------------------------------------------
 function __init__()
 {
-	zm_powerups::register_powerup( "crossbow", &grab_crossbow );
-	zm_powerups::register_powerup_weapon( "crossbow", &crossbow_countdown );
-	zm_powerups::powerup_set_prevent_pick_up_if_drinking( "crossbow", true );
-	zm_powerups::powerup_set_statless_powerup( "crossbow" );
-	zm_powerups::set_weapon_ignore_max_ammo( "crossbow" );
+	level zm_powerups::register_powerup( "crossbow", &grab_crossbow );
+	level zm_powerups::register_powerup_weapon( "crossbow", &crossbow_countdown );
+	level zm_powerups::powerup_set_prevent_pick_up_if_drinking( "crossbow", true );
+	level zm_powerups::powerup_set_statless_powerup( "crossbow" );
+	level zm_powerups::set_weapon_ignore_max_ammo( "crossbow" );
 
 	if( ToLower( GetDvarString( "g_gametype" ) ) != "zcleansed" )
 	{
-		zm_powerups::add_zombie_powerup( "crossbow", "zombie_pickup_minigun", &"ZOMBIE_POWERUP_MINIGUN", &func_should_drop_crossbow, POWERUP_ONLY_AFFECTS_GRABBER, !POWERUP_ANY_TEAM, !POWERUP_ZOMBIE_GRABBABLE, undefined, "powerup_crossbow", "zombie_powerup_crossbow_time", "zombie_powerup_crossbow_on" );
+		level zm_powerups::add_zombie_powerup( "crossbow", "zombie_pickup_minigun", &"ZOMBIE_POWERUP_MINIGUN", &func_should_drop_crossbow, POWERUP_ONLY_AFFECTS_GRABBER, !POWERUP_ANY_TEAM, !POWERUP_ZOMBIE_GRABBABLE, undefined, "powerup_crossbow", "zombie_powerup_crossbow_time", "zombie_powerup_crossbow_on" );
 		level.zombie_powerup_weapon[ "crossbow" ] = GetWeapon( "ww2_crossbow" );
 	}
 	
-	callback::on_connect( &init_player_zombie_vars);
-	zm::register_actor_damage_callback( &crossbow_damage_adjust );
+	level callback::on_connect( &init_player_zombie_vars);
+	level callback::on_laststand(&crossbow_powerup_last_stand);
+	level zm::register_actor_damage_callback( &crossbow_damage_adjust );
 }
 
 function grab_crossbow( player )
@@ -106,9 +107,6 @@ function crossbow_weapon_powerup( ent_player, time )
 		return;
 	}
 	
-	// make sure weapons are replaced properly if the player is downed
-	level._zombie_crossbow_powerup_last_stand_func = &crossbow_powerup_last_stand;
-	
 	stance_disabled = false;
 	//powerup cannot be switched to if player is in prone
 	if( ent_player GetStance() === "prone" )
@@ -123,7 +121,7 @@ function crossbow_weapon_powerup( ent_player, time )
 		}
 	}
 	
-	zm_powerups::weapon_powerup( ent_player, time, "crossbow", true );
+	level zm_powerups::weapon_powerup( ent_player, time, "crossbow", true );
 	
 	if( stance_disabled )
 	{
@@ -134,7 +132,7 @@ function crossbow_weapon_powerup( ent_player, time )
 
 function crossbow_powerup_last_stand()
 {
-	zm_powerups::weapon_watch_gunner_downed( "crossbow" );
+	self zm_powerups::weapon_watch_gunner_downed( "crossbow" );
 }
 
 function crossbow_countdown( ent_player, str_weapon_time )
