@@ -92,6 +92,9 @@ LANG_ENGLISH       "You do not posess the weapon I seek"
 REFERENCE           	TRIDENT_CHARGE
 LANG_ENGLISH       "Charging weapon..."
 
+REFERENCE           	TRIDENT_HINT
+LANG_ENGLISH       "Press ^3[{+attack}]^7 to Melee\nPress ^3[{+speed_throw}]^7 to Whirlpool Slam\nMelee kills increase Power Level temporarily"
+
 REFERENCE           	JOURNAL_HEADER_CHALLENGE
 LANG_ENGLISH       "Perk Challenges"
 

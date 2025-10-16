@@ -12,17 +12,34 @@
 
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_bgb;
+#using scripts\zm\_zm_equipment;
 #using scripts\zm\_zm_magicbox;
 #using scripts\zm\_zm_utility;
+#using scripts\zm\_zm_weap_thundergun;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_perk_electric_cherry;
 #using scripts\zm\zm_ai_shadowpeople;
 
 #using scripts\Sphynx\_zm_sphynx_util;
 
-#precache( "fx", "custom/whirlpool" );
-#precache( "fx", "custom/water_rings" );
-#precache( "fx", "custom/fx_trail_blood_soul_zmb" );
+#define TRIDENT_STATUE_RADIUS_SQ 202500 // 450^2
+#define TRIDENT_PULSE_RADIUS_SQ 10000 // 100^2
+#define TRIDENT_UPGRADE_KILLS 25
+
+#define TRIDENT_MELEE_DAMAGE 2702 // Kills through Round 20
+#define TRIDENT_STREAK_KILLS 5
+#define TRIDENT_COOLDOWN_TIME 30
+#define TRIDENT_WATER_PULSE_TIME 1
+#define TRIDENT_WHIRLPOOL_RADIUS_SQ 8100 // 90^2
+#define TRIDENT_WHIRLPOOL_TIME 8
+#define TRIDENT_SLOWDOWN_TIME 8
+#define TRIDENT_WHIRLPOOL_SCALAR 50
+#define TRIDENT_FLING_ZOMBIES_MAX 4
+#define TRIDENT_FLING_SCALAR 100
+#define TRIDENT_FLING_RADIUS 100
+
+#define ELECTRIC_CHERRY_STUN_CYCLES 4
+
 
 #precache( "model", "isaypwn_trident_a_view_01" );
 #precache( "model", "isaypwn_trident_b_upg_view_01" );
@@ -30,6 +47,8 @@
 #precache( "triggerstring", "ZM_ABBEY_TRIDENT_SEEK" );
 #precache( "triggerstring", "ZM_ABBEY_TRIDENT_REJECT" );
 #precache( "triggerstring", "ZM_ABBEY_TRIDENT_CHARGE" );
+
+#precache( "string", "ZM_ABBEY_TRIDENT_HINT" );
 
 #namespace zm_trident;
 
@@ -39,25 +58,17 @@ function __init__()
 {
 	level clientfield::register( "actor", "trident_linger", VERSION_SHIP, 1, "int" );
 	level clientfield::register( "allplayers", "trident_glow", VERSION_SHIP, 2, "int");
+	level clientfield::register( "scriptmover", "trident_ring", VERSION_SHIP, 1, "int");
+	level clientfield::register( "scriptmover", "trident_whirlpool", VERSION_SHIP, 1, "int");
+	level clientfield::register( "scriptmover", "fx_floating_orb_glow", VERSION_SHIP, 1, "int" );
 	level clientfield::register( "clientuimodel", "tridentClip", VERSION_SHIP, 1, "int");
 
     level.abbey_trident = GetWeapon("zm_trident");
 
     level.abbey_pitchfork = GetWeapon("zm_pitchfork");
 
-    level.trident_statue_radius_sq = 450 * 450;
-    level.trident_charge_radius_sq = 65 * 65;
-    level.trident_pulse_radius_sq = 100 * 100;
-
-	level.trident_cooldown_time = 10;
-
-    level.pitchfork_melee_damage = 2702;
-    level.trident_melee_damage = 2702;
-
 	level.pitchfork_available = false;
     level.pitchfork_upgrading = false;
-
-    level.trident_upgrade_kills = 25;
 
     level.pack_a_punch.custom_validation = &pitchfork_pack_block;
 
@@ -72,6 +83,7 @@ function __init__()
     level zm::register_actor_damage_callback( &damage_adjustment );
 	level zm::register_zombie_damage_override_callback( &zombie_damage_override );
     level zm_weapons::add_custom_limited_weapon_check( &pitchfork_statue_check );
+	level zm_weapons::register_zombie_weapon_callback( level.abbey_trident, &player_give_trident );
 }
 
 function __main__()
@@ -95,6 +107,10 @@ function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags
 		{
 			attacker thread preserve_ammo_on_melee();
 		}
+	}
+	if(IS_TRUE(self.thundergun_death))
+	{
+		self.no_powerups = true;
 	}
 }
 
@@ -142,8 +158,6 @@ function on_player_connect()
 	self thread monitor_trident_melee_streaks();
 	self thread monitor_trident_melee_reset();
 	self thread monitor_trident_fx();
-	//self thread display_trident_power_level();
-	//self thread testeroo();
 }
 
 function pitchfork_statue_check(weapon)
@@ -208,7 +222,7 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 			}
 			else
 			{
-				return level.pitchfork_melee_damage;
+				return TRIDENT_MELEE_DAMAGE;
 			}
 		}
 
@@ -242,11 +256,11 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 						attacker.trident_melee_kills += 1;
 						return self.health + 666;
 					}
-					if (level.trident_melee_damage >= self.health)
+					if (TRIDENT_MELEE_DAMAGE >= self.health)
 					{
 						attacker.trident_melee_kills += 1;
 					}
-					return level.trident_melee_damage;
+					return TRIDENT_MELEE_DAMAGE;
 				}
 				else if(attacker.trident_power_level == 1)
 				{
@@ -273,19 +287,17 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 
 function water_pulse(origin, attacker, should_kill)
 {
-	PlayFX("custom/water_rings", origin + (0, 0, 45));
+	fx_model = Spawn("script_model", origin + (0, 0, 45));
+	fx_model SetModel("tag_origin");
+	fx_model clientfield::set("trident_ring", 1);
 	zombies = zombie_utility::get_round_enemy_array();
-	for(i = 0; i < 20; i++)
+	for(i = 0; i < TRIDENT_WATER_PULSE_TIME; i += 0.05)
 	{
 		for(j = 0; j < zombies.size; j++)
 		{
-			if( isdefined(zombies[j]) && IsAlive(zombies[j]) && DistanceSquared(zombies[j].origin, origin) < level.trident_pulse_radius_sq )
+			if( isdefined(zombies[j]) && IsAlive(zombies[j]) && DistanceSquared(zombies[j].origin, origin) < TRIDENT_PULSE_RADIUS_SQ && ! zombies[j] zm_ai_shadowpeople::is_shadow_boss() )
 			{
-				if(zombies[j] zm_ai_shadowpeople::is_shadow_boss() || (isdefined(zombies[j].animname) && zombies[j].animname == "quad_zombie"))
-				{
-					continue;
-				}
-				else if(should_kill)
+				if(should_kill)
 				{
 					//IPrintLn("real damage");
 					zombies[j].no_powerups = true;
@@ -294,12 +306,33 @@ function water_pulse(origin, attacker, should_kill)
 				else
 				{
 					zombies[j].trident_shocked = true;
-					zombies[j] thread zm_perk_electric_cherry::electric_cherry_stun();
-					zombies[j] thread monitor_stun();
+					if(IS_EQUAL(zombies[j].animname, "quad_zombie"))
+					{
+						zombies[j] thread quad_stun();
+					}
+					else
+					{
+						zombies[j] thread zm_perk_electric_cherry::electric_cherry_stun();
+						zombies[j] thread monitor_stun();
+					}
 				}
 			}
 		}
 		wait(0.05);
+	}
+	fx_model Delete();
+}
+
+function quad_stun()
+{
+	self ASMSetAnimationRate(0);
+	self clientfield::set("trident_linger", 1);
+	wait(ELECTRIC_CHERRY_STUN_CYCLES);
+	if(isdefined(self) && ! IS_TRUE(self.trident_slowdown))
+	{
+		self.trident_shocked = false;
+		self ASMSetAnimationRate(1);
+		self clientfield::set("trident_linger", 0);
 	}
 }
 
@@ -327,44 +360,31 @@ function monitor_trident_melee_streaks()
 	{
 		start_kills = self.trident_melee_kills;
 
-		while(self.trident_melee_kills < start_kills + 1)
+		while(self.trident_melee_kills < start_kills + TRIDENT_STREAK_KILLS && self HasWeapon(level.abbey_trident))
 		{
 			wait(0.05);
 		}
 
-		//IPrintLn("Kill 1");
-
-		success = true;
-		for(i = 2; i <= 5; i++)
+		if(self HasWeapon(level.abbey_trident))
 		{
-			counter = 0;
-			while(self.trident_melee_kills < start_kills + i && counter <= 40) // 40 = 2 / 0.05
+			self.trident_power_level = self.trident_power_level + 1;
+			switch(self.trident_power_level)
 			{
-				counter++;
-				wait(0.05);
+				case 1:
+					self notify(#"trident_cooldown_start");
+				case 2:
+					self PlaySound("trident_upgrade");
+					break;
+				case 3:
+					self PlaySound("trident_upgrade_max");
+					break;
 			}
-			if(self.trident_melee_kills < start_kills + i)
-			{ 
-				success = false;
-				break;
-			}
-			//IPrintLn("Kill " + i);
 		}
 
-		if(success)
+		while(self.trident_power_level == 3)
 		{
-			self.trident_power_level = Min(self.trident_power_level + 1, 3);
-			if(self.trident_power_level < 3)
-			{
-				self PlaySound("trident_upgrade");
-			}
-			else
-			{
-				self PlaySound("trident_upgrade_max");
-			}
-			//IPrintLn("Pentakill, trident power level is now " + self.trident_power_level);
+			wait(0.05);
 		}
-
 		wait(0.05);
 	}
 }
@@ -375,65 +395,14 @@ function monitor_trident_melee_reset()
 
 	while(true)
 	{
-		start_kills = self.trident_melee_kills;
-		for(i = 0; i < level.trident_cooldown_time; i += 0.05)
+		self waittill(#"trident_cooldown_start");
+		for(i = 0; i < TRIDENT_COOLDOWN_TIME && self HasWeapon(level.abbey_trident); i += 0.05)
 		{
-			if (self.trident_melee_kills > start_kills)
-			{
-				break;
-			}
 			wait(0.05);
 		}
-		
-		if(start_kills == self.trident_melee_kills)
-		{
-			//IPrintLn("Resetting trident power level");
-			if(self.trident_power_level > 0)
-			{	
-				self PlaySound("trident_reset");
-			}
-			self.trident_power_level = 0;
-		}
+		self PlaySound("trident_reset");
+		self.trident_power_level = 0;
 	}
-}
-
-function display_trident_power_level()
-{
-	self endon("disconnect");
-
-	power_level_hud = NewClientHudElem(self);
-	power_level_hud.alignX = "center";
-	power_level_hud.alignY = "bottom";
-	power_level_hud.horzAlign = "fullscreen";
-	power_level_hud.vertAlign = "fullscreen";
-	power_level_hud.x = 320;
-	power_level_hud.y = 400;
-	power_level_hud.fontscale = level.challenge_fontscale;
-	power_level_hud.alpha = 0;
-	power_level_hud.color = (1,1,1);
-	power_level_hud.foreground = true;
-	power_level_hud.hidewheninmenu = true;
-
-	prev_power_level = -1;
-	trident_put_away = true;
-	while(true)
-	{
-		weapon = self GetCurrentWeapon();
-		if (isdefined(weapon) && weapon == level.abbey_trident && (self.trident_power_level != prev_power_level || trident_put_away))
-		{
-			prev_power_level = self.trident_power_level;
-			trident_put_away = false;
-			power_level_hud SetText("Power Level " + self.trident_power_level);
-			power_level_hud.alpha = 1;
-		}
-		if(isdefined(weapon) && weapon != level.abbey_trident && ! trident_put_away)
-		{
-			trident_put_away = true;
-			power_level_hud.alpha = 0;
-		}
-		wait(0.05);
-	}
-
 }
 
 function monitor_trident_fx()
@@ -449,7 +418,7 @@ function monitor_trident_fx()
 		{
 			if(self.trident_power_level != prev_power_level || has_reset)
 			{
-				self clientfield::set( "trident_glow", Int(self.trident_power_level) );
+				self clientfield::set( "trident_glow", self.trident_power_level);
 				prev_power_level = self.trident_power_level;
 			}
 			has_reset = false;
@@ -538,7 +507,7 @@ function upgrade_quest_think()
 		kills = 0;
 		should_terminate = false;
 
-		while(kills < level.trident_upgrade_kills)
+		while(kills < TRIDENT_UPGRADE_KILLS)
 		{
 			if( ! isdefined(self.upgrading_player) )
 			{
@@ -547,7 +516,7 @@ function upgrade_quest_think()
 				break;
 			}
 			self.upgrading_player waittill(#"potential_challenge_kill", origin);
-			if(DistanceSquared(origin, self.origin) <= level.trident_statue_radius_sq) {
+			if(DistanceSquared(origin, self.origin) <= TRIDENT_STATUE_RADIUS_SQ) {
 				self thread soul_fx(origin);
 				kills++;
 			}
@@ -614,10 +583,9 @@ function upgrade_quest_init_think()
 
 function soul_fx(origin)
 {
-	//IPrintLn("spawning the fx");
 	fxCarrier = Spawn("script_model", origin + (0, 0, 40));
 	fxCarrier SetModel("tag_origin");
-	PlayFXOnTag("custom/fx_trail_blood_soul_zmb", fxCarrier, "tag_origin");
+	fxCarrier clientfield::set("fx_floating_orb_glow", 1);
 	fxCarrier MoveTo(self.origin, 0.5);
 	wait(0.5);
 	fxCarrier Delete();
@@ -664,6 +632,11 @@ function monitor_trident()
 
 			if(self IsSlamming())
 			{
+				// prevent immediate activation
+				while(self IsOnGround())
+				{
+					wait(0.05);
+				}
 				while(! self IsOnGround())
 				{
 					wait(0.05);
@@ -684,9 +657,30 @@ function monitor_trident()
 	}
 }
 
+function zombie_filter(zombie)
+{
+	return (isdefined(zombie) && IsAlive(zombie) && ! zombie zm_ai_shadowpeople::is_shadow_boss() && IS_TRUE(zombie.completed_emerging_into_playable_area));
+}
+
 function trident_create_whirlpool()
 {
 	self endon("disconnect");
+
+	forward_vector = VectorNormalize(AnglesToForward(self.angles));
+	v_pos = self.origin + VectorScale(forward_vector, TRIDENT_WHIRLPOOL_SCALAR);
+
+	zombies = GetAISpeciesArray("axis", "all");
+	valid_zombies = level array::filter(zombies, false, &zombie_filter);
+	slam_zombies = level array::get_all_closest(v_pos, valid_zombies, undefined, TRIDENT_FLING_ZOMBIES_MAX, TRIDENT_FLING_RADIUS);
+
+	for(i = 0; i < slam_zombies.size; i++)
+	{
+		test_origin = slam_zombies[i] GetCentroid();
+		fling_vec = VectorNormalize(v_pos - test_origin);
+		fling_vec = (fling_vec[0], fling_vec[1], Abs(fling_vec[2]));
+		fling_vec = VectorScale(fling_vec, TRIDENT_FLING_SCALAR);
+		slam_zombies[i] thread zm_weap_thundergun::thundergun_fling_zombie(self, fling_vec, i);
+	}
 
 	if(self GetAmmoCount(level.abbey_trident) == 0)
 	{
@@ -702,29 +696,19 @@ function trident_create_whirlpool()
 		self SetWeaponAmmoClip(level.abbey_trident, 0);
 		self clientfield::set_player_uimodel("tridentClip", 0);
 	}
-	//IPrintLn("DONEZO");
-	
-	/*
-	if ( !isDefined( self ) )
-		return;
-	*/
 
-	v_pos = self.origin;
-	//v_pos += (0, 0, 10);
-	//IPrintLn(v_pos);
-
-	//PlaySoundAtPosition("trident_whirlpool", v_pos, player);
 	fx_loc = Spawn("script_model", v_pos);
 	fx_loc SetModel("tag_origin");
-	PlayFXOnTag("custom/whirlpool", fx_loc, "tag_origin");
+	fx_loc clientfield::set("trident_whirlpool", 1);
 	fx_loc PlaySoundOnTag("trident_whirlpool", "tag_origin");
+	fx_loc thread fx_loc_cleanup(self);
 
-	for(i = 0; i < 250; i++)
+	for(i = 0; i < TRIDENT_WHIRLPOOL_TIME; i += 0.05)
 	{
 		zombies = zombie_utility::get_round_enemy_array();
 		for(j = 0; j < zombies.size; j++)
 		{
-			if( isdefined(zombies[j]) && isdefined(zombies[j].origin) && isdefined(v_pos) && DistanceSquared(zombies[j].origin, v_pos) < level.trident_charge_radius_sq )
+			if( isdefined(zombies[j]) && isdefined(zombies[j].origin) && isdefined(v_pos) && DistanceSquared(zombies[j].origin, v_pos) < TRIDENT_WHIRLPOOL_RADIUS_SQ )
 			{
 				if(zombies[j] zm_ai_shadowpeople::is_shadow_boss())
 				{
@@ -732,7 +716,6 @@ function trident_create_whirlpool()
 				}
 				else
 				{
-					//IPrintLn("real damage");
 					zombies[j] thread slowdown();
 				}
 			}
@@ -740,7 +723,13 @@ function trident_create_whirlpool()
 		wait(0.05);
 	}
 
-	fx_loc Delete();
+	fx_loc notify("cleanup");
+}
+
+function fx_loc_cleanup(player)
+{
+	level util::waittill_any_ents_two(self, "cleanup", player, "disconnect");
+	self Delete();
 }
 
 function slowdown()
@@ -757,7 +746,7 @@ function slowdown()
 	self ASMSetAnimationRate(0.1);
 	self clientfield::set( "trident_linger", 1 );
 	self.trident_melee_weak = true;
-	wait(10);
+	wait(TRIDENT_SLOWDOWN_TIME);
 	self ASMSetAnimationRate(1);
 	self.trident_slowdown = false;
 	self.trident_melee_weak = false;
@@ -777,20 +766,11 @@ function check_for_death()
 	self clientfield::set( "trident_linger", 0 );
 }
 
-
-function testeroo()
+function player_give_trident()
 {
-	//self thread testerootoo();
-	while(true) 
-	{
-		IPrintLn(self IsMeleeing());
-		wait(0.5);
-	}
-}
+	self endon("disconnect");
 
-function testerootoo()
-{
-	level waittill("start_of_round");
-	wait(30);
-	self SetMoveSpeedScale(0);
+	self thread zm_equipment::show_hint_text(&"ZM_ABBEY_TRIDENT_HINT", 5);
+	self GiveWeapon(level.abbey_trident);
+	self SwitchToWeapon(level.abbey_trident);
 }

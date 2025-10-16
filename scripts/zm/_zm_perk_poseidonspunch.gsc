@@ -226,11 +226,11 @@ function quad_stun()
 	
 	if(isdefined(self))
 	{
-		if(! IS_TRUE(self.trident_slowdown) || self IsRagdoll())
+		if(! (IS_TRUE(self.trident_slowdown) || IS_TRUE(self.trident_shocked)) || self IsRagdoll())
 		{
 			self ASMSetAnimationRate(1);
 		}
-		else
+		else if(! IS_TRUE(self.trident_shocked))
 		{
 			self ASMSetAnimationRate(0.1);
 		}
