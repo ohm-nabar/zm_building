@@ -253,11 +253,21 @@ function poseidon_recharge_time()
 	//self PlaySoundToPlayer("pp_recharge", self);
 	self.poseidon_ready = false;
 	self clientfield::set_player_uimodel("poseidonCharge", 0);
-	wait(level.poseidon_recharge_time);
+	for(i = 0; i < level.poseidon_recharge_time && self HasPerk(PERK_POSEIDON_PUNCH); i += 0.05)
+	{
+		wait(0.05);
+		while(level.is_coop_paused)
+		{
+			wait(0.05);
+		}
+	}
 	self.poseidon_ready = true;
 	self clientfield::set_player_uimodel("poseidonCharge", 1);
 	self clientfield::set("poseidon_splash", 0);
-	self PlaySoundToPlayer("pp_active", self);
+	if(self HasPerk(PERK_POSEIDON_PUNCH))
+	{
+		self PlaySoundToPlayer("pp_active", self);
+	}
 }
 
 function poseidon_melee_iframes()
