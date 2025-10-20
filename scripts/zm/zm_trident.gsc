@@ -12,7 +12,6 @@
 
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_bgb;
-#using scripts\zm\_zm_equipment;
 #using scripts\zm\_zm_magicbox;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weap_thundergun;
@@ -82,7 +81,6 @@ function __init__()
     level zm::register_actor_damage_callback( &damage_adjustment );
 	level zm::register_zombie_damage_override_callback( &zombie_damage_override );
     level zm_weapons::add_custom_limited_weapon_check( &pitchfork_statue_check );
-	level zm_weapons::register_zombie_weapon_callback( level.abbey_trident, &player_give_trident );
 }
 
 function __main__()
@@ -96,13 +94,20 @@ function __main__()
 
 function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
 {
-	if(isdefined(attacker) && IsPlayer(attacker) && weapon == level.abbey_trident)
+	if(isdefined(attacker) && IsPlayer(attacker))
 	{
-		if(willBeKilled)
+		if(willBeKilled || level.zombie_vars[attacker.team]["zombie_insta_kill"])
 		{
-			self.no_powerups = true;
+			if(! self zm_ai_shadowpeople::is_shadow_person())
+			{
+				attacker notify(#"potential_statue_kill", self.origin);
+			}
+			if(weapon == level.abbey_trident)
+			{
+				self.no_powerups = true;
+			}
 		}
-		if(meansofdeath == "MOD_MELEE")
+		if(weapon == level.abbey_trident && meansofdeath == "MOD_MELEE")
 		{
 			attacker thread preserve_ammo_on_melee();
 		}
@@ -516,7 +521,7 @@ function upgrade_quest_think()
 				wait(0.05);
 				break;
 			}
-			self.upgrading_player waittill(#"potential_challenge_kill", origin);
+			self.upgrading_player waittill(#"potential_statue_kill", origin);
 			if(DistanceSquared(origin, self.origin) <= TRIDENT_STATUE_RADIUS_SQ) {
 				self thread soul_fx(origin);
 				kills++;
@@ -765,13 +770,4 @@ function check_for_death()
 	self waittill("death");
 	self ASMSetAnimationRate(1);
 	self clientfield::set( "trident_linger", 0 );
-}
-
-function player_give_trident()
-{
-	self endon("disconnect");
-
-	self thread zm_equipment::show_hint_text(&"ZM_ABBEY_TRIDENT_HINT", 5);
-	self GiveWeapon(level.abbey_trident);
-	self SwitchToWeapon(level.abbey_trident);
 }

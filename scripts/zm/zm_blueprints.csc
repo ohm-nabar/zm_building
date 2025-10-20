@@ -1,9 +1,5 @@
-#using scripts\codescripts\struct;
-
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\system_shared;
-
-#using scripts\zm\_zm;
 
 #insert scripts\shared\shared.gsh;
 #insert scripts\shared\version.gsh;
@@ -14,6 +10,6 @@ REGISTER_SYSTEM( "zm_blueprints", &__init__, undefined )
 	
 function __init__()
 {
-	clientfield::register( "clientuimodel", "weaponBPUpdate", VERSION_SHIP, 3, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
-	clientfield::register( "clientuimodel", "perkBPUpdate", VERSION_SHIP, 3, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	level clientfield::register( "clientuimodel", "weaponBPUpdate", VERSION_SHIP, 3, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	level clientfield::register( "clientuimodel", "perkBPUpdate", VERSION_SHIP, 3, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 }

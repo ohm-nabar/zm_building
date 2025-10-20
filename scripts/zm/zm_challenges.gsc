@@ -188,7 +188,6 @@ function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags
 	{
 		if(IsPlayer(attacker))
 		{
-			attacker notify(#"potential_challenge_kill", self.origin);
 			if(meansofdeath == "MOD_MELEE")
 			{
 				attacker notify(#"dart_trial_kill");
