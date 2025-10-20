@@ -334,16 +334,21 @@ function zombie_custom_melee_speed()
     }
 }
 
+
+// rayjiun zombies stuck code
 function zombie_unpush()
 {
 	self endon( "death" );
 
-	while(isdefined(self))
-	{
-		self PushActors(false);
-		wait(0.05);
-	}
+	self.cant_move_cb = &cant_move;
 }
+
+function cant_move()
+{
+    self PushActors(0);
+    self.enablepushtime = GetTime() + 250;
+}
+
 function spare_change( str_trigger = "audio_bump_trigger", str_sound = "zmb_perks_bump_bottle" )
 {
 	// Check under the machines for change

@@ -264,15 +264,6 @@ function zombie_check(grenade, player)
 
 	if(self zm_aat_turned::turned_zombie_validation() && self extra_validation() && ! self zm_ai_shadowpeople::is_shadow_person())
 	{
-		zombies = GetAISpeciesArray("axis", "all");
-		ArrayRemoveValue(zombies, self);
-		foreach(zombie in zombies)
-		{
-			if(DistanceSquared(self.origin, zombie.origin) <= TURNED_KILL_RADIUS_SQ)
-			{
-				zombie DoDamage(zombie.health + 666, grenade.origin, player, player);
-			}
-		}
 		self zm_aat_turned::result("death", player, "MOD_UNKNOWN", level.healingGrenade);
 
 		if(player.healing_grenade_upgrade_kills < HEALING_UPGRADE_KILLS)

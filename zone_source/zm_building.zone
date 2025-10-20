@@ -733,10 +733,6 @@ material,specialty_giant_crossbow_zombies
 weapon,cymbal_monkey_upgraded_zm
 fx,dlc3/stalingrad/fx_cymbal_monkey_radial_pulse
 
-// Healing Grenade Turned "Fix"
-scriptparsetree,scripts/zm/aats/_zm_aat_turned.gsc
-scriptparsetree,scripts/zm/aats/_zm_aat_turned.gsh
-
 // PaP Wallbuy Ammo
 scriptparsetree,scripts/zm/_zm_weapons.gsc
 
