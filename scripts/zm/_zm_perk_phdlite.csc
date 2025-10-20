@@ -13,7 +13,7 @@
 #insert scripts\zm\_zm_perks.gsh;
 #insert scripts\zm\_zm_utility.gsh;
 
-//#precache( "client_fx", "zombie/fx_perk_quick_revive_zmb" );
+#precache( "client_fx", "explosions/fx_exp_rocket_default" );
 
 #namespace zm_perk_phdlite;
 
@@ -24,6 +24,7 @@ REGISTER_SYSTEM( "zm_perk_phdlite", &__init__, undefined )
 	
 function __init__()
 {
+	level clientfield::register( "actor", "phd_explo", VERSION_SHIP, 1, "int", &phd_explo, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 	enable_custom_perk_for_level();
 }
 
@@ -52,4 +53,12 @@ function custom_perk_client_field_func()
 
 function custom_perk_callback_func()
 {
+}
+
+function phd_explo( localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fieldName, bWasTimeJump )
+{
+	if(newVal == 1)
+	{
+		PlayFX(localClientNum, "explosions/fx_exp_rocket_default", self.origin);
+	}
 }

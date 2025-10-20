@@ -140,6 +140,9 @@
 #using scripts\zm\_zm_equipment;
 #using scripts\zm\_zm_perks;
 
+// CSC FX
+#using scripts\zm\zm_csc_fx;
+
 #insert scripts\zm\_zm_perks.gsh;
 
 #precache( "fx", "custom/magic_box_og/fx_weapon_box_marker_og" );

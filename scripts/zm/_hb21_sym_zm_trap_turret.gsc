@@ -22,13 +22,10 @@
 
 #namespace hb21_sym_zm_trap_turret;
 
-#precache( "fx", "dlc5/zmhd/fx_zombie_auto_turret_light" );
-
 REGISTER_SYSTEM( "hb21_sym_zm_trap_turret", &__init__, undefined )
 	
 function __init__()
 {
-	level._effect["auto_turret_light"] = "dlc5/zmhd/fx_zombie_auto_turret_light";
 	zm_spawner::register_zombie_death_event_callback( &turret_trap_death_event );
 	// zm::register_vehicle_damage_callback( &turret_trap_damage_event_vehicle );
 	// zm::register_actor_damage_callback( &turret_trap_damage_event );
@@ -47,7 +44,7 @@ function turret_trap_activate()
 			playSoundAtPosition( "zmb_turret_startup", a_targets[ i ].origin );
 			a_targets[ i ] playLoopSound( "zmb_turret_loop", .5 );
 			a_targets[ i ].turret_fx = util::spawn_model("tag_origin", a_targets[ i ].origin, a_targets[ i ].angles);
-			PlayFXOnTag(level._effect["auto_turret_light"], a_targets[ i ].turret_fx, "tag_origin");
+			a_targets[ i ].turret_fx clientfield::set("turret_light", 1);
 		}
 		
 	self._trap_duration = TURRET_TRAP_DURATION;

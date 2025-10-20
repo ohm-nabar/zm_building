@@ -27,8 +27,6 @@
 #insert scripts\shared\version.gsh;
 #insert scripts\shared\shared.gsh;
 
-#precache("fx", "custom/fx_trail_blood_soul_zmb");
-
 function main()
 {
 	level.in_antiverse = false;
@@ -209,7 +207,7 @@ function send_to_antiverse()
 
 	level.fading_light = Spawn("script_model", level.antiverse_end_points[0].origin);
 	level.fading_light SetModel("tag_origin");
-	PlayFXOnTag("custom/fx_trail_blood_soul_zmb", level.fading_light, "tag_origin");
+	level.fading_light clientfield::set("fx_floating_orb_glow", 1);
 	level.fading_light PlayLoopSound("zmb_spawn_powerup_loop");
 
 	solution = solve_maze(0, end_node, node_neighbors);

@@ -13,7 +13,7 @@
 #insert scripts\zm\_zm_perks.gsh;
 #insert scripts\zm\_zm_utility.gsh;
 
-//#precache( "client_fx", "zombie/fx_perk_quick_revive_zmb" );
+#precache( "client_fx", "water/fx_water_splash_xxxlg" );
 
 #namespace zm_perk_poseidonspunch;
 
@@ -23,17 +23,18 @@ REGISTER_SYSTEM( "zm_perk_poseidonspunch", &__init__, undefined )
 	
 function __init__()
 {
-	clientfield::register( "clientuimodel", "poseidonCharge", VERSION_SHIP, 1, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	level clientfield::register( "clientuimodel", "poseidonCharge", VERSION_SHIP, 1, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	level clientfield::register( "allplayers", "poseidon_splash", VERSION_SHIP, 1, "int", &poseidon_splash, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 
-	enable_custom_perk_for_level();
+	level enable_custom_perk_for_level();
 }
 
 function enable_custom_perk_for_level()
 {
 	// register custom functions for hud/lua
-	zm_perks::register_perk_clientfields( PERK_POSEIDON_PUNCH, &custom_perk_client_field_func, &custom_perk_callback_func );
-	zm_perks::register_perk_effects( PERK_POSEIDON_PUNCH, POSEIDON_PUNCH_MACHINE_LIGHT_FX );
-	zm_perks::register_perk_init_thread( PERK_POSEIDON_PUNCH, &init_custom_perk );
+	level zm_perks::register_perk_clientfields( PERK_POSEIDON_PUNCH, &custom_perk_client_field_func, &custom_perk_callback_func );
+	level zm_perks::register_perk_effects( PERK_POSEIDON_PUNCH, POSEIDON_PUNCH_MACHINE_LIGHT_FX );
+	level zm_perks::register_perk_init_thread( PERK_POSEIDON_PUNCH, &init_custom_perk );
 }
 
 function init_custom_perk()
@@ -48,9 +49,22 @@ function init_custom_perk()
 
 function custom_perk_client_field_func()
 {
-	clientfield::register( "clientuimodel", PERK_CLIENTFIELD_POSEIDON_PUNCH, VERSION_SHIP, 2, "int", undefined, !CF_HOST_ONLY, CF_CALLBACK_ZERO_ON_NEW_ENT );
+	level clientfield::register( "clientuimodel", PERK_CLIENTFIELD_POSEIDON_PUNCH, VERSION_SHIP, 2, "int", undefined, !CF_HOST_ONLY, CF_CALLBACK_ZERO_ON_NEW_ENT );
 }
 
 function custom_perk_callback_func()
 {
+}
+
+function poseidon_splash(localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fieldName, bWasTimeJump)
+{
+	if(isdefined(self.fx))
+  	{
+        DeleteFX(localClientNum, self.fx);
+  		self.fx = undefined;
+    }
+  	if(newVal == 1)
+  	{
+    	self.fx = PlayFXOnTag(localClientNum, "water/fx_water_splash_xxxlg", self, "tag_weapon_right");
+  	}
 }

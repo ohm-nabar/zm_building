@@ -29,7 +29,6 @@
 
 //#precache( "material", QUICK_REVIVE_SHADER );
 //#precache( "string", "ZOMBIE_PERK_QUICKREVIVE" );
-#precache( "fx", "explosions/fx_exp_rocket_default" );
 #precache( "material", "specialty_phdlite_zombies" ); // CHANGE THIS TO YOUR PERK SHADER
 
 #precache( "string", "ZM_ABBEY_PERK_PHD_LITE" );
@@ -45,6 +44,7 @@ REGISTER_SYSTEM( "zm_perk_phdlite", &__init__, undefined )
 //-----------------------------------------------------------------------------------
 function __init__()
 {
+	level clientfield::register( "actor", "phd_explo", VERSION_SHIP, 1, "int" );
 	enable_custom_perk_for_level();
 	level.quad_gas_immune_func = &quad_gas_immune_func;
 	zm::register_player_damage_callback( &player_damage_override );
@@ -262,7 +262,7 @@ function phd_slide_think()
 			
 			if(should_explode)
 			{
-				PlayFX("explosions/fx_exp_rocket_default", zombie_origin);
+				zombie clientfield::set("phd_explo", 1);
 				PlaySoundAtPosition( "zmb_phdflop_explo", zombie_origin );
 				max_damage = PHD_LITE_MAX_DAMAGE * (slide_dist / PHD_LITE_MAX_SLIDE);
 				foreach(zombie in zombies)

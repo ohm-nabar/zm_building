@@ -504,6 +504,8 @@ function bribe_prompt_and_visibility(player)
 
 function bribe_think()
 {
+	level waittill("initial_blackscreen_passed");
+
 	model = undefined;
 	fx_spot = undefined;
 	self.active = true;
@@ -518,7 +520,7 @@ function bribe_think()
 			model SetModel("zombietron_gold_bricks");
 			fx_spot = Spawn("script_model", model.origin + (0, 0, BRIBE_OFFSET));
 			fx_spot SetModel("tag_origin");
-			PlayFXOnTag("custom/pistol_glint", fx_spot, "tag_origin");
+			fx_spot clientfield::set("pickup_glint", 1);
 
 			self waittill("trigger_activated", player);
 			if(level.gargoyle_first_bribe_taken)

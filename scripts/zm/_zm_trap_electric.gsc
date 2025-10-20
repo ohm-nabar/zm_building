@@ -209,8 +209,7 @@ function damage( trap )
 			self thread zm_traps::zombie_flame_watch();
 			self playsound("zmb_ignite");
 
-			self thread zombie_death::flame_death_fx();
-			PlayFxOnTag( level._effect["character_fire_death_torso"], self, "J_SpineLower" ); 
+			self clientfield::set("trap_flame", 1); 
 
 			wait( randomfloat(1.25) );
 		}

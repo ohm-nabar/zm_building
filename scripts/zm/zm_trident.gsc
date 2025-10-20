@@ -58,9 +58,8 @@ function __init__()
 {
 	level clientfield::register( "actor", "trident_linger", VERSION_SHIP, 1, "int" );
 	level clientfield::register( "allplayers", "trident_glow", VERSION_SHIP, 2, "int");
-	level clientfield::register( "scriptmover", "trident_ring", VERSION_SHIP, 1, "int");
+	level clientfield::register( "actor", "trident_ring", VERSION_SHIP, 1, "int");
 	level clientfield::register( "scriptmover", "trident_whirlpool", VERSION_SHIP, 1, "int");
-	level clientfield::register( "scriptmover", "fx_floating_orb_glow", VERSION_SHIP, 1, "int" );
 	level clientfield::register( "clientuimodel", "tridentClip", VERSION_SHIP, 1, "int");
 
     level.abbey_trident = GetWeapon("zm_trident");
@@ -270,13 +269,13 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 				else if(attacker.trident_power_level == 2)
 				{
 					attacker.trident_melee_kills += 1;
-					level thread water_pulse(self.origin, attacker, false);
+					self thread water_pulse(attacker, false);
 					return self.health + 666;
 				}
 				else
 				{
 					attacker.trident_melee_kills += 1;
-					level thread water_pulse(self.origin, attacker, true);
+					self thread water_pulse(attacker, true);
 					return self.health + 666;
 				}
 			}
@@ -285,11 +284,10 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 	return -1;
 }
 
-function water_pulse(origin, attacker, should_kill)
+function water_pulse(attacker, should_kill)
 {
-	fx_model = Spawn("script_model", origin + (0, 0, 45));
-	fx_model SetModel("tag_origin");
-	fx_model clientfield::set("trident_ring", 1);
+	self clientfield::set("trident_ring", 1);
+	origin = self.origin;
 	zombies = zombie_utility::get_round_enemy_array();
 	for(i = 0; i < TRIDENT_WATER_PULSE_TIME; i += 0.05)
 	{
@@ -320,7 +318,10 @@ function water_pulse(origin, attacker, should_kill)
 		}
 		wait(0.05);
 	}
-	fx_model Delete();
+	if(isdefined(self))
+	{
+		self clientfield::set("trident_ring", 0);
+	}
 }
 
 function quad_stun()

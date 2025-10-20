@@ -447,7 +447,7 @@ function cloak_spawn_sequence_radio(trigger)
 
 	while(true)
 	{
-		cloak = zm_ai_shadowpeople::cloak_spawn_ee_radio(trigger);
+		cloak = undefined;
 		//cloak.v_zombie_custom_goal_pos = trigger.origin;
 
 		cloak thread disable_radio_tower();
@@ -506,7 +506,7 @@ function infinite_choker_spawn_radio()
 
 	while(true)
 	{
-		thread zm_ai_shadowpeople::choker_spawn_ee_radio(randomintrange( 0, players.size ));
+		// spawn choker
 		wait(choker_wait_time);
 	}
 }

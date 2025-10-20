@@ -10,6 +10,7 @@
 #using scripts\shared\ai\zombie_utility;
 #using scripts\shared\ai\zombie_quad;
 #using scripts\shared\array_shared;
+#using scripts\shared\clientfield_shared;
 #using scripts\shared\demo_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\math_shared;
@@ -31,12 +32,6 @@
 #insert scripts\zm\_zm_ai_quad.gsh;
 
 #namespace zm_ai_quad; 
-
-#precache( "fx", "shadow/fx_zombie_quad_gas_shadow" );
-#precache( "fx", "shadow/fx_zombie_quad_trail_shadow" );
-#precache( "fx", "shadow/fx_quad_teleport_in_shadow" );
-#precache( "fx", "shadow/fx_quad_teleport_out_shadow" );
-#precache( "fx", "shadow/fx_zombie_phasing_shadow" );
 
 REGISTER_SYSTEM_EX( "zm_ai_quad", &__init__, &__main__, undefined )
 
@@ -67,6 +62,12 @@ function __init__()
 	ASM_REGISTER_NOTETRACK_HANDLER( 		"phase_end", 											&quadphaseend																																													 );
 	// # BEHAVIOR SET UP
 	
+	// # REGISTER CLIENTFIELDS
+	level clientfield::register( "actor", "quad_phase", VERSION_SHIP, 2, "int" );
+	level clientfield::register( "scriptmover", "quad_trail", VERSION_SHIP, 1, "int" );
+	level clientfield::register( "scriptmover", "quad_explo", VERSION_SHIP, 1, "int" );
+	// # REGISTER CLIENTFIELDS
+
 	// # REGISTER IMMUNITY FOR AI FROM AATS
 	level thread AAT::register_immunity( 			"zm_aat_dead_wire", 		"zombie_quad", 	1, 	1, 	1 );
 	level thread AAT::register_immunity( 			"zm_aat_turned", 			"zombie_quad", 	1, 	1, 	1 );
@@ -76,14 +77,6 @@ function __init__()
 	level.quad_explode 													= QUAD_ZOMBIE_EXPLODE_GAS_DEATH;
 	level.quad_phase 														= QUAD_ZOMBIE_CAN_PHASE_TELEPORT;
 	// # VARIABLES AND SETTINGS
-	
-	// # REGISTER FX
-	level._effect[ "quad_explo_gas" ] 							= "shadow/fx_zombie_quad_gas_shadow";
-	level._effect[ "quad_trail" ] 										= "shadow/fx_zombie_quad_trail_shadow";
-	level._effect[ "quad_phasing" ] 								= "dlc5/moon/fx_zombie_phasing_shadow";
-	level._effect[ "quad_phasing_in" ] 							= "shadow/fx_quad_teleport_in_shadow";
-	level._effect[ "quad_phasing_out" ] 						= "shadow/fx_quad_teleport_out_shadow";
-	// # REGISTER FX
 	
 	// THREAD LOGIC
 	level thread activate_quad_spawners_power_check();
@@ -120,7 +113,7 @@ function __main__()
 	if ( !isDefined( level.quad_visionset_priority ) )
 		level.quad_visionset_priority = 50;
 	
-	visionset_mgr::register_info( "overlay", "zm_ai_quad_blur", 1, level.quad_visionset_priority, 1, 1 );
+	level visionset_mgr::register_info( "overlay", "zm_ai_quad_blur", 1, level.quad_visionset_priority, 1, 1 );
 }
 
 function global_spawn_func( b_force, str_targetname, v_origin, v_angles)
@@ -571,7 +564,7 @@ function quadphasestart( e_entity )
 {
 	e_entity thread quad_pre_teleport();
 	e_entity playSound( "zmb_quad_phase_out" );
-	e_entity thread moon_quad_phase_fx( "quad_phasing_out" );
+	e_entity thread moon_quad_phase_fx( 1 );
 	e_entity ghost();
 }
 
@@ -579,7 +572,7 @@ function quadphaseend( e_entity )
 {
 	e_entity thread quad_post_teleport();
 	e_entity playSound( "zmb_quad_phase_in" );
-	e_entity thread moon_quad_phase_fx( "quad_phasing_in" );
+	e_entity thread moon_quad_phase_fx( 0 );
 	e_entity show();
 }
 
@@ -787,7 +780,7 @@ function quad_location()
 		self.e_anchor delete();
 	
 	self show();
-	playFXOnTag( level._effect[ "quad_phasing_out" ], self, "j_spine4" );
+	self clientfield::set("quad_phase", 2);
 	self notify( "risen", s_spot.script_string );
 }
 
@@ -878,7 +871,9 @@ function quad_damage_func( e_player )
 function quad_gas_area_of_effect( v_origin, a_death_vars )
 {
 	e_effect_area = spawn( "trigger_radius", v_origin, 0, a_death_vars[ "gas_radius" ], 100 );
-	playFX( level._effect[ "quad_explo_gas" ], v_origin );
+	fx_model = Spawn("script_model", v_origin);
+	fx_model SetModel("tag_origin");
+	fx_model clientfield::set("quad_explo", 1);
 	for ( n_gas_time = 0; n_gas_time <= a_death_vars[ "gas_time" ]; n_gas_time++ )
 	{
 		a_players = getPlayers();
@@ -903,6 +898,7 @@ function quad_gas_area_of_effect( v_origin, a_death_vars )
 		visionset_mgr::deactivate( "overlay", "zm_ai_quad_blur", a_players[ i ] );
 	
 	e_effect_area delete();
+	fx_model Delete();
 }
 
 function quad_trail()
@@ -912,7 +908,7 @@ function quad_trail()
 	self.fx_quad_trail.angles = self getTagAngles( "tag_origin" );
 	self.fx_quad_trail setModel( "tag_origin" );
 	self.fx_quad_trail linkTo( self, "tag_origin" );
-	zm_net::network_safe_play_fx_on_tag( "quad_fx", 2, level._effect[ "quad_trail" ], self.fx_quad_trail, "tag_origin" );
+	self.fx_quad_trail clientfield::set("quad_trail", 1);
 }
 
 function quad_pre_teleport()
@@ -938,16 +934,14 @@ function quad_post_teleport()
 		self.fx_quad_trail.angles = self getTagAngles( "tag_origin" );
 		self.fx_quad_trail setModel( "tag_origin" );
 		self.fx_quad_trail linkTo( self, "tag_origin" );
-		zm_net::network_safe_play_fx_on_tag( "quad_fx", 2, level._effect[ "quad_trail" ], self.fx_quad_trail, "tag_origin" );
+		self.fx_quad_trail clientfield::set("quad_trail", 1);
 	}
 }
 
-function moon_quad_phase_fx( str_fx )
+function moon_quad_phase_fx( cf_val )
 {
 	self endon( "death" );
-	if ( isDefined( level._effect[ str_fx ] ) )
-		playFXOnTag( level._effect[ str_fx ], self, "j_spine4" );
-	
+	self clientfield::set("quad_phase", cf_val);
 }
 
 function moon_quad_gas_immune()

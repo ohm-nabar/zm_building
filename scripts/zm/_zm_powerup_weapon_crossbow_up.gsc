@@ -174,6 +174,7 @@ function crossbow_up_monitor_fire()
 			continue;
 		}
 
+		e_projectile clientfield::set("semtex_light", 1);
 		e_projectile thread crossbow_up_attract_zombies();
 	}
 }
@@ -190,7 +191,6 @@ function crossbow_up_attract_zombies()
 
 	self zm_utility::create_zombie_point_of_interest( 1536, 96, 10000 );
 	self.attract_to_origin = true;
-	PlayFXOnTag("zombie/fx_trap_green_light_doa", self, "tag_origin");
 
 	self thread zm_utility::create_zombie_point_of_interest_attractor_positions( 4, 45 );
 	self thread zm_utility::wait_for_attractor_positions_complete();

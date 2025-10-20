@@ -739,3 +739,7 @@ scriptparsetree,scripts/zm/aats/_zm_aat_turned.gsh
 
 // PaP Wallbuy Ammo
 scriptparsetree,scripts/zm/_zm_weapons.gsc
+
+// CSC FX
+scriptparsetree,scripts/zm/zm_csc_fx.gsc
+scriptparsetree,scripts/zm/zm_csc_fx.csc

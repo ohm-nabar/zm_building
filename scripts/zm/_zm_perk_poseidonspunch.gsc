@@ -60,13 +60,14 @@ REGISTER_SYSTEM( "poseidonspunch", &__init__, undefined )
 //-----------------------------------------------------------------------------------
 function __init__()
 {
-	clientfield::register( "clientuimodel", "poseidonCharge", VERSION_SHIP, 1, "int" );
+	level clientfield::register( "clientuimodel", "poseidonCharge", VERSION_SHIP, 1, "int" );
+	level clientfield::register( "allplayers", "poseidon_splash", VERSION_SHIP, 1, "int" );
 
 	level.poseidon_recharge_time = 10;
-	enable_custom_perk_for_level();
-	callback::on_connect( &on_player_connect );
-	zm::register_player_damage_callback( &player_damage_override );
-	zm::register_zombie_damage_override_callback( &zombie_damage_override );
+	level enable_custom_perk_for_level();
+	level callback::on_connect( &on_player_connect );
+	level zm::register_player_damage_callback( &player_damage_override );
+	level zm::register_zombie_damage_override_callback( &zombie_damage_override );
 	//thread testeroo();
 	//level.check_quickrevive_hotjoin = &check_quickrevive_for_hotjoin;
 }
@@ -100,12 +101,12 @@ function zombie_damage_override( willBeKilled, inflictor, attacker, damage, flag
 function enable_custom_perk_for_level()
 {	
 	// register quick revive perk for level
-	zm_perks::register_perk_basic_info( PERK_POSEIDON_PUNCH, "poseidonspunch", POSEIDON_PUNCH_COST, &"ZM_ABBEY_PERK_POSEIDON_PUNCH", GetWeapon( POSEIDON_PUNCH_BOTTLE_WEAPON ) );
-	zm_perks::register_perk_precache_func( PERK_POSEIDON_PUNCH, &custom_perk_precache );
-	zm_perks::register_perk_clientfields( PERK_POSEIDON_PUNCH, &custom_perk_register_clientfield, &custom_perk_set_clientfield );
-	zm_perks::register_perk_machine( PERK_POSEIDON_PUNCH, &custom_perk_machine_setup );
-	zm_perks::register_perk_threads( PERK_POSEIDON_PUNCH, &give_custom_perk, &take_custom_perk );
-	zm_perks::register_perk_host_migration_params( PERK_POSEIDON_PUNCH, POSEIDON_PUNCH_RADIANT_MACHINE_NAME, POSEIDON_PUNCH_MACHINE_LIGHT_FX );
+	level zm_perks::register_perk_basic_info( PERK_POSEIDON_PUNCH, "poseidonspunch", POSEIDON_PUNCH_COST, &"ZM_ABBEY_PERK_POSEIDON_PUNCH", GetWeapon( POSEIDON_PUNCH_BOTTLE_WEAPON ) );
+	level zm_perks::register_perk_precache_func( PERK_POSEIDON_PUNCH, &custom_perk_precache );
+	level zm_perks::register_perk_clientfields( PERK_POSEIDON_PUNCH, &custom_perk_register_clientfield, &custom_perk_set_clientfield );
+	level zm_perks::register_perk_machine( PERK_POSEIDON_PUNCH, &custom_perk_machine_setup );
+	level zm_perks::register_perk_threads( PERK_POSEIDON_PUNCH, &give_custom_perk, &take_custom_perk );
+	level zm_perks::register_perk_host_migration_params( PERK_POSEIDON_PUNCH, POSEIDON_PUNCH_RADIANT_MACHINE_NAME, POSEIDON_PUNCH_MACHINE_LIGHT_FX );
 	//zm_perks::register_perk_machine_power_override( PERK_POSEIDON_PUNCH, &turn_revive_on ); // custom power function gets threaded here
 	//level flag::init( "solo_revive" );
 	
@@ -132,7 +133,7 @@ function custom_perk_precache()
 
 function custom_perk_register_clientfield()
 {
-	clientfield::register( "clientuimodel", PERK_CLIENTFIELD_POSEIDON_PUNCH, VERSION_SHIP, 2, "int" );
+	level clientfield::register( "clientuimodel", PERK_CLIENTFIELD_POSEIDON_PUNCH, VERSION_SHIP, 2, "int" );
 }
 
 function custom_perk_set_clientfield( state )
@@ -187,7 +188,7 @@ function poseidon_knockdown(attacker, willBeKilled)
 	self endon("disconnect");
 	alias_name = "pp_melee" + RandomIntRange(1, 4);
 	self PlaySound(alias_name);
-	PlayFXOnTag("water/fx_water_splash_xxxlg", self, "tag_weapon_right");
+	self clientfield::set("poseidon_splash", 1);
 	self thread poseidon_recharge_time();
 	zombies = GetAISpeciesArray("axis", "all");
 	foreach(zombie in zombies)
@@ -255,6 +256,7 @@ function poseidon_recharge_time()
 	wait(level.poseidon_recharge_time);
 	self.poseidon_ready = true;
 	self clientfield::set_player_uimodel("poseidonCharge", 1);
+	self clientfield::set("poseidon_splash", 0);
 	self PlaySoundToPlayer("pp_active", self);
 }
 

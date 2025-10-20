@@ -38,10 +38,6 @@
 
 #using scripts\zm\zm_room_manager;
 
-#precache( "fx", "shadow/fx_zmb_smokey_death" );
-#precache( "fx", "shadow/shadow_zombie_cloak_eyes" );
-#precache( "fx", "shadow/cloak_shadowing" );
-
 #precache( "material", "shadow_kill_indicator" ); 
 
 #precache( "eventstring", "generator_attacked" ); 
@@ -52,7 +48,10 @@ REGISTER_SYSTEM( "zm_ai_shadowpeople", &__init__, undefined )
 	
 function __init__()
 {
-	clientfield::register( "clientuimodel", "shadowPerks", VERSION_SHIP, 3, "int");
+	level clientfield::register( "clientuimodel", "shadowPerks", VERSION_SHIP, 3, "int");
+	level clientfield::register( "actor", "cloak_shadowing", VERSION_SHIP, 1, "int" );
+	level clientfield::register( "actor", "shadow_death", VERSION_SHIP, 1, "int" );
+	level clientfield::register( "scriptmover", "lightning_spawn", VERSION_SHIP, 1, "int" );
 
 	level.in_shadow_spawn_sequence = false;
 	
@@ -72,18 +71,12 @@ function __init__()
 	level.shadow_vision_active = false;
 	level.shadow_round_paused = false;
 
-	//level.shadow_moon = GetEnt("targetname", "shadow_moon");
-	//level.shadow_moon SetInvisibleToAll();
-
-	//clientfield::register( "actor", "shadow_choker_fx", VERSION_SHIP, 1, "int" );
-	//clientfield::register( "actor", "shadow_wizard_fx", VERSION_SHIP, 1, "int" );
-
-	zm::register_player_damage_callback( &player_damage_override );
-	zm::register_actor_damage_callback( &damage_adjustment );
-	zm::register_zombie_damage_override_callback( &zombie_damage_override );
-	visionset_mgr::register_info("visionset", "abbey_shadow", VERSION_SHIP, 61, 1, true);
-	//thread choker_spawn();
-	thread testeroo();
+	level zm::register_player_damage_callback( &player_damage_override );
+	level zm::register_actor_damage_callback( &damage_adjustment );
+	level zm::register_zombie_damage_override_callback( &zombie_damage_override );
+	level visionset_mgr::register_info("visionset", "abbey_shadow", VERSION_SHIP, 61, 1, true);
+	// jank stuff
+	level thread testeroo();
 }
 
 function is_shadow_boss()
@@ -266,59 +259,6 @@ function choker_spawn(player)
 	choker ForceTeleport(spawn_point.origin, spawn_point.angles);
 	choker thread choker_death_notify();
 	//choker thread monitor_cloak_interaction();
-
-	//choker clientfield::set( "shadow_choker_fx", 1 );
-}
-
-function escargot_spawn_ee_radio(player)
-{
-	level endon("radio_tower_ended");
-
-	spawn_point = dog_spawn_factory_logic_ee_radio(player);
-	dog_spawn_fx( spawn_point );
-	escargot = zombie_utility::spawn_zombie(level.escargot_spawner);
-	escargot ForceTeleport(spawn_point.origin, spawn_point.angles);
-
-	//escargot clientfield::set( "shadow_fx", 1 );
-
-	escargot thread ai_waypoint_manage(75);
-
-	escargot thread escargot_death_notify_ee_radio();
-
-	//escargot clientfield::set( "shadow_choker_fx", 1 );
-	//escargot thread ai_testeroo();
-}
-
-function cloak_spawn_ee_radio(target)
-{
-	level endon("radio_tower_ended");
-
-	spawn_point = dog_spawn_factory_logic_ee_radio(target);
-	dog_spawn_fx( spawn_point );
-	cloak = zombie_utility::spawn_zombie(level.cloak_spawner);
-	cloak ForceTeleport(spawn_point.origin, spawn_point.angles);
-	//cloak clientfield::set( "shadow_wizard_fx", 1 );
-	
-	//cloak clientfield::set( "shadow_wizard_fx", 1 );
-	cloak thread ai_waypoint_manage(75);
-	cloak thread cloak_death_notify_ee_radio();
-	//generator = GetEnt("generator1", "script_noteworthy");
-	cloak.v_zombie_custom_goal_pos = target.origin;
-	
-	return cloak;
-	//generator zm_utility::create_zombie_point_of_interest( 1536, 1, 10000 );
-}
-
-function choker_spawn_ee_radio(player)
-{
-	level endon("radio_tower_ended");
-
-	spawn_point = dog_spawn_factory_logic_ee_radio(player);
-	dog_spawn_fx( spawn_point );
-	choker = zombie_utility::spawn_zombie(level.choker_spawner);
-	choker ForceTeleport(spawn_point.origin, spawn_point.angles);
-	choker thread choker_death_notify_ee_radio();
-	choker thread monitor_cloak_interaction();
 
 	//choker clientfield::set( "shadow_choker_fx", 1 );
 }
@@ -726,7 +666,7 @@ function cloak_spawn_sequence()
 			//cloak SetGoal(undefined);
 			trigger.being_shadowed = true;
 			cloak PlayLoopSound("shadow_ritual");
-			PlayFXOnTag("shadow/cloak_shadowing", cloak, "tag_weapon_right");
+			cloak clientfield::set("cloak_shadowing", 1);
 			cloak AnimScripted("cloak_conjuring", cloak.origin, cloak.angles, "cloak_conjuring");
 			gen_num = gen_num_translation[generators[generator_index]];
 			foreach(player in level.players)
@@ -1558,7 +1498,7 @@ function escargot_death_notify()
 	level.num_escargots--;
 
 	PlaySoundAtPosition("shadow_escargot_kill", self.origin);
-	PlayFX("shadow/fx_zmb_smokey_death", self.origin + (0, 0, 40));
+	self clientfield::set("shadow_death", 1);
 
 	level notify("escargot_killed", self.origin);
 
@@ -1580,6 +1520,7 @@ function escargot_death_notify()
 			zm_powerups::specific_powerup_drop("free_perk", self.origin + (-40,0,0));
 		}
 	}
+	level util::wait_network_frame();
 	self Delete();
 }
 
@@ -1589,7 +1530,8 @@ function cloak_death_notify()
 	level.num_cloaks--;
 	alias_name = "shadow_kill" + RandomIntRange(1, 4);
 	PlaySoundAtPosition(alias_name, self.origin);
-	PlayFX("shadow/fx_zmb_smokey_death", self.origin + (0, 0, 40));
+	self clientfield::set("shadow_death", 1);
+	level util::wait_network_frame();
 	self Delete();
 }
 
@@ -1598,35 +1540,8 @@ function choker_death_notify()
 	self waittill("death");
 	alias_name = "shadow_kill" + RandomIntRange(1, 4);
 	PlaySoundAtPosition(alias_name, self.origin);
-	PlayFX("shadow/fx_zmb_smokey_death", self.origin + (0, 0, 40));
-	self Delete();
-}
-
-function escargot_death_notify_ee_radio()
-{
-	self waittill("death");
-	level.num_escargots_ee--;
-	alias_name = "shadow_kill" + RandomIntRange(1, 4);
-	PlaySoundAtPosition(alias_name, self.origin);
-	PlayFX("shadow/fx_zmb_smokey_death", self.origin + (0, 0, 40));
-	self Delete();
-}
-
-function cloak_death_notify_ee_radio()
-{
-	self waittill("death");
-	alias_name = "shadow_kill" + RandomIntRange(1, 4);
-	PlaySoundAtPosition(alias_name, self.origin);
-	PlayFX("shadow/fx_zmb_smokey_death", self.origin + (0, 0, 40));
-	self Delete();
-}
-
-function choker_death_notify_ee_radio()
-{
-	self waittill("death");
-	alias_name = "shadow_kill" + RandomIntRange(1, 4);
-	PlaySoundAtPosition(alias_name, self.origin);
-	PlayFX("shadow/fx_zmb_smokey_death", self.origin + (0, 0, 40));
+	self clientfield::set("shadow_death", 1);
+	level util::wait_network_frame();
 	self Delete();
 }
 
@@ -1669,43 +1584,6 @@ function dog_spawn_factory_logic(favorite_enemy, cloak_spawn)
 	return dog_locs[0];
 }
 
-function dog_spawn_factory_logic_ee_radio(favorite_enemy)
-{
-	clean_locs = struct::get_array("clean_spawners", "targetname");
-	dog_locs_init = [];
-
-
-	for(i = 0; i < clean_locs.size; i++)
-	{
-		if(clean_locs[i].script_noteworthy == "dog_location")
-		{
-			dog_locs_init[dog_locs_init.size] = clean_locs[i];
-		}
-	}
-
-	dog_locs = array::randomize(dog_locs_init);
-
-	//assert( dog_locs.size > 0, "Dog Spawner locs array is empty." );
-
-	for( i = 0; i < dog_locs.size; i++ )
-	{
-		if( isdefined( level.old_dog_spawn ) && level.old_dog_spawn == dog_locs[i] )
-		{
-			continue;
-		}
-
-		dist_squared = DistanceSquared( dog_locs[i].origin, favorite_enemy.origin );
-		if(  dist_squared > ( 400 * 400 ) && dist_squared < ( 1000 * 1000 ) )
-		{
-			level.old_dog_spawn = dog_locs[i];
-			return dog_locs[i];
-		}	
-	}
-
-	return dog_locs[0];
-}
-
-
 function dog_spawn_fx( ent )
 {
 	
@@ -1716,7 +1594,9 @@ function dog_spawn_fx( ent )
 
 //	if ( isdefined( ent ) )
 
-	Playfx( level._effect["lightning_dog_spawn"], ent.origin );
+	fx_model = Spawn("script_model", ent.origin);
+	fx_model SetModel("tag_origin");
+	fx_model clientfield::set("lightning_spawn", 1);
 	playsoundatposition( "zmb_hellhound_prespawn", ent.origin );
 	wait( 1.5 );
 	playsoundatposition( "zmb_hellhound_bolt", ent.origin );
@@ -1724,6 +1604,7 @@ function dog_spawn_fx( ent )
 	Earthquake( 0.5, 0.75, ent.origin, 1000);
 	//PlayRumbleOnPosition("explosion_generic", ent.origin);
 	playsoundatposition( "zmb_hellhound_spawn", ent.origin );
+	fx_model Delete();
 }
 
 

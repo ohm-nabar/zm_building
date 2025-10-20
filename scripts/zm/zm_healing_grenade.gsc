@@ -1,5 +1,6 @@
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
+#using scripts\shared\clientfield_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\laststand_shared;
 
@@ -153,9 +154,7 @@ function spawn_aura(grenade, reviver, weapon)
 {
 	grenade waittill("stationary");
 
-	fx_pos = Spawn("script_model", grenade.origin);
-	fx_pos SetModel("tag_origin");
-	PlayFXOnTag("custom/healing_grenade", fx_pos, "tag_origin");
+	grenade clientfield::set("healing_aura", 1);
 	PlaySoundAtPosition("healing_aura", grenade.origin);
 
 	max_turned = MAX_TURNED_ZOMBIES;
@@ -185,8 +184,6 @@ function spawn_aura(grenade, reviver, weapon)
 		}
 		wait(0.05);
 	}
-	
-	fx_pos Delete();
 
 	if(isdefined(reviver))
 	{	

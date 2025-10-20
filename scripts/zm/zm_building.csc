@@ -81,6 +81,9 @@
 #using scripts\zm\bgbs\_zm_bgb_aftertaste_blood;
 #using scripts\zm\bgbs\_zm_bgb_challenge_rejected;
 
+// CSC FX
+#using scripts\zm\zm_csc_fx;
+
 #precache( "client_fx", "custom/magic_box_og/fx_weapon_box_open_glow_og" );
 #precache( "client_fx", "custom/magic_box_og/fx_weapon_box_marker_fl_og" );
 

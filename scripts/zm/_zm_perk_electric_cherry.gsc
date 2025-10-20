@@ -54,7 +54,6 @@
 #define RELOAD_ATTACK_COOLDOWN_TIMER 3
 
 #precache( "fx", "_t6/misc/fx_zombie_cola_revive_on" );
-#precache( "fx", "dlc1/castle/fx_castle_electric_cherry_down" );
 
 #precache( "string", "ZM_ABBEY_PERK_ELECTRIC_CHERRY_RED" );
 
@@ -136,8 +135,6 @@ function electric_cherry_perk_machine_setup( use_trigger, perk_machine, bump_tri
 //-----------------------------------------------------------------------------------
 function init_electric_cherry()
 {	
-	level._effect[ "electric_cherry_explode" ]				= "dlc1/castle/fx_castle_electric_cherry_down";
-	
 	// Last Stand Attack
 	level.custom_laststand_func = &electric_cherry_laststand;
 	
@@ -215,12 +212,13 @@ function electric_cherry_laststand()  //self = player
 	
 	if ( IsDefined( self ) )
 	{
-		PlayFX( level._effect[ "electric_cherry_explode" ], self.origin );
+		self clientfield::set("cherry_explode", 1);
 		self PlaySound( "zmb_cherry_explode" );
 		self notify( "electric_cherry_start" );
 		
 		//time for notify to go out
-		wait 0.05;
+		level util::wait_network_frame();
+		self clientfield::set("cherry_explode", 0);
 			
 		a_zombies = zombie_utility::get_round_enemy_array();
 		a_zombies = util::get_array_of_closest( self.origin, a_zombies, undefined, undefined, ELECTRIC_CHERRY_DOWNED_ATTACK_RADIUS );

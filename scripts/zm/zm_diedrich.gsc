@@ -15,8 +15,6 @@
 
 #insert scripts\shared\shared.gsh;
 
-#precache( "fx", "custom/fx_zmb_shadow_explode" );
-
 function main() 
 {
 	level.abbey_diedrich = GetWeapon( "zm_diedrich" );
@@ -158,7 +156,7 @@ function diedrich_think(isUpgraded, player)
 
 	alias_name = "diedrich_explos" + RandomIntRange(1, 4);
 	PlaySoundAtPosition(alias_name, self.origin);
-	PlayFX("custom/fx_zmb_shadow_explode", self.origin);
+	self clientfield::set("diedrich_explo", 1);
 
 	weapon = (isUpgraded ? level.abbey_diedrich_upgraded : level.abbey_diedrich);
 	radius = (isUpgraded ? level.diedrich_radius_upgraded : level.diedrich_radius); 
@@ -198,9 +196,13 @@ function diedrich_think(isUpgraded, player)
 		//IPrintLn(damage);
 
 		zombie DoDamage(damage, player.origin, player, player, "none", "MOD_EXPLOSIVE", 0, weapon );
-
 	}
 
+	level util::wait_network_frame();
+	if(isdefined(self))
+	{
+		self clientfield::set("diedrich_explo", 0);
+	}
 }
 
 /*

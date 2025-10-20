@@ -1,11 +1,10 @@
 #using scripts\shared\util_shared;
 #using scripts\shared\callbacks_shared;
+#using scripts\shared\clientfield_shared;
 #using scripts\zm\_zm;
 
 #insert scripts\shared\version.gsh;
 #insert scripts\shared\shared.gsh;
-
-#precache( "fx", "zombie/fx_trap_green_light_doa" );
 	
 function main()
 {
@@ -71,7 +70,7 @@ function monitor_klauser_fired()
 		{
 			continue;
 		}
-		PlayFXOnTag("zombie/fx_trap_green_light_doa", e_projectile, "tag_origin");
+		e_projectile clientfield::set("semtex_light", 1);
 	}
 }
 
