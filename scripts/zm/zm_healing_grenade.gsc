@@ -3,6 +3,7 @@
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\flag_shared;
 #using scripts\shared\laststand_shared;
+#using scripts\shared\scene_shared;
 
 #insert scripts\shared\shared.gsh;
 
@@ -20,6 +21,9 @@
 
 #precache( "fx", "custom/healing_grenade" );
 #precache( "fx", "dlc3/stalingrad/fx_cymbal_monkey_radial_pulse" );
+
+#precache( "model", "isaypwn_hgrenade_view_01" );
+#precache( "model", "isaypwn_hgrenade_view_upg_01" );
 
 #define HEALING_GRENADE_RADIUS 300
 #define TURNED_KILL_RADIUS_SQ 50
@@ -150,36 +154,51 @@ function check_thrown()
 	}
 }
 
+function is_scene_active()
+{
+	return (self scene::is_active("isaypwn_hgrenade_bundle_float_01") || self scene::is_active("isaypwn_hgrenade_bundle_float_02"));
+}
+
 function spawn_aura(grenade, reviver, weapon)
 {
-	grenade waittill("stationary");
-
-	grenade clientfield::set("healing_aura", 1);
-	PlaySoundAtPosition("healing_aura", grenade.origin);
-
 	max_turned = MAX_TURNED_ZOMBIES;
+	grenade waittill("stationary");
+	model = Spawn("script_model", grenade.origin);
+	
 	if(weapon == level.healingGrenadeUpgraded)
 	{
+		model SetModel("isaypwn_hgrenade_view_upg_01");
 		max_turned = MAX_TURNED_ZOMBIES_UPGRADED;
 	}
+	else
+	{
+		model SetModel("isaypwn_hgrenade_view_01");
+	}
+	fx_model = Spawn("script_model", grenade.origin);
+	fx_model SetModel("tag_origin");
+	grenade Delete();
+	model thread scene::play("isaypwn_hgrenade_bundle_float_01", array(model));
 
-	grenade.zombies_turned = 0;
+	fx_model clientfield::set("healing_aura", 1);
+	PlaySoundAtPosition("healing_aura", model.origin);
 
-	while( isdefined(grenade) && isdefined(reviver) )
+	model.zombies_turned = 0;
+
+	while( model is_scene_active() && isdefined(reviver) )
 	{
 		players = GetPlayers();
 		for( i = 0; i < players.size; i++ )
 		{
-			players[i] thread players_check(grenade, reviver);
+			players[i] thread players_check(model, reviver);
 		}
 
 		zombies = GetAISpeciesArray("axis", "all");
-		closest_zombies = level array::get_all_closest(grenade.origin, GetAITeamArray( "axis" ), undefined, undefined, HEALING_GRENADE_RADIUS);
+		closest_zombies = level array::get_all_closest(fx_model.origin, GetAITeamArray( "axis" ), undefined, undefined, HEALING_GRENADE_RADIUS);
 		foreach(zombie in closest_zombies)
 		{
-			if(grenade.zombies_turned < max_turned)
+			if(model.zombies_turned < max_turned)
 			{
-				zombie zombie_check(grenade, reviver);
+				zombie zombie_check(model, reviver);
 			}
 		}
 		wait(0.05);
@@ -189,6 +208,14 @@ function spawn_aura(grenade, reviver, weapon)
 	{	
 		reviver.healing_vox_enabled = true;
 	}
+
+	wait(1);
+	fx_model clientfield::set("healing_aura", 0);
+	PlaySoundAtPosition("wpn_quantum_exp", model.origin);
+	wait(0.5);
+	model Delete();
+	wait(2.5);
+	fx_model Delete();
 }
 
 function players_check(grenade, reviver)

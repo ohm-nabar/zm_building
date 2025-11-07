@@ -36,6 +36,9 @@
 #define TRIDENT_FLING_ZOMBIES_MAX 4
 #define TRIDENT_FLING_SCALAR 100
 #define TRIDENT_FLING_RADIUS 100
+#define TRIDENT_EARTHQUAKE_SCALE 0.75
+#define TRIDENT_EARTHQUAKE_TIME 1
+#define TRIDENT_EARTHQUAKE_RADIUS 200
 
 #define ELECTRIC_CHERRY_STUN_CYCLES 4
 
@@ -674,6 +677,7 @@ function trident_create_whirlpool()
 
 	forward_vector = VectorNormalize(AnglesToForward(self.angles));
 	v_pos = self.origin + VectorScale(forward_vector, TRIDENT_WHIRLPOOL_SCALAR);
+	Earthquake(TRIDENT_EARTHQUAKE_SCALE, TRIDENT_EARTHQUAKE_TIME, v_pos, TRIDENT_EARTHQUAKE_RADIUS);
 
 	zombies = GetAISpeciesArray("axis", "all");
 	valid_zombies = level array::filter(zombies, false, &zombie_filter);

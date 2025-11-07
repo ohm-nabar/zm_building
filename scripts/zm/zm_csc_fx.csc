@@ -14,6 +14,7 @@
 #precache( "client_fx", "redspace/fx_launchpad_red" );
 #precache( "client_fx", "dlc5/zmhd/fx_zombie_auto_turret_light" );
 #precache( "client_fx", "dlc1/castle/fx_castle_electric_cherry_down" );
+#precache( "client_fx", "dlc5/zmb_weapon/fx_area_effect" );
 
 REGISTER_SYSTEM( "zm_csc_fx", &__init__, undefined )
 
@@ -22,7 +23,7 @@ function __init__()
 {
     level clientfield::register( "scriptmover", "fx_floating_orb_glow", VERSION_SHIP, 1, "int", &fx_floating_orb_glow, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
     level clientfield::register( "missile", "semtex_light", VERSION_SHIP, 1, "int", &semtex_light, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
-    level clientfield::register( "missile", "healing_aura", VERSION_SHIP, 1, "int", &healing_aura, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+    level clientfield::register( "scriptmover", "healing_aura", VERSION_SHIP, 1, "int", &healing_aura, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
     level clientfield::register( "actor", "diedrich_explo", VERSION_SHIP, 1, "int", &diedrich_explo, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 	level clientfield::register( "scriptmover", "pickup_glint", VERSION_SHIP, 1, "int", &pickup_glint, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 	level clientfield::register( "actor", "trap_flame", VERSION_SHIP, 1, "int", &trap_flame, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
@@ -67,6 +68,10 @@ function healing_aura(localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fie
   	{
     	self.fx = PlayFXOnTag(localClientNum, "custom/healing_grenade", self, "tag_origin");
   	}
+	else
+	{
+		self.fx = PlayFXOnTag(localClientNum, "dlc5/zmb_weapon/fx_area_effect", self, "tag_origin");
+	}
 }
 
 function diedrich_explo(localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fieldName, bWasTimeJump)

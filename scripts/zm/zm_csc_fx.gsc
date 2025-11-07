@@ -11,7 +11,7 @@ function __init__()
 {
     level clientfield::register( "scriptmover", "fx_floating_orb_glow", VERSION_SHIP, 1, "int" );
     level clientfield::register( "missile", "semtex_light", VERSION_SHIP, 1, "int" );
-    level clientfield::register( "missile", "healing_aura", VERSION_SHIP, 1, "int" );
+    level clientfield::register( "scriptmover", "healing_aura", VERSION_SHIP, 1, "int" );
     level clientfield::register( "actor", "diedrich_explo", VERSION_SHIP, 1, "int" );
     level clientfield::register( "scriptmover", "pickup_glint", VERSION_SHIP, 1, "int" );
     level clientfield::register( "actor", "trap_flame", VERSION_SHIP, 1, "int" );

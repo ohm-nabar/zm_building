@@ -126,6 +126,9 @@ weapon,bare_hands_t7
 weapon,zombie_perk_bottle_nuke
 weapon,zombie_perk_bottle_punch
 
+scriptbundle,isaypwn_hgrenade_bundle_float_01
+fx,dlc5/zmb_weapon/fx_area_effect
+
 image,specialty_giant_marathon_zombies
 image,specialty_giant_quickrevive_zombies
 image,specialty_giant_three_guns_zombies
