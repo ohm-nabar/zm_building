@@ -104,7 +104,7 @@ function shadow_round_base_logic()
 			{
 				players[i] LUINotifyEvent(&"generator_unshadowed", 0);
 				players[i] clientfield::set_player_uimodel("shadowPerks", 0);
-				if(level.num_gens_shadowed > 0)
+				if(level.generators_shadowed.size > 0)
 				{
 					players[i] thread zm_abbey_inventory::notifyGenerator();
 				}
@@ -210,7 +210,6 @@ function generator1_shadow_monitor()
 		players[i] notify(PERK_ELECTRIC_CHERRY + "_stop");
 		players[i] thread shadow_cherry_effects();
 		players[i] thread monitor_has_shadowed_perk(PERK_ELECTRIC_CHERRY);
-		players[i] LUINotifyEvent(&"generator_shadowed", 1, 0);
 		players[i] clientfield::set_player_uimodel("shadowPerks", 1);
 	}
 }
@@ -241,7 +240,6 @@ function generator2_shadow_monitor()
 		players[i] notify(PERK_DEAD_SHOT + "_stop");
 		players[i] thread shadow_deadshot_effects();
 		players[i] thread monitor_has_shadowed_perk(PERK_DEAD_SHOT);
-		players[i] LUINotifyEvent(&"generator_shadowed", 1, 1);
 		players[i] clientfield::set_player_uimodel("shadowPerks", 2);
 	}
 }
@@ -287,7 +285,6 @@ function generator3_shadow_monitor()
 		players[i] notify(PERK_STAMINUP + "_stop");
 		players[i] thread shadow_stamin_effects();
 		players[i] thread monitor_has_shadowed_perk(PERK_STAMINUP);
-		players[i] LUINotifyEvent(&"generator_shadowed", 1, 2);
 		players[i] clientfield::set_player_uimodel("shadowPerks", 3);
 	}
 }
@@ -316,7 +313,6 @@ function generator4_shadow_monitor()
 		players[i] notify(PERK_PHD_LITE + "_stop");
 		players[i] thread shadow_PHD_effects();
 		players[i] thread monitor_has_shadowed_perk(PERK_PHD_LITE);
-		players[i] LUINotifyEvent(&"generator_shadowed", 1, 3);
 		players[i] clientfield::set_player_uimodel("shadowPerks", 4);
 	}
 }

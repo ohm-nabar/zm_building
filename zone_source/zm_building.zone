@@ -742,3 +742,6 @@ scriptparsetree,scripts/zm/_zm_weapons.gsc
 // CSC FX
 scriptparsetree,scripts/zm/zm_csc_fx.gsc
 scriptparsetree,scripts/zm/zm_csc_fx.csc
+
+// Cloak Logic
+scriptparsetree,scripts/zm/zm_cloak_logic.gsc

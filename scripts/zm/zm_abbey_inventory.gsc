@@ -97,6 +97,7 @@ function __init__()
 function on_player_connect()
 {
 	self.abbey_notif_active = false;
+	self.gen_notify_count = 0;
 	self LUINotifyEvent(&"notification_hide", 0);
 	self LUINotifyEvent(&"generator_visible", 1, 0);
 }
@@ -594,23 +595,32 @@ function notifyGenerator(generator_shadowed=false)
 	self endon("disconnect");
 	self endon(#"generator_override");
 
+	self notify(#"generator_started");
+
+	self.gen_notify_count += 1;
+
 	if(generator_shadowed)
 	{
 		self PlaySoundToPlayer(NOTIF_ALERT_SP, self);
 	}
 	self LUINotifyEvent(&"generator_visible", 1, 1);
 
+	gen_notify_count = self.gen_notify_count;
 	self thread generator_destroy_on_override();
 	
 	wait(5);
 	
-	self LUINotifyEvent(&"generator_visible", 1, 0);
-	self notify(#"generator_finished");
+	if(self.gen_notify_count == gen_notify_count)
+	{
+		self LUINotifyEvent(&"generator_visible", 1, 0);
+		self notify(#"generator_finished");
+	}
 }
 
 function generator_destroy_on_override()
 {
 	self endon("disconnect");
+	self endon(#"generator_started");
 	self endon(#"generator_finished");
 
 	self waittill(#"generator_override");

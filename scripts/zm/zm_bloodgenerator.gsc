@@ -1191,7 +1191,7 @@ function turn_generator_on(generator_name, after_shadow)
 				{
 					level.boxcages_q1[i] Delete();
 				}
-				level.active_generators[level.active_generators.size] = "generator1";
+				level.active_generators[level.active_generators.size] = 1;
 				foreach(player in level.players)
 				{
 					player.generator_indicators["generator1"] Destroy();
@@ -1211,7 +1211,7 @@ function turn_generator_on(generator_name, after_shadow)
 				{
 					level.boxcages_q2[i] Delete();
 				}
-				level.active_generators[level.active_generators.size] = "generator2";
+				level.active_generators[level.active_generators.size] = 2;
 				foreach(player in level.players)
 				{
 					player.generator_indicators["generator2"] Destroy();
@@ -1230,7 +1230,7 @@ function turn_generator_on(generator_name, after_shadow)
 				{
 					level.boxcages_q3[i] Delete();
 				}
-				level.active_generators[level.active_generators.size] = "generator3";
+				level.active_generators[level.active_generators.size] = 3;
 				foreach(player in level.players)
 				{
 					player.generator_indicators["generator3"] Destroy();
@@ -1249,7 +1249,7 @@ function turn_generator_on(generator_name, after_shadow)
 				{
 					level.boxcages_q4[i] Delete();
 				}
-				level.active_generators[level.active_generators.size] = "generator4";
+				level.active_generators[level.active_generators.size] = 4;
 				foreach(player in level.players)
 				{
 					player.generator_indicators["generator4"] Destroy();

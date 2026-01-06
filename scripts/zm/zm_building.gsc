@@ -156,7 +156,6 @@ function main()
 	level._effect["lght_marker_flare"] = "custom/magic_box_og/fx_weapon_box_marker_fl_og";
 	level.custom_spawnPlayer = &fixed_respawn;
 	zm_usermap::main();
-	level.dog_round_track_override = &zm_ai_shadowpeople::dog_round_tracker;
 	zm::register_actor_damage_callback( &damage_adjustment );
 	zm::register_player_damage_callback ( &player_damage_adjustment );
 	

@@ -28,6 +28,10 @@ function __init__()
 {
 	clientfield::register( "clientuimodel", "abbeyRoom", VERSION_SHIP, 5, "int" );
 
+	level.abbey_rooms = [];
+	level.abbey_rooms_indices = [];
+	level.above_rooms = [];
+	level.beach_rooms = [];
 	if(GetDvarString("ui_mapname") == "zm_building")
 	{
 		spawn_room_zones = []; spawn_room_zones[spawn_room_zones.size] = "start_zone";
@@ -37,7 +41,6 @@ function __init__()
 		lion_room_zones = []; lion_room_zones[lion_room_zones.size] = "dirty";
 		downstairs_room_zones = []; downstairs_room_zones[downstairs_room_zones.size] = "downstairs";
 
-		level.abbey_rooms = [];
 		level.abbey_rooms["Spawn Room"] = spawn_room_zones;
 		level.abbey_rooms["Staminarch"] = staminarch_zones;
 		level.abbey_rooms["Water Tower"] = water_tower_zones;
@@ -45,7 +48,6 @@ function __init__()
 		level.abbey_rooms["Lion Room"] = lion_room_zones;
 		level.abbey_rooms["Downstairs Room"] = downstairs_room_zones;
 
-		level.abbey_rooms_indices = [];
 		level.abbey_rooms_indices["Spawn Room"] = 0;
 		level.abbey_rooms_indices["Staminarch"] = 1;
 		level.abbey_rooms_indices["Water Tower"] = 2;
@@ -53,14 +55,12 @@ function __init__()
 		level.abbey_rooms_indices["Lion Room"] = 4;
 		level.abbey_rooms_indices["Downstairs Room"] = 5;
 
-		level.above_rooms = [];
 		level.above_rooms[level.above_rooms.size] = "Spawn Room";
 		level.above_rooms[level.above_rooms.size] = "Water Tower";
 		level.above_rooms[level.above_rooms.size] = "Staminarch";
 		level.above_rooms[level.above_rooms.size] = "Lion Room";
 		level.above_rooms[level.above_rooms.size] = "Downstairs Room";
 
-		level.beach_rooms = [];
 		level.beach_rooms[level.beach_rooms.size] = "Clean Room";
 	}
 	else
@@ -92,7 +92,6 @@ function __init__()
 		bridge2_zones = []; bridge2_zones[bridge2_zones.size] = "bridge21_zone"; bridge2_zones[bridge2_zones.size] = "bridge22_zone";
 		nml_zones = []; nml_zones[nml_zones.size] = "nml_zone";
 
-		level.abbey_rooms = [];
 		level.abbey_rooms["Crash Site"] = spawn_room_zones;
 		level.abbey_rooms["Red Room"] = redroom_zones;
 		level.abbey_rooms["Bell Tower"] = bell_zones;
@@ -120,7 +119,6 @@ function __init__()
 		level.abbey_rooms["Knight's Hall"] = forum_zones;
 		level.abbey_rooms["No Man's Land"] = nml_zones;
 
-		level.abbey_rooms_indices = [];
 		level.abbey_rooms_indices["Crash Site"] = 0;
 		level.abbey_rooms_indices["Red Room"] = 1;
 		level.abbey_rooms_indices["Bell Tower"] = 2;
@@ -148,7 +146,6 @@ function __init__()
 		level.abbey_rooms_indices["No Man's Land"] = 24;
 		level.abbey_rooms_indices["Alleyway"] = 25;
 
-		level.above_rooms = [];
 		level.above_rooms[level.above_rooms.size] = "Crash Site";
 		level.above_rooms[level.above_rooms.size] = "Red Room";
 		level.above_rooms[level.above_rooms.size] = "Bell Tower";
@@ -174,13 +171,12 @@ function __init__()
 		level.above_rooms[level.above_rooms.size] = "Guard Tower";
 		level.above_rooms[level.above_rooms.size] = "Alleyway";
 
-		level.beach_rooms = [];
 		level.beach_rooms[level.beach_rooms.size] = "No Man's Land";
 
 		level thread monitor_beach_zones();
 	}
 
-    callback::on_connect( &on_player_connect );
+    level callback::on_connect( &on_player_connect );
 }
 
 function on_player_connect()
@@ -282,11 +278,11 @@ function monitor_beach_zones()
 	}
 }
 
-function is_player_in_room(zoneset)
+function is_player_in_room(zoneset, ignore_enabled_check=false)
 {
 	for(i = 0; i < zoneset.size; i++)
 	{
-		if( self zm_zonemgr::entity_in_zone(zoneset[i]) )
+		if( self zm_zonemgr::entity_in_zone(zoneset[i], ignore_enabled_check) )
 		{
 			return true;
 		}

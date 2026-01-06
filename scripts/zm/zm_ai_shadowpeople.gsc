@@ -35,12 +35,15 @@
 #using scripts\shared\visionset_mgr_shared;
 
 #using scripts\zm\zm_abbey_inventory;
-
+#using scripts\zm\zm_cloak_logic;
 #using scripts\zm\zm_room_manager;
 
 #precache( "material", "shadow_kill_indicator" ); 
 
-#precache( "eventstring", "generator_attacked" ); 
+#precache( "eventstring", "generator_attacked" );
+
+#define CLOAK_SPAWN_DELAY_MIN 2
+#define CLOAK_SPAWN_DELAY_MAX 4
 
 #namespace zm_ai_shadowpeople;
 
@@ -71,12 +74,12 @@ function __init__()
 	level.shadow_vision_active = false;
 	level.shadow_round_paused = false;
 
+	level.dog_round_track_override = &zm_ai_shadowpeople::dog_round_tracker;
 	level zm::register_player_damage_callback( &player_damage_override );
 	level zm::register_actor_damage_callback( &damage_adjustment );
 	level zm::register_zombie_damage_override_callback( &zombie_damage_override );
 	level visionset_mgr::register_info("visionset", "abbey_shadow", VERSION_SHIP, 61, 1, true);
-	// jank stuff
-	level thread testeroo();
+	level thread skip_round_check();
 }
 
 function is_shadow_boss()
@@ -87,6 +90,19 @@ function is_shadow_boss()
 function is_shadow_person()
 {
 	return (isdefined(self.targetname) && (self is_shadow_boss() || self.targetname == "zombie_choker"));
+}
+
+function is_cloak(ai)
+{
+	return IS_EQUAL(ai.targetname, "zombie_cloak");
+}
+
+function get_cloaks()
+{
+	cloaks = GetAISpeciesArray("axis", "all");
+	cloaks = level array::filter(cloaks, false, &is_cloak);
+
+	return cloaks;
 }
 
 function player_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, weapon, vPoint, vDir, sHitLoc, psOffsetTime )
@@ -216,21 +232,10 @@ function escargot_spawn(player, trident_spawn)
 	//escargot thread ai_testeroo();
 }
 
-function cloak_spawn(target)
+function cloak_spawn(target, spawn_point)
 {
 	level endon(#"skip_round");
 
-	spawn_point = dog_spawn_factory_logic(target, true);
-	if(isdefined(spawn_point))
-	{
-		debug_str = "" + spawn_point.origin;
-		/# PrintLn(debug_str); #/
-	}
-	else
-	{
-		debug_str = "undefined";
-		/# PrintLn(debug_str); #/
-	}
 	dog_spawn_fx( spawn_point );
 	cloak = zombie_utility::spawn_zombie(level.cloak_spawner);
 	cloak ForceTeleport(spawn_point.origin, spawn_point.angles);
@@ -376,7 +381,10 @@ function skip_round_check()
 	while(true)
 	{	
 		level waittill(#"skip_round");
-		level end_shadow_round();
+		if(level flag::get("dog_round"))
+		{
+			level end_shadow_round();
+		}
 	}
 }
 
@@ -387,8 +395,6 @@ function dog_round_spawning()
 	level endon( "restart_round" );
 	level endon( "kill_round" );
 	level endon( #"skip_round" );
-
-	level thread skip_round_check();
 
 	if( level.intermission )
 	{
@@ -460,18 +466,14 @@ function dog_round_spawning()
 	level.no_powerups = true;
 	level.zombie_ai_limit = 64;
 
-	while( IsWorldPaused() ) {
+	while( IsWorldPaused() ) 
+	{
 		wait(0.05);
 	}
 
 	level.in_shadow_spawn_sequence = true;
 
-	debug_str1 = "in shadow spawn sequence";
-	debug_str2 = "cloak spawned!";
-	/# PrintLn(debug_str1); #/
 	level thread cloak_spawn_sequence();
-	level waittill(#"cloak_spawned");
-	/# PrintLn(debug_str2); #/
 
 	while(level.num_cloaks > 0)
 	{
@@ -589,36 +591,45 @@ function cloak_spawn_sequence()
 	level endon(#"skip_round");
 
 	cloaks_to_spawn = level.num_cloaks;
-	generators = array::randomize( level.active_generators );
-	generators_shadowed = [];
+	generators = level array::randomize(level.active_generators);
 
-	gen_num_translation = [];
-	gen_num_translation["generator1"] = 0;
-	gen_num_translation["generator2"] = 1;
-	gen_num_translation["generator3"] = 2;
-	gen_num_translation["generator4"] = 3;
+	level.generators_shadowed = [];
+	level.num_cloaks_alive = 0;
 
-	level.num_gens_shadowed = 0;
 	for(i = 0; i < cloaks_to_spawn; i++)
 	{
 		in_antiverse = false;
-		time_to_wait = randomintrange(1, 4);
+		time_to_wait = RandomIntRange(CLOAK_SPAWN_DELAY_MIN, CLOAK_SPAWN_DELAY_MAX + 1);
 		wait(time_to_wait);
 
-		if(level.num_gens_shadowed == generators.size)
+		if(level.generators_shadowed.size == generators.size)
 		{
 			level.num_cloaks = 0;
 			break;
 		}
-		generator_index = i % generators.size;
-		trigger = GetEnt(generators[generator_index] + "_attack", "targetname");
-		level.current_cloak_target_pos = trigger.origin;
+
+		counter = 0;
+		do
+		{
+			gen_num = generators[(i + counter) % generators.size];
+			cloaks = level get_cloaks();
+			used_gen_nums = [];
+			foreach(cloak in cloaks)
+			{
+				level array::add(used_gen_nums, cloak.gen_num);
+			}
+			counter += 1;
+			wait(0.05);
+		}
+		while(level array::contains(used_gen_nums, gen_num));
+
+		attack_struct = level struct::get("generator" + gen_num + "_attack", "targetname");
 		num_cloaks_prev = level.num_cloaks;
 
 		generator_already_shadowed = false;
-		for(j = 0; j < generators_shadowed.size; j++)
+		for(j = 0; j < level.generators_shadowed.size; j++)
 		{
-			if(generators[generator_index] == generators_shadowed[j])
+			if(gen_num == level.generators_shadowed[j])
 			{
 				generator_already_shadowed = true;
 			}
@@ -646,70 +657,12 @@ function cloak_spawn_sequence()
 			wait(1);
 		}
 
-		cloak = cloak_spawn(trigger);
-		level.cloak = cloak;
-		//cloak.v_zombie_custom_goal_pos = trigger.origin;
-		level notify(#"cloak_spawned");
+		level thread zm_cloak_logic::cloak_spawn_logic(attack_struct, gen_num);
+		level.num_cloaks_alive += 1;
 
-		trigger_volume = GetEnt(trigger.target, "targetname");
-
-		while(level.num_cloaks == num_cloaks_prev && ! cloak IsTouching(trigger_volume))
+		while(level.num_cloaks_alive >= 2)
 		{
 			wait(0.05);
-		}
-		
-		if(level.num_cloaks == num_cloaks_prev)
-		{
-			cloak notify("goal_reached");
-			cloak.ignoreall = false; 
-			cloak.v_zombie_custom_goal_pos = undefined;
-			//cloak SetGoal(undefined);
-			trigger.being_shadowed = true;
-			cloak PlayLoopSound("shadow_ritual");
-			cloak clientfield::set("cloak_shadowing", 1);
-			cloak AnimScripted("cloak_conjuring", cloak.origin, cloak.angles, "cloak_conjuring");
-			gen_num = gen_num_translation[generators[generator_index]];
-			foreach(player in level.players)
-			{
-				player thread zm_abbey_inventory::notifyGenerator();
-				player LUINotifyEvent(&"generator_attacked", 1, gen_num);
-			}
-			level notify(generators[generator_index] + "_attacked");
-		}
-		
-		counter = 0;
-		while(counter < 10)
-		{
-			wait(0.05);
-			counter += 0.05;
-			if(level.num_cloaks != num_cloaks_prev)
-			{
-				level notify(generators[generator_index] + "_saved");
-				trigger.being_shadowed = false;
-				foreach(player in level.players)
-				{
-					player notify(#"generator_override");
-				}
-				break;
-			}
-		}
-
-		if(isdefined(cloak))
-		{
-			cloak StopLoopSound();
-		}
-
-		if(level.num_cloaks == num_cloaks_prev)
-		{	
-			cloak DoDamage(cloak.maxhealth + 666, cloak.origin);
-			level.num_gens_shadowed++;
-			generators_shadowed[generators_shadowed.size] = generators[generator_index];
-			level notify(generators[generator_index] + "_shadowed");
-			trigger.being_shadowed = false;
-			foreach(player in level.players)
-			{
-				player thread zm_abbey_inventory::notifyGenerator(true);
-			}
 		}
 	}
 }
@@ -1007,8 +960,6 @@ function cloak_ignore_all()
 	{
 		self.ignoreall = true; 
 		self.favortieenemy = undefined;
-		self.v_zombie_custom_goal_pos = level.current_cloak_target_pos;
-		self SetGoal(level.current_cloak_target_pos);
 		wait(0.05);
 	}
 }
@@ -1510,11 +1461,11 @@ function escargot_death_notify()
 	if(level.num_escargots == 0)
 	{
 		zm_powerups::specific_powerup_drop( "full_ammo", self.origin);
-		if(level.num_gens_shadowed == 0)
+		if(level.generators_shadowed.size == 0)
 		{
 			zm_powerups::specific_powerup_drop("free_perk", self.origin + (40,0,0));
 		}
-		else if(level.num_gens_shadowed == 4)
+		else if(level.generators_shadowed.size == 4)
 		{
 			zm_powerups::specific_powerup_drop("free_perk", self.origin + (40,0,0));
 			zm_powerups::specific_powerup_drop("free_perk", self.origin + (-40,0,0));
@@ -1528,6 +1479,7 @@ function cloak_death_notify()
 {
 	self waittill("death");
 	level.num_cloaks--;
+	level.num_cloaks_alive--;
 	alias_name = "shadow_kill" + RandomIntRange(1, 4);
 	PlaySoundAtPosition(alias_name, self.origin);
 	self clientfield::set("shadow_death", 1);
@@ -1605,30 +1557,4 @@ function dog_spawn_fx( ent )
 	//PlayRumbleOnPosition("explosion_generic", ent.origin);
 	playsoundatposition( "zmb_hellhound_spawn", ent.origin );
 	fx_model Delete();
-}
-
-
-function testeroo()
-{
-	while(true)
-	{
-		level.dog_round_track_override = &zm_ai_shadowpeople::dog_round_tracker;
-		wait(2);
-	}
-}
-
-function ai_testeroo()
-{
-	self endon("death");
-
-	prevHealth = self.health;
-
-	while(true)
-	{
-		if(self.health < prevHealth)
-		{
-			prevHealth = self.health;
-		}
-		wait(0.05);
-	}
 }
