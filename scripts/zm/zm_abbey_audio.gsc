@@ -62,6 +62,7 @@ function main()
 	level zm_audio::musicState_Create("round_start_milestone", PLAYTYPE_ROUND, "round_start_milestone");
 	
 	level.zombie_round_change_custom = &round_change_custom;
+	level.missed_milestone_round = false;
 	//level thread testeroo();
 }
 
@@ -77,14 +78,19 @@ function round_change_custom()
 		{
 			level thread zm_audio::sndMusicSystem_PlayState( "round_start_first" );
 		}
-		else if( level.round_number % 10 == 0 )
+		else if( level.round_number % 10 == 0 || level.missed_milestone_round )
 		{
 			level thread zm_audio::sndMusicSystem_PlayState( "round_start_milestone" );
+			level.missed_milestone_round = false;
 		}
 		else
 		{
 			level thread zm_audio::sndMusicSystem_PlayState( "round_start" );
 		}
+	}
+	else if( level.round_number % 10 == 0 )
+	{
+		level.missed_milestone_round = true;
 	}
 	level zm::round_one_up();
 }
