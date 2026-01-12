@@ -74,6 +74,30 @@ function __init__()
 	level.shadow_vision_active = false;
 	level.shadow_round_paused = false;
 
+	num_cloaks1 = array(2, 2, 3, 3);
+	num_cloaks2 = array(3, 3, 4, 4);
+	num_cloaks3 = array(4, 4, 5, 6);
+
+	num_escargots1 = array(1, 1, 1, 1);
+	num_escargots2 = array(2, 2, 2, 2);
+	num_escargots3 = array(2, 3, 3, 4);
+
+	cloak_health1 = array(1045, 1527, 1045, 1527); // Round 10, 14 health
+	cloak_health2 = array(4348, 5260, 4348, 5260); // Round 25, 27 health
+	cloak_health3 = array(7000, 9317, 7700, 9317); // Round 30, 31, 33 health
+
+	escargot_health1 = array(5786, 7000, 5786, 7000); // Round 28, 30 health
+	escargot_health2 = array(11272, 12399, 13638, 15001); // Round 35, 36, 37, 38 health
+	escargot_health3 = array(18151, 18151, 19966, 18151); // Round 40, 41 health
+
+	level.num_cloaks_table = array(num_cloaks1, num_cloaks2, num_cloaks3);
+	level.num_escargots_table = array(num_escargots1, num_escargots2, num_escargots3);
+
+	level.cloak_health_table = array(cloak_health1, cloak_health2, cloak_health3);
+	level.escargot_health_table = array(escargot_health1, escargot_health2, escargot_health3);
+
+	level.max_cloaks_table = array(1, 1, 2, 2);
+
 	level.dog_round_track_override = &zm_ai_shadowpeople::dog_round_tracker;
 	level zm::register_player_damage_callback( &player_damage_override );
 	level zm::register_actor_damage_callback( &damage_adjustment );
@@ -450,12 +474,12 @@ function dog_round_spawning()
 	}
 	level.shadow_transition_active = false;
 
-	level.cloak_health = calculate_cloak_health();
-	level.choker_health = calculate_choker_health();
-	level.escargot_health = calculate_escargot_health();
+	level.cloak_health = level calculate_cloak_health();
+	level.choker_health = level calculate_choker_health();
+	level.escargot_health = level calculate_escargot_health();
 
-	level.num_cloaks = calculate_num_cloaks();
-	level.num_escargots = calculate_num_escargots();
+	level.num_cloaks = level calculate_num_cloaks();
+	level.num_escargots = level calculate_num_escargots();
 
 	level.no_powerups = true;
 	level.zombie_ai_limit = 64;
@@ -570,6 +594,7 @@ function cloak_spawn_sequence()
 	level endon(#"skip_round");
 
 	cloaks_to_spawn = level.num_cloaks;
+	max_cloaks = level calculate_max_cloaks();
 	generators = level array::randomize(level.active_generators);
 
 	level.generators_shadowed = [];
@@ -639,7 +664,7 @@ function cloak_spawn_sequence()
 		level thread zm_cloak_logic::cloak_spawn_logic(attack_struct, gen_num);
 		level.num_cloaks_alive += 1;
 
-		while(level.num_cloaks_alive >= 2 && level.players.size > 2)
+		while(level.num_cloaks_alive >= max_cloaks)
 		{
 			wait(0.05);
 		}
@@ -689,74 +714,42 @@ function calculate_choker_health()
 	}
 }
 
-function calculate_cloak_health()
+function calculate_num_cloaks()
 {
-	if(level.dog_round_count == 1)
-	{
-		return 1045; // round 10 health
-	}
-	else if(level.dog_round_count == 2)
-	{
-		return 2710; // round 20 health
-	}
-	else
-	{
-		return 7030; // round 30 health
-	}
-}
+	round_index = level.dog_round_count - 1;
+	player_index = level.players.size - 1;
 
-function calculate_escargot_health()
-{
-	if(level.dog_round_count == 1)
-	{
-		return 5786; // round 28 health
-	}
-	else if(level.dog_round_count == 2)
-	{
-		return 8470; // round 32 health
-	}
-	else
-	{
-		return 13638; // round 37 health
-	}
+	return level.num_cloaks_table[round_index][player_index];
 }
 
 function calculate_num_escargots()
 {
-	players = GetPlayers();
-	if(level.dog_round_count == 1)
-	{
-		return 1;
-	}
-	else if(level.dog_round_count == 2)
-	{
-		return 2;
-	}
-	else
-	{
-		if(players.size == 1)
-		{
-			return 2;
-		}
-		return players.size;
-	}
+	round_index = level.dog_round_count - 1;
+	player_index = level.players.size - 1;
+
+	return level.num_escargots_table[round_index][player_index];
 }
 
-function calculate_num_cloaks()
+function calculate_cloak_health()
 {
-	players = GetPlayers();
-	if(level.dog_round_count == 1)
-	{
-		return 2;
-	}
-	else if(level.dog_round_count == 2)
-	{
-		return 3;
-	}
-	else
-	{
-		return 4;
-	}
+	round_index = level.dog_round_count - 1;
+	player_index = level.players.size - 1;
+
+	return level.cloak_health_table[round_index][player_index];
+}
+
+function calculate_escargot_health()
+{
+	round_index = level.dog_round_count - 1;
+	player_index = level.players.size - 1;
+
+	return level.escargot_health_table[round_index][player_index];
+}
+
+function calculate_max_cloaks()
+{
+	player_index = level.players.size - 1;
+	return level.max_cloaks_table[player_index];
 }
 
 function cloak_think()
