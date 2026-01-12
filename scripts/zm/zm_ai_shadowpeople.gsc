@@ -202,21 +202,16 @@ function unpause(antiverse=false)
 	}
 }
 
-function escargot_spawn(player, trident_spawn)
+function escargot_spawn(spawn_point)
 {
-	spawn_point = undefined;
-	if(IS_TRUE(trident_spawn))
+	if(! isdefined(spawn_point))
 	{
-		spawn_point = escargot_trident_spawn_logic();
-	}
-	else
-	{
-		spawn_point = dog_spawn_factory_logic(player);
+		spawn_point = level dog_spawn_factory_logic(level get_random_valid_player(false));
 	}
 
-	escargot = zombie_utility::spawn_zombie(level.escargot_spawner);
+	escargot = level zombie_utility::spawn_zombie(level.escargot_spawner);
 
-	dog_spawn_fx( spawn_point );
+	level dog_spawn_fx( spawn_point );
 	escargot ForceTeleport(spawn_point.origin, spawn_point.angles);
 
 	//escargot clientfield::set( "shadow_fx", 1 );
@@ -236,7 +231,7 @@ function cloak_spawn(target, spawn_point)
 {
 	level endon(#"skip_round");
 
-	dog_spawn_fx( spawn_point );
+	level dog_spawn_fx( spawn_point );
 	cloak = zombie_utility::spawn_zombie(level.cloak_spawner);
 	cloak ForceTeleport(spawn_point.origin, spawn_point.angles);
 	//cloak clientfield::set( "shadow_wizard_fx", 1 );
@@ -255,8 +250,8 @@ function choker_spawn(player)
 {
 	level endon("last_ai_down");
 
-	spawn_point = dog_spawn_factory_logic(player);
-	dog_spawn_fx( spawn_point );
+	spawn_point = level dog_spawn_factory_logic(player);
+	level dog_spawn_fx( spawn_point );
 	choker = zombie_utility::spawn_zombie(level.choker_spawner);
 	//spawner = array::random( level.zombie_spawners );
 	//choker = zombie_utility::spawn_zombie( spawner, spawner.targetname ); 
@@ -298,7 +293,6 @@ function ai_waypoint_manage(offset)
 	waypoint_pos Delete();
 	kill_indicator Destroy();
 }
-
 
 function dog_round_tracker()
 {
@@ -403,7 +397,7 @@ function dog_round_spawning()
 
 	level.dog_intermission = true;
 	level thread zm_ai_dogs::dog_round_aftermath();
-	array::thread_all( level.players,&zm_ai_dogs::play_dog_round );	
+	level array::thread_all( level.players,&zm_ai_dogs::play_dog_round );	
 	wait(1.1);
 	level.shadow_transition_active = true;
 	foreach(player in level.players)
@@ -528,22 +522,7 @@ function dog_round_spawning()
 		player.shadow_invulnerable = false;
 	}
 
-	for(i = 0; i < level.num_escargots; i++)
-	{
-		while(level.shadow_round_paused)
-		{
-			wait(0.05);
-		}
-		if(i == 0 && ! level.trident_shell_activated && zm_room_manager::is_room_active(level.abbey_rooms[level.trident_init_room]))
-		{
-			level thread escargot_spawn(level get_random_valid_player(), true);
-		}
-		else
-		{
-			level thread escargot_spawn(level get_random_valid_player());
-		}
-		wait(1.5);
-	}
+	level thread escargot_spawn_sequence();
 
 	while(level.num_escargots > 0)
 	{
@@ -573,17 +552,17 @@ function dog_round_spawning()
 	level end_shadow_round();
 }
 
-function get_random_valid_player()
+function get_random_valid_player(ignore_laststand_players=true)
 {
 	valid_players = [];
 	foreach(player in level.players)
 	{
-		if(level zm_utility::is_player_valid(player, false, true))
+		if(level zm_utility::is_player_valid(player, false, ignore_laststand_players))
 		{
-			array::add(valid_players, player);
+			level array::add(valid_players, player);
 		}
 	}
-	return array::random(valid_players);
+	return level array::random(valid_players);
 }
 
 function cloak_spawn_sequence()
@@ -660,10 +639,37 @@ function cloak_spawn_sequence()
 		level thread zm_cloak_logic::cloak_spawn_logic(attack_struct, gen_num);
 		level.num_cloaks_alive += 1;
 
-		while(level.num_cloaks_alive >= 2)
+		while(level.num_cloaks_alive >= 2 && level.players.size > 2)
 		{
 			wait(0.05);
 		}
+	}
+}
+
+function escargot_spawn_sequence()
+{
+	for(i = 0; i < level.num_escargots; i++)
+	{
+		time_to_wait = RandomIntRange(CLOAK_SPAWN_DELAY_MIN, CLOAK_SPAWN_DELAY_MAX + 1);
+		wait(time_to_wait);
+
+		while(level.shadow_round_paused && ! level.in_antiverse)
+		{
+			wait(0.05);
+		}
+
+		in_antiverse = false;
+		while(level.in_antiverse)
+		{
+			in_antiverse = true;
+			wait(0.05);
+		}
+		if(in_antiverse)
+		{
+			wait(1);
+		}
+
+		level zm_cloak_logic::escargot_spawn_logic();
 	}
 }
 
@@ -1496,23 +1502,6 @@ function choker_death_notify()
 	level util::wait_network_frame();
 	self Delete();
 }
-
-function escargot_trident_spawn_logic()
-{
-	dog_locs = array::randomize( level.zm_loc_types[ "dog_location" ] );
-	for( i = 0; i < dog_locs.size; i++ )
-	{
-		if( ! (isdefined(dog_locs[i].script_string) && dog_locs[i].script_string == "escargot" ))
-		{
-			continue;
-		}
-
-		return dog_locs[i];
-	}
-
-	return dog_locs[0];
-}
-
 
 function dog_spawn_factory_logic(favorite_enemy, cloak_spawn)
 {

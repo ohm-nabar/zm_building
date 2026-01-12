@@ -7,6 +7,7 @@
 
 #insert scripts\shared\shared.gsh;
 
+#using scripts\zm\_zm_utility;
 #using scripts\zm\zm_abbey_inventory;
 #using scripts\zm\zm_ai_shadowpeople;
 #using scripts\zm\zm_room_manager;
@@ -297,7 +298,7 @@ function cloak_spawn_logic(gen_struct, gen_num)
                 should_skip = true;
             }
         }
-        if(should_skip)
+        if(should_skip || ! level zm_utility::is_player_valid(player))
         {
             IPrintLn("Skipped Player " + player.characterIndex);
             continue;
@@ -615,6 +616,54 @@ function contingency_create_path(gen_cloak_room)
     }
 
     return CloakPathInfo_init("Contingency", undefined, path_ret[0], path_ret[1]);
+}
+
+function escargot_spawn_logic()
+{
+    escargot_spawn_points = [];
+
+    foreach(player in level.players)
+    {
+        if(! level zm_utility::is_player_valid(player))
+        {
+            continue;
+        }
+        player escargot_spawn_logic_player(escargot_spawn_points);
+    }
+
+    spawn_point = level array::random(escargot_spawn_points);
+    
+    level zm_ai_shadowpeople::escargot_spawn(spawn_point);
+}
+
+function escargot_spawn_logic_player(&escargot_spawn_points)
+{
+    player_cloak_room = self get_ent_cloak_room();
+    if(! isdefined(player_cloak_room))
+    {
+        return;
+    }
+
+    player_cloak_room escargot_add_spawns(player_cloak_room.forward, escargot_spawn_points);
+    player_cloak_room escargot_add_spawns(player_cloak_room.backward, escargot_spawn_points);
+    player_cloak_room escargot_add_spawns(player_cloak_room.left, escargot_spawn_points);
+    player_cloak_room escargot_add_spawns(player_cloak_room.right, escargot_spawn_points);
+}
+
+function escargot_add_spawns(cloak_room, &escargot_spawn_points)
+{
+    path = array(self, cloak_room);
+    if(! (isdefined(cloak_room) && level is_path_open(path)))
+    {
+        return;
+    }
+
+    spawn_points = level.cloak_spawns[cloak_room.name];
+
+    foreach(spawn_point in spawn_points)
+    {
+        level array::add(escargot_spawn_points, spawn_point);
+    }
 }
 
 function is_path_open(&path)
