@@ -227,7 +227,7 @@ function panzerwurfmine_upgrade_damage(grenade)
 
 	zombies = GetAISpeciesArray("axis", "all");
 	exclude_zombies = level array::filter(zombies, false, &filter_invalid_zombies);
-	closest_zombies = level array::get_all_closest(origin, zombies, undefined, PANZERWURFMINE_UPGRADE_MAX_ZOMBIES, PANZERWURFMINE_UPGRADE_RADIUS);
+	closest_zombies = level array::get_all_closest(origin, exclude_zombies, undefined, PANZERWURFMINE_UPGRADE_MAX_ZOMBIES, PANZERWURFMINE_UPGRADE_RADIUS);
 	foreach(zombie in closest_zombies)
 	{
 		zombie DoDamage(zombie.health + 666, origin, self, self);
@@ -241,6 +241,7 @@ function panzerwurfmine_award_grenade_skip()
 	while(true)
 	{
 		level waittill("end_of_round");
+		self notify("zombify");
 		if(self zm_weapons::has_weapon_or_upgrade(level.panzerwurfmine))
 		{
 			self.altbody = true;
