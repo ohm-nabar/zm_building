@@ -255,6 +255,8 @@ function cloak_path_logic(gen_struct, gen_num, path)
         player LUINotifyEvent(&"generator_attacked", 1, gen_num - 1);
     }
 
+    level.generator_touched = true;
+
     gen_saved_notify = "generator" + gen_num + "_saved";
     self thread cloak_shadow_death_watch(gen_saved_notify);
     for(i = 0; i < 10; i++)

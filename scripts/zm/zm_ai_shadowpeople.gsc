@@ -84,7 +84,7 @@ function __init__()
 
 	cloak_health1 = array(1045, 1527, 1045, 1527); // Round 10, 14 health
 	cloak_health2 = array(4348, 5260, 4348, 5260); // Round 25, 27 health
-	cloak_health3 = array(7000, 9317, 7700, 9317); // Round 30, 31, 33 health
+	cloak_health3 = array(7000, 9317, 7700, 7700); // Round 30, 31, 33 health
 
 	escargot_health1 = array(5786, 7000, 5786, 7000); // Round 28, 30 health
 	escargot_health2 = array(11272, 12399, 13638, 15001); // Round 35, 36, 37, 38 health
@@ -480,6 +480,8 @@ function dog_round_spawning()
 
 	level.num_cloaks = level calculate_num_cloaks();
 	level.num_escargots = level calculate_num_escargots();
+
+	level.generator_touched = false;
 
 	level.no_powerups = true;
 	level.zombie_ai_limit = 64;
@@ -1460,7 +1462,7 @@ function escargot_death_notify()
 	if(level.num_escargots == 0)
 	{
 		zm_powerups::specific_powerup_drop( "full_ammo", self.origin);
-		if(level.generators_shadowed.size == 0)
+		if(! level.generator_touched)
 		{
 			zm_powerups::specific_powerup_drop("free_perk", self.origin + (40,0,0));
 		}
