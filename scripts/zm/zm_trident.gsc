@@ -25,7 +25,7 @@
 #define TRIDENT_PULSE_RADIUS_SQ 10000 // 100^2
 #define TRIDENT_UPGRADE_KILLS 25
 
-#define TRIDENT_MELEE_DAMAGE 2702 // Kills through Round 20
+#define TRIDENT_MELEE_DAMAGE 2701 // Kills through Round 20
 #define TRIDENT_STREAK_KILLS 5
 #define TRIDENT_COOLDOWN_TIME 30
 #define TRIDENT_WATER_PULSE_TIME 1
@@ -65,8 +65,9 @@ function __init__()
 	level clientfield::register( "clientuimodel", "tridentClip", VERSION_SHIP, 1, "int");
 
     level.abbey_trident = GetWeapon("zm_trident");
-
     level.abbey_pitchfork = GetWeapon("zm_pitchfork");
+
+	level.trident_shadow_damage = array(2701, 5260, 7700, 9317);
 
 	level.pitchfork_available = false;
     level.pitchfork_upgrading = false;
@@ -237,22 +238,7 @@ function damage_adjustment(  inflictor, attacker, damage, flags, meansofdeath, w
 		{
 			if(self zm_ai_shadowpeople::is_shadow_boss())
 			{
-				if(attacker.trident_power_level == 0)
-				{
-					return Int(self.maxhealth/5);
-				}
-				else if(attacker.trident_power_level == 1)
-				{
-					return Int(self.maxhealth/4);
-				}
-				else if(attacker.trident_power_level == 2)
-				{
-					return Int(self.maxhealth/3);
-				}
-				else
-				{
-					return Int(self.maxhealth/2);
-				}
+				return level.trident_shadow_damage[attacker.trident_power_level];
 			}
 			else
 			{
