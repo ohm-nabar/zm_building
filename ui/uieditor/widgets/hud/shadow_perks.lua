@@ -10,8 +10,8 @@ function CoD.ShadowPerks.new(HudRef, InstanceRef)
 
     local ShadowPerkLookup = { 
         {"shadow_quick", "shadow_cherry"}, 
-        {"shadow_poseidon", "shadow_deadshot"}, 
-        {"shadow_stamin", "shadow_mule"},
+        {"shadow_poseidon", "shadow_mule"}, 
+        {"shadow_stamin", "shadow_deadshot"},
         {"shadow_double", "shadow_phd"}
 	}
 
@@ -23,20 +23,6 @@ function CoD.ShadowPerks.new(HudRef, InstanceRef)
     local PerkImages = {}
     local LeftPoses = {}
     local RightPoses = {}
-
-    --[[
-    local NotificationImage = LUI.UIImage.new()
-    NotificationImage:setLeftRight(true, false, 592.5, 628.5)
-    NotificationImage:setTopBottom(true, false, -356, -320)
-    NotificationImage:setImage(RegisterImage("shadow_quick"))
-    ShadowPerks:addElement(NotificationImage)
-
-    local NotificationImage2 = LUI.UIImage.new()
-    NotificationImage2:setLeftRight(true, false, 630.5, 666.5)
-    NotificationImage2:setTopBottom(true, false, -356, -320)
-    NotificationImage2:setImage(RegisterImage("shadow_cherry"))
-    ShadowPerks:addElement(NotificationImage2)
-    --]]
 
     for i=1,8 do
         local PerkImage = LUI.UIImage.new()

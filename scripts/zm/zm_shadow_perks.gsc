@@ -234,27 +234,6 @@ function generator2_shadow_monitor()
 		players[i] thread shadow_poseidon_effects();
 		players[i] thread monitor_has_shadowed_perk(PERK_POSEIDON_PUNCH);
 
-		deadshotarray = []; deadshotarray[deadshotarray.size] = PERK_DEAD_SHOT; deadshotarray[deadshotarray.size] = players[i] HasPerk(PERK_DEAD_SHOT);
-
-		players[i].shadowPerks[players[i].shadowPerks.size] = deadshotarray;
-		players[i] notify(PERK_DEAD_SHOT + "_stop");
-		players[i] thread shadow_deadshot_effects();
-		players[i] thread monitor_has_shadowed_perk(PERK_DEAD_SHOT);
-		players[i] clientfield::set_player_uimodel("shadowPerks", 2);
-	}
-}
-
-function generator3_shadow_monitor()
-{
-	level endon( "last_ai_down" );
-
-	level waittill("generator3_shadowed");
-
-	level thread disable_machines(2);
-
-	players = GetPlayers();
-	for(i = 0; i < players.size; i++)
-	{
 		mulearray = []; mulearray[mulearray.size] = PERK_ADDITIONAL_PRIMARY_WEAPON; mulearray[mulearray.size] = players[i] HasPerk(PERK_ADDITIONAL_PRIMARY_WEAPON);
 
 		players[i].shadowPerks[players[i].shadowPerks.size] = mulearray;
@@ -278,6 +257,27 @@ function generator3_shadow_monitor()
 		players[i] notify(PERK_ADDITIONAL_PRIMARY_WEAPON + "_stop");
 		players[i] thread shadow_mule_effects();
 		players[i] thread monitor_has_shadowed_perk(PERK_ADDITIONAL_PRIMARY_WEAPON);
+	}
+}
+
+function generator3_shadow_monitor()
+{
+	level endon( "last_ai_down" );
+
+	level waittill("generator3_shadowed");
+
+	level thread disable_machines(2);
+
+	players = GetPlayers();
+	for(i = 0; i < players.size; i++)
+	{
+		deadshotarray = []; deadshotarray[deadshotarray.size] = PERK_DEAD_SHOT; deadshotarray[deadshotarray.size] = players[i] HasPerk(PERK_DEAD_SHOT);
+
+		players[i].shadowPerks[players[i].shadowPerks.size] = deadshotarray;
+		players[i] notify(PERK_DEAD_SHOT + "_stop");
+		players[i] thread shadow_deadshot_effects();
+		players[i] thread monitor_has_shadowed_perk(PERK_DEAD_SHOT);
+		players[i] clientfield::set_player_uimodel("shadowPerks", 2);
 
 		staminarray = []; staminarray[staminarray.size] = PERK_STAMINUP; staminarray[staminarray.size] = players[i] HasPerk(PERK_STAMINUP);
 		
