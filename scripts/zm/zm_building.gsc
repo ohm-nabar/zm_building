@@ -139,6 +139,7 @@
 #using scripts\zm\_zm_melee_weapon;
 #using scripts\zm\_zm_equipment;
 #using scripts\zm\_zm_perks;
+#using scripts\zm\_zm_spawner;
 
 // CSC FX
 #using scripts\zm\zm_csc_fx;
@@ -164,6 +165,7 @@ function main()
 	level.start_weapon = GetWeapon("bare_hands_t7");
 	level.perk_purchase_limit = 4;
 	level.zombie_powerup_weapon[ "minigun" ] = GetWeapon( "bloodgun_dm" );
+	level.global_damage_func = &zombie_damage;
 
 	zm_utility::register_lethal_grenade_for_level( "frag_grenade_potato_masher" );
 	level.zombie_lethal_grenade_player_init = GetWeapon( "frag_grenade_potato_masher" );
@@ -750,4 +752,137 @@ function player_stats_init()
 	//update daily challenge stats
 	self globallogic_score::initPersStat( "ZM_DAILY_CHALLENGE_INGAME_TIME", true, true );
 	self zm_stats::add_global_stat( "ZM_DAILY_CHALLENGE_GAMES_PLAYED", 1 );
+}
+
+function zombie_damage( mod, hit_location, hit_origin, player, amount, team, weapon, direction_vec, tagName, modelName, partName, dFlags, inflictor, chargeLevel )
+{
+	if( zm_utility::is_magic_bullet_shield_enabled( self ) )
+	{
+		return;
+	}
+
+	//ChrisP - 12/8 - no points for killing gassed zombies!
+	player.use_weapon_type = mod;
+	if(isDefined(self.marked_for_death))
+	{
+		return;
+	}	
+
+	if( !IsDefined( player ) )
+	{
+		return; 
+	}
+
+	if (isdefined(hit_origin))
+		self.damagehit_origin = hit_origin;
+	else
+		self.damagehit_origin = player GetWeaponMuzzlePoint();
+
+	if ( self zm_spawner::check_zombie_damage_callbacks( mod, hit_location, hit_origin, player, amount, weapon, direction_vec, tagName, modelName, partName, dFlags, inflictor, chargeLevel ) )
+	{
+		return;
+	}
+	else if ( !player zm_spawner::player_can_score_from_zombies() )
+	{
+		
+	}
+	else if ( IsDefined(weapon) && weapon.isriotshield )
+	{
+	}
+	else if( self zm_spawner::zombie_flame_damage( mod, player ) )
+	{
+		if( self zm_spawner::zombie_give_flame_damage_points() )
+		{
+			player zm_score::player_add_points( "damage", mod, hit_location, self.isdog,team );
+		}
+	}
+	else
+	{
+		if( zm_spawner::player_using_hi_score_weapon( player ) )
+		{
+			damage_type = "damage";
+		}
+		else
+		{
+			damage_type = "damage_light";
+		}
+
+		if ( !IS_TRUE( self.no_damage_points ) )
+		{
+			player zm_score::player_add_points( damage_type, mod, hit_location, self.isdog, team, weapon );
+		}
+	}
+
+	if ( IsDefined( self.zombie_damage_fx_func ) )
+	{
+		self [[ self.zombie_damage_fx_func ]]( mod, hit_location, hit_origin, player, direction_vec );
+	}
+
+	if ( "MOD_IMPACT" != mod && zm_utility::is_placeable_mine( weapon ) )
+	{
+		if ( IsDefined( self.zombie_damage_claymore_func ) )
+		{
+			self [[ self.zombie_damage_claymore_func ]]( mod, hit_location, hit_origin, player );
+		}
+		else if ( isdefined( player ) && isalive( player ) )
+		{
+			self DoDamage( level.round_number * randomintrange( 100, 200 ), self.origin, player, self, hit_location, mod, 0, weapon );
+		}
+		else
+		{
+			self DoDamage( level.round_number * randomintrange( 100, 200 ), self.origin, undefined, self, hit_location, mod, 0, weapon );
+		}
+	}
+	else if ( mod == "MOD_GRENADE" || mod == "MOD_GRENADE_SPLASH" )
+	{
+		if ( isdefined( player ) && isalive( player ) )
+		{
+			player.grenade_multiattack_count++;
+			player.grenade_multiattack_ent = self;
+
+			self DoDamage( level.round_number + randomintrange( 100, 200 ), self.origin, player, self, hit_location, mod, 0, weapon );
+		}
+		else
+		{
+			self DoDamage( level.round_number + randomintrange( 100, 200 ), self.origin, undefined, self, hit_location, mod, 0, weapon );
+		}
+	}
+	else if( (mod == "MOD_PROJECTILE" || mod == "MOD_EXPLOSIVE" || mod == "MOD_PROJECTILE_SPLASH") && ! self zm_ai_shadowpeople::is_shadow_person() )
+	{
+		if ( isdefined( player ) && isalive( player ) )
+		{
+			self DoDamage( level.round_number * randomintrange( 0, 100 ), self.origin, player, self, hit_location, mod, 0, weapon );
+		}
+		else
+		{
+			self DoDamage( level.round_number * randomintrange( 0, 100 ), self.origin, undefined, self, hit_location, mod, 0, weapon );
+		}
+	}
+	
+	//AUDIO Plays a sound when Crawlers are created
+	if( IS_TRUE( self.gibbed ))
+	{
+		if( IS_TRUE( self.missinglegs ) && isalive(self)  )
+		{
+			if ( isdefined( player ) )
+			{
+					player zm_audio::create_and_play_dialog( "general", "crawl_spawn" );
+			}
+		}
+		else if( IsDefined( self.a.gib_ref ) && ( (self.a.gib_ref == "right_arm") || (self.a.gib_ref == "left_arm") ) )
+		{
+			if( !self.missingLegs && isalive( self ) )
+			{
+				if ( isdefined( player ) )
+				{
+					rand = randomintrange(0, 100);
+					if(rand < 7)
+					{
+						player zm_audio::create_and_play_dialog( "general", "shoot_arm" );
+					}
+				}
+			}
+		}	
+	}
+	self thread zm_powerups::check_for_instakill( player, mod, hit_location );
 }
