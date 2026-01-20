@@ -13,6 +13,7 @@
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_magicbox;
+#using scripts\zm\_zm_score;
 
 #using scripts\zm\zm_abbey_inventory;
 #using scripts\zm\zm_room_manager;
@@ -66,25 +67,25 @@ REGISTER_SYSTEM( "zm_challenges", &__init__, undefined )
 
 function __init__()
 {
-	clientfield::register( "toplayer", "trials.tier1", VERSION_SHIP, 7, "int" );
-	clientfield::register( "toplayer", "trials.tier2", VERSION_SHIP, 13, "int" );
-	clientfield::register( "toplayer", "trials.tier3", VERSION_SHIP, 5, "int" );
+	level clientfield::register( "toplayer", "trials.tier1", VERSION_SHIP, 7, "int" );
+	level clientfield::register( "toplayer", "trials.tier2", VERSION_SHIP, 13, "int" );
+	level clientfield::register( "toplayer", "trials.tier3", VERSION_SHIP, 5, "int" );
 
-	clientfield::register( "toplayer", "trials.aramis", VERSION_SHIP, 4, "float" );
-	clientfield::register( "toplayer", "trials.porthos", VERSION_SHIP, 8, "float" );
-	clientfield::register( "toplayer", "trials.dart", VERSION_SHIP, 8, "float" );
-	clientfield::register( "toplayer", "trials.athos", VERSION_SHIP, 8, "float" );
+	level clientfield::register( "toplayer", "trials.aramis", VERSION_SHIP, 4, "float" );
+	level clientfield::register( "toplayer", "trials.porthos", VERSION_SHIP, 8, "float" );
+	level clientfield::register( "toplayer", "trials.dart", VERSION_SHIP, 8, "float" );
+	level clientfield::register( "toplayer", "trials.athos", VERSION_SHIP, 8, "float" );
 
-	clientfield::register( "toplayer", "trials.aramisRandom", VERSION_SHIP, 4, "int" );
-	clientfield::register( "toplayer", "trials.porthosRandom", VERSION_SHIP, 4, "int" );
-	clientfield::register( "toplayer", "trials.dartRandom", VERSION_SHIP, 4, "int" );
-	clientfield::register( "toplayer", "trials.athosRandom", VERSION_SHIP, 4, "int" );
+	level clientfield::register( "toplayer", "trials.aramisRandom", VERSION_SHIP, 4, "int" );
+	level clientfield::register( "toplayer", "trials.porthosRandom", VERSION_SHIP, 4, "int" );
+	level clientfield::register( "toplayer", "trials.dartRandom", VERSION_SHIP, 4, "int" );
+	level clientfield::register( "toplayer", "trials.athosRandom", VERSION_SHIP, 4, "int" );
 
-	clientfield::register( "clientuimodel", "athosTrial", VERSION_SHIP, 5, "int" );
-	clientfield::register( "clientuimodel", "athosWaypoints", VERSION_SHIP, 1, "int" );
-	clientfield::register( "clientuimodel", "shadowTrial", VERSION_SHIP, 1, "int" );
+	level clientfield::register( "clientuimodel", "athosTrial", VERSION_SHIP, 5, "int" );
+	level clientfield::register( "clientuimodel", "athosWaypoints", VERSION_SHIP, 1, "int" );
+	level clientfield::register( "clientuimodel", "shadowTrial", VERSION_SHIP, 1, "int" );
 
-	clientfield::register( "toplayer", "trials.playerCountChange", VERSION_SHIP, 1, "int" );
+	level clientfield::register( "toplayer", "trials.playerCountChange", VERSION_SHIP, 1, "int" );
 
 	level.gg_tier1 = array("zm_bgb_stock_option", "zm_bgb_sword_flay", "zm_bgb_temporal_gift", "zm_bgb_in_plain_sight", "zm_bgb_im_feelin_lucky");
 	level.gg_tier2 = array("zm_bgb_immolation_liquidation", "zm_bgb_pop_shocks", "zm_bgb_challenge_rejected", "zm_bgb_flavor_hexed", "zm_bgb_crate_power", "zm_bgb_aftertaste_blood", "zm_bgb_extra_credit");
@@ -177,9 +178,9 @@ function __init__()
 		}
 	}
 
-	callback::on_connect( &on_player_connect );
-	callback::on_spawned( &on_player_spawned );
-	zm::register_zombie_damage_override_callback( &zombie_damage_override );
+	level callback::on_connect( &on_player_connect );
+	level callback::on_spawned( &on_player_spawned );
+	level zm::register_zombie_damage_override_callback( &zombie_damage_override );
 }
 
 function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
@@ -260,17 +261,17 @@ function set_gums()
 	while(self clientfield::get_to_player("trials.tier1") != self.tier1_factoradic)
 	{
 		self clientfield::set_to_player("trials.tier1", self.tier1_factoradic);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 	while(self clientfield::get_to_player("trials.tier2") != self.tier2_factoradic)
 	{
 		self clientfield::set_to_player("trials.tier2", self.tier2_factoradic);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 	while(self clientfield::get_to_player("trials.tier3") != self.tier3_factoradic)
 	{
 		self clientfield::set_to_player("trials.tier3", self.tier3_factoradic);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 }
 
@@ -309,7 +310,7 @@ function set_athos_trial()
 	while(self clientfield::get_player_uimodel("athosTrial") != self.athos_cf_val)
 	{
 		self clientfield::set_player_uimodel("athosTrial", self.athos_cf_val);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 }
 
@@ -370,7 +371,7 @@ function shadow_trial_update()
 		while(self clientfield::get_player_uimodel("shadowTrial") != 0)
 		{
 			self clientfield::set_player_uimodel("shadowTrial", 0);
-			util::wait_network_frame();
+			level util::wait_network_frame();
 		}
 		while(! level.shadow_vision_active)
 		{
@@ -379,7 +380,7 @@ function shadow_trial_update()
 		while(self clientfield::get_player_uimodel("shadowTrial") != 1)
 		{
 			self clientfield::set_player_uimodel("shadowTrial", 1);
-			util::wait_network_frame();
+			level util::wait_network_frame();
 		}
 		while(level.shadow_vision_active)
 		{
@@ -401,6 +402,7 @@ function gargoyle_progress_check(garg_num, progress)
 
 	index = self.gargoyle_indices[garg_num];
 	gum = undefined;
+	has_gum = false;
 	if(self.gargoyle_progress[garg_num] >= 1)
 	{
 		self notify("trial_complete" + garg_num);
@@ -408,25 +410,21 @@ function gargoyle_progress_check(garg_num, progress)
 		while(self clientfield::get_to_player(level.gargoyle_cfs[garg_num]) != 1)
 		{
 			self clientfield::set_to_player(level.gargoyle_cfs[garg_num], 1);
-			util::wait_network_frame();
+			level util::wait_network_frame();
 		}
 		self clientfield::set_to_player(level.gargoyle_cfs[garg_num], self.gargoyle_progress[garg_num]);
 		if(index >= level.gargoyle_goals[garg_num].size - 1)
 		{
-			reward_arr = [];
-			for(i = 0; i < 4; i++)
+			rand_cf = level.gargoyle_cfs[garg_num] + "Random";
+			index = level array::random(array(0, 1, 2, 3));
+			gum = self.gargoyle_gums[garg_num][index];
+			if(self.gg_available[gum])
 			{
-				reward_gum = self.gargoyle_gums[garg_num][i];
-				if(! self.gg_available[reward_gum])
-				{
-					level array::add(reward_arr, i);
-				}
+				has_gum = true;
+				self zm_score::add_to_player_score(self.score / 2);
 			}
-			if(reward_arr.size > 0)
+			else
 			{
-				index = level array::random(reward_arr);
-				rand_cf = level.gargoyle_cfs[garg_num] + "Random";
-				gum = self.gargoyle_gums[garg_num][index];
 				self.gg_available[gum] = true;
 				self thread lua_toggle_gum_vis(rand_cf, index + 1);
 			}
@@ -440,9 +438,13 @@ function gargoyle_progress_check(garg_num, progress)
 		if(isdefined(gum))
 		{
 			notif_cf = NOTIF_GUM_OFFSET + garg_num;
+			if(has_gum)
+			{
+				notif_cf = NOTIF_GUM_POINTS_OFFSET + garg_num;
+			}
 			gum_cf = level.gg_notifs[gum];
 			self thread zm_abbey_inventory::notifyText(notif_cf, NOTIF_FLASH_RIGHT, NOTIF_ALERT_GARG, gum_cf);
-			if(self.judge_indices[garg_num] != index)
+			if(self.judge_indices[garg_num] != index && ! has_gum)
 			{
 				self.judge_indices[garg_num] = index;
 				self notify("judge_display_update" + garg_num);
@@ -453,7 +455,7 @@ function gargoyle_progress_check(garg_num, progress)
 	{
 		self clientfield::set_to_player(level.gargoyle_cfs[garg_num], self.gargoyle_progress[garg_num]);
 	}
-	util::wait_network_frame();
+	level util::wait_network_frame();
 }
 
 function lua_toggle_gum_vis(cf, cf_val)
@@ -463,12 +465,12 @@ function lua_toggle_gum_vis(cf, cf_val)
 	while(self clientfield::get_to_player(cf) != cf_val)
 	{
 		self clientfield::set_to_player(cf, cf_val);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 	while(self clientfield::get_to_player(cf) != RAND_CF_NEUTRAL)
 	{
 		self clientfield::set_to_player(cf, RAND_CF_NEUTRAL);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 }
 
@@ -594,7 +596,7 @@ function athos_trial()
 				while(self clientfield::get_player_uimodel("athosTrial") != cf_val)
 				{
 					self clientfield::set_player_uimodel("athosTrial", cf_val);
-					util::wait_network_frame();
+					level util::wait_network_frame();
 				}
 			}
 		}
@@ -666,7 +668,7 @@ function wallbuy_trial(athos_stage)
 	while(self clientfield::get_player_uimodel("athosTrial") != self.athos_cf_val)
 	{
 		self clientfield::set_player_uimodel("athosTrial", self.athos_cf_val);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 
 	prev_wallbuy_trial_kills = self.wallbuy_trial_kills;
@@ -790,7 +792,7 @@ function area_assault_trial(athos_stage)
 	while(self clientfield::get_player_uimodel("athosTrial") != self.athos_cf_val)
 	{
 		self clientfield::set_player_uimodel("athosTrial", self.athos_cf_val);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 
 	prev_area_assault_trial_kills = self.area_assault_trial_kills;
@@ -856,7 +858,7 @@ function crouch_trial(athos_stage)
 	while(self clientfield::get_player_uimodel("athosTrial") != self.athos_cf_val)
 	{
 		self clientfield::set_player_uimodel("athosTrial", self.athos_cf_val);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 
 	prev_crouch_trial_kills = self.crouch_trial_kills;
@@ -892,7 +894,7 @@ function elevation_trial(athos_stage)
 	while(self clientfield::get_player_uimodel("athosTrial") != self.athos_cf_val)
 	{
 		self clientfield::set_player_uimodel("athosTrial", self.athos_cf_val);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 
 	prev_elevation_trial_kills = self.elevation_trial_kills;
@@ -935,7 +937,7 @@ function box_trial(athos_stage)
 	while(self clientfield::get_player_uimodel("athosTrial") != self.athos_cf_val)
 	{
 		self clientfield::set_player_uimodel("athosTrial", self.athos_cf_val);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 
 	prev_box_trial_kills = self.box_trial_kills;
@@ -1061,7 +1063,7 @@ function trap_trial(athos_stage)
 	while(self clientfield::get_player_uimodel("athosTrial") != self.athos_cf_val)
 	{
 		self clientfield::set_player_uimodel("athosTrial", self.athos_cf_val);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 
 	self thread trap_trial_indicators_monitor();
@@ -1148,7 +1150,7 @@ function blood_vial_trial(athos_stage)
 	while(self clientfield::get_player_uimodel("athosTrial") != self.athos_cf_val)
 	{
 		self clientfield::set_player_uimodel("athosTrial", self.athos_cf_val);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 
 	prev_blood_vial_trial_fills = self.blood_vial_trial_fills;
@@ -1357,7 +1359,7 @@ function monitor_player_count_gums()
 				while(self clientfield::get_to_player("trials.playerCountChange") != 0)
 				{
 					self clientfield::set_to_player("trials.playerCountChange", 0);
-					util::wait_network_frame();
+					level util::wait_network_frame();
 				}
 			}
 			else
@@ -1367,7 +1369,7 @@ function monitor_player_count_gums()
 				while(self clientfield::get_to_player("trials.playerCountChange") != 1)
 				{
 					self clientfield::set_to_player("trials.playerCountChange", 1);
-					util::wait_network_frame();
+					level util::wait_network_frame();
 				}
 			}
 		}

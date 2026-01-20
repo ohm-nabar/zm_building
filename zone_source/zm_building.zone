@@ -170,6 +170,10 @@ image,notif_gum_aramis
 image,notif_gum_athos
 image,notif_gum_dart
 image,notif_gum_porthos
+image,notif_gum_aramis_points
+image,notif_gum_athos_points
+image,notif_gum_dart_points
+image,notif_gum_porthos_points
 image,notif_perk_quest
 image,notif_perk_up_cherry
 image,notif_perk_up_deadshot

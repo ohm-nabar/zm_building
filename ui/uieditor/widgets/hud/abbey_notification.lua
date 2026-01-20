@@ -36,7 +36,11 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
         "notif_athos_elevation",
         "notif_athos_trap",
         "notif_athos_wallbuy",
-        "notif_perk_quest"
+        "notif_perk_quest",
+        "notif_gum_aramis_points",
+        "notif_gum_porthos_points",
+        "notif_gum_dart_points",
+        "notif_gum_athos_points"
     }
 
     local GargoyleGumLookup = {
