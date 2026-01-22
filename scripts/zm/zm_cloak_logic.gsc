@@ -273,6 +273,7 @@ function cloak_path_logic(gen_struct, gen_num, path)
     {
         player thread zm_abbey_inventory::notifyGenerator(true);
         player LUINotifyEvent(&"generator_shadowed", 1, gen_num - 1);
+        player clientfield::set_player_uimodel("shadowPerks", gen_num);
     }
 
     self DoDamage(self.health + 666, self.origin);

@@ -210,7 +210,6 @@ function generator1_shadow_monitor()
 		players[i] notify(PERK_ELECTRIC_CHERRY + "_stop");
 		players[i] thread shadow_cherry_effects();
 		players[i] thread monitor_has_shadowed_perk(PERK_ELECTRIC_CHERRY);
-		players[i] clientfield::set_player_uimodel("shadowPerks", 1);
 	}
 }
 
@@ -277,7 +276,6 @@ function generator3_shadow_monitor()
 		players[i] notify(PERK_DEAD_SHOT + "_stop");
 		players[i] thread shadow_deadshot_effects();
 		players[i] thread monitor_has_shadowed_perk(PERK_DEAD_SHOT);
-		players[i] clientfield::set_player_uimodel("shadowPerks", 2);
 
 		staminarray = []; staminarray[staminarray.size] = PERK_STAMINUP; staminarray[staminarray.size] = players[i] HasPerk(PERK_STAMINUP);
 		
@@ -285,7 +283,6 @@ function generator3_shadow_monitor()
 		players[i] notify(PERK_STAMINUP + "_stop");
 		players[i] thread shadow_stamin_effects();
 		players[i] thread monitor_has_shadowed_perk(PERK_STAMINUP);
-		players[i] clientfield::set_player_uimodel("shadowPerks", 3);
 	}
 }
 
@@ -313,7 +310,6 @@ function generator4_shadow_monitor()
 		players[i] notify(PERK_PHD_LITE + "_stop");
 		players[i] thread shadow_PHD_effects();
 		players[i] thread monitor_has_shadowed_perk(PERK_PHD_LITE);
-		players[i] clientfield::set_player_uimodel("shadowPerks", 4);
 	}
 }
 
