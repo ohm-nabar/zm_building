@@ -63,13 +63,12 @@ function __init__()
 	level clientfield::register( "clientuimodel", "poseidonCharge", VERSION_SHIP, 1, "int" );
 	level clientfield::register( "allplayers", "poseidon_splash", VERSION_SHIP, 1, "int" );
 
+	level.poseidon_dot = Cos(POSEIDON_ANGLE);
 	level.poseidon_recharge_time = 10;
 	level enable_custom_perk_for_level();
 	level callback::on_connect( &on_player_connect );
 	level zm::register_player_damage_callback( &player_damage_override );
 	level zm::register_zombie_damage_override_callback( &zombie_damage_override );
-	//thread testeroo();
-	//level.check_quickrevive_hotjoin = &check_quickrevive_for_hotjoin;
 }
 
 
@@ -94,7 +93,7 @@ function zombie_damage_override( willBeKilled, inflictor, attacker, damage, flag
 {
 	if ( IS_EQUAL(meansofdeath,"MOD_MELEE") && IsDefined(attacker) && IsPlayer(attacker) && attacker HasPerk( PERK_POSEIDON_PUNCH ) && attacker.poseidon_ready )
 	{
-		attacker thread poseidon_knockdown(attacker, willBeKilled);
+		attacker thread poseidon_knockdown(self, willBeKilled);
 	}
 	return false;
 }
@@ -183,7 +182,12 @@ function checkCustomPerk()
 	self clientfield::set_player_uimodel("poseidonCharge", 1);
 }
 
-function poseidon_knockdown(attacker, willBeKilled)
+function poseidon_filter(zombie)
+{
+	return (isdefined(zombie) && IS_TRUE(zombie.completed_emerging_into_playable_area) && self zm_utility::is_player_looking_at(zombie.origin, level.poseidon_dot, false) && ! zombie zm_ai_shadowpeople::is_shadow_boss());
+}
+
+function poseidon_knockdown(start_zombie, willBeKilled)
 {
 	self endon("disconnect");
 	alias_name = "pp_melee" + RandomIntRange(1, 4);
@@ -191,34 +195,65 @@ function poseidon_knockdown(attacker, willBeKilled)
 	self clientfield::set("poseidon_splash", 1);
 	self thread poseidon_recharge_time();
 	zombies = GetAISpeciesArray("axis", "all");
-	foreach(zombie in zombies)
+	exclude_zombies = self array::filter(zombies, false, &poseidon_filter);
+	closest_zombies = level array::get_all_closest(start_zombie.origin, exclude_zombies, undefined, POSEIDON_MAX_ZOMBIES, POSEIDON_RADIUS);
+	foreach(zombie in closest_zombies)
 	{
-		if(IS_TRUE(zombie.completed_emerging_into_playable_area) && ! zombie zm_ai_shadowpeople::is_shadow_boss() && DistanceSquared(self.origin, zombie.origin) <= POSEIDON_RADIUS && ! IS_TRUE(zombie.poseidon_knockdown))
+		zombie PlaySound("pp_knockback");
+		if(IsAlive(zombie))
 		{
-			if(! (zombie == self && (willBeKilled || level.zombie_vars[attacker.team]["zombie_insta_kill"])))
+			if(IS_EQUAL(zombie.animname, "quad_zombie"))
 			{
-				zombie PlaySound("pp_knockback");
-				if(isdefined(zombie.animname) && zombie.animname == "quad_zombie")
-				{
-					zombie thread quad_stun();
-				}
-				else
-				{
-					zombie zm_weap_thundergun::thundergun_knockdown_zombie(self, false);
-				}
-				zombie thread mark_zombie();
-				if(self zm_perk_upgrades::IsPerkUpgradeActive(PERK_POSEIDON_PUNCH))
-				{
-					self.health += 15;
-				}
+				zombie thread quad_stun();
 			}
+			else
+			{
+				zombie zm_weap_thundergun::thundergun_knockdown_zombie(self, false);
+			}
+			zombie thread mark_zombie();
+		}
+		if(self zm_perk_upgrades::IsPerkUpgradeActive(PERK_POSEIDON_PUNCH))
+		{
+			if(self.health + POSEIDON_HEALTH <= self.maxHealth)
+			{
+				self.health += POSEIDON_HEALTH;
+			}
+			else
+			{
+				self.health = self.maxHealth;
+			}
+			self thread player_soul_fx(zombie.origin);
 		}
 	}
+
+	if(self zm_perk_upgrades::IsPerkUpgradeActive(PERK_POSEIDON_PUNCH) && self.health > POSEIDON_REDSCREEN_THRESHOLD)
+	{
+		self.stopFlashingBadlyTime = 0;
+	}
+}
+
+function player_soul_fx(zombie_origin)
+{
+	self endon("disconnect");
+
+	fx_model = Spawn("script_model", zombie_origin + (0, 0, 40));
+	fx_model SetModel("tag_origin");
+	fx_model clientfield::set("fx_floating_orb_glow", 1);
+
+	for(i = 0.05; i <= 0.75; i += 0.05)
+	{
+		wait(0.05);
+		origin_diff = (self.origin + (0, 0, 40)) - fx_model.origin;
+		origin_dest = fx_model.origin + VectorScale(origin_diff, (i / 0.5));
+		fx_model MoveTo(origin_dest, 0.05);
+	}
+
+	fx_model Delete();
 }
 
 function quad_stun()
 {
-	loop_time = POSEIDON_QUAD_KNOCKDOWN_TIME * 20;
+	loop_time = POSEIDON_KNOCKDOWN_TIME * 20;
 	for(i = 0; i < loop_time && isdefined(self) && ! self IsRagdoll(); i++)
 	{
 		self ASMSetAnimationRate(0);
@@ -242,8 +277,27 @@ function mark_zombie()
 {
 	self endon("death");
 
+	self SetPlayerCollision(false);
 	self.poseidon_knockdown = true;
-	wait(5);
+	if(IS_EQUAL(self.animname, "quad_zombie"))
+	{
+		wait(POSEIDON_KNOCKDOWN_TIME);
+	}
+	else
+	{
+		for(i = 0; i < POSEIDON_KNOCKDOWN_TIME; i += 0.05)
+		{
+			if(IS_TRUE(self.trident_slowdown))
+			{
+				wait(0.5);
+			}
+			else
+			{
+				wait(0.05);
+			}
+		}
+	}
+	self SetPlayerCollision(true);
 	self.poseidon_knockdown = false;
 }
 
