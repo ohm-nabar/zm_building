@@ -167,11 +167,11 @@ function round_spawn_failsafe()
 }
 
 function on_player_connect() {
-	self thread can_pause();
 	self thread can_revive();
 
 	if( self IsHost() )
 	{
+		self thread can_pause();
 		self thread wants_pause();
 		self thread pause_notif();
 	}
@@ -208,10 +208,19 @@ function health_check()
 	self endon("disconnect");
 
 	current_health = self.health;
+	flashing_badly_time = undefined;
+	if(isdefined(self.stopFlashingBadlyTime))
+	{
+		flashing_badly_time = self.stopFlashingBadlyTime - GetTime();
+	}
 
 	while(level.is_coop_paused)
 	{	
 		self.health = current_health;
+		if(isdefined(flashing_badly_time))
+		{
+			self.stopFlashingBadlyTime = flashing_badly_time + GetTime();
+		}
 
 		wait(0.05);
 	}
@@ -300,7 +309,6 @@ function should_pause()
 	}
 }
 
-
 function can_pause() 
 {
 	self endon("disconnect");
@@ -313,7 +321,7 @@ function can_pause()
 	can_pause = false;
 	while(true) 
 	{
-		pause_condition = ( zm_utility::is_player_valid(self) && ! self.isInBloodMode && ! level.in_unpausable_ee_sequence ) || IsWorldPaused();
+		pause_condition = ( zm_utility::is_player_valid(self) && self OffhandWeaponsEnabled() && ! level.in_unpausable_ee_sequence ) || IsWorldPaused();
 		if( pause_condition && !can_pause ) 
 		{
 			self clientfield::set_player_uimodel("abbeyPauseAvailable", 1);
@@ -324,7 +332,7 @@ function can_pause()
 			self clientfield::set_player_uimodel("abbeyPauseAvailable", 0);
 			can_pause = false;
 		}
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 }
 

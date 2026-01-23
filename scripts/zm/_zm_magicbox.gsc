@@ -998,6 +998,11 @@ function can_buy_weapon()
 		return false;
 	}
 
+	if(level.is_coop_paused)
+	{
+		return false;
+	}
+
 	return true;
 }
 
