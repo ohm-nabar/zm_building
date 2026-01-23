@@ -9,6 +9,7 @@
 
 #using scripts\zm\_zm_magicbox;
 #using scripts\zm\_zm_pack_a_punch_util;
+#using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
 
 #using scripts\Sphynx\_zm_sphynx_util;
@@ -111,12 +112,6 @@ function take_starting_gun()
 				pistol_clip = self GetWeaponAmmoClip(self.startingpistol);
 				pistol_stock = self GetWeaponAmmoStock(self.startingpistol);
 			}
-			else if(! self HasWeapon(self.startingpistol) && self GetCurrentWeapon() != level.weaponNone)
-			{
-				pistol_clip = self.startingpistol.clipsize;
-				pistol_stock = self.startingpistol.startammo - pistol_clip;
-			}
-
 			if(self HasWeapon(level.start_weapon))
 			{
 				self TakeWeapon(level.start_weapon);
@@ -133,14 +128,18 @@ function take_starting_gun()
 			}
 		}
 
-		if(self GetWeaponsListPrimaries().size == 0 && ! gun_in_pap)
+		weapons = self GetWeaponsListPrimaries();
+		if(level zm_utility::is_player_valid(self) && (weapons.size == 0 || (weapons.size == 1 && weapons[0] != self.startingpistol)) && ! gun_in_pap)
 		{
 			str_debug = "engaging no weapons failsafe";
 
 			/# PrintLn(str_debug); #/
 			failsafe_start_time = undefined;
 			self GiveWeapon(self.startingpistol);
-			self SwitchToWeapon(self.startingpistol);
+			if(weapons.size == 0)
+			{
+				self SwitchToWeapon(self.startingpistol);
+			}
 			if(self.startingpistol != level.start_weapon)
 			{
 				self SetWeaponAmmoClip(self.startingpistol, pistol_clip);
