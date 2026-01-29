@@ -420,6 +420,20 @@ CoD.ZmAmmo_Prop.new = function ( menu, controller )
         end
     end
     DpadIconMule:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "muleIndicator"), IconMuleDisplay);
+
+	local function IconDpadAvailable(ModelRef)
+		local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            if NotifyData == 0 then
+                DpadIconScroll:setRGB(0.5, 0.5, 0.5)
+				DpadIconNoHud:setRGB(0.5, 0.5, 0.5)
+			else
+                DpadIconScroll:setRGB(1, 1, 1)
+				DpadIconNoHud:setRGB(1, 1, 1)
+            end
+        end
+    end
+	DpadIconScroll:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "abbeyDpadAvailable"), IconDpadAvailable)
 	
 	local function IconPauseAvailable(ModelRef)
 		local NotifyData = Engine.GetModelValue(ModelRef)

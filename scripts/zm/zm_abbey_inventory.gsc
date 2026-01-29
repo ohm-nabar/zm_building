@@ -78,20 +78,21 @@ REGISTER_SYSTEM( "zm_abbey_inventory", &__init__, undefined )
 
 function __init__()
 {
-	clientfield::register( "clientuimodel", "inventoryVisible", VERSION_SHIP, 1, "int" );
-	clientfield::register( "clientuimodel", "currentTab", VERSION_SHIP, 2, "int" );
-	clientfield::register( "clientuimodel", "cherryUpdate", VERSION_SHIP, 4, "int" );
-	clientfield::register( "clientuimodel", "staminUpdate", VERSION_SHIP, 5, "int" );
-	clientfield::register( "clientuimodel", "doubleUpdate", VERSION_SHIP, 4, "int" );
-	clientfield::register( "clientuimodel", "muleUpdate", VERSION_SHIP, 5, "int" );
-	clientfield::register( "clientuimodel", "poseidonUpdate", VERSION_SHIP, 4, "int" );
-	clientfield::register( "clientuimodel", "quickUpdate", VERSION_SHIP, 4, "int" );
-	clientfield::register( "clientuimodel", "PHDUpdate", VERSION_SHIP, 5, "int" );
-	clientfield::register( "clientuimodel", "deadshotUpdate", VERSION_SHIP, 4, "int" );
+	level clientfield::register( "clientuimodel", "inventoryVisible", VERSION_SHIP, 1, "int" );
+	level clientfield::register( "clientuimodel", "abbeyDpadAvailable", VERSION_SHIP, 1, "int" );
+	level clientfield::register( "clientuimodel", "currentTab", VERSION_SHIP, 2, "int" );
+	level clientfield::register( "clientuimodel", "cherryUpdate", VERSION_SHIP, 4, "int" );
+	level clientfield::register( "clientuimodel", "staminUpdate", VERSION_SHIP, 5, "int" );
+	level clientfield::register( "clientuimodel", "doubleUpdate", VERSION_SHIP, 4, "int" );
+	level clientfield::register( "clientuimodel", "muleUpdate", VERSION_SHIP, 5, "int" );
+	level clientfield::register( "clientuimodel", "poseidonUpdate", VERSION_SHIP, 4, "int" );
+	level clientfield::register( "clientuimodel", "quickUpdate", VERSION_SHIP, 4, "int" );
+	level clientfield::register( "clientuimodel", "PHDUpdate", VERSION_SHIP, 5, "int" );
+	level clientfield::register( "clientuimodel", "deadshotUpdate", VERSION_SHIP, 4, "int" );
 
-	callback::on_connect( &on_player_connect );
-	callback::on_spawned( &on_player_spawned );
-	callback::on_laststand( &on_laststand );
+	level callback::on_connect( &on_player_connect );
+	level callback::on_spawned( &on_player_spawned );
+	level callback::on_laststand( &on_laststand );
 }
 
 function on_player_connect()
@@ -100,6 +101,7 @@ function on_player_connect()
 	self.gen_notify_count = 0;
 	self LUINotifyEvent(&"notification_hide", 0);
 	self LUINotifyEvent(&"generator_visible", 1, 0);
+	self thread can_use_dpad();
 }
 
 function on_player_spawned()
@@ -269,15 +271,15 @@ function cherry_challenge_hud()
 			{
 				status = CHALLENGE_ACTIVE;
 				self clientfield::set_player_uimodel("cherryUpdate", self.cherry_challenge_progress);
-				util::wait_network_frame();
+				level util::wait_network_frame();
 			}
 		}
 
 		self clientfield::set_player_uimodel("cherryUpdate", self.cherry_challenge_goal + status);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 
-	util::wait_network_frame();
+	level util::wait_network_frame();
 	self clientfield::set_player_uimodel("cherryUpdate", self.cherry_challenge_goal + CHALLENGE_COMPLETE);
 }
 
@@ -301,15 +303,15 @@ function stamin_challenge_hud()
 			{
 				status = CHALLENGE_ACTIVE;
 				self clientfield::set_player_uimodel("staminUpdate", self.stamin_challenge_progress);
-				util::wait_network_frame();
+				level util::wait_network_frame();
 			}
 		}
 
 		self clientfield::set_player_uimodel("staminUpdate", self.stamin_challenge_goal + status);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 
-	util::wait_network_frame();
+	level util::wait_network_frame();
 	self clientfield::set_player_uimodel("staminUpdate", self.stamin_challenge_goal + CHALLENGE_COMPLETE);
 }
 
@@ -333,15 +335,15 @@ function double_challenge_hud()
 			{
 				status = CHALLENGE_ACTIVE;
 				self clientfield::set_player_uimodel("doubleUpdate", self.double_challenge_progress);
-				util::wait_network_frame();
+				level util::wait_network_frame();
 			}
 		}
 
 		self clientfield::set_player_uimodel("doubleUpdate", self.double_challenge_goal + status);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 
-	util::wait_network_frame();
+	level util::wait_network_frame();
 	self clientfield::set_player_uimodel("doubleUpdate", self.double_challenge_goal + CHALLENGE_COMPLETE);
 }
 
@@ -365,15 +367,15 @@ function mule_challenge_hud()
 			{
 				status = CHALLENGE_ACTIVE;
 				self clientfield::set_player_uimodel("muleUpdate", self.mule_challenge_progress);
-				util::wait_network_frame();
+				level util::wait_network_frame();
 			}
 		}
 
 		self clientfield::set_player_uimodel("muleUpdate", self.mule_challenge_goal + status);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 
-	util::wait_network_frame();
+	level util::wait_network_frame();
 	self clientfield::set_player_uimodel("muleUpdate", self.mule_challenge_goal + CHALLENGE_COMPLETE);
 }
 
@@ -397,15 +399,15 @@ function poseidon_challenge_hud()
 			{
 				status = CHALLENGE_ACTIVE;
 				self clientfield::set_player_uimodel("poseidonUpdate", self.poseidon_challenge_progress);
-				util::wait_network_frame();
+				level util::wait_network_frame();
 			}
 		}
 
 		self clientfield::set_player_uimodel("poseidonUpdate", self.poseidon_challenge_goal + status);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 
-	util::wait_network_frame();
+	level util::wait_network_frame();
 	self clientfield::set_player_uimodel("poseidonUpdate", self.poseidon_challenge_goal + CHALLENGE_COMPLETE);
 }
 
@@ -429,15 +431,15 @@ function quick_challenge_hud()
 			{
 				status = CHALLENGE_ACTIVE;
 				self clientfield::set_player_uimodel("quickUpdate", self.quick_challenge_progress);
-				util::wait_network_frame();
+				level util::wait_network_frame();
 			}
 		}
 
 		self clientfield::set_player_uimodel("quickUpdate", self.quick_challenge_goal + status);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 
-	util::wait_network_frame();
+	level util::wait_network_frame();
 	self clientfield::set_player_uimodel("quickUpdate", self.quick_challenge_goal + CHALLENGE_COMPLETE);
 }
 
@@ -461,15 +463,15 @@ function PHD_challenge_hud()
 			{
 				status = CHALLENGE_ACTIVE;
 				self clientfield::set_player_uimodel("PHDUpdate", self.PHD_challenge_progress);
-				util::wait_network_frame();
+				level util::wait_network_frame();
 			}
 		}
 
 		self clientfield::set_player_uimodel("PHDUpdate", self.PHD_challenge_goal + status);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 
-	util::wait_network_frame();
+	level util::wait_network_frame();
 	self clientfield::set_player_uimodel("PHDUpdate", self.PHD_challenge_goal + CHALLENGE_COMPLETE);
 }
 
@@ -493,15 +495,15 @@ function deadshot_challenge_hud()
 			{
 				status = CHALLENGE_ACTIVE;
 				self clientfield::set_player_uimodel("deadshotUpdate", self.deadshot_challenge_progress);
-				util::wait_network_frame();
+				level util::wait_network_frame();
 			}
 		}
 
 		self clientfield::set_player_uimodel("deadshotUpdate", self.deadshot_challenge_goal + status);
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 
-	util::wait_network_frame();
+	level util::wait_network_frame();
 	self clientfield::set_player_uimodel("deadshotUpdate", self.deadshot_challenge_goal + CHALLENGE_COMPLETE);
 }
 
@@ -526,7 +528,7 @@ function quick_reward_text()
 				self clientfield::set_player_uimodel("quickReward", 0);
 			}
 		}
-		util::wait_network_frame();
+		level util::wait_network_frame();
 	}
 }
 
@@ -625,4 +627,23 @@ function generator_destroy_on_override()
 
 	self waittill(#"generator_override");
 	self LUINotifyEvent(&"generator_visible", 1, 0);
+}
+
+function can_use_dpad()
+{
+	can_use_dpad = false;
+	while(true) 
+	{
+		if(self OffhandWeaponsEnabled() && !can_use_dpad) 
+		{
+			self clientfield::set_player_uimodel("abbeyDpadAvailable", 1);
+			can_use_dpad = true;
+		}
+		else if(! self OffhandWeaponsEnabled() && can_use_dpad)
+		{
+			self clientfield::set_player_uimodel("abbeyDpadAvailable", 0);
+			can_use_dpad = false;
+		}
+		level util::wait_network_frame();
+	}
 }
