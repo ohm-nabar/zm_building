@@ -72,8 +72,8 @@ function CoD.AbbeyNotification.new(HudRef, InstanceRef)
     }
 
 	local BloodGenerator = CoD.BloodGenerator.new(HudRef, InstanceRef)
-    BloodGenerator:setLeftRight(true, false, 21, 216)
-    BloodGenerator:setTopBottom(true, false, -10, 193)
+    BloodGenerator:setLeftRight(true, false, 70, 210)
+    BloodGenerator:setTopBottom(true, false, 15, 155)
     BloodGenerator:setAlpha(0)
     AbbeyNotification:addElement(BloodGenerator)
 

@@ -98,8 +98,8 @@ CoD.ScoreboardWidgetCP.new = function (HudRef, InstanceRef)
 	Widget.ScoreboardWidgetButtonContainer = f3_local3
 
 	local BGenerator = CoD.BloodGenerator.new(HudRef, InstanceRef)
-	BGenerator:setLeftRight(true, false, 422, 627)
-	BGenerator:setTopBottom(true, false, -185, 40)
+	BGenerator:setLeftRight(true, false, 457, 607)
+	BGenerator:setTopBottom(true, false, -150, 0)
 	Widget:addElement(BGenerator)
 	Widget.BGenerator = BGenerator
 	BGenerator.shouldFlash = false
