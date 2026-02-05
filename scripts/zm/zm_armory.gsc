@@ -60,7 +60,6 @@ function __init__()
 	level.crossbow_active = false;
 	level.crossbow_recharge_kills = CROSSBOW_RECHARGE_KILLS_BASE;
 	level.crossbow_recharge_progress = CROSSBOW_RECHARGE_KILLS_BASE;
-	level.crossbow_recharge_progress_min = CROSSBOW_RECHARGE_PROGRESS_MIN_BASE;
 
 	level.target_sequence_count = [];
 	level.armory_symbols_all = array("gumball_blue", "gumball_green", "gumball_orange", "gumball_purple", "gumball_white", "gumball_aqua", "gumball_black", "gumball_red", "gumball_yellow");
@@ -374,18 +373,19 @@ function panzerwurfmine_think()
 
 function crossbow_souls_think()
 {
+	if(self.script_int > 0)
+	{
+		level waittill("power_on" + self.script_int);
+	}
+
 	canister = GetEnt("crossbow_soulbox" + self.script_int, "targetname");
 	target_canister = level struct::get("crossbow_soulbox_target" + self.script_int, "targetname");
 
 	original_pos = canister.origin;
 	z_diff = target_canister.origin[2] - canister.origin[2];
+	prev_recharge_kills = level.crossbow_recharge_kills;
 	prev_prog = 0;
 	prev_upgraded = false;
-	
-	if(self.script_int > 0)
-	{
-		level waittill("power_on" + self.script_int);
-	}
 
 	while(true)
 	{
@@ -410,6 +410,11 @@ function crossbow_souls_think()
 		{
 			new_prog = level.crossbow_recharge_progress - prev_prog;
 			prev_prog = level.crossbow_recharge_progress;
+			if(level.crossbow_recharge_kills > prev_recharge_kills)
+			{
+				prev_recharge_kills = level.crossbow_recharge_kills;
+				new_prog -= CROSSBOW_RECHARGE_KILLS_INCREMENT;
+			}
 			z_inc = (z_diff / level.crossbow_recharge_kills) * new_prog;
 			canister MoveZ(z_inc, 0.05);
 		}
@@ -501,8 +506,9 @@ function crossbow_think()
 function set_crossbow_recharge_progress(time)
 {
 	time_remaining = CROSSBOW_MAX_TIME - Min(time, CROSSBOW_MAX_TIME);
+	level.crossbow_recharge_kills += CROSSBOW_RECHARGE_KILLS_INCREMENT;
 	progress = (time_remaining / CROSSBOW_MAX_TIME) * level.crossbow_recharge_kills;
-	level.crossbow_recharge_progress = Int(Min(progress, level.crossbow_recharge_progress_min));
+	level.crossbow_recharge_progress = Int(Min(progress, level.crossbow_recharge_kills * CROSSBOW_RECHARGE_KILLS_MULT_MIN));
 }
 
 function crossbow_watch_upgrade()
@@ -512,9 +518,7 @@ function crossbow_watch_upgrade()
 		wait(0.05);
 	}
 
-	level.crossbow_recharge_kills = CROSSBOW_RECHARGE_KILLS_UPGRADE;
 	level.crossbow_recharge_progress = level.crossbow_recharge_kills;
-	level.crossbow_recharge_progress_min = CROSSBOW_RECHARGE_PROGRESS_MIN_UPGRADE;
 	level.crossbow_upgraded = true;
 	IPrintLn("All puzzles complete!");
 }
