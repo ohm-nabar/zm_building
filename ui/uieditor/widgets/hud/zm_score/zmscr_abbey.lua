@@ -188,7 +188,7 @@ function CoD.ZMScr.new(HudRef, InstanceRef)
     
 	local listing2 = CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 	listing2:setLeftRight(true, false, 0.000000, 134.000000)
-	listing2:setTopBottom(true, false, 3, 61)
+	listing2:setTopBottom(true, false, 6, 64)
 	local function listing2Link(arg0)
 		listing2:setModel(arg0, InstanceRef)
 	end
@@ -200,7 +200,7 @@ function CoD.ZMScr.new(HudRef, InstanceRef)
     
 	local listing3 = CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 	listing3:setLeftRight(true, false, 0.000000, 134.000000)
-	listing3:setTopBottom(true, false, -42, 16)
+	listing3:setTopBottom(true, false, -29, 29)
 	local function listing3Link(arg0)
 		listing3:setModel(arg0, InstanceRef)
 	end
@@ -212,7 +212,7 @@ function CoD.ZMScr.new(HudRef, InstanceRef)
     
 	local listing4 = CoD.ZMScr_ListingSm.new(HudRef, InstanceRef)
 	listing4:setLeftRight(true, false, 0.000000, 134.000000)
-	listing4:setTopBottom(true, false, -87, -29)
+	listing4:setTopBottom(true, false, -63, -5)
 	local function listing4Link(arg0)
 		listing4:setModel(arg0, InstanceRef)
 	end
