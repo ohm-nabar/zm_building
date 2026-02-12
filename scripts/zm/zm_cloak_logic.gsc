@@ -132,7 +132,8 @@ function cloak_spawns_initialize()
     cloak_spawn_structs = level struct::get_array("cloak_spawn", "targetname");
     if(! isdefined(cloak_spawn_structs))
     {
-        IPrintLn("Undefined");
+        debug_str = "Undefined";
+        /# PrintLn(debug_str); #/
     }
     
     foreach(spawn_struct in cloak_spawn_structs)
@@ -154,7 +155,8 @@ function cloak_spawns_initialize()
             quick_attack_room_names = StrTok(spawn_struct.script_noteworthy, ",");
             if(! isdefined(quick_attack_room_names))
             {
-                IPrintLn("Quick Attack room names undefined for spawn point in " + cloak_room.name);
+                debug_str = "Quick Attack room names undefined for spawn point in " + cloak_room.name;
+                /# PrintLn(debug_str); #/
             }
             else
             {
@@ -214,7 +216,8 @@ function cloak_path_logic(gen_struct, gen_num, path)
 
     foreach(cloak_room in path)
     {
-        IPrintLn("Moving to " + cloak_room.name);
+        debug_str = "Moving to " + cloak_room.name;
+        /# PrintLn(debug_str); #/
         cloak_node = level.cloak_nodes[cloak_room.name];
         self.v_zombie_custom_goal_pos = cloak_node.origin;
 		self SetGoal(cloak_node.origin, false, 64, 64);
@@ -231,7 +234,8 @@ function cloak_path_logic(gen_struct, gen_num, path)
         }
     }
 
-    IPrintLn("Moving to Generator " + gen_num);
+    debug_str = "Moving to Generator " + gen_num;
+    /# PrintLn(debug_str); #/
     self.v_zombie_custom_goal_pos = gen_struct.origin;
     self SetGoal(gen_struct.origin, false, 64, 64);
 
@@ -303,15 +307,21 @@ function cloak_spawn_logic(gen_struct, gen_num)
         }
         if(should_skip || ! level zm_utility::is_player_valid(player))
         {
-            IPrintLn("Skipped Player " + player.characterIndex);
+            debug_str = "Skipped Player " + player.characterIndex;
+            /# PrintLn(debug_str); #/
             continue;
         }
         player cloak_spawn_logic_player(gen_cloak_room, gen_num, main_paths, low_odds_paths, fallback_paths);
     }
 
-    IPrintLn("Main Paths Size: " + main_paths.size);
-    IPrintLn("Low Odds Paths Size: " + low_odds_paths.size);
-    IPrintLn("Fallback Paths Size: " + fallback_paths.size);
+    debug_str = "Main Paths Size: " + main_paths.size;
+    debug_str2 = "Low Odds Paths Size: " + low_odds_paths.size;
+    debug_str3 = "Fallback Paths Size: " + fallback_paths.size;
+    /#
+    PrintLn(debug_str);
+    PrintLn(debug_str2);
+    PrintLn(debug_str3);
+    #/
 
     path_info = undefined;
     if(main_paths.size > 0 && low_odds_paths.size > 0)
@@ -319,38 +329,48 @@ function cloak_spawn_logic(gen_struct, gen_num)
         rand = RandomInt(100);
         if(rand < MAIN_PATH_ODDS)
         {
-            IPrintLn("Choosing from Main Paths");
+            debug_str = "Choosing from Main Paths";
+            /# PrintLn(debug_str); #/
             path_info = level array::random(main_paths);
         }
         else
         {
-            IPrintLn("Choosing from Low Odds Paths");
+            debug_str = "Choosing from Low Odds Paths";
+            /# PrintLn(debug_str); #/
             path_info = level array::random(low_odds_paths);
         }
     }
     else if(main_paths.size > 0)
     {
-        IPrintLn("Choosing from Main Paths, Low Odds Paths empty");
+        debug_str = "Choosing from Main Paths, Low Odds Paths empty";
+        /# PrintLn(debug_str); #/
         path_info = level array::random(main_paths);
     }
     else if(low_odds_paths.size > 0)
     {
-        IPrintLn("Choosing from Low Odds Paths, Main Paths empty");
+        debug_str = "Choosing from Low Odds Paths, Main Paths empty";
+        /# PrintLn(debug_str); #/
         path_info = level array::random(low_odds_paths);
     }
     else if(fallback_paths.size > 0)
     {
-        IPrintLn("Choosing from Fallback Paths");
+        debug_str = "Choosing from Fallback Paths";
+        /# PrintLn(debug_str); #/
         path_info = level array::random(fallback_paths);
     }
     else
     {
-        IPrintLn("No Paths found, generating Contingency Paths");
+        debug_str = "No Paths found, generating Contingency Paths";
+        /# PrintLn(debug_str); #/
         path_info = level contingency_create_path(gen_cloak_room);
     }
 
-    IPrintLn("Choosing " + path_info.name + " Path");
-    IPrintLn("Spawning in " + path_info.spawn_point.room_name);
+    debug_str = "Choosing " + path_info.name + " Path";
+    debug_str2 = "Spawning in " + path_info.spawn_point.room_name;
+    /#
+    PrintLn(debug_str);
+    PrintLn(debug_str2);
+    #/
     cloak = level zm_ai_shadowpeople::cloak_spawn(gen_struct, path_info.spawn_point);
     cloak.gen_num = gen_num;
     cloak.player = path_info.player;
@@ -366,21 +386,25 @@ function cloak_spawn_logic_player(gen_cloak_room, gen_num, &main_paths, &low_odd
 
     if(! isdefined(player_cloak_room))
     {
-        IPrintLn("Player room undefined");
+        debug_str = "Player room undefined";
+        /# PrintLn(debug_str); #/
         return;
     }
     else
     {
-        IPrintLn("Player in: " + player_cloak_room.name);
+        debug_str = "Player in: " + player_cloak_room.name;
+        /# PrintLn(debug_str); #/
     }
     if(! isdefined(gen_cloak_room))
     {
-        IPrintLn("Generator room undefined");
+        debug_str = "Generator room undefined";
+        /# PrintLn(debug_str); #/
         return;
     }
     else
     {
-        IPrintLn("Generator in: " + gen_cloak_room.name);
+        debug_str = "Generator in: " + gen_cloak_room.name;
+        /# PrintLn(debug_str); #/
     }
 
     paths = player_cloak_room find_paths(gen_cloak_room);
@@ -411,17 +435,20 @@ function quick_attack_check(room_name, gen_num, &connected_flags, &main_paths, &
         }
         if(isdefined(chosen_spawn_point))
         {
-            IPrintLn("Added a Quick Attack Path (Spawn -- " + chosen_spawn_point.room_name + ")");
+            debug_str = "Added a Quick Attack Path (Spawn -- " + chosen_spawn_point.room_name + ")";
+            /# PrintLn(debug_str); #/
             self add_cloak_path("Quick Attack", chosen_spawn_point, [], main_paths, fallback_paths, false);
         }
         else
         {
-            IPrintLn("Failed to add a Quick Attack path, no Quick Attack spawners available for " + room_name);
+            debug_str = "Failed to add a Quick Attack path, no Quick Attack spawners available for " + room_name;
+            /# PrintLn(debug_str); #/
         }
     }
     else
     {
-        IPrintLn("Failed to add a Quick Attack path, player not in Quick Attack zone");
+        debug_str = "Failed to add a Quick Attack path, player not in Quick Attack zone";
+        /# PrintLn(debug_str); #/
     }
 }
 
@@ -429,21 +456,25 @@ function chase_check(close_path, far_path, &main_paths, &low_odds_paths, &fallba
 {
     if(self chase_create_and_add_path(close_path, main_paths, fallback_paths))
     {
-        IPrintLn("Added a Chase Path using the Close Path");
+        debug_str = "Added a Chase Path using the Close Path";
+        /# PrintLn(debug_str); #/
     }
     else
     {
-        IPrintLn("Failed to add a Chase Path using the Close Path");
+        debug_str = "Failed to add a Chase Path using the Close Path";
+        /# PrintLn(debug_str); #/
     }
     if(! level path_equal(close_path, far_path))
     {
         if(self chase_create_and_add_path(far_path, low_odds_paths, fallback_paths))
         {
-            IPrintLn("Added a Chase Path using the Far Path");
+            debug_str = "Added a Chase Path using the Far Path";
+            /# PrintLn(debug_str); #/
         }
         else
         {
-            IPrintLn("Failed to add a Chase Path using the Far Path");
+            debug_str = "Failed to add a Chase Path using the Far Path";
+            /# PrintLn(debug_str); #/
         }
     }
 }
@@ -454,12 +485,14 @@ function chase_create_and_add_path(path, &paths, &fallback_paths)
     {
         spawn_room = path[0];
         spawn_point = level array::random(level.cloak_spawns[spawn_room.name]);
-        IPrintLn("Creating Chase Path (Spawn -- " + path[0].name + "):");
-        
+        debug_str = "Creating Chase Path (Spawn -- " + path[0].name + "):";
+        /# PrintLn(debug_str); #/
+
         chase_path = [];
         for(i = 1; i < path.size; i++)
         {
-            IPrintLn(path[i].name);
+            debug_str = path[i].name;
+            /# PrintLn(debug_str); #/
             chase_path[i-1] = path[i];
         }
 
@@ -473,12 +506,14 @@ function interception_check(close_path, close_dir, gen_cloak_room, &low_odds_pat
 {
     if(! isdefined(close_path))
     {
-        IPrintLn("Failed to add an Interception Path, no Close Path defined");
+        debug_str = "Failed to add an Interception Path, no Close Path defined";
+        /# PrintLn(debug_str); #/
         return;
     }
     if(close_path.size < INTERCEPTION_MIN_SIZE || close_path.size > INTERCEPTION_MAX_SIZE)
     {
-        IPrintLn("Failed to add an Interception Path, Close Path size out of acceptable bounds");
+        debug_str = "Failed to add an Interception Path, Close Path size out of acceptable bounds";
+        /# PrintLn(debug_str); #/
         return;
     }
 
@@ -504,30 +539,35 @@ function interception_check(close_path, close_dir, gen_cloak_room, &low_odds_pat
 
     if(isdefined(forward_path) && isdefined(backward_path) && ! level path_equal(forward_path, backward_path))
     {
-        IPrintLn("Added Interception Paths (Forward and Backward)");
+        debug_str = "Added Interception Paths (Forward and Backward)";
+        /# PrintLn(debug_str); #/
         self add_cloak_path("Interception", forward_path[0], forward_path[1], low_odds_paths, fallback_paths);
         self add_cloak_path("Interception", backward_path[0], backward_path[1], low_odds_paths, fallback_paths);
     }
     else if(level path_equal(forward_path, backward_path))
     {
-        IPrintLn("Added an Interception Path (Forward = Backward)");
+        debug_str = "Added an Interception Path (Forward = Backward)";
+        /# PrintLn(debug_str); #/
         self add_cloak_path("Interception", forward_path[0], forward_path[1], low_odds_paths, fallback_paths);
     }
     else
     {
         if(isdefined(forward_path))
         {
-            IPrintLn("Added an Interception Path (Forward)");
+            debug_str = "Added an Interception Path (Forward)";
+            /# PrintLn(debug_str); #/
             self add_cloak_path("Interception", forward_path[0], forward_path[1], low_odds_paths, fallback_paths);
         }
         if(isdefined(backward_path))
         {
-            IPrintLn("Added an Interception Path (Backward)");
+            debug_str = "Added an Interception Path (Backward)";
+            /# PrintLn(debug_str); #/
             self add_cloak_path("Interception", backward_path[0], backward_path[1], low_odds_paths, fallback_paths);
         }
         if(! isdefined(forward_path) && ! isdefined(backward_path))
         {
-            IPrintLn("Failed to add any Interception Paths");
+            debug_str = "Failed to add any Interception Paths";
+            /# PrintLn(debug_str); #/
         }
     }
 }
@@ -567,16 +607,19 @@ function interception_create_path(path_dir, override_dir=PATH_DIR_FORWARD, num_r
 
     if(! allow_incomplete)
     {
-        IPrintLn("Creating Interception Path (Spawn -- " + spawn_room.name + "): ");
+        debug_str = "Creating Interception Path (Spawn -- " + spawn_room.name + "): ";
+        /# PrintLn(debug_str); #/
     }
     else
     {
-        IPrintLn("Creating Contingency Path (Spawn -- " + spawn_room.name + "): ");
+        debug_str = "Creating Contingency Path (Spawn -- " + spawn_room.name + "): ";
+        /# PrintLn(debug_str); #/
     }
 
     foreach(room in path)
     {
-        IPrintLn(room.name);
+        debug_str = room.name;
+        /# PrintLn(debug_str); #/
     }
 
     return array(spawn_point, path);
@@ -724,7 +767,8 @@ function find_path(dest_cloak_room, path_dir)
         }
         if(! isdefined(cur_cloak_room))
         {
-            IPrintLn("Cannot find path [path_dir = " + path_dir + ", dest_cloak_room = " + dest_cloak_room.name + "]");
+            debug_str = "Cannot find path [path_dir = " + path_dir + ", dest_cloak_room = " + dest_cloak_room.name + "]";
+            /# PrintLn(debug_str); #/
             return undefined;
         }
         path[path.size] = cur_cloak_room;
@@ -772,7 +816,8 @@ function find_paths(dest_cloak_room)
 
     if(isdefined(left_path) && isdefined(right_path))
     {
-        IPrintLn("Left and right paths found");
+        debug_str = "Left and right paths found";
+        /# PrintLn(debug_str); #/
         close_path = left_path;
         far_path = right_path;
         close_dir = PATH_DIR_RIGHT;
