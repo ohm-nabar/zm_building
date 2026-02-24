@@ -1,4 +1,4 @@
-VERSION				"1"
+﻿VERSION				"1"
 CONFIG					"C:\projects\cod\t7\bin\StringEd.cfg"
 FILENOTES				""
 
@@ -45,16 +45,19 @@ REFERENCE           	GENERATOR_NO_BLOOD
 LANG_SPANISH       	"Security Protocol 38: Blood Vial required"
 
 REFERENCE           	BLOODGUN_IN_USE
-LANG_SPANISH       	"L'Arme Ensanglante in use"
+LANG_SPANISH       	"L'Arme Sanglante in use"
 
 REFERENCE           	BLOODGUN_HAS_VIAL
 LANG_SPANISH       	"Already have Blood Vial"
 
 REFERENCE           	BLOODGUN_COOLDOWN
-LANG_SPANISH       	"Cooling down... Please wait a round"
+LANG_SPANISH       	"Cooling down... Please wait &&1 rounds or visit another Blood Gun station"
+
+REFERENCE           	BLOODGUN_COOLDOWN_SINGULAR
+LANG_SPANISH       	"Cooling down... Please wait 1 round or visit another Blood Gun station"
 
 REFERENCE           	BLOODGUN_ACTIVATE
-LANG_SPANISH       	"Press and hold ^3[{+activate}]^7 to wield L'Arme Ensanglante"
+LANG_SPANISH       	"Press and hold ^3[{+activate}]^7 to wield L'Arme Sanglante [Cost: {{weapon_cost}}]"
 
 REFERENCE           	TRIAL_ACTIVATE
 LANG_SPANISH       	"Press ^3[{+activate}]^7 to accept a Divinium Trial [Cost: &&1]"
@@ -72,7 +75,10 @@ REFERENCE           	FOUNTAIN_DEPOSIT
 LANG_SPANISH       "Press and hold ^3[{+activate}]^7 to insert a Blood Vial into the Juggernog Station"
 
 REFERENCE           	FOUNTAIN_ACTIVATE
-LANG_SPANISH       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [&&1 use(s) left]"
+LANG_SPANISH       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [&&1 uses left]"
+
+REFERENCE           	FOUNTAIN_ACTIVATE_SINGULAR
+LANG_SPANISH       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [1 use left]"
 
 REFERENCE           	TAKE_WEAPON
 LANG_SPANISH       "Press ^3[{+activate}]^7 to take {{weapon_name}}"
@@ -85,6 +91,12 @@ LANG_SPANISH       "You do not posess the weapon I seek"
 
 REFERENCE           	TRIDENT_CHARGE
 LANG_SPANISH       "Charging weapon..."
+
+REFERENCE           	TRIDENT_HINT
+LANG_SPANISH       "Press ^3[{+attack}]^7 to Melee\nPress ^3[{+speed_throw}]^7 to Whirlpool Slam\nMelee kills increase Power Level temporarily"
+
+REFERENCE           	HEALING_HINT
+LANG_SPANISH       "Press ^3[{+smoke}]^7 to Throw\nTurns all Zombies and revives all Players within Aura"
 
 REFERENCE           	JOURNAL_HEADER_CHALLENGE
 LANG_SPANISH       "Perk Challenges"
@@ -219,112 +231,112 @@ REFERENCE           	TRIAL_BRIBE_PICKUP_MAX
 LANG_SPANISH       "Cannot hold more Bribes"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS0
-LANG_SPANISH       "^1Judge Aramis^7: “Hi, I’m Judge Aramis, but you can just call me Aramis!\nI see a lot of potential in you!”"
+LANG_SPANISH       "^1Judge Aramis^7: â€œHi, Iâ€™m Judge Aramis, but you can just call me Aramis!\nI see a lot of potential in you!â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS1
-LANG_SPANISH       "^1Aramis^7: “You’re already off to a hot start!”"
+LANG_SPANISH       "^1Aramis^7: â€œYouâ€™re already off to a hot start!â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS2
-LANG_SPANISH       "^1Aramis^7: “Nice work!”"
+LANG_SPANISH       "^1Aramis^7: â€œNice work!â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS3
-LANG_SPANISH       "^1Aramis^7: “Yo! Champ in the making! Sorry, I hope that wasn’t weird...”"
+LANG_SPANISH       "^1Aramis^7: â€œYo! Champ in the making! Sorry, I hope that wasnâ€™t weird...â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS4
-LANG_SPANISH       "^1Aramis^7: “Wowzers!! I knew you were something special!”"
+LANG_SPANISH       "^1Aramis^7: â€œWowzers!! I knew you were something special!â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE1
-LANG_SPANISH       "^1Aramis^7: “Thanks for the gold! Hope you enjoy what I gave you!”"
+LANG_SPANISH       "^1Aramis^7: â€œThanks for the gold! Hope you enjoy what I gave you!â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE2
-LANG_SPANISH       "^1Aramis^7: “More gold, nice!”"
+LANG_SPANISH       "^1Aramis^7: â€œMore gold, nice!â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE3
-LANG_SPANISH       "^1Aramis^7: “Aww, aren’t you sweet?”"
+LANG_SPANISH       "^1Aramis^7: â€œAww, arenâ€™t you sweet?â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE4
-LANG_SPANISH       "^1Aramis^7: “What a generous soul you are!”"
+LANG_SPANISH       "^1Aramis^7: â€œWhat a generous soul you are!â€"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS0
-LANG_SPANISH       "^3Judge Porthos^7: “Are you willing to do what it takes to be a true marksman?”"
+LANG_SPANISH       "^3Judge Porthos^7: â€œAre you willing to do what it takes to be a true marksman?â€"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS1
-LANG_SPANISH       "^3Judge Porthos^7: “This is just the beginning.\nYou have yet much ground to travel on your sharpshooting journey.”"
+LANG_SPANISH       "^3Judge Porthos^7: â€œThis is just the beginning.\nYou have yet much ground to travel on your sharpshooting journey.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS2
-LANG_SPANISH       "^3Judge Porthos^7: “If you are to proceed along the path of a deadshot,\ndaiquiri doubles as an effective aiming partner.”"
+LANG_SPANISH       "^3Judge Porthos^7: â€œIf you are to proceed along the path of a deadshot,\ndaiquiri doubles as an effective aiming partner.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS3
-LANG_SPANISH       "^3Judge Porthos^7: “It seems you have taken well to the craft of precision.”"
+LANG_SPANISH       "^3Judge Porthos^7: â€œIt seems you have taken well to the craft of precision.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS4
-LANG_SPANISH       "^3Judge Porthos^7: “At last, you have attained the rank of a true marksman!”"
+LANG_SPANISH       "^3Judge Porthos^7: â€œAt last, you have attained the rank of a true marksman!â€"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE1
-LANG_SPANISH       "^3Judge Porthos^7: “Hmmph. A real marksman would never take shortcuts.”"
+LANG_SPANISH       "^3Judge Porthos^7: â€œHmmph. A real marksman would never take shortcuts.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE2
-LANG_SPANISH       "^3Judge Porthos^7: “Is this any way for a sharpshooter to conduct themselves?”"
+LANG_SPANISH       "^3Judge Porthos^7: â€œIs this any way for a sharpshooter to conduct themselves?â€"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE3
-LANG_SPANISH       "^3Judge Porthos^7: “Entirely undignified.”"
+LANG_SPANISH       "^3Judge Porthos^7: â€œEntirely undignified.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE4
-LANG_SPANISH       "^3Judge Porthos^7: “I don’t even know what to say at this point.”"
+LANG_SPANISH       "^3Judge Porthos^7: â€œI donâ€™t even know what to say at this point.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_DART0
-LANG_SPANISH       "^2Judge D'Artagnan^7: “Look at you, so innocent and pure… that must change.\nGet your hands dirty!”"
+LANG_SPANISH       "^2Judge D'Artagnan^7: â€œLook at you, so innocent and pureâ€¦ that must change.\nGet your hands dirty!â€"
 
 REFERENCE           	TRIAL_DIALOGUE_DART1
-LANG_SPANISH       "^2Judge D'Artagnan^7: “Good… good… do not hesitate to delve further\ninto the blood of your enemies.”"
+LANG_SPANISH       "^2Judge D'Artagnan^7: â€œGoodâ€¦ goodâ€¦ do not hesitate to delve further\ninto the blood of your enemies.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_DART2
-LANG_SPANISH       "^2Judge D'Artagnan^7: “More! More! More bloodshed!”"
+LANG_SPANISH       "^2Judge D'Artagnan^7: â€œMore! More! More bloodshed!â€"
 
 REFERENCE           	TRIAL_DIALOGUE_DART3
-LANG_SPANISH       "^2Judge D'Artagnan^7: “SWISH SWHOOSH STAB! STAB STAB STAB!”"
+LANG_SPANISH       "^2Judge D'Artagnan^7: â€œSWISH SWHOOSH STAB! STAB STAB STAB!â€"
 
 REFERENCE           	TRIAL_DIALOGUE_DART4
-LANG_SPANISH       "^2Judge D'Artagnan^7: “The scent of your vanquished foes is just... so... intoxicating!\nBWAHAHAHA!”"
+LANG_SPANISH       "^2Judge D'Artagnan^7: â€œThe scent of your vanquished foes is just... so... intoxicating!\nBWAHAHAHA!â€"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE1
-LANG_SPANISH       "^2Judge D'Artagnan^7: “This is a little too sterile for me.”"
+LANG_SPANISH       "^2Judge D'Artagnan^7: â€œThis is a little too sterile for me.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE2
-LANG_SPANISH       "^2Judge D'Artagnan^7: “This is so humdrum! You know what I crave.”"
+LANG_SPANISH       "^2Judge D'Artagnan^7: â€œThis is so humdrum! You know what I crave.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE3
-LANG_SPANISH       "^2Judge D'Artagnan^7: “I’m just going to tell myself that this is blood money.”"
+LANG_SPANISH       "^2Judge D'Artagnan^7: â€œIâ€™m just going to tell myself that this is blood money.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE4
-LANG_SPANISH       "^2Judge D'Artagnan^7: “Whose slaughter generated this wealth?\nNo — don’t tell me. It’s more fun to imagine!”"
+LANG_SPANISH       "^2Judge D'Artagnan^7: â€œWhose slaughter generated this wealth?\nNo â€” donâ€™t tell me. Itâ€™s more fun to imagine!â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS0
-LANG_SPANISH       "8Judge Athos^7: “Pathetic creature! You are most certainly not worthy of anything!”"
+LANG_SPANISH       "^8Judge Athos^7: â€œPathetic creature! You are most certainly not worthy of anything!â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS1
-LANG_SPANISH       "8Judge Athos^7: “I suppose you think you’re some hotshot now.\nNo. You. Are. Nothing.”"
+LANG_SPANISH       "^8Judge Athos^7: â€œI suppose you think youâ€™re some hotshot now.\nNo. You. Are. Nothing.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS2
-LANG_SPANISH       "8Judge Athos^7: “I suppose you think you’re some hotshot now. No. You. Are. Nothing.”"
+LANG_SPANISH       "^8Judge Athos^7: â€œI suppose you think youâ€™re some hotshot now. No. You. Are. Nothing.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS3
-LANG_SPANISH       "8Judge Athos^7: “I guess you’ve managed to luck your way this far.\nTake your reward and get out of my sight.”"
+LANG_SPANISH       "^8Judge Athos^7: â€œI guess youâ€™ve managed to luck your way this far.\nTake your reward and get out of my sight.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS4
-LANG_SPANISH       "8Judge Athos^7: “Ugh, fine, I guess I maybe sort of misjudged you...”"
+LANG_SPANISH       "^8Judge Athos^7: â€œUgh, fine, I guess I maybe sort of misjudged you...â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE1
-LANG_SPANISH       "8Judge Athos^7: “I feel dirty accepting anything from you.”"
+LANG_SPANISH       "^8Judge Athos^7: â€œI feel dirty accepting anything from you.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE2
-LANG_SPANISH       "8Judge Athos^7: “I suppose you’ve lived a comfortable life, haven’t you?\nExplains your weak character.”"
+LANG_SPANISH       "^8Judge Athos^7: â€œI suppose youâ€™ve lived a comfortable life, havenâ€™t you?\nExplains your weak character.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE3
-LANG_SPANISH       "8Judge Athos^7: “I’ll have you know this is illegal.\nWhen the authorities return, I’ll be reporting you.”"
+LANG_SPANISH       "^8Judge Athos^7: â€œIâ€™ll have you know this is illegal.\nWhen the authorities return, Iâ€™ll be reporting you.â€"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE4
-LANG_SPANISH       "8Judge Athos^7: “Can I bribe you to never come back?”"
+LANG_SPANISH       "^8Judge Athos^7: â€œCan I bribe you to never come back?â€"
 
 REFERENCE           	TRIAL_RANDOM_GUM
 LANG_SPANISH       "Mystery GargoyleGum"
@@ -491,10 +503,25 @@ LANG_SPANISH       	"Revives"
 REFERENCE           	SB_HEADSHOTS
 LANG_SPANISH       	"Headshots"
 
-REFERENCE           	BOX_ACTIVATE
-LANG_SPANISH       	"Press ^3[{+activate}]^7 for a Random Weapon [Cost: &&1]"
+REFERENCE           	PANZERWURFMINE_USE
+LANG_SPANISH       	"Press ^3[{+activate}]^7 for Panzerwurfmine [Cost: {{weapon_cost}}]"
 
-REFERENCE           	BOX_TRADE
-LANG_SPANISH       	"Hold ^3[{+activate}]^7 to trade Weapons"
+REFERENCE           	PANZERWURFMINE_AMMO_FULL
+LANG_SPANISH       	"Panzerwurfmine ammo full"
+
+REFERENCE           	PANZERWURFMINE_RECHARGE
+LANG_SPANISH       	"Recharging... Please wait &&1 minutes or visit another Armory location"
+
+REFERENCE           	PANZERWURFMINE_RECHARGE_SINGULAR
+LANG_SPANISH       	"Recharging... Please wait 1 minute or visit another Armory location"
+
+REFERENCE           	CROSSBOW_USE
+LANG_SPANISH       	"Press ^3[{+activate}]^7 to wield the Crossbow"
+
+REFERENCE           	CROSSBOW_IN_USE
+LANG_SPANISH       	"Crossbow in use"
+
+REFERENCE           	CROSSBOW_RECHARGE
+LANG_SPANISH       	"Near or far, slay more souls wherever they are!"
 
 ENDMARKER
