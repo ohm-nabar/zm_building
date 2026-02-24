@@ -12,7 +12,7 @@
 
 #define CROSSBOW_MAX_TIME 30
 #define CROSSBOW_RECHARGE_KILLS_BASE -5 // increment will be added right away, so this means the base recharge is 5 kills
-#define CROSSBOW_RECHARGE_KILLS_MULT_MIN 0.7
+#define CROSSBOW_RECHARGE_KILLS_MULT_MIN 0.75
 #define CROSSBOW_RECHARGE_KILLS_INCREMENT 10
 
 #define NUM_ARMORY_STATIONS 5

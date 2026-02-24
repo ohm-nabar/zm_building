@@ -2,7 +2,9 @@
 #using scripts\shared\array_shared;
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
+#using scripts\shared\exploder_shared;
 #using scripts\shared\flag_shared;
+#using scripts\shared\math_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 
@@ -116,7 +118,7 @@ function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags
 	{
 		if(IsPlayer(attacker) && (willBeKilled || level.zombie_vars[attacker.team]["zombie_insta_kill"]))
 		{
-			if(level.crossbow_recharge_progress < level.crossbow_recharge_kills)
+			if(! level.crossbow_active && level.crossbow_recharge_progress < level.crossbow_recharge_kills)
 			{
 				level.crossbow_recharge_progress += 1;
 			}
@@ -139,7 +141,7 @@ function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags
 		}
 		else if(isdefined(attacker.activated_by_player) && willBeKilled)
 		{
-			if(level.crossbow_recharge_progress < level.crossbow_recharge_kills)
+			if(! level.crossbow_active && level.crossbow_recharge_progress < level.crossbow_recharge_kills)
 			{
 				level.crossbow_recharge_progress += 1;
 			}
@@ -371,52 +373,71 @@ function panzerwurfmine_think()
 	}
 }
 
-function crossbow_souls_think()
+function crossbow_bulbs_think()
 {
-	if(self.script_int > 0)
+	gen_num = self.script_int;
+
+	if(gen_num > 0)
 	{
-		level waittill("power_on" + self.script_int);
+		level waittill("power_on" + gen_num);
 	}
 
-	canister = GetEnt("crossbow_soulbox" + self.script_int, "targetname");
-	target_canister = level struct::get("crossbow_soulbox_target" + self.script_int, "targetname");
-
-	original_pos = canister.origin;
-	z_diff = target_canister.origin[2] - canister.origin[2];
-	prev_recharge_kills = level.crossbow_recharge_kills;
-	prev_prog = 0;
-	prev_upgraded = false;
-
+	prev_lit = -1;
+	prev_upgrade_transition = false;
 	while(true)
 	{
-		if(level.crossbow_upgraded && ! prev_upgraded)
+		if(level.crossbow_recharge_kills != 0)
 		{
-			if(level.crossbow_active)
-			{
-				while(level.crossbow_active)
-				{
-					wait(0.05);
-				}
-			}
-			else
-			{
-				prev_upgraded = true;
-				z_diff_upg = target_canister.origin[2] - canister.origin[2];
-				canister MoveZ(z_diff_upg, 0.05);
-			}
-			prev_prog = level.crossbow_recharge_progress;
+			ratio = level.crossbow_recharge_progress / level.crossbow_recharge_kills;
 		}
 		else
 		{
-			new_prog = level.crossbow_recharge_progress - prev_prog;
-			prev_prog = level.crossbow_recharge_progress;
-			if(level.crossbow_recharge_kills > prev_recharge_kills)
+			ratio = 1;
+		}
+		if(level.crossbow_active)
+		{
+			lit = level math::clamp(Ceil(ratio * 4), 1, 3);
+		}
+		else
+		{
+			lit = level math::clamp(Floor(ratio * 4), 0, 4);
+		}
+
+		upgrade_transition = (level.crossbow_upgraded && !level.crossbow_active);
+		if(lit != prev_lit || upgrade_transition != prev_upgrade_transition)
+		{
+			if(upgrade_transition != prev_upgrade_transition)
 			{
-				prev_recharge_kills = level.crossbow_recharge_kills;
-				new_prog -= CROSSBOW_RECHARGE_KILLS_INCREMENT;
+				if(! prev_upgrade_transition)
+				{
+					for(i = 1; i <= 4; i++)
+					{
+						level exploder::stop_exploder("crossbow_bulb" + gen_num + i);
+					}
+				}
 			}
-			z_inc = (z_diff / level.crossbow_recharge_kills) * new_prog;
-			canister MoveZ(z_inc, 0.05);
+
+			if(level.crossbow_upgraded)
+			{
+				bulb_prefix = "crossbow_upg_bulb";
+			}
+			else
+			{
+				bulb_prefix = "crossbow_bulb";
+			}
+			for(i = 1; i <= 4; i++)
+			{
+				if(i <= lit)
+				{
+					level exploder::exploder(bulb_prefix + gen_num + i);
+				}
+				else
+				{
+					level exploder::stop_exploder(bulb_prefix + gen_num + i);
+				}
+			}
+			prev_lit = lit;
+			prev_upgrade_transition = upgrade_transition;
 		}
 		wait(0.05);
 	}
@@ -455,7 +476,7 @@ function crossbow_think()
 {
 	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZOMBIE_NEED_POWER", undefined, &crossbow_prompt_and_update);
 
-	self thread crossbow_souls_think();
+	self thread crossbow_bulbs_think();
 
 	if(self.script_int > 0)
 	{
@@ -485,17 +506,28 @@ function crossbow_think()
 
 		powerup_struct zm_powerups::powerup_grab(player.team);
 		level.crossbow_active = true;
+
+		can_update_progress = (! level.crossbow_upgraded || prev_upgraded);
+		if(can_update_progress)
+		{
+			level.crossbow_recharge_kills += CROSSBOW_RECHARGE_KILLS_INCREMENT;
+			max_progress = Int(level.crossbow_recharge_kills * CROSSBOW_RECHARGE_KILLS_MULT_MIN);
+			level.crossbow_recharge_progress = Min(level.crossbow_recharge_progress, max_progress);
+		}
+
 		time = 0;
 		while(isdefined(player) && (player.zombie_vars[ "zombie_powerup_crossbow_on" ] || player.zombie_vars[ "zombie_powerup_crossbow_up_on" ]))
 		{
+			if(can_update_progress)
+			{
+				time_remaining = CROSSBOW_MAX_TIME - Min(time, CROSSBOW_MAX_TIME);
+				progress = Int((time_remaining / CROSSBOW_MAX_TIME) * level.crossbow_recharge_kills);
+				level.crossbow_recharge_progress = Int(Min(progress, max_progress));
+			}
 			time += 0.05;
 			wait(0.05);
 		}
 		level.crossbow_active = false;
-		if(! level.crossbow_upgraded || prev_upgraded)
-		{	
-			level set_crossbow_recharge_progress(time);
-		}
 		while(level.crossbow_recharge_progress < level.crossbow_recharge_kills)
 		{
 			wait(0.05);
@@ -503,13 +535,6 @@ function crossbow_think()
 	}
 }
 
-function set_crossbow_recharge_progress(time)
-{
-	time_remaining = CROSSBOW_MAX_TIME - Min(time, CROSSBOW_MAX_TIME);
-	level.crossbow_recharge_kills += CROSSBOW_RECHARGE_KILLS_INCREMENT;
-	progress = (time_remaining / CROSSBOW_MAX_TIME) * level.crossbow_recharge_kills;
-	level.crossbow_recharge_progress = Int(Min(progress, level.crossbow_recharge_kills * CROSSBOW_RECHARGE_KILLS_MULT_MIN));
-}
 
 function crossbow_watch_upgrade()
 {
@@ -518,9 +543,15 @@ function crossbow_watch_upgrade()
 		wait(0.05);
 	}
 
-	level.crossbow_recharge_progress = level.crossbow_recharge_kills;
 	level.crossbow_upgraded = true;
 	IPrintLn("All puzzles complete!");
+
+	do
+	{
+		wait(0.05);
+	}
+	while (level.crossbow_active);
+	level.crossbow_recharge_progress = level.crossbow_recharge_kills;
 }
 
 function symbol_board_think(gen_num)
