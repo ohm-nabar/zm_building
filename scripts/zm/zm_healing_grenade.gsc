@@ -9,6 +9,7 @@
 
 #using scripts\zm\aats\_zm_aat_turned;
 #using scripts\zm\_zm_audio;
+#using scripts\zm\_zm_equipment;
 #using scripts\zm\_zm_laststand;
 #using scripts\zm\_zm_perks;
 #using scripts\zm\_zm_utility;
@@ -25,6 +26,8 @@
 #precache( "model", "isaypwn_hgrenade_view_01" );
 #precache( "model", "isaypwn_hgrenade_view_upg_01" );
 
+#precache( "string", "ZM_ABBEY_HEALING_HINT" );
+
 #define HEALING_GRENADE_RADIUS 300
 #define TURNED_KILL_RADIUS_SQ 50
 #define MAX_TURNED_ZOMBIES 3
@@ -35,15 +38,15 @@
 
 function main()
 {
-	zm_utility::register_tactical_grenade_for_level( "zm_healing_grenade" );
+	level zm_utility::register_tactical_grenade_for_level( "zm_healing_grenade" );
 	level.healingGrenade = GetWeapon( "zm_healing_grenade" );
 	level.healingGrenadeUpgraded = GetWeapon( "zm_healing_grenade_up" );
 	level._effect["monkey_bass"] 	= "dlc3/stalingrad/fx_cymbal_monkey_radial_pulse";
 
-	level.zombie_weapons_callbacks[level.weaponZMCymbalMonkey] = &player_give_cymbal_monkey;
-	level.zombie_weapons_callbacks[level.w_cymbal_monkey_upgraded] = &player_give_cymbal_monkey_up;
-	level zm_weapons::register_zombie_weapon_callback( level.healingGrenade, &player_give_healing_grenade);
-	level zm_weapons::register_zombie_weapon_callback( level.healingGrenadeUpgraded, &player_give_healing_grenade_up);
+	level zm_weapons::register_zombie_weapon_callback(level.weaponZMCymbalMonkey, &player_give_cymbal_monkey);
+	level zm_weapons::register_zombie_weapon_callback(level.w_cymbal_monkey_upgraded, &player_give_cymbal_monkey_up);
+	level zm_weapons::register_zombie_weapon_callback(level.healingGrenade, &player_give_healing_grenade);
+	level zm_weapons::register_zombie_weapon_callback(level.healingGrenadeUpgraded, &player_give_healing_grenade_up);
 	level callback::on_connect( &on_player_connect );
 	level callback::on_laststand( &on_laststand );
 }
@@ -108,6 +111,12 @@ function player_give_healing_grenade()
 		self GiveWeapon( level.healingGrenade );
 		self zm_utility::set_player_tactical_grenade( level.healingGrenade );
 	}
+
+	if(self.healing_first_time)
+	{
+		self.healing_first_time = false;
+		self thread zm_equipment::show_hint_text(&"ZM_ABBEY_HEALING_HINT", 5);
+	}
 }
 
 function player_give_healing_grenade_up()
@@ -124,11 +133,18 @@ function player_give_healing_grenade_up()
 
 	self GiveWeapon( level.healingGrenadeUpgraded );
 	self zm_utility::set_player_tactical_grenade( level.healingGrenadeUpgraded );
+
+	if(self.healing_first_time)
+	{
+		self.healing_first_time = false;
+		self thread zm_equipment::show_hint_text(&"ZM_ABBEY_HEALING_HINT", 3);
+	}
 }
 
 function on_player_connect()
 {
 	self flag::init(#"solo_healing_grenade");
+	self.healing_first_time = true;
 	self.healing_vox_enabled = true;
 	self thread check_thrown();
 	self thread pullback_sound();

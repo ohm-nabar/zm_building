@@ -90,8 +90,6 @@ scriptparsetree,scripts/zm/zm_abbey_quest.gsc
 scriptparsetree,scripts/zm/zm_trident.gsc
 scriptparsetree,scripts/zm/zm_trident.csc
 scriptparsetree,scripts/zm/zm_variable_pricing.gsc
-scriptparsetree,scripts/zm/zm_blueprints.gsc
-scriptparsetree,scripts/zm/zm_blueprints.csc
 scriptparsetree,scripts/zm/zm_abbey_audio.gsc
 scriptparsetree,scripts/zm/zm_abbey_boss.gsc
 scriptparsetree,scripts/zm/zm_abbey_boss.gsh

@@ -12,6 +12,7 @@
 
 #using scripts\zm\_zm;
 #using scripts\zm\_zm_bgb;
+#using scripts\zm\_zm_equipment;
 #using scripts\zm\_zm_magicbox;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weap_thundergun;
@@ -84,6 +85,7 @@ function __init__()
     level callback::on_connect( &on_player_connect );
     level zm::register_actor_damage_callback( &damage_adjustment );
 	level zm::register_zombie_damage_override_callback( &zombie_damage_override );
+	level zm_weapons::register_zombie_weapon_callback(level.abbey_trident, &player_give_trident);
     level zm_weapons::add_custom_limited_weapon_check( &pitchfork_statue_check );
 }
 
@@ -94,6 +96,17 @@ function __main__()
 
     statue_trig = struct::get("poseidon_statue_trigger", "targetname");
     statue_trig thread upgrade_quest_think();
+}
+
+function player_give_trident()
+{
+	self GiveWeapon(level.abbey_trident);
+	self SwitchToWeapon(level.abbey_trident);
+	if(self.trident_first_time)
+	{
+		self.trident_first_time = false;
+		self thread zm_equipment::show_hint_text(&"ZM_ABBEY_TRIDENT_HINT", 3);
+	}
 }
 
 function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
@@ -158,6 +171,7 @@ function preserve_ammo_on_melee()
 
 function on_player_connect()
 {
+	self.trident_first_time = true;
 	self.trident_power_level = 0;
 	self.trident_melee_kills = 0;
 	self clientfield::set_player_uimodel("tridentClip", 1);
