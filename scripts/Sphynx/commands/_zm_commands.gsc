@@ -55,6 +55,7 @@
 #using scripts\zm\_zm_unitrigger;
 
 #insert scripts\zm\_zm_utility.gsh;
+#insert scripts\zm\zm_armory.gsh;
 #insert scripts\shared\shared.gsh;
 #insert scripts\shared\version.gsh;
 #insert scripts\shared\ai\zombie.gsh;
@@ -144,6 +145,7 @@ function __init__()
     thread _set_bg_kills(); // Sets kills required to complete a Blood Gun sequence
     thread _debug_triggerstrings(); // Creates new hintstrings until the game crashes
     thread _armory_recharge(); // Recharges the Armory
+    thread _upgrade_crossbow(); // Upgrades the crossbow
 
     if( ToLower( GetDvarString( "mapname" ) ) != "zm_castle" ){
         thread _debug_keyline_command_response(); //Add keylines around a specific model to look for it easier
@@ -466,6 +468,24 @@ function private _debug_triggerstrings(command_args)
                 wait(1);
             }
             SetDvar("triggerstring_debug", 0);
+        }
+    }
+}
+
+function private _upgrade_crossbow(command_args)
+{
+    ModVar("crossbow_upgrade", "");
+
+    for(;;)
+    {
+        WAIT_SERVER_FRAME
+
+        dvar_value = ToLower(GetDvarString("crossbow_upgrade", ""));
+
+        if(isdefined(dvar_value) && dvar_value == "1")
+        {
+            level.armory_puzzles_solved = NUM_ARMORY_STATIONS;
+            SetDvar("crossbow_upgrade", 0);
         }
     }
 }
