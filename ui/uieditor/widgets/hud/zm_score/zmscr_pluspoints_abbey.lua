@@ -1,5 +1,27 @@
 CoD.ZMScr_PlusPoints = InheritFrom(LUI.UIElement)
 
+CoD.ZMScr_PlusPoints.IsVisible = function(InstanceRef)
+    if Engine.IsVisibilityBitSet(InstanceRef, Enum.UIVisibilityBit.BIT_HUD_VISIBLE) and Engine.IsVisibilityBitSet(InstanceRef, Enum.UIVisibilityBit.BIT_WEAPON_HUD_VISIBLE) then
+        if Engine.IsVisibilityBitSet(InstanceRef, Enum.UIVisibilityBit.BIT_SCOREBOARD_OPEN) or Engine.IsVisibilityBitSet(InstanceRef, Enum.UIVisibilityBit.BIT_EMP_ACTIVE) or Engine.IsVisibilityBitSet(InstanceRef, Enum.UIVisibilityBit.BIT_DEMO_CAMERA_MODE_MOVIECAM) or Engine.IsVisibilityBitSet(InstanceRef, Enum.UIVisibilityBit.BIT_IS_FLASH_BANGED) or Engine.IsVisibilityBitSet(InstanceRef, Enum.UIVisibilityBit.BIT_IN_VEHICLE) or Engine.IsVisibilityBitSet(InstanceRef, Enum.UIVisibilityBit.BIT_IS_SCOPED) or Engine.IsVisibilityBitSet(InstanceRef, Enum.UIVisibilityBit.BIT_DEMO_ALL_GAME_HUD_HIDDEN) or Engine.IsVisibilityBitSet(InstanceRef, Enum.UIVisibilityBit.BIT_GAME_ENDED) then
+            return false
+        else
+            return true
+        end
+    else
+        return false
+    end
+end
+
+CoD.ZMScr_PlusPoints.UpdateVisibility = function(Elem, InstanceRef)
+    if CoD.ZMScr_PlusPoints.IsVisible(InstanceRef) then
+        Elem:setAlpha(1)
+        Elem.visible = true
+    else
+        Elem:setAlpha(0)
+        Elem.visible = false
+    end
+end
+
 function CoD.ZMScr_PlusPoints.new(HudRef, InstanceRef)
 	local Elem = LUI.UIElement.new()
 	if PreLoadFunc then
@@ -47,6 +69,54 @@ function CoD.ZMScr_PlusPoints.new(HudRef, InstanceRef)
 	glow:setMaterial(LUI.UIImage.GetCachedMaterial("ui_add"))
 	--Elem:addElement(glow)
 	Elem.Glow = glow
+
+	Elem.visible = true
+    
+	Elem:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_HUD_VISIBLE), function(ModelRef)
+        CoD.ZMScr_PlusPoints.UpdateVisibility(Elem, InstanceRef)
+	end)
+	Elem:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_WEAPON_HUD_VISIBLE), function(ModelRef)
+        CoD.ZMScr_PlusPoints.UpdateVisibility(Elem, InstanceRef)
+	end)
+	Elem:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_HUD_HARDCORE), function(ModelRef)
+        CoD.ZMScr_PlusPoints.UpdateVisibility(Elem, InstanceRef)
+	end)
+	Elem:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_GAME_ENDED), function(ModelRef)
+        CoD.ZMScr_PlusPoints.UpdateVisibility(Elem, InstanceRef)
+	end)
+	Elem:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_DEMO_CAMERA_MODE_MOVIECAM), function(ModelRef)
+        CoD.ZMScr_PlusPoints.UpdateVisibility(Elem, InstanceRef)
+	end)
+	Elem:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_DEMO_ALL_GAME_HUD_HIDDEN), function(ModelRef)
+        CoD.ZMScr_PlusPoints.UpdateVisibility(Elem, InstanceRef)
+	end)
+	Elem:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_IN_KILLCAM), function(ModelRef)
+        CoD.ZMScr_PlusPoints.UpdateVisibility(Elem, InstanceRef)
+	end)
+	Elem:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_IS_FLASH_BANGED), function(ModelRef)
+        CoD.ZMScr_PlusPoints.UpdateVisibility(Elem, InstanceRef)
+	end)
+	Elem:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_UI_ACTIVE), function(ModelRef)
+        CoD.ZMScr_PlusPoints.UpdateVisibility(Elem, InstanceRef)
+	end)
+	Elem:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_IS_SCOPED), function(ModelRef)
+        CoD.ZMScr_PlusPoints.UpdateVisibility(Elem, InstanceRef)
+	end)
+	Elem:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_IN_VEHICLE), function(ModelRef)
+        CoD.ZMScr_PlusPoints.UpdateVisibility(Elem, InstanceRef)
+	end)
+	Elem:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_IN_GUIDED_MISSILE), function(ModelRef)
+        CoD.ZMScr_PlusPoints.UpdateVisibility(Elem, InstanceRef)
+	end)
+	Elem:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_SCOREBOARD_OPEN), function(ModelRef)
+        CoD.ZMScr_PlusPoints.UpdateVisibility(Elem, InstanceRef)
+	end)
+	Elem:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_IN_REMOTE_KILLSTREAK_STATIC), function(ModelRef)
+        CoD.ZMScr_PlusPoints.UpdateVisibility(Elem, InstanceRef)
+	end)
+	Elem:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "UIVisibilityBit." .. Enum.UIVisibilityBit.BIT_EMP_ACTIVE), function(ModelRef)
+        CoD.ZMScr_PlusPoints.UpdateVisibility(Elem, InstanceRef)
+	end)
 
 	local function DSDefaultClip()
 		Elem:setupElementClipCounter(3.000000)
