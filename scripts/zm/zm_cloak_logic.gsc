@@ -52,12 +52,12 @@ function CloakRoom_init(name)
     cloak_room = new CloakRoom();
     cloak_room.name = name;
     cloak_room.connected_flags = [];
-    cloak_room.connected_flags[name] = "initial_blackscreen_passed"; // hacky way to have an always active flag
+    cloak_room.connected_flags[name] = array("initial_blackscreen_passed"); // hacky way to have an always active flag
     level.cloak_rooms[name] = cloak_room;
     return cloak_room;
 }
 
-function add_adj_room(adj_room, front_back, connect_flag)
+function add_adj_room(adj_room, front_back, connected_flags)
 {
     if(front_back)
     {
@@ -70,13 +70,26 @@ function add_adj_room(adj_room, front_back, connect_flag)
         adj_room.left = self;
     }
 
-    self.connected_flags[adj_room.name] = connect_flag;
-    adj_room.connected_flags[self.name] = connect_flag;
+    self.connected_flags[adj_room.name] = connected_flags;
+    adj_room.connected_flags[self.name] = connected_flags;
 }
 
 function cloak_room_equal(cloak_room)
 {
     return (isdefined(self) && isdefined(cloak_room) && (self.name == cloak_room.name));
+}
+
+function cloak_room_connected(room_name, &connected_flags)
+{
+    foreach(connected_flag in connected_flags[room_name])
+    {
+        if(level flag::get(connected_flag))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 class CloakPathInfo
@@ -104,18 +117,73 @@ function CloakPathInfo_init(name, player, spawn_point, &path)
 function __init__()
 {
     level.cloak_rooms = [];
-    staminarch = level CloakRoom_init("Staminarch");
-    spawn = level CloakRoom_init("Spawn Room");
-    wtower = level CloakRoom_init("Water Tower");
-    lion = level CloakRoom_init("Lion Room");
-    clean = level CloakRoom_init("Clean Room");
-    downstairs = level CloakRoom_init("Downstairs Room");
+    level.cloak_room_subs = [];
+    level.cloak_room_subs["Red Room"] = array("Bell Tower");
+    level.cloak_room_subs["Cloitre"] = array("Dormitory");
+    level.cloak_room_subs["Courtroom"] = array("Alleyway");
+    level.cloak_room_subs["Verite Library"] = array("Guard Tower Catwalk");
+    level.cloak_room_subs["URM Laboratory"] = array("Bridge");
+    level.cloak_room_subs["Merveille de Verite"] = array("Bridge v2");
+    level.centre_exception_cloak_rooms = array("Crash Site", "Red Room", "Radio Gallery", "Scaffolding", "Choir");
+    if(GetDvarString("ui_mapname") == "zm_building")
+    {
+        staminarch = level CloakRoom_init("Staminarch");
+        spawn = level CloakRoom_init("Spawn Room");
+        wtower = level CloakRoom_init("Water Tower");
+        lion = level CloakRoom_init("Lion Room");
+        clean = level CloakRoom_init("Clean Room");
+        downstairs = level CloakRoom_init("Downstairs Room");
 
-    staminarch add_adj_room(spawn, true, "enter_staminarch");
-    spawn add_adj_room(wtower, true, "enter_wtower");
-    wtower add_adj_room(lion, false, "enter_dirty");
-    downstairs add_adj_room(clean, false, "enter_downstairs");
-    clean add_adj_room(wtower, false, "enter_clean");
+        staminarch add_adj_room(spawn, true, array("enter_staminarch"));
+        spawn add_adj_room(wtower, true, array("enter_wtower"));
+        wtower add_adj_room(lion, false, array("enter_dirty"));
+        downstairs add_adj_room(clean, false, array("enter_downstairs"));
+        clean add_adj_room(wtower, false, array("enter_clean"));
+    }
+    else
+    {
+        crash_site = level CloakRoom_init("Crash Site");
+        red_room = level CloakRoom_init("Red Room");
+        radio_gallery = level CloakRoom_init("Radio Gallery");
+        scaffolding = level CloakRoom_init("Scaffolding");
+        choir = level CloakRoom_init("Choir");
+        centre = level CloakRoom_init("Centre");
+        basilica = level CloakRoom_init("Basilica");
+        airfield = level CloakRoom_init("Airfield");
+        cloitre = level CloakRoom_init("Cloitre");
+        merveille = level CloakRoom_init("Merveille de Verite");
+        guard_tower = level CloakRoom_init("Guard Tower");
+        knights_hall = level CloakRoom_init("Knight's Hall");
+        courtyard = level CloakRoom_init("Courtyard");
+        courtroom = level CloakRoom_init("Courtroom");
+        lps = level CloakRoom_init("Lower Pilgrimage Stairs");
+        library = level CloakRoom_init("Verite Library");
+        mps = level CloakRoom_init("Middle Pilgrimage Stairs");
+        urm_labs = level CloakRoom_init("URM Laboratory");
+        ups = level CloakRoom_init("Upper Pilgrimage Stairs");
+
+        crash_site add_adj_room(red_room, true, array("enter_redr_zone"));
+        red_room add_adj_room(radio_gallery, true, array("enter_platform_zone"));
+        radio_gallery add_adj_room(scaffolding, true, array("enter_heart_zone"));
+        scaffolding add_adj_room(choir, true, array("enter_heart_zone"));
+        choir add_adj_room(centre, true, array("enter_centre_zone"));
+        centre add_adj_room(basilica, true, array("enter_centre_zone"));
+
+        basilica add_adj_room(airfield, false, array("enter_airfield_zone"));
+        airfield add_adj_room(cloitre, false, array("enter_cloitre_zone"));
+        cloitre add_adj_room(merveille, false, array("enter_merveille_zone", "enter_cloitre2_zone"));
+        merveille add_adj_room(guard_tower, false, array("enter_forum_zone"));
+        guard_tower add_adj_room(knights_hall, false, array("enter_forum_zone"));
+        knights_hall add_adj_room(courtyard, false, array("enter_courtyard_zone", "enter_forum2_zone"));
+        courtyard add_adj_room(courtroom, false, array("enter_courtroom2_zone", "enter_courtyard2_zone"));
+
+        courtroom add_adj_room(lps, false, array("enter_courtroom_zone", "enter_library2_zone"));
+        lps add_adj_room(library, false, array("enter_library2_zone", "enter_library_zone"));
+        library add_adj_room(mps, false, array("enter_mid_pilgrimage2_zone", "enter_library_zone"));
+        mps add_adj_room(urm_labs, false, array("enter_mid_pilgrimage_zone"));
+        urm_labs add_adj_room(ups, false, array("enter_mid_pilgrimage_zone", "enter_pilgrimage_zone"));
+        ups add_adj_room(basilica, false, array("enter_pilgrimage_zone"));
+    }
 
     level cloak_spawns_initialize();
     level cloak_nodes_initialize();
@@ -210,12 +278,16 @@ function cloak_shadow_death_watch(gen_saved_notify)
     }
 }
 
-function cloak_path_logic(gen_struct, gen_num, path)
+function cloak_path_logic(gen_struct, gen_num, gen_room_name, path)
 {
     self endon("death");
 
     foreach(cloak_room in path)
     {
+        if(IS_EQUAL(cloak_room.name, gen_room_name))
+        {
+            break;
+        }
         debug_str = "Moving to " + cloak_room.name;
         /# PrintLn(debug_str); #/
         cloak_node = level.cloak_nodes[cloak_room.name];
@@ -227,11 +299,6 @@ function cloak_path_logic(gen_struct, gen_num, path)
             wait(0.05);
         } 
         while(! self IsInGoal(self.origin));
-
-        if(IS_EQUAL(level.cloak_quick_attack_check[cloak_room.name], gen_num))
-        {
-            break;
-        }
     }
 
     debug_str = "Moving to Generator " + gen_num;
@@ -374,7 +441,7 @@ function cloak_spawn_logic(gen_struct, gen_num)
     cloak = level zm_ai_shadowpeople::cloak_spawn(gen_struct, path_info.spawn_point);
     cloak.gen_num = gen_num;
     cloak.player = path_info.player;
-    cloak cloak_path_logic(gen_struct, gen_num, path_info.path);
+    cloak cloak_path_logic(gen_struct, gen_num, gen_cloak_room.name, path_info.path);
 }
 
 // self = player
@@ -420,16 +487,22 @@ function cloak_spawn_logic_player(gen_cloak_room, gen_num, &main_paths, &low_odd
 
 function quick_attack_check(room_name, gen_num, &connected_flags, &main_paths, &fallback_paths)
 {
-    if(IS_EQUAL(level.cloak_quick_attack_check[room_name], gen_num) && level flag::get(connected_flags[room_name]))
+    if(IS_EQUAL(level.cloak_quick_attack_check[room_name], gen_num) && level cloak_room_connected(room_name, connected_flags))
     {
         spawn_points = level.cloak_quick_attack_spawns[room_name];
         spawn_points = level array::randomize(spawn_points);
         chosen_spawn_point = undefined;
+        should_break = false;
         foreach(spawn_point in spawn_points)
         {
-            if(level flag::get(connected_flags[spawn_point.room_name]))
+            if(level cloak_room_connected(spawn_point.room_name, connected_flags))
             {
                 chosen_spawn_point = spawn_point;
+                should_break = true;
+                break;
+            }
+            if(should_break)
+            {
                 break;
             }
         }
@@ -717,7 +790,7 @@ function is_path_open(&path)
     prev_room = undefined;
     foreach(room in path)
     {
-        if(isdefined(prev_room) && ! level flag::get(room.connected_flags[prev_room.name]))
+        if(isdefined(prev_room) && ! level cloak_room_connected(prev_room.name, room.connected_flags))
         {
             return false;
         }
@@ -758,6 +831,10 @@ function find_path(dest_cloak_room, path_dir)
     while(! cur_cloak_room cloak_room_equal(dest_cloak_room))
     {
         if(dest_cloak_room.name == "Staminarch") // Special Case
+        {
+            cur_cloak_room = cur_cloak_room path_step(path_dir, PATH_DIR_BACKWARD);
+        }
+        else if(dest_cloak_room.name == "Centre" && ! level array::contains(level.centre_exception_cloak_rooms, cur_cloak_room.name))
         {
             cur_cloak_room = cur_cloak_room path_step(path_dir, PATH_DIR_BACKWARD);
         }
@@ -886,6 +963,16 @@ function get_ent_cloak_room(ignore_enabled_check=false)
         if(self zm_room_manager::is_player_in_room(level.abbey_rooms[room_name], ignore_enabled_check))
         {
             return level.cloak_rooms[room_name];
+        }
+        if(level array::contains(GetArrayKeys(level.cloak_room_subs), room_name))
+        {
+            foreach(sub_name in level.cloak_room_subs[room_name])
+            {
+                if(self zm_room_manager::is_player_in_room(level.abbey_rooms[sub_name], ignore_enabled_check))
+                {
+                    return level.cloak_rooms[room_name];
+                }
+            }
         }
     }
 

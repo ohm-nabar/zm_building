@@ -384,7 +384,7 @@ function end_shadow_round()
 	level.in_shadow_spawn_sequence = false;
 	level.no_powerups = false;
 	
-	level.dog_round_count = Min(level.dog_round_count + 1, 3);
+	level.dog_round_count = Int(Min(level.dog_round_count + 1, 3));
 	level.zombie_ai_limit = 24;
 
 	wait(1.4);
