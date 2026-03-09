@@ -98,6 +98,7 @@ function main()
 	LuiLoad( "ui.uieditor.widgets.hud.zm_ammowidget.zmammo_equipcontainer_abbey" );
 	LuiLoad( "ui.uieditor.widgets.hud.zm_ammowidget.zmammo_equiptac_abbey" );
 	LuiLoad( "ui.uieditor.widgets.hud.zm_ammowidget.zmammo_dpadiconbgm_abbey" );
+	LuiLoad( "ui.uieditor.widgets.hud.zm_ammowidget.zmammo_dpadammonumbers_abbey" );
 	LuiLoad( "ui.uieditor.widgets.hud.zm_score.zmscr_abbey" );
 	LuiLoad( "ui.uieditor.widgets.hud.zm_score.zmscr_listinglg_abbey" );
 	LuiLoad( "ui.uieditor.widgets.hud.zm_score.zmscr_listingsm_abbey" );

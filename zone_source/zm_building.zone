@@ -371,6 +371,7 @@ rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_total_abbey.lua
 rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_equipcontainer_abbey.lua
 rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_equiptac_abbey.lua
 rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_dpadiconbgm_abbey.lua
+rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_dpadammonumbers_abbey.lua
 
 // Base Notifications
 rawfile,ui/uieditor/widgets/hud/zm_notiffactory/zmnotif1factory_abbey.lua

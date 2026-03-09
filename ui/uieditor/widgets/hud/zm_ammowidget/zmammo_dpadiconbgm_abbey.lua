@@ -42,6 +42,24 @@ CoD.ZmAmmo_DpadIconBgm.new = function ( menu, controller )
 	IconImgBgmActive:setImage( RegisterImage( "uie_t7_zm_hud_ammo_dpadicnbblgm_new" ) )
 	self:addElement( IconImgBgmActive )
 	self.IconImgBgmActive = IconImgBgmActive
+
+	local function IconDpadAvailable(ModelRef)
+		local NotifyData = Engine.GetModelValue(ModelRef)
+        if NotifyData then
+            if NotifyData == 0 then
+				IconImgBgmBaseInvalid:setRGB(0.5, 0.5, 0.5)
+				IconImgBgmBaseNew:setRGB(0.5, 0.5, 0.5)
+                IconImgBgmDisabled:setRGB(0.5, 0.5, 0.5)
+				IconImgBgmActive:setRGB(0.5, 0.5, 0.5)
+			else
+				IconImgBgmBaseInvalid:setRGB(1, 1, 1)
+				IconImgBgmBaseNew:setRGB(1, 1, 1)
+                IconImgBgmDisabled:setRGB(1, 1, 1)
+				IconImgBgmActive:setRGB(1, 1, 1)
+            end
+        end
+    end
+	IconImgBgmActive:subscribeToModel(Engine.GetModel(Engine.GetModelForController(InstanceRef), "abbeyDpadAvailable"), IconDpadAvailable)
 	
 	local GlowOrangeOver = LUI.UIImage.new()
 	GlowOrangeOver:setLeftRight( false, false, -14.25, 10.25 )
