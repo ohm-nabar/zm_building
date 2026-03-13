@@ -1,4 +1,4 @@
-﻿VERSION				"1"
+VERSION				"1"
 CONFIG					"C:\projects\cod\t7\bin\StringEd.cfg"
 FILENOTES				""
 
@@ -231,112 +231,148 @@ REFERENCE           	TRIAL_BRIBE_PICKUP_MAX
 LANG_ENGLISHARABIC       "Cannot hold more Bribes"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS0
-LANG_ENGLISHARABIC       "^1Judge Aramis^7: â€œHi, Iâ€™m Judge Aramis, but you can just call me Aramis!\nI see a lot of potential in you!â€"
+LANG_ENGLISHARABIC       "^1Judge Aramis^7: “Hi, I’m Judge Aramis, but you can just call me Aramis!\nI see a lot of potential in you!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS1
-LANG_ENGLISHARABIC       "^1Aramis^7: â€œYouâ€™re already off to a hot start!â€"
+LANG_ENGLISHARABIC       "^1Aramis^7: “You’re already off to a hot start!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS2
-LANG_ENGLISHARABIC       "^1Aramis^7: â€œNice work!â€"
+LANG_ENGLISHARABIC       "^1Aramis^7: “Nice work!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS3
-LANG_ENGLISHARABIC       "^1Aramis^7: â€œYo! Champ in the making! Sorry, I hope that wasnâ€™t weird...â€"
+LANG_ENGLISHARABIC       "^1Aramis^7: “Yo! Champ in the making! Sorry, I hope that wasn’t weird...”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS4
-LANG_ENGLISHARABIC       "^1Aramis^7: â€œWowzers!! I knew you were something special!â€"
+LANG_ENGLISHARABIC       "^1Aramis^7: “Wowzers!! I knew you were something special!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS10
+LANG_ENGLISHARABIC       "^1Aramis^7: “I can’t believe what I’m watching! This is like a top class motion picture!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS15
+LANG_ENGLISHARABIC       "^1Aramis^7: “I’m going to write an ode to your greatness!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ARAMIS25
+LANG_ENGLISHARABIC       "^1Aramis^7: “Oh my, you made it to Round 115!! That’s my favorite number!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE1
-LANG_ENGLISHARABIC       "^1Aramis^7: â€œThanks for the gold! Hope you enjoy what I gave you!â€"
+LANG_ENGLISHARABIC       "^1Aramis^7: “Thanks for the gold! Hope you enjoy what I gave you!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE2
-LANG_ENGLISHARABIC       "^1Aramis^7: â€œMore gold, nice!â€"
+LANG_ENGLISHARABIC       "^1Aramis^7: “More gold, nice!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE3
-LANG_ENGLISHARABIC       "^1Aramis^7: â€œAww, arenâ€™t you sweet?â€"
+LANG_ENGLISHARABIC       "^1Aramis^7: “Aww, aren’t you sweet?”"
 
 REFERENCE           	TRIAL_DIALOGUE_ARAMIS_BRIBE4
-LANG_ENGLISHARABIC       "^1Aramis^7: â€œWhat a generous soul you are!â€"
+LANG_ENGLISHARABIC       "^1Aramis^7: “What a generous soul you are!”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS0
-LANG_ENGLISHARABIC       "^3Judge Porthos^7: â€œAre you willing to do what it takes to be a true marksman?â€"
+LANG_ENGLISHARABIC       "^3Judge Porthos^7: “Are you willing to do what it takes to be a true marksman?”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS1
-LANG_ENGLISHARABIC       "^3Judge Porthos^7: â€œThis is just the beginning.\nYou have yet much ground to travel on your sharpshooting journey.â€"
+LANG_ENGLISHARABIC       "^3Judge Porthos^7: “This is just the beginning.\nYou have yet much ground to travel on your sharpshooting journey.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS2
-LANG_ENGLISHARABIC       "^3Judge Porthos^7: â€œIf you are to proceed along the path of a deadshot,\ndaiquiri doubles as an effective aiming partner.â€"
+LANG_ENGLISHARABIC       "^3Judge Porthos^7: “If you are to proceed along the path of a deadshot,\ndaiquiri doubles as an effective aiming partner.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS3
-LANG_ENGLISHARABIC       "^3Judge Porthos^7: â€œIt seems you have taken well to the craft of precision.â€"
+LANG_ENGLISHARABIC       "^3Judge Porthos^7: “It seems you have taken well to the craft of precision.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS4
-LANG_ENGLISHARABIC       "^3Judge Porthos^7: â€œAt last, you have attained the rank of a true marksman!â€"
+LANG_ENGLISHARABIC       "^3Judge Porthos^7: “At last, you have attained the rank of a true marksman!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS10
+LANG_ENGLISHARABIC       "^3Judge Porthos^7: “Wonderful work! I’ll be extending you an invite to my rifle club shortly.”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS15
+LANG_ENGLISHARABIC       "^3Judge Porthos^7: “You’re cementing your place in the history books!”"
+
+REFERENCE           	TRIAL_DIALOGUE_PORTHOS25
+LANG_ENGLISHARABIC       "^3Judge Porthos^7: “It is my pleasure to crown you as the greatest marksman of all time!”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE1
-LANG_ENGLISHARABIC       "^3Judge Porthos^7: â€œHmmph. A real marksman would never take shortcuts.â€"
+LANG_ENGLISHARABIC       "^3Judge Porthos^7: “Hmmph. A real marksman would never take shortcuts.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE2
-LANG_ENGLISHARABIC       "^3Judge Porthos^7: â€œIs this any way for a sharpshooter to conduct themselves?â€"
+LANG_ENGLISHARABIC       "^3Judge Porthos^7: “Is this any way for a sharpshooter to conduct themselves?”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE3
-LANG_ENGLISHARABIC       "^3Judge Porthos^7: â€œEntirely undignified.â€"
+LANG_ENGLISHARABIC       "^3Judge Porthos^7: “Entirely undignified.”"
 
 REFERENCE           	TRIAL_DIALOGUE_PORTHOS_BRIBE4
-LANG_ENGLISHARABIC       "^3Judge Porthos^7: â€œI donâ€™t even know what to say at this point.â€"
+LANG_ENGLISHARABIC       "^3Judge Porthos^7: “I don’t even know what to say at this point.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART0
-LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: â€œLook at you, so innocent and pureâ€¦ that must change.\nGet your hands dirty!â€"
+LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: “Look at you, so innocent and pure… that must change.\nGet your hands dirty!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART1
-LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: â€œGoodâ€¦ goodâ€¦ do not hesitate to delve further\ninto the blood of your enemies.â€"
+LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: “Good… good… do not hesitate to delve further\ninto the blood of your enemies.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART2
-LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: â€œMore! More! More bloodshed!â€"
+LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: “More! More! More bloodshed!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART3
-LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: â€œSWISH SWHOOSH STAB! STAB STAB STAB!â€"
+LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: “SWISH SWHOOSH STAB! STAB STAB STAB!”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART4
-LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: â€œThe scent of your vanquished foes is just... so... intoxicating!\nBWAHAHAHA!â€"
+LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: “The scent of your vanquished foes is just... so... intoxicating!\nBWAHAHAHA!”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART10
+LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: “Isn’t total annihilation simply beautiful?”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART15
+LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: “Your brutality rivals that of The Doctor! Oh, you've never heard of him?”"
+
+REFERENCE           	TRIAL_DIALOGUE_DART25
+LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: “You know I love your murderous spirit, but maybe you should take a break at this point.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE1
-LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: â€œThis is a little too sterile for me.â€"
+LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: “This is a little too sterile for me.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE2
-LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: â€œThis is so humdrum! You know what I crave.â€"
+LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: “This is so humdrum! You know what I crave.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE3
-LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: â€œIâ€™m just going to tell myself that this is blood money.â€"
+LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: “I’m just going to tell myself that this is blood money.”"
 
 REFERENCE           	TRIAL_DIALOGUE_DART_BRIBE4
-LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: â€œWhose slaughter generated this wealth?\nNo â€” donâ€™t tell me. Itâ€™s more fun to imagine!â€"
+LANG_ENGLISHARABIC       "^2Judge D'Artagnan^7: “Whose slaughter generated this wealth?\nNo — don’t tell me. It’s more fun to imagine!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS0
-LANG_ENGLISHARABIC       "^8Judge Athos^7: â€œPathetic creature! You are most certainly not worthy of anything!â€"
+LANG_ENGLISHARABIC       "^8Judge Athos^7: “Pathetic creature! You are most certainly not worthy of anything!”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS1
-LANG_ENGLISHARABIC       "^8Judge Athos^7: â€œI suppose you think youâ€™re some hotshot now.\nNo. You. Are. Nothing.â€"
+LANG_ENGLISHARABIC       "^8Judge Athos^7: “I suppose you think you’re some hotshot now.\nNo. You. Are. Nothing.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS2
-LANG_ENGLISHARABIC       "^8Judge Athos^7: â€œI suppose you think youâ€™re some hotshot now. No. You. Are. Nothing.â€"
+LANG_ENGLISHARABIC       "^8Judge Athos^7: “I suppose you think you’re some hotshot now. No. You. Are. Nothing.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS3
-LANG_ENGLISHARABIC       "^8Judge Athos^7: â€œI guess youâ€™ve managed to luck your way this far.\nTake your reward and get out of my sight.â€"
+LANG_ENGLISHARABIC       "^8Judge Athos^7: “I guess you’ve managed to luck your way this far.\nTake your reward and get out of my sight.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS4
-LANG_ENGLISHARABIC       "^8Judge Athos^7: â€œUgh, fine, I guess I maybe sort of misjudged you...â€"
+LANG_ENGLISHARABIC       "^8Judge Athos^7: “Ugh, fine, I guess I maybe sort of misjudged you...”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS10
+LANG_ENGLISHARABIC       "^8Judge Athos^7: “Go ahead, rub it in.”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS15
+LANG_ENGLISHARABIC       "^8Judge Athos^7: “Enough already!”"
+
+REFERENCE           	TRIAL_DIALOGUE_ATHOS25
+LANG_ENGLISHARABIC       "^8Judge Athos^7: “I don’t have anything more to say. I hope you’re pleased with yourself.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE1
-LANG_ENGLISHARABIC       "^8Judge Athos^7: â€œI feel dirty accepting anything from you.â€"
+LANG_ENGLISHARABIC       "^8Judge Athos^7: “I feel dirty accepting anything from you.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE2
-LANG_ENGLISHARABIC       "^8Judge Athos^7: â€œI suppose youâ€™ve lived a comfortable life, havenâ€™t you?\nExplains your weak character.â€"
+LANG_ENGLISHARABIC       "^8Judge Athos^7: “I suppose you’ve lived a comfortable life, haven’t you?\nExplains your weak character.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE3
-LANG_ENGLISHARABIC       "^8Judge Athos^7: â€œIâ€™ll have you know this is illegal.\nWhen the authorities return, Iâ€™ll be reporting you.â€"
+LANG_ENGLISHARABIC       "^8Judge Athos^7: “I’ll have you know this is illegal.\nWhen the authorities return, I’ll be reporting you.”"
 
 REFERENCE           	TRIAL_DIALOGUE_ATHOS_BRIBE4
-LANG_ENGLISHARABIC       "^8Judge Athos^7: â€œCan I bribe you to never come back?â€"
+LANG_ENGLISHARABIC       "^8Judge Athos^7: “Can I bribe you to never come back?”"
 
 REFERENCE           	TRIAL_RANDOM_GUM
 LANG_ENGLISHARABIC       "Mystery GargoyleGum"

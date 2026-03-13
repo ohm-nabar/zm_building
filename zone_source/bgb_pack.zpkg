@@ -131,6 +131,10 @@ scriptparsetree,scripts/zm/bgbs/_zm_bgb_aftertaste_blood.gsc
 scriptparsetree,scripts/zm/bgbs/_zm_bgb_aftertaste_blood.csc
 scriptparsetree,scripts/zm/bgbs/_zm_bgb_challenge_rejected.gsc
 scriptparsetree,scripts/zm/bgbs/_zm_bgb_challenge_rejected.csc
+scriptparsetree,scripts/zm/_zm_weap_riotshield.csc
+scriptparsetree,scripts/zm/_zm_weap_riotshield.gsc
+scriptparsetree,scripts/zm/_load.csc
+scriptparsetree,scripts/zm/_load.gsc
 
 image,t7_hud_zm_bgb_alchemical_antithesis
 image,t7_hud_zm_bgb_cache_back
@@ -174,6 +178,7 @@ localize,zmui
 rawfile,ui/uieditor/widgets/mphudwidgets/cursorhint_image_fix.lua
 rawfile,ui/uieditor/widgets/hud/zm_cursorhint/zmcursorhint_fix.lua
 rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_bbgummeterwidget_fix.lua
+rawfile,ui/uieditor/widgets/hud/gargoyle_dialogue.lua
 
 image,i_mtl_p7_zm_bgb_mega_g
 image,i_mtl_p7_zm_bgb_mega_blue_c
