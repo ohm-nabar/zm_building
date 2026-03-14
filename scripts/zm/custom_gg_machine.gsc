@@ -25,8 +25,9 @@
 #define BRIBE_MAX_PLAYER 3
 #define BRIBE_WAIT 3
 #define BRIBE_OFFSET 3.25
-#define GARGOYLE_PROXIMITY_SQ 4225
 
+#define GARGOYLE_PROXIMITY_SQ 4225
+#define SMALLEST_GUMBALL_DOT 0.5
 #define EATEN_CF_NEUTRAL 0
 
 #precache( "model", "gumball_blue");
@@ -193,6 +194,21 @@ function judge_display_ball_think(garg_num)
 	}
 }
 
+function get_smallest_gumball(garg_num)
+{
+	self endon("disconnect");
+
+	foreach(gumball in level.judge_gumballs[garg_num])
+	{
+		if(self zm_utility::is_player_looking_at(gumball.origin, SMALLEST_GUMBALL_DOT, true))
+		{
+			return gumball;
+		}
+	}
+
+	return ArrayGetClosest(self.origin, level.judge_gumballs[garg_num]);
+}
+
 function display_ball_move(garg_num, player)
 {
 	player endon("disconnect");
@@ -202,7 +218,7 @@ function display_ball_move(garg_num, player)
 	{
 		if(level zm_utility::is_player_valid(player))
 		{
-			smallest_gumball = ArrayGetClosest(player.origin, level.judge_gumballs[garg_num]);
+			smallest_gumball = player get_smallest_gumball(garg_num);
 			if(! isdefined(prev_smallest_gumball) || smallest_gumball != prev_smallest_gumball)
 			{
 				if(isdefined(smallest_gumball))
@@ -289,7 +305,7 @@ function judge_think()
 		gum = player.gargoyle_gums[garg_num][index];
 		gg_available = player.gg_available[gum];
 		bribe_cost = zm_bgb_custom_util::gg_bribe_cost(gum);
-		if(! (zm_utility::is_player_valid(player)) || ! zm_perks::vending_trigger_can_player_use(player) || (! gg_available && player.bribe_count < bribe_cost) || (player.current_gargoyle != garg_num))
+		if(! (level zm_utility::is_player_valid(player)) || ! level zm_perks::vending_trigger_can_player_use(player) || (! gg_available && player.bribe_count < bribe_cost) || (player.current_gargoyle != garg_num))
 		{
 			wait(0.05);
 			continue;
