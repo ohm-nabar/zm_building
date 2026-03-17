@@ -266,19 +266,16 @@ function teleport_pad_countdown()
 	// ran out of time to activate teleporter
 	level.teleport[self.index] = "timer_off";
 	should_end_timer = true;
-	IPrintLn("timer off");
 	for(i = 0; i < level.teleport.size; i++)
 	{
 		if(level.teleport[i] == "timer_on")
 		{
-			IPrintLn("timer " + i + " still on");
 			should_end_timer = false;
 			break;
 		}
 	}
 	if(should_end_timer)
 	{
-		IPrintLn("timer (totally) off");
 		level.current_links = 0;
 		level util::clientNotify( "TRs" );	// Stop flashing the receiver map light
 	}
