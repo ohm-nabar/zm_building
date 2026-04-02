@@ -1454,7 +1454,7 @@ function escargot_death_notify()
 
 	level notify("escargot_killed", self.origin);
 
-	if(!level.trident_shell_activated && self zm_room_manager::is_player_in_room(level.abbey_rooms[level.trident_init_room]))
+	if(level.trident_shell_ready && !level.trident_shell_activated && self zm_room_manager::is_player_in_room(level.abbey_rooms[level.trident_init_room]))
 	{
 		level.trident_shell_activated = true;
 	}

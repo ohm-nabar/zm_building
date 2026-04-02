@@ -24,6 +24,7 @@ function __init__()
 	level clientfield::register( "actor", "trident_ring", VERSION_SHIP, 1, "int", &trident_ring, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 	level clientfield::register( "scriptmover", "trident_whirlpool", VERSION_SHIP, 1, "int", &trident_whirlpool, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 	level clientfield::register( "clientuimodel", "tridentClip", VERSION_SHIP, 1, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
+	level clientfield::register( "clientuimodel", "artifactCount", VERSION_SHIP, 1, "int", undefined, !CF_HOST_ONLY, !CF_CALLBACK_ZERO_ON_NEW_ENT );
 }
 
 function trident_linger( localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fieldName, bWasTimeJump )//self = zombie

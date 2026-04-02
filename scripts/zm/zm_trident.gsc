@@ -14,6 +14,7 @@
 #using scripts\zm\_zm_bgb;
 #using scripts\zm\_zm_equipment;
 #using scripts\zm\_zm_magicbox;
+#using scripts\zm\_zm_unitrigger;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weap_thundergun;
 #using scripts\zm\_zm_weapons;
@@ -64,6 +65,7 @@ function __init__()
 	level clientfield::register( "actor", "trident_ring", VERSION_SHIP, 1, "int");
 	level clientfield::register( "scriptmover", "trident_whirlpool", VERSION_SHIP, 1, "int");
 	level clientfield::register( "clientuimodel", "tridentClip", VERSION_SHIP, 1, "int");
+	level clientfield::register( "clientuimodel", "artifactCount", VERSION_SHIP, 1, "int");
 
     level.abbey_trident = GetWeapon("zm_trident");
     level.abbey_pitchfork = GetWeapon("zm_pitchfork");
@@ -75,6 +77,7 @@ function __init__()
 
     level.pack_a_punch.custom_validation = &pitchfork_pack_block;
 
+	level.trident_shell_ready = false;
     level.trident_shell_activated = false;
 	level.trident_init_room = "Merveille de Verite";
 	if(GetDvarString("ui_mapname") == "zm_building")
@@ -91,10 +94,10 @@ function __init__()
 
 function __main__()
 {
-	statue_trig_init = struct::get("poseidon_statue_trigger_init", "targetname");
+	statue_trig_init = level struct::get("poseidon_statue_trigger_init", "targetname");
     statue_trig_init thread upgrade_quest_init_think();
 
-    statue_trig = struct::get("poseidon_statue_trigger", "targetname");
+    statue_trig = level struct::get("poseidon_statue_trigger", "targetname");
     statue_trig thread upgrade_quest_think();
 }
 
@@ -481,7 +484,7 @@ function statue_prompt_and_visibility(player)
 function upgrade_quest_think()
 {
 	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_TRIDENT_SEEK", undefined, &statue_prompt_and_visibility);
-	weapon_struct = struct::get("poseidon_weapon", "targetname");
+	weapon_struct = level struct::get("poseidon_weapon", "targetname");
 
 	while(true)
 	{
@@ -552,6 +555,12 @@ function upgrade_quest_think()
 	}
 }
 
+function artifact_prompt_and_visibility(player)
+{
+	return (player zm_magicbox::can_buy_weapon());
+}
+
+
 function statue_init_prompt_and_visibility(player)
 {
 	if(! (level.pitchfork_available && player zm_magicbox::can_buy_weapon()))
@@ -568,9 +577,39 @@ function statue_init_prompt_and_visibility(player)
 
 function upgrade_quest_init_think()
 {
-	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_EMPTY", undefined, &statue_init_prompt_and_visibility);
-	weapon_struct = struct::get("poseidon_weapon_init", "targetname");
+	artifact_struct = level struct::get("trident_artifact", "targetname");
+	artifact_struct zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_EMPTY", undefined, &artifact_prompt_and_visibility);
 
+	artifact_model = Spawn("script_model", artifact_struct.origin);
+	artifact_model.angles = artifact_struct.angles;
+	artifact_model SetModel("zombietron_gold_bricks");
+
+	artifact_struct waittill("trigger_activated", player);
+	artifact_model Delete();
+	level zm_unitrigger::unregister_unitrigger(artifact_struct.s_unitrigger);
+	player PlaySound("zmb_buildable_pickup");
+	foreach(player in level.players)
+	{
+		player clientfield::set_player_uimodel("artifactCount", 1);
+	}
+
+	artifact_struct_statue = level struct::get("trident_artifact_statue", "targetname");
+	artifact_struct_statue zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_EMPTY", undefined, &artifact_prompt_and_visibility);
+
+	artifact_struct_statue waittill("trigger_activated", player);
+	artifact_model_statue = Spawn("script_model", artifact_struct_statue.origin);
+	artifact_model_statue.angles = artifact_struct_statue.angles;
+	artifact_model_statue SetModel("zombietron_gold_bricks");
+	level zm_unitrigger::unregister_unitrigger(artifact_struct_statue.s_unitrigger);
+	level.trident_shell_ready = true;
+	foreach(player in level.players)
+	{
+		player clientfield::set_player_uimodel("artifactCount", 0);
+	}
+	
+	self zm_sphynx_util::create_unitrigger_for_player_specific(&"ZM_ABBEY_EMPTY", undefined, &statue_init_prompt_and_visibility);
+	weapon_struct = level struct::get("poseidon_weapon_init", "targetname");
+	
 	while(! level.trident_shell_activated)
 	{
 		wait(0.05);
@@ -586,8 +625,9 @@ function upgrade_quest_init_think()
 
 	self waittill("trigger_activated", player);
 	player zm_weapons::weapon_give(level.abbey_pitchfork);
-	weapon Delete();
 	level.pitchfork_available = false;
+	level zm_unitrigger::unregister_unitrigger(self.s_unitrigger);
+	weapon Delete();
 }
 
 function soul_fx(origin)
