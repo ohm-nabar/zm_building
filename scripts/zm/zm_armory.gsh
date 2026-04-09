@@ -17,6 +17,15 @@
 
 #define NUM_ARMORY_STATIONS 5
 
+#define ARMORY_DOOR_RIGHT "right"
+#define ARMORY_DOOR_LEFT "left"
+#define ARMORY_DOOR_ROTATE_ANGLE 135
+#define ARMORY_DOOR_ROTATE_TIME 0.75
+
+#define PANZERWURFMINE_MODEL "isaypwn_pwurfmine_view_01"
+#define PANZERWURFMINE_UPGRADE_MODEL "zombietron_gold_bricks"
+#define CROSSBOW_UPGRADE_MODEL "npc_gen_crossbow_epic"
+
 #define NUM_TARGETS 3
 #define TARGET_WAIT 4
 #define PUZZLE_FAIL_WAIT 1.5
