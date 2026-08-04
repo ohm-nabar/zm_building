@@ -38,7 +38,7 @@ function __init__()
 	{
 		return;
 	}
-	bgb::register("zm_bgb_alchemical_antithesis", "activated", 2, undefined, undefined, &validation, &activation);
+	bgb::register("zm_bgb_alchemical_antithesis", "activated", 1, undefined, undefined, &validation, &activation);
 	bgb::function_336ffc4e("zm_bgb_alchemical_antithesis");
 	bgb::function_ff4b2998("zm_bgb_alchemical_antithesis", &add_to_player_score_override, 0);
 }
