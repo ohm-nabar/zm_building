@@ -102,6 +102,7 @@ function take_starting_gun()
 	pistol_stock = 0;
 	failsafe_start_time = undefined;
 	pap_triggers = zm_pap_util::get_triggers();
+	statue_trig = level struct::get("poseidon_statue_trigger", "targetname");
 
 	while(true)
 	{
@@ -126,6 +127,11 @@ function take_starting_gun()
 			{
 				gun_in_pap = true;
 			}
+		}
+
+		if(IS_EQUAL(statue_trig.upgrading_player, self))
+		{
+			gun_in_pap = true;
 		}
 
 		weapons = self GetWeaponsListPrimaries();
