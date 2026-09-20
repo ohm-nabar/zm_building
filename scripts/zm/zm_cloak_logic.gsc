@@ -319,6 +319,7 @@ function cloak_path_logic(gen_struct, gen_num, gen_room_name, path)
     self PlayLoopSound("shadow_ritual");
     self clientfield::set("cloak_shadowing", 1);
     self AnimScripted("cloak_conjuring", self.origin, self.angles, "cloak_conjuring");
+    level notify("generator" + gen_num + "_attacked");
     
     foreach(player in level.players)
     {

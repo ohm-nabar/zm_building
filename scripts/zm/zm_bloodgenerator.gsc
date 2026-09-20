@@ -6,6 +6,7 @@
 #using scripts\shared\flag_shared;
 #using scripts\shared\laststand_shared;
 #using scripts\shared\music_shared;
+#using scripts\shared\scene_shared;
 #using scripts\shared\system_shared;
 #using scripts\shared\util_shared;
 #using scripts\shared\visionset_mgr_shared;
@@ -94,6 +95,7 @@
 #precache( "model", "zm_abbey_bg_kill" );
 #precache( "model", "zm_abbey_bg_cooldown" );
 #precache( "model", "zm_abbey_bg_shadow" );
+#precache( "model", "isaypwn_bgen_vat_console_meter_01_on" );
 
 #define ELECTRIC_CHERRY_MACHINE_LIGHT_FX                    "electric_cherry_light"
 #define BLOODGUN_COST_START 500
@@ -165,6 +167,8 @@ function __init__()
 	blood_wires_off = GetEntArray("blood_wire_off", "targetname");
 	blood_wires_on = GetEntArray("blood_wire_on", "targetname");
 
+	blood_pumps = GetEntArray("blood_pump", "targetname");
+
 	level array::thread_all(blood_mainframes, &blood_mainframe_think);
 	level array::thread_all(blood_mainframe2s, &blood_mainframe2_think);
 	level array::thread_all(blood_computers, &blood_computer_think);
@@ -175,12 +179,13 @@ function __init__()
 	level array::thread_all(blood_wires_off, &blood_wire_off_think);
 	level array::thread_all(blood_wires_on, &blood_wire_on_think);
 
+	level array::thread_all(blood_pumps, &blood_pump_think);
+
 	level thread acquire_waypoint_manage();
 	level thread perk_set_fx();
 
 	zm::register_zombie_damage_override_callback( &zombie_damage_override );
 }
-
 function zombie_damage_override(willBeKilled, inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType)
 {
 	if ( isPlayer( attacker ) && willBeKilled && isdefined(attacker.bloodgun_kills) && isdefined(weapon) && weapon == GetWeapon("bloodgun") && meansofdeath == "MOD_RIFLE_BULLET" )
@@ -316,6 +321,26 @@ function bloodgun_screen_think()
 			wait(0.05);
 		}
 	}
+}
+
+function blood_pump_think()
+{
+	gen_num = self.script_int;
+	level waittill("power_on" + gen_num);
+	self thread scene::play("bgen_pump_loop", array(self));
+	if(IS_EQUAL(self.script_noteworthy, "perk"))
+	{
+		return;
+	}
+	wait(0.5);
+	level exploder::exploder("blood_wire_light" + gen_num);
+	blood_meters = GetEntArray("blood_meter" + gen_num, "targetname");
+	foreach(blood_meter in blood_meters)
+	{
+		blood_meter SetModel("isaypwn_bgen_vat_console_meter_01_on");
+	}
+	wait(1);
+	level exploder::exploder("blood_light" + gen_num);
 }
 
 function perk_set_fx()
