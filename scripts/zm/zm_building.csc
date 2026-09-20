@@ -83,11 +83,15 @@
 // CSC FX
 #using scripts\zm\zm_csc_fx;
 
+// Kyle HUD
+#using scripts\zm\_zm_t5_hud;
+
 #precache( "client_fx", "custom/magic_box_og/fx_weapon_box_open_glow_og" );
 #precache( "client_fx", "custom/magic_box_og/fx_weapon_box_marker_fl_og" );
 
 function main()
 {
+	/*
 	LuiLoad( "ui.uieditor.menus.hud.t7hud_zm_custom" );
 	LuiLoad( "ui.uieditor.widgets.hud.zm_ammowidget.zmammo_abbey" );
 	LuiLoad( "ui.uieditor.widgets.hud.zm_ammowidget.zmammo_attachmentinfo_abbey" );
@@ -111,13 +115,12 @@ function main()
 	LuiLoad( "ui.uieditor.widgets.scoreboard.cp.scoreboardheaderwidgetcp_abbey" );
 	LuiLoad( "ui.uieditor.widgets.scoreboard.scoreboardpingheader_abbey" );
 	LuiLoad( "ui.uieditor.widgets.scoreboard.scoreboardrowwidget_abbey" );
+	LuiLoad( "ui_mp.t6.zombie.hudpowerupszombie_abbey" );
+	*/
+	//LuiLoad( "ui.uieditor.widgets.hud.zm_ammowidget.zmammo_dpadiconbgm_abbey" );
 	LuiLoad( "ui.uieditor.widgets.hud.zm_ammowidget.zmammo_bbgummeterwidget_fix" );
 	LuiLoad( "ui.uieditor.widgets.mphudwidgets.cursorhint_image_fix" );
 	LuiLoad( "ui.uieditor.widgets.hud.zm_cursorhint.zmcursorhint_fix" );
-	LuiLoad( "ui_mp.t6.zombie.hudpowerupszombie_abbey" );
-
-	//LuiLoad( "ui.uieditor.widgets.hud.zm_perks.LogicalZMPerksContainerFactory" );
-	//LuiLoad( "ui.uieditor.widgets.hud.zm_perks.LogicalZMPerkListItemFactory" );
 
 	level._effect["chest_light"] = "custom/magic_box_og/fx_weapon_box_open_glow_og";
 	level._effect["chest_light_closed"] = "custom/magic_box_og/fx_weapon_box_marker_fl_og"; 

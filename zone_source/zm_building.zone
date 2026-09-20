@@ -280,7 +280,7 @@ image,tombstone_2
 image,tombstone_3
 
 
-rawfile,ui/uieditor/menus/hud/t7hud_zm_custom.lua
+//rawfile,ui/uieditor/menus/hud/t7hud_zm_custom.lua
 rawfile,ui/uieditor/menus/hud/inventory_control.lua
 rawfile,ui/uieditor/menus/hud/challenge_control.lua
 rawfile,ui/uieditor/menus/hud/trial_control.lua
@@ -292,15 +292,13 @@ rawfile,ui/uieditor/widgets/hud/room_manager.lua
 rawfile,ui/uieditor/widgets/hud/shadow_perks.lua
 //rawfile,ui/uieditor/widgets/hud/blood_vial.lua
 rawfile,ui/UIModelUtils.lua
+rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_dpadiconbgm_abbey.lua
+rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_equiptac_abbey.lua
 image,scroll_bg
 
 // T7 Overcharged
 rawfile,ui/util/T7Overcharged.lua
 rawfile,ui/util/T7OverchargedUtil.lua
-
-// Perks
-rawfile,ui/uieditor/widgets/hud/zm_perks/rewrite/ZMPerksContainerFactory.lua
-rawfile,ui/uieditor/widgets/hud/zm_perks/rewrite/PerkListItemFactory.lua
 
 // SOE HUD Images
 image,uie_t7_zm_hud_ammo_bbgummeterring
@@ -360,62 +358,24 @@ image,uie_t7_zm_hud_rnd_spkseq1
 image,uie_t7_zm_hud_rnd_spk2
 image,uie_t7_zm_hud_rnd_spk2mask
 image,uie_t7_zm_hud_panel_ammo
-
-// Ammo Counter
-rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_abbey.lua
-rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_attachmentinfo_abbey.lua
-rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_prop_abbey.lua
-rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_clipinfo_abbey.lua
-rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_clip_abbey.lua
-rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_total_abbey.lua
-rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_equipcontainer_abbey.lua
-rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_equiptac_abbey.lua
-rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_dpadiconbgm_abbey.lua
-rawfile,ui/uieditor/widgets/hud/zm_ammowidget/zmammo_dpadammonumbers_abbey.lua
-
-// Base Notifications
-rawfile,ui/uieditor/widgets/hud/zm_notiffactory/zmnotif1factory_abbey.lua
-rawfile,ui/uieditor/widgets/hud/zm_notiffactory/zmnotifbgb_containerfactory_abbey.lua
 image,abbey_backdesign
 image,abbey_notif
-
-// BO1 Score
-rawfile,ui/uieditor/widgets/hud/zm_score/zmscr_abbey.lua
-rawfile,ui/uieditor/widgets/hud/zm_score/zmscr_listinglg_abbey.lua
-rawfile,ui/uieditor/widgets/hud/zm_score/zmscr_listingsm_abbey.lua
-rawfile,ui/uieditor/widgets/hud/zm_score/zmscr_pluspointscontainer_abbey.lua
-rawfile,ui/uieditor/widgets/hud/zm_score/zmscr_pluspoints_abbey.lua
 
 image,score_blood1
 image,score_blood2
 image,score_blood3
 image,score_blood4
 
-// BO1 Scoreboard
-rawfile,ui/uieditor/widgets/scoreboard/cp/scoreboardwidgetcp_abbey.lua
-rawfile,ui/uieditor/widgets/scoreboard/cp/scoreboardheaderwidgetcp_abbey.lua
-rawfile,ui/uieditor/widgets/scoreboard/scoreboardpingheader_abbey.lua
-rawfile,ui/uieditor/widgets/scoreboard/scoreboardrowwidget_abbey.lua
-
 image,score_blood1_lg
 image,score_blood2_lg
 image,score_blood3_lg
 image,score_blood4_lg
-
-// BO1 Rounds
-rawfile,ui/uieditor/widgets/hud/RoundStatus.lua
 
 material,bo1_hud_chalk_1
 material,bo1_hud_chalk_2
 material,bo1_hud_chalk_3
 material,bo1_hud_chalk_4
 material,bo1_hud_chalk_5
-
-// BO1 Revive
-scriptparsetree,scripts/zm/zm_revive_icon.gsc
-rawfile,ui/uieditor/widgets/hud/zm_revive/zm_revive_abbey.lua
-rawfile,ui/uieditor/widgets/hud/revive_bar.lua
-material,bo1_revive
 
 rawfile,vision/zm_blood.vision
 
@@ -599,10 +559,6 @@ image,no_hud_0_0
 image,no_hud_0_1
 image,no_hud_1_1
 
-// Datasources
-//rawfile,ui/uieditor/datasources.lua
-//rawfile,ui/uieditor/datasources_og.luac
-
 // Mystery Box
 scriptparsetree,scripts/zm/zm_abbey_box_map.gsc
 scriptparsetree,scripts/zm/zm_abbey_box_map.csc
@@ -727,7 +683,6 @@ scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow.gsc
 scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow_up.gsc
 scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow.csc
 scriptparsetree,scripts/zm/_zm_powerup_weapon_crossbow_up.csc
-rawfile,ui_mp/t6/zombie/hudpowerupszombie_abbey.lua
 weapon,zm_panzerwurfmine
 weapon,zm_panzerwurfmine_up
 weapon,ww2_crossbow_zm
@@ -748,3 +703,10 @@ scriptparsetree,scripts/zm/zm_csc_fx.csc
 
 // Cloak Logic
 scriptparsetree,scripts/zm/zm_cloak_logic.gsc
+
+// Kyle HUD
+include,t5_hud
+
+// Blood Gens (Bahngo)
+scriptbundle,bgen_pump_loop
+xmodel,isaypwn_bgen_vat_console_meter_01_on

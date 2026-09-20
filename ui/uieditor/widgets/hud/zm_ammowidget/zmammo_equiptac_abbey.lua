@@ -1,15 +1,23 @@
-CoD.ZmAmmo_EquipTac = InheritFrom( LUI.UIElement )
-CoD.ZmAmmo_EquipTac.new = function ( menu, controller )
+CoD.ZmAmmo_EquipTacAbbey = InheritFrom( LUI.UIElement )
+CoD.ZmAmmo_EquipTacAbbey.new = function ( menu, controller )
 	local self = LUI.UIElement.new()
 	if PreLoadFunc then
 		PreLoadFunc( self, controller )
 	end
 	self:setUseStencil( false )
-	self:setClass( CoD.ZmAmmo_EquipTac )
-	self.id = "ZmAmmo_EquipTac"
+	self:setClass( CoD.ZmAmmo_EquipTacAbbey )
+	self.id = "ZmAmmo_EquipTacAbbey"
 	self.soundSet = "default"
 	self:setLeftRight( true, false, 0, 37 )
 	self:setTopBottom( true, false, 0, 32 )
+
+	local Tactical0b = LUI.UIImage.new()
+	Tactical0b:setLeftRight( true, false, 13.75, 39.25 )
+	Tactical0b:setTopBottom( true, false, 1, 26.5 )
+	Tactical0b:setRGB( 0, 0, 0 )
+	Tactical0b:setImage( RegisterImage( "uie_t7_zm_hud_inv_icntact" ) )
+	self:addElement( Tactical0b )
+	self.Tactical0b = Tactical0b
 	
 	local Tactical0 = LUI.UIImage.new()
 	Tactical0:setLeftRight( true, false, 13.75, 39.25 )
@@ -69,7 +77,12 @@ CoD.ZmAmmo_EquipTac.new = function ( menu, controller )
 	self.clipsPerState = {
 		DefaultState = {
 			DefaultClip = function ()
-				self:setupElementClipCounter( 7 )
+				self:setupElementClipCounter( 8 )
+				Tactical0b:completeAnimation()
+				self.Tactical0b:setLeftRight( true, false, 14.75, 40.25 )
+				self.Tactical0b:setTopBottom( true, false, 0, 25.5 )
+				self.Tactical0b:setAlpha( 0 )
+				self.clipFinished( Tactical0b, {} )
 				Tactical0:completeAnimation()
 				self.Tactical0:setLeftRight( true, false, 13.75, 39.25 )
 				self.Tactical0:setTopBottom( true, false, 1, 26.5 )
@@ -113,7 +126,12 @@ CoD.ZmAmmo_EquipTac.new = function ( menu, controller )
 		},
 		Single = {
 			DefaultClip = function ()
-				self:setupElementClipCounter( 7 )
+				self:setupElementClipCounter( 8 )
+				Tactical0b:completeAnimation()
+				self.Tactical0b:setLeftRight( true, false, -3, 22.5 )
+				self.Tactical0b:setTopBottom( true, false, 6, 31.5 )
+				self.Tactical0b:setAlpha( 1 )
+				self.clipFinished( Tactical0b, {} )
 				Tactical0:completeAnimation()
 				self.Tactical0:setLeftRight( true, false, -4, 21.5 )
 				self.Tactical0:setTopBottom( true, false, 7, 32.5 )
@@ -157,7 +175,12 @@ CoD.ZmAmmo_EquipTac.new = function ( menu, controller )
 		},
 		Double = {
 			DefaultClip = function ()
-				self:setupElementClipCounter( 7 )
+				self:setupElementClipCounter( 8 )
+				Tactical0b:completeAnimation()
+				self.Tactical0b:setLeftRight( true, false, 2.75, 28.25 )
+				self.Tactical0b:setTopBottom( true, false, 4, 29.5 )
+				self.Tactical0b:setAlpha( 1 )
+				self.clipFinished( Tactical0b, {} )
 				Tactical0:completeAnimation()
 				self.Tactical0:setLeftRight( true, false, 1.75, 27.25 )
 				self.Tactical0:setTopBottom( true, false, 5, 30.5 )
@@ -201,7 +224,12 @@ CoD.ZmAmmo_EquipTac.new = function ( menu, controller )
 		},
 		Triple = {
 			DefaultClip = function ()
-				self:setupElementClipCounter( 7 )
+				self:setupElementClipCounter( 8 )
+				Tactical0b:completeAnimation()
+				self.Tactical0b:setLeftRight( true, false, 8.75, 34.25 )
+				self.Tactical0b:setTopBottom( true, false, 2, 27.5 )
+				self.Tactical0b:setAlpha( 1 )
+				self.clipFinished( Tactical0b, {} )
 				Tactical0:completeAnimation()
 				self.Tactical0:setLeftRight( true, false, 7.75, 33.25 )
 				self.Tactical0:setTopBottom( true, false, 3, 28.5 )
@@ -245,7 +273,12 @@ CoD.ZmAmmo_EquipTac.new = function ( menu, controller )
 		},
 		Quad = {
 			DefaultClip = function ()
-				self:setupElementClipCounter( 7 )
+				self:setupElementClipCounter( 8 )
+				Tactical0b:completeAnimation()
+				self.Tactical0b:setLeftRight( true, false, 14.75, 40.25 )
+				self.Tactical0b:setTopBottom( true, false, 0, 25.5 )
+				self.Tactical0b:setAlpha( 1 )
+				self.clipFinished( Tactical0b, {} )
 				Tactical0:completeAnimation()
 				self.Tactical0:setLeftRight( true, false, 13.75, 39.25 )
 				self.Tactical0:setTopBottom( true, false, 1, 26.5 )

@@ -93,7 +93,6 @@
 #using scripts\zm\zm_abbey_quest;
 #using scripts\zm\zm_trident;
 #using scripts\zm\zm_variable_pricing;
-#using scripts\zm\zm_revive_icon;
 #using scripts\zm\rs_o_jump_pad;
 #using scripts\zm\zm_solo_revive;
 #using scripts\zm\zm_antiverse;
@@ -143,6 +142,9 @@
 // CSC FX
 #using scripts\zm\zm_csc_fx;
 
+// Kyle HUD
+#using scripts\zm\_zm_t5_hud;
+
 #insert scripts\zm\_zm_perks.gsh;
 
 #precache( "fx", "custom/magic_box_og/fx_weapon_box_marker_og" );
@@ -181,7 +183,6 @@ function main()
 	level thread zm_diedrich::main();
 	level thread zm_variable_pricing::main();
 	//level thread zm_abbey_boss::main();
-	level thread zm_revive_icon::main();
 	level thread zm_antiverse::main();
 	level thread zm_abbey_quick_revive::main();
 

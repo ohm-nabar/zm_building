@@ -1,12 +1,12 @@
-CoD.ZmAmmo_DpadIconBgm = InheritFrom( LUI.UIElement )
-CoD.ZmAmmo_DpadIconBgm.new = function ( menu, controller )
+CoD.ZmAmmo_DpadIconBgmAbbey = InheritFrom( LUI.UIElement )
+CoD.ZmAmmo_DpadIconBgmAbbey.new = function ( menu, controller )
 	local self = LUI.UIElement.new()
 	if PreLoadFunc then
 		PreLoadFunc( self, controller )
 	end
 	self:setUseStencil( false )
-	self:setClass( CoD.ZmAmmo_DpadIconBgm )
-	self.id = "ZmAmmo_DpadIconBgm"
+	self:setClass( CoD.ZmAmmo_DpadIconBgmAbbey )
+	self.id = "ZmAmmo_DpadIconBgmAbbey"
 	self.soundSet = "HUD"
 	self:setLeftRight( true, false, 0, 16 )
 	self:setTopBottom( true, false, 0, 16 )

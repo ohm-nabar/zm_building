@@ -1,3 +1,5 @@
+require("ui.uieditor.widgets.hud.blood_generator")
+
 CoD.AbbeyNotification = InheritFrom(LUI.UIElement)
 
 function CoD.AbbeyNotification.new(HudRef, InstanceRef)
