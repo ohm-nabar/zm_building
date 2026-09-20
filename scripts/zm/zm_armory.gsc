@@ -1008,6 +1008,11 @@ function armory_screen_think(gen_num)
 
 	panzerwurfmine_trig = level.panzerwurfmine_trigs[gen_num];
 	recharging = true;
+
+	while(! isdefined(panzerwurfmine_trig.recharge_time))
+	{
+		wait(0.05);
+	}
 	while(true)
 	{
 		if(recharging && panzerwurfmine_trig.recharge_time == 0)
