@@ -69,16 +69,19 @@ REFERENCE           	TRIAL_REWARD
 LANG_ENGLISH       	"Press ^3[{+activate}]^7 for &&1"
 
 REFERENCE           	FOUNTAIN_OFFLINE
-LANG_ENGLISH       	"Juggernog Station Offline - At least 2 Blood Generators must be powered on"
+LANG_ENGLISH       	"\n\n&&1\nActivate Blood Generators to increase Blood Flow to Juggernog Fountains"
+
+REFERENCE           	FOUNTAIN_OFFLINE_BLOOD
+LANG_ENGLISH       	"\n\n^BJUG_HEARTS_FULL^\nDeposit a Blood Vial to resume Blood Flow to Juggernog Fountains"
 
 REFERENCE           	FOUNTAIN_DEPOSIT
-LANG_ENGLISH       "Press and hold ^3[{+activate}]^7 to insert a Blood Vial into the Juggernog Station"
+LANG_ENGLISH       "\n\n^BJUG_HEARTS_FULL^\nPress ^3[{+activate}]^7 to insert a Blood Vial into the Juggernog Fountain"
 
 REFERENCE           	FOUNTAIN_ACTIVATE
-LANG_ENGLISH       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [&&1 uses left]"
+LANG_ENGLISH       "\n\n&&1\nPress ^3[{+activate}]^7 to drink a Juggernog Potion [&&2 uses left]"
 
 REFERENCE           	FOUNTAIN_ACTIVATE_SINGULAR
-LANG_ENGLISH       "Press and hold ^3[{+activate}]^7 to drink a Juggernog Potion [1 use left]"
+LANG_ENGLISH       "\n\n&&1\nPress ^3[{+activate}]^7 to drink a Juggernog Potion [1 use left]"
 
 REFERENCE           	TAKE_WEAPON
 LANG_ENGLISH       "Press ^3[{+activate}]^7 to take {{weapon_name}}"
@@ -512,6 +515,9 @@ LANG_ENGLISH       	"Upper Pilgrimage Stairs"
 REFERENCE           	ROOM_MIDDLE_PILGRIMAGE
 LANG_ENGLISH       	"Middle Pilgrimage Stairs"
 
+REFERENCE           	ROOM_ANTIMATTER_DUNGEON
+LANG_ENGLISH       	"Antimatter Dungeon"
+
 REFERENCE           	ROOM_BRIDGE_V2
 LANG_ENGLISH       	"Bridge v2"
 
@@ -523,6 +529,15 @@ LANG_ENGLISH       	"No Man's Land"
 
 REFERENCE           	ROOM_ALLEYWAY
 LANG_ENGLISH       	"Allleyway"
+
+REFERENCE           	GRAVITY_USE
+LANG_ENGLISH       	"Press ^3[{+activate}]^7 to activate antigravity"
+
+REFERENCE           	GRAVITY_ACTIVE
+LANG_ENGLISH       	"Antigravity active"
+
+REFERENCE           	GRAVITY_COOLDOWN
+LANG_ENGLISH       	"Cooling down..."
 
 REFERENCE           	SB_POINTS
 LANG_ENGLISH       	"Points"

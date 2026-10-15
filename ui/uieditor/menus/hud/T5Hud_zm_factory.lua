@@ -198,8 +198,6 @@ LUI.createMenu.T7Hud_zm_factory = function ( controller )
 	self.CursorHint = CoD.ZMCursorHint.new( self, controller )
 	self.CursorHint:setLeftRight( false, false, -250, 250 )
 	self.CursorHint:setTopBottom( true, true, 456.5, 0 )
-	self.CursorHint.cursorhinttext0.FEButtonPanel0:setScale( 0 )
-	self.CursorHint.cursorhinttext0.CursorHintText:setScale( 0.7 )
 	self.CursorHint.cursorhinttext0.CursorHintText:setTTF( "fonts/RefrigeratorDeluxe-Regular.ttf" )
 	self.CursorHint:mergeStateConditions( {
 		{
