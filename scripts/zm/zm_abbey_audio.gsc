@@ -33,7 +33,7 @@ function main()
 		level zm_audio::musicState_Create("cue_knighthall", PLAYTYPE_SPECIAL, "cue_knighthall");
 		level zm_audio::musicState_Create("cue_lab", PLAYTYPE_SPECIAL, "cue_lab");
 		level zm_audio::musicState_Create("cue_merveille", PLAYTYPE_SPECIAL, "cue_merveille");
-		//zm_audio::musicState_Create("cue_prison", PLAYTYPE_SPECIAL, "cue_prison");
+		level zm_audio::musicState_Create("cue_prison", PLAYTYPE_SPECIAL, "cue_prison");
 
 		level thread create_ambience_think("Red Room", "cue_redroom");
 		level thread create_ambience_think("Choir", "cue_choir");
@@ -43,7 +43,7 @@ function main()
 		level thread create_ambience_think("Knight's Hall", "cue_knighthall");
 		level thread create_ambience_think("Merveille de Verite", "cue_merveille");
 		level thread create_ambience_think("URM Laboratory", "cue_lab");
-		//thread create_ambience_think("Antimatter Dungeon", "cue_prison");
+		level thread create_ambience_think("Antimatter Dungeon", "cue_prison");
 	}
 	
 	level zm_audio::musicState_Create("shadow_breach", PLAYTYPE_SPECIAL, "shadow_breach");

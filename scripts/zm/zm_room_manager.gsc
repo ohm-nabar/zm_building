@@ -77,6 +77,7 @@ function __init__()
 		urm_lab_zones = []; urm_lab_zones[urm_lab_zones.size] = "urm_labs_zone";
 		bridge_zones = []; bridge_zones[bridge_zones.size] = "bridge_zone";
 		mid_pilgrimage_zones = []; mid_pilgrimage_zones[mid_pilgrimage_zones.size] = "mid_pilgrimage_zone";
+		prison_zones = []; prison_zones[prison_zones.size] = "prison_zone";
 		guardcatwalk_zones = []; guardcatwalk_zones[guardcatwalk_zones.size] = "guardcatwalk_zone";
 		library_zones = []; library_zones[library_zones.size] = "library_zone";
 		lower_pilgrimage_zones = []; lower_pilgrimage_zones[lower_pilgrimage_zones.size] = "lower_pilgrimage_zone";
@@ -115,6 +116,7 @@ function __init__()
 		level.abbey_rooms["URM Laboratory"] = urm_lab_zones;
 		level.abbey_rooms["Upper Pilgrimage Stairs"] = pilgrimage_zones;
 		level.abbey_rooms["Middle Pilgrimage Stairs"] = mid_pilgrimage_zones;
+		level.abbey_rooms["Antimatter Dungeon"] = prison_zones;
 		level.abbey_rooms["Bridge v2"] = bridge2_zones;
 		level.abbey_rooms["Knight's Hall"] = forum_zones;
 		level.abbey_rooms["No Man's Land"] = nml_zones;
@@ -145,6 +147,7 @@ function __init__()
 		level.abbey_rooms_indices["Knight's Hall"] = 23;
 		level.abbey_rooms_indices["No Man's Land"] = 24;
 		level.abbey_rooms_indices["Alleyway"] = 25;
+		level.abbey_rooms_indices["Antimatter Dungeon"] = 26;
 
 		level.above_rooms[level.above_rooms.size] = "Crash Site";
 		level.above_rooms[level.above_rooms.size] = "Red Room";
@@ -166,6 +169,7 @@ function __init__()
 		level.above_rooms[level.above_rooms.size] = "Upper Pilgrimage Stairs";
 		level.above_rooms[level.above_rooms.size] = "Lower Pilgrimage Stairs";
 		level.above_rooms[level.above_rooms.size] = "Middle Pilgrimage Stairs";
+		level.above_rooms[level.above_rooms.size] = "Antimatter Dungeon";
 		level.above_rooms[level.above_rooms.size] = "Bridge v2";
 		level.above_rooms[level.above_rooms.size] = "Knight's Hall";
 		level.above_rooms[level.above_rooms.size] = "Guard Tower";

@@ -145,6 +145,9 @@
 // Kyle HUD
 #using scripts\zm\_zm_t5_hud;
 
+// Prison Gravity
+#using scripts\zm\zm_prison_gravity;
+
 #insert scripts\zm\_zm_perks.gsh;
 
 #precache( "fx", "custom/magic_box_og/fx_weapon_box_marker_og" );

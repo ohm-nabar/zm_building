@@ -47,6 +47,7 @@
 
 #precache( "model", "isaypwn_trident_a_view_01" );
 #precache( "model", "isaypwn_trident_b_upg_view_01" );
+#precache( "model", "p7_zm_ctl_channeling_stone" );
 
 #precache( "triggerstring", "ZM_ABBEY_TRIDENT_SEEK" );
 #precache( "triggerstring", "ZM_ABBEY_TRIDENT_REJECT" );
@@ -582,7 +583,7 @@ function upgrade_quest_init_think()
 
 	artifact_model = Spawn("script_model", artifact_struct.origin);
 	artifact_model.angles = artifact_struct.angles;
-	artifact_model SetModel("zombietron_gold_bricks");
+	artifact_model SetModel("p7_zm_ctl_channeling_stone");
 
 	artifact_struct waittill("trigger_activated", player);
 	artifact_model Delete();
@@ -599,7 +600,7 @@ function upgrade_quest_init_think()
 	artifact_struct_statue waittill("trigger_activated", player);
 	artifact_model_statue = Spawn("script_model", artifact_struct_statue.origin);
 	artifact_model_statue.angles = artifact_struct_statue.angles;
-	artifact_model_statue SetModel("zombietron_gold_bricks");
+	artifact_model_statue SetModel("p7_zm_ctl_channeling_stone");
 	level zm_unitrigger::unregister_unitrigger(artifact_struct_statue.s_unitrigger);
 	level.trident_shell_ready = true;
 	foreach(player in level.players)

@@ -138,7 +138,7 @@ function __init__()
 	level.wallbuy_trial_end_indices = array(3, 8, 12, 13);
 	level.wallbuy_trial_cutoff_index = 10;
 
-	level.area_assault_trial_rooms = array("Crash Site", "Bell Tower", "Red Room", "Basilica", "Airfield", "Upper Pilgrimage Stairs", "Merveille de Verite", "Knight's Hall", "URM Laboratory", "Verite Library", "Courtyard", "No Man's Land");
+	level.area_assault_trial_rooms = array("Crash Site", "Bell Tower", "Red Room", "Basilica", "Airfield", "Antimatter Dungeon", "Merveille de Verite", "Knight's Hall", "URM Laboratory", "Verite Library", "Courtyard", "No Man's Land");
 	if(GetDvarString("ui_mapname") == "zm_building")
 	{
 		level.area_assault_trial_rooms = array("Spawn Room", "Spawn Room", "Staminarch", "Water Tower", "Water Tower", "Water Tower", "Lion Room", "Lion Room", "Clean Room", "Clean Room", "Downstairs Room", "Downstairs Room");

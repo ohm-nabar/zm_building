@@ -119,9 +119,10 @@ function __init__()
     level.cloak_rooms = [];
     level.cloak_room_subs = [];
     level.cloak_room_subs["Red Room"] = array("Bell Tower");
-    level.cloak_room_subs["Cloitre"] = array("Dormitory");
-    level.cloak_room_subs["Courtroom"] = array("Alleyway");
+    level.cloak_room_subs["Airfield"] = array("Dormitory");
+    level.cloak_room_subs["Courtyard"] = array("Alleyway");
     level.cloak_room_subs["Verite Library"] = array("Guard Tower Catwalk");
+    level.cloak_room_subs["Middle Pilgrimage Stairs"] = array("Antimatter Dungeon");
     level.cloak_room_subs["URM Laboratory"] = array("Bridge");
     level.cloak_room_subs["Merveille de Verite"] = array("Bridge v2");
     level.centre_exception_cloak_rooms = array("Crash Site", "Red Room", "Radio Gallery", "Scaffolding", "Choir");
@@ -166,18 +167,18 @@ function __init__()
         red_room add_adj_room(radio_gallery, true, array("enter_platform_zone"));
         radio_gallery add_adj_room(scaffolding, true, array("enter_heart_zone"));
         scaffolding add_adj_room(choir, true, array("enter_heart_zone"));
-        choir add_adj_room(centre, true, array("enter_centre_zone"));
-        centre add_adj_room(basilica, true, array("enter_centre_zone"));
+        choir add_adj_room(centre, true, array("initial_blackscreen_passed"));
+        centre add_adj_room(basilica, true, array("initial_blackscreen_passed"));
 
         basilica add_adj_room(airfield, false, array("enter_airfield_zone"));
         airfield add_adj_room(cloitre, false, array("enter_cloitre_zone"));
-        cloitre add_adj_room(merveille, false, array("enter_merveille_zone", "enter_cloitre2_zone"));
+        cloitre add_adj_room(merveille, false, array("initial_blackscreen_passed"));
         merveille add_adj_room(guard_tower, false, array("enter_forum_zone"));
         guard_tower add_adj_room(knights_hall, false, array("enter_forum_zone"));
         knights_hall add_adj_room(courtyard, false, array("enter_courtyard_zone", "enter_forum2_zone"));
         courtyard add_adj_room(courtroom, false, array("enter_courtroom2_zone", "enter_courtyard2_zone"));
 
-        courtroom add_adj_room(lps, false, array("enter_courtroom_zone", "enter_library2_zone"));
+        courtroom add_adj_room(lps, false, array("initial_blackscreen_passed"));
         lps add_adj_room(library, false, array("enter_library2_zone", "enter_library_zone"));
         library add_adj_room(mps, false, array("enter_mid_pilgrimage2_zone", "enter_library_zone"));
         mps add_adj_room(urm_labs, false, array("enter_mid_pilgrimage_zone"));
