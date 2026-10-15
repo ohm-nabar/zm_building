@@ -1,3 +1,5 @@
+#using scripts\codescripts\struct;
+
 #using scripts\shared\callbacks_shared;
 #using scripts\shared\clientfield_shared;
 #using scripts\shared\exploder_shared;
@@ -10,37 +12,58 @@
 
 #using scripts\zm\_zm_audio;
 #using scripts\zm\_zm_equipment;
-#using scripts\zm\_zm_magicbox;
 #using scripts\zm\_zm_perks;
 #using scripts\zm\_zm_utility;
 #using scripts\zm\_zm_weapons;
+
+#using scripts\Sphynx\_zm_sphynx_util;
 
 #insert scripts\zm\_zm_audio.gsh;
 #insert scripts\zm\_zm_perks.gsh;
 #insert scripts\zm\_zm_perk_juggernaut.gsh;
 #insert scripts\zm\_zm_utility.gsh;
 
-#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_OFFLINE");
 #precache("triggerstring", "ZM_ABBEY_FOUNTAIN_DEPOSIT");
-#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "2");
-#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "3");
-#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "4");
-#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE_SINGULAR");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_OFFLINE_BLOOD");
+
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_OFFLINE", "^BJUG_HEARTS_NO^");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_OFFLINE", "^BJUG_HEARTS_LOW^");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_OFFLINE", "^BJUG_HEARTS_MID^");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_OFFLINE", "^BJUG_HEARTS_FULL^");
+
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE_SINGULAR", "^BJUG_HEARTS_LOW^");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE_SINGULAR", "^BJUG_HEARTS_MID^");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE_SINGULAR", "^BJUG_HEARTS_FULL^");
+
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "^BJUG_HEARTS_LOW^", "2");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "^BJUG_HEARTS_MID^", "2");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "^BJUG_HEARTS_FULL^", "2");
+
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "^BJUG_HEARTS_LOW^", "3");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "^BJUG_HEARTS_MID^", "3");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "^BJUG_HEARTS_FULL^", "3");
+
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "^BJUG_HEARTS_LOW^", "4");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "^BJUG_HEARTS_MID^", "4");
+#precache("triggerstring", "ZM_ABBEY_FOUNTAIN_ACTIVATE", "^BJUG_HEARTS_FULL^", "4");
 
 #namespace zm_juggernog_potions;
 
-REGISTER_SYSTEM( "zm_juggernog_potions", &__init__, undefined )
+REGISTER_SYSTEM_EX( "zm_juggernog_potions", &__init__, &__main__, undefined )
 
 function __init__()
 {
-	clientfield::register( "clientuimodel", "jugHeartsUpdate", VERSION_SHIP, 2, "int" );
+	level clientfield::register( "clientuimodel", "jugHeartsUpdate", VERSION_SHIP, 2, "int" );
 
-	callback::on_connect( &on_player_connect );
-	callback::on_laststand( &on_laststand );
+	level callback::on_connect( &on_player_connect );
+	level callback::on_laststand( &on_laststand );
 
 	level.jug_uses_left = 0;
+}
 
-	jug_activates = GetEntArray("jug_activate", "targetname");
+function __main__()
+{
+	jug_activates = level struct::get_array("jug_activate", "targetname");
 	level.jug_bottles = GetEntArray("jug_bottle", "targetname");
 
 	for(i = 0; i < level.jug_bottles.size; i++)
@@ -50,10 +73,8 @@ function __init__()
 
 	for(i = 0; i < jug_activates.size; i++)
 	{
-		jug_activates[i] SetCursorHint( "HINT_NOICON" );
 		jug_activates[i] thread activator_think();
 	}
-
 }
 
 function on_player_connect()
@@ -112,30 +133,55 @@ function maintain_jug_resistance_level()
 	self change_jug_resistance_level(true, 1);
 }
 
-function activator_think()
+function manage_sound(jingle_origin, blood_origin)
 {
-	self SetHintString(&"ZM_ABBEY_FOUNTAIN_OFFLINE");
-	
-	bottle_weapon = GetWeapon( JUGGERNAUT_PERK_BOTTLE_WEAPON );
-
-	while(! isdefined(level.active_generators) || level.active_generators.size < 2)
-	{
-		wait(0.05);
-	}
-
-	self.script_sound = "mus_perks_jugganog_jingle";
-	self.script_label = "mus_perks_jugganog_sting";
-	self thread hintstring_management();
+	prev_jug_up = false;
 
 	while(true)
 	{
-		self waittill("trigger", player);
-		if(level.jug_uses_left <= 0)
+		if(! prev_jug_up && level.jug_uses_left > 0)
+		{
+			prev_jug_up = true;
+			level exploder::exploder("jug_light");
+			jingle_origin thread sndPerksJingles_Timer();
+			blood_origin PlayLoopSound("jug_fountain_idle");
+		}
+		else if(prev_jug_up && level.jug_uses_left == 0)
+		{
+			prev_jug_up = false;
+			level exploder::stop_exploder("jug_light");
+			jingle_origin notify(#"jug_fountain_off");
+			blood_origin StopLoopSound();
+		}
+		wait(0.05);
+	}
+}
+
+function activator_think()
+{
+	self zm_sphynx_util::create_unitrigger_for_player_specific("", undefined, &jug_prompt_and_visibility);
+	
+	bottle_weapon = GetWeapon( JUGGERNAUT_PERK_BOTTLE_WEAPON );
+
+	jingle_origin = Spawn("script_model", self.origin);
+	jingle_origin SetModel("tag_origin");
+
+	jingle_origin.script_sound = "mus_perks_jugganog_jingle";
+	jingle_origin.script_label = "mus_perks_jugganog_sting";
+
+	blood_origin = Spawn("script_model", self.origin);
+	blood_origin SetModel("tag_origin");
+
+	self thread manage_sound(jingle_origin, blood_origin);
+
+	while(true)
+	{
+		self waittill("trigger_activated", player);
+		if(level.jug_uses_left == 0)
 		{	
-			if(level.hasVial && player zm_magicbox::can_buy_weapon())
+			if(level.hasVial && level.active_generators.size == 4)
 			{
 				level.hasVial = false;
-				self PlaySound("jug_fountain_activate");
 				level.jug_uses_left = level.players.size;
 				for(i = 0; i < level.jug_bottles.size; i++)
 				{
@@ -143,9 +189,9 @@ function activator_think()
 				}
 			}
 		}
-		else if(player.jug_resistance_level < 250 && zm_perks::vending_trigger_can_player_use(player))
+		else
 		{
-			self thread sndPerksJingles_Player(PERKSACOLA_STINGER);
+			jingle_origin thread sndPerksJingles_Player(PERKSACOLA_STINGER);
 			gun = player perk_give_bottle_begin( bottle_weapon );
 			level.jug_uses_left--;
 			if(level.jug_uses_left <= 0)
@@ -154,7 +200,6 @@ function activator_think()
 				{
 					level.jug_bottles[i] SetInvisibleToAll();
 				}
-				self StopLoopSound();
 			}
 
 			player util::waittill_any( "fake_death", "death", "player_downed", "weapon_change_complete", "perk_abort_drinking");
@@ -163,93 +208,81 @@ function activator_think()
 			if ( player.sessionstate != "spectator" && ! player laststand::player_is_in_laststand() && IsAlive(player) && IsPlayer(player) && isdefined(player) )
 			{
 				player thread zm_perks::give_perk_presentation(PERK_JUGGERNOG);
-				player change_jug_resistance_level(true, 3);
+				player change_jug_resistance_level(true, level.active_generators.size);
 			}
-			player perk_give_bottle_end( gun, bottle_weapon);
+			player perk_give_bottle_end(gun, bottle_weapon);
 		}
 		wait(0.05);
 	}
 }
 
-function hintstring_management()
+function jug_prompt_and_visibility(player)
 {
-	prev_jug_uses_left = -1;
-	prev_hintstring_state = -1;
-	hintstring_state = -1;
-	jug_timer_set = false;
-
-	sound_origin = Spawn("script_model", self.origin);
-	sound_origin SetModel("tag_origin");
-
-	while(true)
+	if(! level zm_perks::vending_trigger_can_player_use(player))
 	{
-		if(level.jug_uses_left > 0)
-		{
-			hintstring_state = 0;
-		}
-		else if(level.hasVial)
-		{
-			hintstring_state = 1;
-		}
-		else
-		{
-			hintstring_state = 2;
-		}
+		self SetHintString(&"ZM_ABBEY_EMPTY");
+		return false;
+	}
 
-		if(prev_hintstring_state != hintstring_state || prev_jug_uses_left != level.jug_uses_left)
-		{
-			switch(hintstring_state)
+	switch(level.jug_uses_left)
+	{
+		case 0:
+			if(level.active_generators.size < 4)
 			{
-				case 0:
+				switch(level.active_generators.size)
 				{
-					if(! jug_timer_set)
-					{
-						jug_timer_set = true;
-						self thread sndPerksJingles_Timer();
-						sound_origin PlayLoopSound("jug_fountain_idle");
-					}
-					level exploder::exploder("jug_light");
-					if(level.jug_uses_left > 1)
-					{
-						self SetHintString(&"ZM_ABBEY_FOUNTAIN_ACTIVATE", level.jug_uses_left);
-					}
-					else
-					{
-						self SetHintString(&"ZM_ABBEY_FOUNTAIN_ACTIVATE_SINGULAR");
-					}
-					break;
+					case 0:
+						self SetHintString(&"ZM_ABBEY_FOUNTAIN_OFFLINE", "^BJUG_HEARTS_NO^");
+						break;
+					case 1:
+						self SetHintString(&"ZM_ABBEY_FOUNTAIN_OFFLINE", "^BJUG_HEARTS_LOW^");
+						break;
+					case 2:
+						self SetHintString(&"ZM_ABBEY_FOUNTAIN_OFFLINE", "^BJUG_HEARTS_MID^");
+						break;
+					default:
+						self SetHintString(&"ZM_ABBEY_FOUNTAIN_OFFLINE", "^BJUG_HEARTS_FULL^");
+						break;
 				}
-				case 1:
-				{
-					if(jug_timer_set)
-					{
-						jug_timer_set = false;
-						sound_origin StopLoopSound();
-					}
-					level exploder::stop_exploder("jug_light");
-					self SetHintString(&"ZM_ABBEY_FOUNTAIN_DEPOSIT");
-					self notify(#"jug_fountain_off");
-					break;
-				}
-				default:
-				{
-					if(jug_timer_set)
-					{
-						jug_timer_set = false;
-						sound_origin StopLoopSound();
-					}
-					level exploder::stop_exploder("jug_light");
-					self SetHintString(&"ZM_ABBEY_GENERATOR_NO_BLOOD");
-					self notify(#"jug_fountain_off");
-					break;
-				}
+				return false;
+			}
+			if(! level.hasVial)
+			{
+				self SetHintString(&"ZM_ABBEY_FOUNTAIN_OFFLINE_BLOOD");
+				return false;
 			}
 
-			prev_hintstring_state = hintstring_state;
-			prev_jug_uses_left = level.jug_uses_left;
-		}
-		wait(0.05);
+			self SetHintString(&"ZM_ABBEY_FOUNTAIN_DEPOSIT");
+			return true;
+		case 1:
+			switch(level.active_generators.size)
+			{
+				case 1:
+					self SetHintString(&"ZM_ABBEY_FOUNTAIN_ACTIVATE_SINGULAR", "^BJUG_HEARTS_LOW^");
+					break;
+				case 2:
+					self SetHintString(&"ZM_ABBEY_FOUNTAIN_ACTIVATE_SINGULAR", "^BJUG_HEARTS_MID^");
+					break;
+				default:
+					self SetHintString(&"ZM_ABBEY_FOUNTAIN_ACTIVATE_SINGULAR", "^BJUG_HEARTS_FULL^");
+					break;
+			}
+			return (player.jug_resistance_level < 250);
 	}
+
+	switch(level.active_generators.size)
+	{
+		case 1:
+			self SetHintString(&"ZM_ABBEY_FOUNTAIN_ACTIVATE", "^BJUG_HEARTS_LOW^", level.jug_uses_left);
+			break;
+		case 2:
+			self SetHintString(&"ZM_ABBEY_FOUNTAIN_ACTIVATE", "^BJUG_HEARTS_MID^", level.jug_uses_left);
+			break;
+		default:
+			self SetHintString(&"ZM_ABBEY_FOUNTAIN_ACTIVATE", "^BJUG_HEARTS_FULL^", level.jug_uses_left);
+			break;
+	}
+	return (player.jug_resistance_level < 250);
 }
 
 //Perksacola Jingle Stuff

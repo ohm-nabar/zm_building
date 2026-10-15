@@ -1194,6 +1194,8 @@ function turn_generator_on(generator_name, after_shadow)
 		return;
 	}
 
+	level.jug_uses_left = level.players.size;
+
 	foreach(p in level.players)
 	{
 		if(level.active_generators.size == 3)
