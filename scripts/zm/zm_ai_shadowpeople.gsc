@@ -42,6 +42,9 @@
 
 #precache( "eventstring", "generator_attacked" );
 
+#define CHOKER_SPAWN_DELAY_BASE 1.5 // Higher is slower spawns
+#define CHOKER_SPAWN_DELAY_INC 0.25 // Adding a player lowers spawn delay by this much
+
 #define CLOAK_SPAWN_DELAY_MIN 2
 #define CLOAK_SPAWN_DELAY_MAX 4
 
@@ -517,7 +520,7 @@ function dog_round_spawning()
 		else
 		{
 			level thread choker_spawn(level get_random_valid_player());
-			choker_wait_time = 1 - ( 0.2 * (level.players.size - 1) );
+			choker_wait_time = CHOKER_SPAWN_DELAY_BASE - ( CHOKER_SPAWN_DELAY_INC * (level.players.size - 1) );
 			wait(choker_wait_time);
 		}
 	}
@@ -571,7 +574,7 @@ function dog_round_spawning()
 		}
 
 		level thread choker_spawn(level get_random_valid_player());
-		choker_wait_time = 1 - ( 0.2 * (level.players.size - 1) );
+		choker_wait_time = CHOKER_SPAWN_DELAY_BASE - ( CHOKER_SPAWN_DELAY_INC * (level.players.size - 1) );
 		wait(choker_wait_time);
 	}
 
